@@ -1,0 +1,500 @@
+{
+ "strom": {
+  "slogans": [
+   {
+    "t": "113 – ambulanse",
+    "k": "amb",
+    "e": "🚑"
+   },
+   {
+    "t": "Lås og merk",
+    "k": "lock",
+    "e": "🔒"
+   },
+   {
+    "t": "Mål før du tar",
+    "k": "meter",
+    "e": "🔎"
+   },
+   {
+    "t": "Verneutstyr på",
+    "k": "helmet",
+    "e": "⛑️"
+   },
+   {
+    "t": "SJA – risikovurdering",
+    "k": "sja",
+    "e": "📋"
+   },
+   {
+    "t": "110 brann",
+    "k": "fire",
+    "e": "🚒"
+   },
+   {
+    "t": "Stopp ved tvil",
+    "k": "stop",
+    "e": "🛑"
+   },
+   {
+    "t": "Frakoble – sikre – verifisere",
+    "k": "steps",
+    "e": "🔌"
+   },
+   {
+    "t": "112 politi",
+    "k": "police",
+    "e": "🚓"
+   },
+   {
+    "t": "Hjertestarter – vit hvor",
+    "k": "aed",
+    "e": "❤️"
+   },
+   {
+    "t": "RUH – meld fra",
+    "k": "ruh",
+    "e": "📣"
+   },
+   {
+    "t": "Test testeren før/etter",
+    "k": "test",
+    "e": "✅"
+   },
+   {
+    "t": "Avstand til spenning",
+    "k": "dist",
+    "e": "⚡"
+   },
+   {
+    "t": "Strømulykke? Bryt strømmen",
+    "k": "breaker",
+    "e": "🔌"
+   },
+   {
+    "t": "Jord og kortslutt",
+    "k": "ground",
+    "e": "🔗"
+   },
+   {
+    "t": "Førstehjelp – øv årlig",
+    "k": "generic",
+    "e": "🩹"
+   }
+  ],
+  "ui": {
+   "learned": "I dag lærte du:",
+   "progress": "Du har sett {n} av {t} huskeregler. Spill videre for å se alle.",
+   "done": "Du har sett alle {t} huskereglene. Neste runder repeterer dem.",
+   "note": "Dette erstatter ikke FSE-kurset."
+  },
+  "art": {
+   "amb": [
+    "113",
+    "AMBULANSE",
+    "113"
+   ],
+   "fire": [
+    "110",
+    "BRANN",
+    "110"
+   ],
+   "police": [
+    "112",
+    "POLITI",
+    "POLITI"
+   ],
+   "tag": "FARE",
+   "test": "TEST",
+   "before": "FØR ✓",
+   "after": "ETTER ✓",
+   "stop": "STOPP",
+   "sja": "SJA",
+   "steps": [
+    "FRAKOBLE",
+    "SIKRE",
+    "VERIFISERE"
+   ]
+  },
+  "roles": {
+   "plumber": [
+    "Rørlegger",
+    "rask, går tett på"
+   ],
+   "clerk": [
+    "Kontor",
+    "kaster tegninger"
+   ],
+   "bricklayer": [
+    "Murer",
+    "kaster murstein"
+   ],
+   "welder": [
+    "Sveiser",
+    "sveisegnister"
+   ],
+   "foreman": [
+    "Formannen",
+    "sjokkbølge – hold avstand"
+   ],
+   "manager": [
+    "Byggelederen",
+    "siste sjef"
+   ]
+  },
+  "popups": {
+   "hurt": [
+    "Bryt strømmen først",
+    "113 – ambulanse",
+    "Strømskade? Alltid lege"
+   ],
+   "medkit": [
+    "Førstehjelp – øv årlig",
+    "Hjertestarter – vit hvor"
+   ],
+   "tool": [
+    "Sjekk isolasjonen",
+    "Riktig spenningstester"
+   ],
+   "armor": [
+    "Verneutstyr på"
+   ],
+   "coffee": [
+    "Trøtt? Ta pause",
+    "Etter pause: sjekk låsene"
+   ]
+  }
+ },
+ "prad": {
+  "slogans": [
+   {
+    "t": "112 – pogotowie",
+    "k": "amb",
+    "e": "🚑"
+   },
+   {
+    "t": "Zablokuj i oznacz",
+    "k": "lock",
+    "e": "🔒"
+   },
+   {
+    "t": "Zmierz, zanim dotkniesz",
+    "k": "meter",
+    "e": "🔎"
+   },
+   {
+    "t": "BHP – środki ochrony",
+    "k": "helmet",
+    "e": "⛑️"
+   },
+   {
+    "t": "BHP – ocena ryzyka",
+    "k": "sja",
+    "e": "📋"
+   },
+   {
+    "t": "112 – straż pożarna",
+    "k": "fire",
+    "e": "🚒"
+   },
+   {
+    "t": "Masz wątpliwość? Stop",
+    "k": "stop",
+    "e": "🛑"
+   },
+   {
+    "t": "Wyłącz – zabezpiecz – sprawdź",
+    "k": "steps",
+    "e": "🔌"
+   },
+   {
+    "t": "112 – policja",
+    "k": "police",
+    "e": "🚓"
+   },
+   {
+    "t": "Defibrylator AED – wiedz, gdzie",
+    "k": "aed",
+    "e": "❤️"
+   },
+   {
+    "t": "Zgłoś zdarzenie",
+    "k": "ruh",
+    "e": "📣"
+   },
+   {
+    "t": "Sprawdź tester przed i po",
+    "k": "test",
+    "e": "✅"
+   },
+   {
+    "t": "Odstęp od napięcia",
+    "k": "dist",
+    "e": "⚡"
+   },
+   {
+    "t": "Porażenie? Odłącz prąd",
+    "k": "breaker",
+    "e": "🔌"
+   },
+   {
+    "t": "Uziem i zewrzyj",
+    "k": "ground",
+    "e": "🔗"
+   },
+   {
+    "t": "Pierwsza pomoc – ćwicz co roku",
+    "k": "generic",
+    "e": "🩹"
+   }
+  ],
+  "ui": {
+   "learned": "Dziś nauczyłeś się:",
+   "progress": "Znasz już {n} z {t} haseł BHP. Graj dalej, by poznać wszystkie.",
+   "done": "Znasz wszystkie {t} haseł BHP. Kolejne rundy je powtarzają.",
+   "note": "To nie zastępuje kursu BHP."
+  },
+  "art": {
+   "amb": [
+    "112",
+    "POGOTOWIE",
+    "112"
+   ],
+   "fire": [
+    "112",
+    "STRAŻ POŻARNA",
+    "112"
+   ],
+   "police": [
+    "112",
+    "POLICJA",
+    "POLICJA"
+   ],
+   "tag": "UWAGA",
+   "test": "TEST",
+   "before": "PRZED ✓",
+   "after": "PO ✓",
+   "stop": "STOP",
+   "sja": "BHP",
+   "steps": [
+    "WYŁĄCZ",
+    "ZABEZPIECZ",
+    "SPRAWDŹ"
+   ]
+  },
+  "roles": {
+   "plumber": [
+    "Hydraulik",
+    "szybki, podchodzi blisko"
+   ],
+   "clerk": [
+    "Biurowiec",
+    "rzuca rysunkami"
+   ],
+   "bricklayer": [
+    "Murarz",
+    "rzuca cegłami"
+   ],
+   "welder": [
+    "Spawacz",
+    "iskry spawalnicze"
+   ],
+   "foreman": [
+    "Brygadzista",
+    "fala uderzeniowa – trzymaj dystans"
+   ],
+   "manager": [
+    "Kierownik budowy",
+    "ostatni szef"
+   ]
+  },
+  "popups": {
+   "hurt": [
+    "Najpierw odłącz prąd",
+    "112 – pogotowie",
+    "Porażenie? Zawsze do lekarza"
+   ],
+   "medkit": [
+    "Pierwsza pomoc – ćwicz co roku",
+    "Defibrylator AED – wiedz, gdzie"
+   ],
+   "tool": [
+    "Sprawdź izolację",
+    "Właściwy wskaźnik napięcia"
+   ],
+   "armor": [
+    "BHP – środki ochrony"
+   ],
+   "coffee": [
+    "Zmęczony? Zrób przerwę",
+    "Po przerwie: sprawdź blokady"
+   ]
+  }
+ },
+ "power": {
+  "slogans": [
+   {
+    "t": "999 – ambulance",
+    "k": "amb",
+    "e": "🚑"
+   },
+   {
+    "t": "Lock out, tag out",
+    "k": "lock",
+    "e": "🔒"
+   },
+   {
+    "t": "Test before touch",
+    "k": "meter",
+    "e": "🔎"
+   },
+   {
+    "t": "H&S – PPE on",
+    "k": "helmet",
+    "e": "⛑️"
+   },
+   {
+    "t": "RA – risk assessment",
+    "k": "sja",
+    "e": "📋"
+   },
+   {
+    "t": "999 – fire",
+    "k": "fire",
+    "e": "🚒"
+   },
+   {
+    "t": "Stop if in doubt",
+    "k": "stop",
+    "e": "🛑"
+   },
+   {
+    "t": "EWR – safe isolation",
+    "k": "steps",
+    "e": "🔌"
+   },
+   {
+    "t": "112 – police",
+    "k": "police",
+    "e": "🚓"
+   },
+   {
+    "t": "Defibrillator – know where",
+    "k": "aed",
+    "e": "❤️"
+   },
+   {
+    "t": "Near miss – report it",
+    "k": "ruh",
+    "e": "📣"
+   },
+   {
+    "t": "Test the tester before/after",
+    "k": "test",
+    "e": "✅"
+   },
+   {
+    "t": "Keep clear of live parts",
+    "k": "dist",
+    "e": "⚡"
+   },
+   {
+    "t": "Electric shock? Cut the power",
+    "k": "breaker",
+    "e": "🔌"
+   },
+   {
+    "t": "Earth and short-circuit",
+    "k": "ground",
+    "e": "🔗"
+   },
+   {
+    "t": "First aid – practise yearly",
+    "k": "generic",
+    "e": "🩹"
+   }
+  ],
+  "ui": {
+   "learned": "Today you learned:",
+   "progress": "You have seen {n} of {t} safety reminders. Keep playing to see them all.",
+   "done": "You have seen all {t} safety reminders. Next rounds repeat them.",
+   "note": "This does not replace EWR training."
+  },
+  "art": {
+   "amb": [
+    "999",
+    "AMBULANCE",
+    "999"
+   ],
+   "fire": [
+    "999",
+    "FIRE",
+    "999"
+   ],
+   "police": [
+    "112",
+    "POLICE",
+    "POLICE"
+   ],
+   "tag": "DANGER",
+   "test": "TEST",
+   "before": "BEFORE ✓",
+   "after": "AFTER ✓",
+   "stop": "STOP",
+   "sja": "RA",
+   "steps": [
+    "ISOLATE",
+    "SECURE",
+    "VERIFY"
+   ]
+  },
+  "roles": {
+   "plumber": [
+    "Plumber",
+    "fast, gets close"
+   ],
+   "clerk": [
+    "Office clerk",
+    "throws drawings"
+   ],
+   "bricklayer": [
+    "Bricklayer",
+    "throws bricks"
+   ],
+   "welder": [
+    "Welder",
+    "welding sparks"
+   ],
+   "foreman": [
+    "The Foreman",
+    "shockwave – keep your distance"
+   ],
+   "manager": [
+    "The Site Manager",
+    "final boss"
+   ]
+  },
+  "popups": {
+   "hurt": [
+    "Cut the power first",
+    "999 – ambulance",
+    "Electric shock? Always see a doctor"
+   ],
+   "medkit": [
+    "First aid – practise yearly",
+    "Defibrillator – know where"
+   ],
+   "tool": [
+    "Check the insulation",
+    "Use a proper voltage tester"
+   ],
+   "armor": [
+    "H&S – PPE on"
+   ],
+   "coffee": [
+    "Tired? Take a break",
+    "After a break: check the locks"
+   ]
+  }
+ }
+}

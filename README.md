@@ -1,0 +1,23 @@
+# Stop60 – landing page
+
+Static site (HTML/CSS; JS only for self-hosted GoatCounter `count.js`, lazy video `assets/media.js` and click-to-reveal e-mail `assets/contact.js`).
+- `/` Norwegian (default) · `/en/` English · `/pl/` Polish
+- `assets/` logo.svg, favicon.svg, hero-*.webp (from game title art), og-{no,en,pl}.jpg (1200×630)
+- `src/build.py` regenerates the three `index.html` + sitemap/robots. After DNS is live: `STOP60_BASE=https://stop60.no/ python3 src/build.py`.
+- Short redirects: `/spill` → `/strom/`, `/play` → `/power/`, `/graj` → `/prad/`, `/demo` → `/strom/demo/`, `/sponsor` → `#sponsor` (by browser language).
+- Deployed by GitHub Actions (`.github/workflows/pages.yml`); the games are separate project sites (`strom`, `prad`, `power`) served under the same host. Do not add folders with those names here.
+- Contact addresses are written as `user [at] stop60.no`; `assets/contact.js` builds the real address on the first click.
+- `src/make_logo.py` regenerates the SVG logo (needs fonttools), `src/og.html` is the share-image template.
+
+Local preview: `python3 -m http.server 8060` in this folder → http://127.0.0.1:8060/
+
+## Gameplay media (`media/`)
+Real gameplay recorded 2026-10-01 from the live games (Playwright + Chromium, iPhone 13 viewport, headless).
+During recording, Supabase (leaderboard) and GoatCounter were blocked three ways: a Playwright route abort on
+`*.supabase.co`, `*.goatcounter.com` and `gc.zgo.at`; `config.js` replaced with empty leaderboard/analytics configs
+and `count.js` served empty; an in-page override of fetch/XHR/sendBeacon/WebSocket/img for those hosts. Service workers
+were blocked. No request to those hosts was made and no score was sent (the leaderboard shown is the local one in the
+test browser). Clips: 3 cut segments (start + first slogan, second slogan, end card) at 30 fps, 390×664, muted.
+`assets/media.js` loads clips only near the viewport, autoplays muted only when visible, pauses off-screen,
+and under prefers-reduced-motion shows the poster with a play button (no video download until pressed).
+Recorder/encoder scripts: /workspace/stop60_shot/ (record.js, common.js, make_clips.py).

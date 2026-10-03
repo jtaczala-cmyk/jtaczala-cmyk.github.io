@@ -1,0 +1,34 @@
+# Deploys the Stop60 landing (user site) to GitHub Pages via Actions.
+# With Actions publishing, GitHub ignores the CNAME file; the custom domain is set in Settings -> Pages
+# only after DNS at Domeneshop is ready (otherwise *.github.io would redirect to a domain that doesn't resolve yet).
+name: Deploy Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble site
+        run: |
+          mkdir _site
+          tar --exclude=./.git --exclude=./.github --exclude=./src --exclude=./_site --exclude=./README.md -cf - . | tar -xf - -C _site
+          ls -la _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
