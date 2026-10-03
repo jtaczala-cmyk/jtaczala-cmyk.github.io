@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 Jacek Mariusz Taczała. All rights reserved. See LICENSE.
+/* Copyright (c) 2026 Stop60. All rights reserved. See LICENSE.
    Anti-spam: addresses are written as "user [at] domain" in the HTML; the real address is assembled on the first click. */
 document.querySelectorAll("a.em").forEach(function (a) {
   a.addEventListener("click", function (ev) {

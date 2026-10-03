@@ -160,7 +160,7 @@ def page(L):
     gc = (f'<script data-goatcounter="https://{GC}.goatcounter.com/count" async src="{up}count.js"></script>' if GC else "")
     ogimg = f"{BASE}assets/og-{L}.jpg"
     return f'''<!DOCTYPE html>
-<!-- Copyright (c) 2026 Jacek Mariusz Taczała. All rights reserved. See LICENSE. -->
+<!-- Copyright (c) 2026 Stop60. All rights reserved. See LICENSE. -->
 <html lang="{t["htmllang"]}">
 <head>
 <meta charset="utf-8"/>
@@ -254,7 +254,7 @@ def page(L):
 <h2>{e(t["ph"])}</h2>
 <p>{e(t["priv"])}</p>
 <p><a href="{PRIV[L]}">{e(t["privlink"])}</a></p>
-<div class="row"><span>© 2026 Jacek Mariusz Taczała</span><span>{e(t["contactline"])} {em("kontakt", t)}</span><span>Created with Grok</span></div>
+<div class="row"><span>© 2026 Stop60</span><span>{e(t["contactline"])} {em("kontakt", t)}</span><span>Created with Grok</span></div>
 </div></footer>
 </body>
 </html>
