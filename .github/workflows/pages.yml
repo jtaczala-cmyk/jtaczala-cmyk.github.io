@@ -1,6 +1,6 @@
 # Deploys the Stop60 landing (user site) to GitHub Pages via Actions.
-# With Actions publishing, GitHub ignores the CNAME file; the custom domain is set in Settings -> Pages
-# only after DNS at Domeneshop is ready (otherwise *.github.io would redirect to a domain that doesn't resolve yet).
+# With Actions publishing, GitHub ignores the CNAME file; the custom domain stop60.no is set in Settings -> Pages
+# (persists across deployments). The CNAME file is kept only as documentation.
 name: Deploy Pages
 on:
   push:

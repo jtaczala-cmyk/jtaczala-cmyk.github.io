@@ -3,11 +3,11 @@
 Edit BASE when moving to the stop60.no domain, then re-run: python3 src/build.py"""
 import json, html, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE = os.environ.get("STOP60_BASE", "https://jtaczala-cmyk.github.io/")   # after DNS: STOP60_BASE=https://stop60.no/
+BASE = os.environ.get("STOP60_BASE", "https://stop60.no/")
 GC   = "jtaczala-games"                             # GoatCounter code ("" = off)
 # contact addresses: shown as "user [at] stop60.no", real address assembled by assets/contact.js on click (anti-spam)
 MAILDOM = "stop60.no"
-# root-relative: work on jtaczala-cmyk.github.io now and on stop60.no later (games are project sites under the same host)
+# root-relative: games are project sites served under the user-site custom domain stop60.no
 GAMES = {"no": "/strom/", "en": "/power/", "pl": "/prad/"}
 DEMO = "/strom/demo/"
 PRIV = {"no": "/strom/personvern/", "en": "/power/privacy/", "pl": "/prad/prywatnosc/"}
