@@ -4,7 +4,10 @@ Static site (HTML/CSS; JS only for self-hosted GoatCounter `count.js`, lazy vide
 - `/` Norwegian (default) · `/en/` English · `/pl/` Polish
 - `assets/` logo.svg, favicon.svg, hero-*.webp (from game title art), og-{no,en,pl}.jpg (1200×630)
 - `src/build.py` regenerates the three `index.html` + sitemap/robots. After DNS is live: `STOP60_BASE=https://stop60.no/ python3 src/build.py`.
-- Short redirects: `/spill` → `/strom/`, `/play` → `/power/`, `/graj` → `/prad/`, `/demo` → `/strom/demo/`, `/sponsor` → `#sponsor` (by browser language).
+- Short redirects: `/spill` → `/strom/`, `/play` → `/power/`, `/graj` → `/prad/`.
+- Sponsor section hidden for now (`SHOW_SPONSOR = False` in `src/build.py`; robots.txt then disallows `/strom/demo/`).
+  The `/demo` → `/strom/demo/` and `/sponsor` → `#sponsor` redirect pages are parked in `src/hidden/` (not deployed);
+  to restore: set `SHOW_SPONSOR = True`, move `src/hidden/demo` and `src/hidden/sponsor` back to the repo root, rebuild.
 - Deployed by GitHub Actions (`.github/workflows/pages.yml`); the games are separate project sites (`strom`, `prad`, `power`) served under the same host. Do not add folders with those names here.
 - Contact addresses are shown as `user@stop60.no` (written as `user&#64;stop60.no` in the HTML); `assets/contact.js` builds the `mailto:` link at runtime.
 - `src/make_logo.py` regenerates the SVG logo (needs fonttools), `src/og.html` is the share-image template.

@@ -10,6 +10,9 @@ MAILDOM = "stop60.no"
 # root-relative: games are project sites served under the user-site custom domain stop60.no
 GAMES = {"no": "/strom/", "en": "/power/", "pl": "/prad/"}
 DEMO = "/strom/demo/"
+# Sponsor section (business pitch + link to the STRØM sponsor demo + sponsor@ address) is hidden from the
+# public site for now; the demo itself still exists at /strom/demo/ (noindex, not linked). Set True + rebuild to restore.
+SHOW_SPONSOR = False
 PRIV = {"no": "/strom/personvern/", "en": "/power/privacy/", "pl": "/prad/prywatnosc/"}
 SL = json.load(open(os.path.join(ROOT, "src", "main_slogans.json")))
 SLK = {"no": "strom", "en": "power", "pl": "prad"}
@@ -159,6 +162,15 @@ def page(L):
     biz = "".join(f"<li>{e(x)}</li>" for x in t["biz"])
     gc = (f'<script data-goatcounter="https://{GC}.goatcounter.com/count" async src="{up}count.js"></script>' if GC else "")
     ogimg = f"{BASE}assets/og-{L}.jpg"
+    sponsor = (f'''<section class="s biz" id="sponsor"><div class="wrap">
+<p class="k">{e(t["k2"])}</p>
+<h2>{e(t["h2"])}</h2>
+<ul class="ticks">{biz}</ul>
+<p class="mtext">{e(t["smis"])}</p>
+<div class="cta">{em("sponsor", t, "em p", t["contact"])}<a class="o" href="{DEMO}" lang="nb">{e(t["demo"])} →</a></div>
+<p class="mail">{e(t["demonote"])}<br/>{e(t["sponsorline"])} {em("sponsor", t)}</p>
+</div></section>
+''') if SHOW_SPONSOR else ""
     return f'''<!DOCTYPE html>
 <!-- Copyright (c) 2026 Stop60. All rights reserved. See LICENSE. -->
 <html lang="{t["htmllang"]}">
@@ -241,15 +253,7 @@ def page(L):
 <h3 class="sth">{e(t["stillh"])}</h3>
 <div class="row stills" tabindex="0" aria-label="{e(t["stillh"])}">{stills}</div>
 </div></section>
-<section class="s biz" id="sponsor"><div class="wrap">
-<p class="k">{e(t["k2"])}</p>
-<h2>{e(t["h2"])}</h2>
-<ul class="ticks">{biz}</ul>
-<p class="mtext">{e(t["smis"])}</p>
-<div class="cta">{em("sponsor", t, "em p", t["contact"])}<a class="o" href="{DEMO}" lang="nb">{e(t["demo"])} →</a></div>
-<p class="mail">{e(t["demonote"])}<br/>{e(t["sponsorline"])} {em("sponsor", t)}</p>
-</div></section>
-</main>
+{sponsor}</main>
 <footer><div class="wrap">
 <h2>{e(t["ph"])}</h2>
 <p>{e(t["priv"])}</p>
@@ -268,6 +272,6 @@ sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps
 for L in ORDER:
     sm += f'<url><loc>{BASE+T[L]["path"]}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{T[x]["htmllang"]}" href="{BASE+T[x]["path"]}"/>' for x in ORDER) + '</url>\n'
 open(os.path.join(ROOT, "sitemap.xml"), "w").write(sm + "</urlset>\n")
-open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
+open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\n" + ("" if SHOW_SPONSOR else "Disallow: /strom/demo/\n") + f"Sitemap: {BASE}sitemap.xml\n")
 json.dump({L:[T[L]["tag"],T[L]["ogsub"]] for L in ORDER}, open(os.path.join(ROOT,"src","og.json"),"w"), ensure_ascii=False)
 print("built", BASE)
