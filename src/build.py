@@ -5,7 +5,7 @@ import json, html, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = os.environ.get("STOP60_BASE", "https://stop60.no/")
 GC   = "jtaczala-games"                             # GoatCounter code ("" = off)
-# contact addresses: shown as "user [at] stop60.no", real address assembled by assets/contact.js on click (anti-spam)
+# contact addresses: shown as "user&#64;stop60.no" (works without JS); assets/contact.js assembles the mailto: link at runtime (light anti-spam)
 MAILDOM = "stop60.no"
 # root-relative: games are project sites served under the user-site custom domain stop60.no
 GAMES = {"no": "/strom/", "en": "/power/", "pl": "/prad/"}
@@ -28,7 +28,7 @@ T = {
   mp=["Stop60 er en serie korte mobilspill om arbeid der HMS-regler er en viktig del av å jobbe trygt.",
       "Spillet har som mål å minne spillerne på disse reglene gjennom korte slagord og informasjon underveis i spillet.",
       "Det kan bidra til å øke bevisstheten om risiko på jobben, men erstatter ikke HMS-opplæring eller instrukser på arbeidsplassen."],
-  emt="Trykk for å vise adressen", smis="Spillet har som mål å minne om HMS-regler gjennom korte slagord og informasjon underveis – det erstatter ikke opplæring.", sponsorline="Sponsorer og bedrifter:", contactline="Kontakt:",
+  smis="Spillet har som mål å minne om HMS-regler gjennom korte slagord og informasjon underveis – det erstatter ikke opplæring.", sponsorline="Sponsorer og bedrifter:", contactline="Kontakt:",
   k1="Hva er det", h1="Slik støtter spillet HMS",
   cards=[("Korte huskeregler","Hver runde på 60 sekunder viser 3–4 korte sikkerhetsbudskap."),
          ("For alle fag","Tømrer, elektriker, rørlegger, maskinfører eller lærling – huskereglene gjelder alle på byggeplassen."),
@@ -61,7 +61,7 @@ T = {
   mp=["Stop60 is a series of short mobile games about work where health and safety rules are a key part of working safely.",
       "The game aims to remind players of these rules through short slogans and information shown during play.",
       "It can help raise awareness of risks at work, but it does not replace health and safety training or workplace instructions."],
-  emt="Click to show the address", smis="The game aims to remind players of health and safety rules through short slogans and in-game information – it does not replace training.", sponsorline="Sponsors and companies:", contactline="Contact:",
+  smis="The game aims to remind players of health and safety rules through short slogans and in-game information – it does not replace training.", sponsorline="Sponsors and companies:", contactline="Contact:",
   k1="What it is", h1="How it supports health and safety",
   cards=[("Short safety reminders","Each 60-second round shows 3–4 short safety slogans."),
          ("For every trade","Carpenters, electricians, plumbers, plant operators, apprentices – the reminders apply to everyone on site."),
@@ -94,7 +94,7 @@ T = {
   mp=["Stop60 to seria krótkich gier na telefon o pracy w miejscach, gdzie zasady BHP są ważną częścią bezpiecznej pracy.",
       "Gra ma na celu przypominać o tych zasadach przez krótkie hasła i informacje pokazywane w trakcie gry.",
       "Może pomóc podnieść świadomość zagrożeń w pracy, ale nie zastępuje szkolenia BHP ani instrukcji na stanowisku pracy."],
-  emt="Kliknij, aby pokazać adres", smis="Gra ma na celu przypominać o zasadach BHP przez krótkie hasła i informacje w trakcie gry – nie zastępuje szkolenia.", sponsorline="Sponsorzy i firmy:", contactline="Kontakt:",
+  smis="Gra ma na celu przypominać o zasadach BHP przez krótkie hasła i informacje w trakcie gry – nie zastępuje szkolenia.", sponsorline="Sponsorzy i firmy:", contactline="Kontakt:",
   k1="Co to jest", h1="Jak gra wspiera BHP",
   cards=[("Krótkie przypomnienia","Każda 60-sekundowa runda pokazuje 3–4 krótkie hasła BHP."),
          ("Dla każdej branży","Cieśla, elektryk, hydraulik, operator maszyn, praktykant – hasła dotyczą wszystkich na budowie."),
@@ -125,8 +125,8 @@ e = lambda s: html.escape(s, quote=True)
 from urllib.parse import quote
 
 def em(u, t, cls="em", label=None):
-    return (f'<a class="{cls}" href="#" data-u="{u}" data-d="{MAILDOM}" title="{e(t["emt"])}" rel="nofollow">'
-            f'{e(label) if label else u + " [at] " + MAILDOM}</a>')
+    return (f'<a class="{cls}" href="#" data-u="{u}" data-d="{MAILDOM}" rel="nofollow">'
+            f'{e(label) if label else u + "&#64;" + MAILDOM}</a>')
 
 def page(L):
     t = T[L]; up = "../" if t["path"] else ""
@@ -195,7 +195,7 @@ def page(L):
 <meta name="twitter:image" content="{ogimg}"/>
 {gc}
 <script defer src="{up}assets/media.js"></script>
-<script defer src="{up}assets/contact.js"></script>
+<script defer src="{up}assets/contact.js?v=2"></script>
 </head>
 <body>
 <a class="skip" href="#main">↓</a>

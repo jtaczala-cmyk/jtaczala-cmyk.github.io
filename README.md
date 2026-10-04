@@ -6,7 +6,7 @@ Static site (HTML/CSS; JS only for self-hosted GoatCounter `count.js`, lazy vide
 - `src/build.py` regenerates the three `index.html` + sitemap/robots. After DNS is live: `STOP60_BASE=https://stop60.no/ python3 src/build.py`.
 - Short redirects: `/spill` → `/strom/`, `/play` → `/power/`, `/graj` → `/prad/`, `/demo` → `/strom/demo/`, `/sponsor` → `#sponsor` (by browser language).
 - Deployed by GitHub Actions (`.github/workflows/pages.yml`); the games are separate project sites (`strom`, `prad`, `power`) served under the same host. Do not add folders with those names here.
-- Contact addresses are written as `user [at] stop60.no`; `assets/contact.js` builds the real address on the first click.
+- Contact addresses are shown as `user@stop60.no` (written as `user&#64;stop60.no` in the HTML); `assets/contact.js` builds the `mailto:` link at runtime.
 - `src/make_logo.py` regenerates the SVG logo (needs fonttools), `src/og.html` is the share-image template.
 
 Local preview: `python3 -m http.server 8060` in this folder → http://127.0.0.1:8060/
