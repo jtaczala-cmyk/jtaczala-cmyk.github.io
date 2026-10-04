@@ -5,9 +5,10 @@ Static site (HTML/CSS; JS only for self-hosted GoatCounter `count.js`, lazy vide
 - `assets/` logo.svg, favicon.svg, hero-*.webp (from game title art), og-{no,en,pl}.jpg (1200×630)
 - `src/build.py` regenerates the three `index.html` + sitemap/robots. After DNS is live: `STOP60_BASE=https://stop60.no/ python3 src/build.py`.
 - Short redirects: `/spill` → `/strom/`, `/play` → `/power/`, `/graj` → `/prad/`.
-- Sponsor section hidden for now (`SHOW_SPONSOR = False` in `src/build.py`; robots.txt then disallows `/strom/demo/`).
-  The `/demo` → `/strom/demo/` and `/sponsor` → `#sponsor` redirect pages are parked in `src/hidden/` (not deployed);
-  to restore: set `SHOW_SPONSOR = True`, move `src/hidden/demo` and `src/hidden/sponsor` back to the repo root, rebuild.
+- Sponsor section hidden for now (`SHOW_SPONSOR = False` in `src/build.py`). The STRØM sponsor demo was withdrawn on
+  2026-10-04 (removed from the strom repo, `/strom/demo/` returns 404; copy in git history). The `/demo` redirect page was
+  deleted; the `/sponsor` → `#sponsor` redirect page is parked in `src/hidden/sponsor/` (not deployed).
+  To restore: put `demo/` back in the strom repo, set `SHOW_SPONSOR = True`, move `src/hidden/sponsor` back to the root, re-add a `/demo` redirect if wanted, rebuild.
 - Deployed by GitHub Actions (`.github/workflows/pages.yml`); the games are separate project sites (`strom`, `prad`, `power`) served under the same host. Do not add folders with those names here.
 - Contact addresses are shown as `user@stop60.no` (written as `user&#64;stop60.no` in the HTML); `assets/contact.js` builds the `mailto:` link at runtime.
 - `src/make_logo.py` regenerates the SVG logo (needs fonttools), `src/og.html` is the share-image template.

@@ -11,7 +11,8 @@ MAILDOM = "stop60.no"
 GAMES = {"no": "/strom/", "en": "/power/", "pl": "/prad/"}
 DEMO = "/strom/demo/"
 # Sponsor section (business pitch + link to the STRØM sponsor demo + sponsor@ address) is hidden from the
-# public site for now; the demo itself still exists at /strom/demo/ (noindex, not linked). Set True + rebuild to restore.
+# public site for now. The STRØM demo itself is withdrawn (removed from the strom repo 2026-10-04, /strom/demo/ = 404;
+# archived in git history and in _archiwum/strom_demo_20261004/). Restore the demo first, then set True + rebuild.
 SHOW_SPONSOR = False
 PRIV = {"no": "/strom/personvern/", "en": "/power/privacy/", "pl": "/prad/prywatnosc/"}
 SL = json.load(open(os.path.join(ROOT, "src", "main_slogans.json")))
@@ -272,6 +273,6 @@ sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps
 for L in ORDER:
     sm += f'<url><loc>{BASE+T[L]["path"]}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{T[x]["htmllang"]}" href="{BASE+T[x]["path"]}"/>' for x in ORDER) + '</url>\n'
 open(os.path.join(ROOT, "sitemap.xml"), "w").write(sm + "</urlset>\n")
-open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\n" + ("" if SHOW_SPONSOR else "Disallow: /strom/demo/\n") + f"Sitemap: {BASE}sitemap.xml\n")
+open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
 json.dump({L:[T[L]["tag"],T[L]["ogsub"]] for L in ORDER}, open(os.path.join(ROOT,"src","og.json"),"w"), ensure_ascii=False)
 print("built", BASE)

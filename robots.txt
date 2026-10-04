@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /strom/demo/
 Sitemap: https://stop60.no/sitemap.xml
