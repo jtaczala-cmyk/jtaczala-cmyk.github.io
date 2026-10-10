@@ -128,6 +128,33 @@ LBL = {"no": ("NO", "Norsk"), "en": ("EN", "English"), "pl": ("PL", "Polski")}
 e = lambda s: html.escape(s, quote=True)
 from urllib.parse import quote
 
+
+# ---- Hefau tile (added at the Hefau launch; free game made with passion – no business wording) ----
+HEFAU_TILE = {
+ "no": dict(k="Flere spill fra Stop60", h="Hefau – Slangespiralen", href="/hefau/",
+   p="Et brettspill inspirert av oldtidens Egypt: brettet er en kveilet gullkobra, og du fører tre løver fra halen til hodet. Spill mot datamaskinen, to på én telefon eller online med en venn.",
+   p2="Laget med lidenskap og helt gratis for alle – rett i nettleseren, uten app og uten konto.", b="Spill Hefau", s="Brettspill · norsk, polsk, engelsk",
+   alt="Hefau – spillbrettet er en kveilet gullkobra"),
+ "pl": dict(k="Więcej gier od Stop60", h="Hefau – Spirala Węża", href="/hefau/pl/",
+   p="Gra planszowa inspirowana starożytnym Egiptem: plansza to zwinięta złota kobra, a Ty prowadzisz trzy lwy od ogona do głowy. Graj z komputerem, we dwoje na jednym telefonie lub online ze znajomym.",
+   p2="Powstała z pasji i jest całkowicie darmowa dla wszystkich – od razu w przeglądarce, bez aplikacji i bez konta.", b="Zagraj w Hefau", s="Gra planszowa · polski, norweski, angielski",
+   alt="Hefau – plansza to zwinięta złota kobra"),
+ "en": dict(k="More games from Stop60", h="Hefau – The Serpent Spiral", href="/hefau/en/",
+   p="A board game inspired by ancient Egypt: the board is a coiled golden cobra, and you lead three lions from its tail to its head. Play the computer, two on one phone, or online with a friend.",
+   p2="Made with passion and completely free for everyone – right in your browser, no app and no account.", b="Play Hefau", s="Board game · English, Norwegian, Polish",
+   alt="Hefau – the board is a coiled golden cobra"),
+}
+def hefau_tile(L, up):
+    h = HEFAU_TILE[L]
+    return (f'<section class="s hefau" id="hefau"><div class="wrap">'
+            f'<style>.hefau .hf{{display:grid;gap:22px;align-items:center}}@media(min-width:760px){{.hefau .hf{{grid-template-columns:minmax(0,420px) 1fr}}}}'
+            f'.hefau .hf a.im{{display:block;border-radius:18px;overflow:hidden;box-shadow:0 0 0 1px rgba(242,193,78,.45),0 12px 40px rgba(0,0,0,.55),0 0 46px rgba(242,193,78,.18)}}'
+            f'.hefau .hf img{{display:block;width:100%;height:auto}}.hefau .hf p{{margin:0 0 12px}}.hefau .hf .free{{color:#f2c14e}}.hefau .hf .btn{{max-width:340px;margin-top:6px}}</style>'
+            f'<p class="k">{e(h["k"])}</p><h2>{e(h["h"])}</h2><div class="hf">'
+            f'<a class="im" href="{h["href"]}" tabindex="-1" aria-hidden="true"><img src="{up}assets/hefau-tile-{L}-800.webp" srcset="{up}assets/hefau-tile-{L}-480.webp 480w, {up}assets/hefau-tile-{L}-800.webp 800w" sizes="(min-width:760px) 420px, 92vw" width="800" height="800" loading="lazy" decoding="async" alt="{e(h["alt"])}"/></a>'
+            f'<div><p>{e(h["p"])}</p><p class="free">{e(h["p2"])}</p>'
+            f'<a class="btn main" href="{h["href"]}" data-goatcounter-click="home-click-hefau-{L}"><b>{e(h["b"])}</b><span>{e(h["s"])}</span></a></div></div></div></section>\n')
+
 def em(u, t, cls="em", label=None):
     return (f'<a class="{cls}" href="#" data-u="{u}" data-d="{MAILDOM}" rel="nofollow">'
             f'{e(label) if label else u + "&#64;" + MAILDOM}</a>')
@@ -172,6 +199,7 @@ def page(L):
 <p class="mail">{e(t["demonote"])}<br/>{e(t["sponsorline"])} {em("sponsor", t)}</p>
 </div></section>
 ''') if SHOW_SPONSOR else ""
+    hefau = hefau_tile(L, up)
     return f'''<!DOCTYPE html>
 <!-- Copyright (c) 2026 Stop60. All rights reserved. See LICENSE. -->
 <html lang="{t["htmllang"]}">
@@ -254,7 +282,7 @@ def page(L):
 <h3 class="sth">{e(t["stillh"])}</h3>
 <div class="row stills" tabindex="0" aria-label="{e(t["stillh"])}">{stills}</div>
 </div></section>
-{sponsor}</main>
+{hefau}{sponsor}</main>
 <footer><div class="wrap">
 <h2>{e(t["ph"])}</h2>
 <p>{e(t["priv"])}</p>
@@ -272,6 +300,9 @@ for L in ORDER:
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
 for L in ORDER:
     sm += f'<url><loc>{BASE+T[L]["path"]}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{T[x]["htmllang"]}" href="{BASE+T[x]["path"]}"/>' for x in ORDER) + '</url>\n'
+_HF = [("nb", "https://stop60.no/hefau/"), ("pl", "https://stop60.no/hefau/pl/"), ("en", "https://stop60.no/hefau/en/")]
+for _, u in _HF:
+    sm += f'<url><loc>{u}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{v}"/>' for h, v in _HF) + '<xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/hefau/"/></url>\n'
 open(os.path.join(ROOT, "sitemap.xml"), "w").write(sm + "</urlset>\n")
 open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
 json.dump({L:[T[L]["tag"],T[L]["ogsub"]] for L in ORDER}, open(os.path.join(ROOT,"src","og.json"),"w"), ensure_ascii=False)
