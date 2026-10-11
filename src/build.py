@@ -155,6 +155,33 @@ def hefau_tile(L, up):
             f'<div><p>{e(h["p"])}</p><p class="free">{e(h["p2"])}</p>'
             f'<a class="btn main" href="{h["href"]}" data-goatcounter-click="home-click-hefau-{L}"><b>{e(h["b"])}</b><span>{e(h["s"])}</span></a></div></div></div></section>\n')
 
+
+# ---- Ren logikk tile (added at the Ren logikk launch; free game made with passion – no business wording) ----
+LOGIKK_TILE = {
+ "no": dict(k="Nytt spill fra Stop60", h="Ren logikk", href="/logikk/",
+   p="Et rolig tallpuslespill: fyll inn tallene 1 til 9 slik at ingen gjentas i noen rad, kolonne eller 3×3-rute. Ingen tilfeldigheter og ikke noe tidspress – lette brett tar vanligvis 2–5 minutter. Med notater, hint og dagens brett.",
+   p2="Laget med lidenskap og helt gratis for alle – rett i nettleseren, uten app, uten reklame og uten konto.", b="Spill Ren logikk", s="Tallpuslespill · norsk, polsk, engelsk",
+   alt="Ren logikk – et 9×9-brett med tall og notater"),
+ "pl": dict(k="Nowa gra od Stop60", h="Czysta logika", href="/logikk/pl/",
+   p="Spokojna łamigłówka liczbowa: wpisz cyfry od 1 do 9 tak, aby nie powtarzały się w żadnym wierszu, kolumnie ani kwadracie 3×3. Bez elementu losowego i bez presji czasu – łatwe plansze zajmują zazwyczaj 2–5 minut. Z notatkami, podpowiedziami i planszą dnia.",
+   p2="Powstała z pasji i jest całkowicie darmowa dla wszystkich – od razu w przeglądarce, bez aplikacji, bez reklam i bez konta.", b="Zagraj w Czystą logikę", s="Łamigłówka liczbowa · polski, norweski, angielski",
+   alt="Czysta logika – plansza 9×9 z cyframi i notatkami"),
+ "en": dict(k="New from Stop60", h="Pure Logic", href="/logikk/en/",
+   p="A calm number puzzle: fill in the digits 1 to 9 so that none repeats in any row, column or 3×3 box. No luck and no time pressure – easy boards usually take 2–5 minutes. With pencil notes, hints and a daily puzzle.",
+   p2="Made with passion and completely free for everyone – right in your browser, no app, no ads and no account.", b="Play Pure Logic", s="Number puzzle · English, Norwegian, Polish",
+   alt="Pure Logic – a 9×9 board with digits and pencil notes"),
+}
+def logikk_tile(L, up):
+    h = LOGIKK_TILE[L]
+    return (f'<section class="s logikk" id="logikk"><div class="wrap">'
+            f'<style>.logikk .lk{{display:grid;gap:22px;align-items:center}}@media(min-width:760px){{.logikk .lk{{grid-template-columns:minmax(0,420px) 1fr}}}}'
+            f'.logikk .lk a.im{{display:block;border-radius:18px;overflow:hidden;box-shadow:0 0 0 1px rgba(45,212,191,.45),0 12px 40px rgba(0,0,0,.55),0 0 46px rgba(45,212,191,.16)}}'
+            f'.logikk .lk img{{display:block;width:100%;height:auto}}.logikk .lk p{{margin:0 0 12px}}.logikk .lk .free{{color:var(--teal)}}.logikk .lk .btn{{max-width:420px;margin-top:6px}}</style>'
+            f'<p class="k">{e(h["k"])}</p><h2>{e(h["h"])}</h2><div class="lk">'
+            f'<a class="im" href="{h["href"]}" tabindex="-1" aria-hidden="true"><img src="{up}assets/logikk-tile-{L}-800.webp" srcset="{up}assets/logikk-tile-{L}-480.webp 480w, {up}assets/logikk-tile-{L}-800.webp 800w" sizes="(min-width:760px) 420px, 92vw" width="800" height="800" loading="lazy" decoding="async" alt="{e(h["alt"])}"/></a>'
+            f'<div><p>{e(h["p"])}</p><p class="free">{e(h["p2"])}</p>'
+            f'<a class="btn main" href="{h["href"]}" data-goatcounter-click="home-click-logikk-{L}"><b>{e(h["b"])}</b><span>{e(h["s"])}</span></a></div></div></div></section>\n')
+
 def em(u, t, cls="em", label=None):
     return (f'<a class="{cls}" href="#" data-u="{u}" data-d="{MAILDOM}" rel="nofollow">'
             f'{e(label) if label else u + "&#64;" + MAILDOM}</a>')
@@ -200,6 +227,7 @@ def page(L):
 </div></section>
 ''') if SHOW_SPONSOR else ""
     hefau = hefau_tile(L, up)
+    logikk = logikk_tile(L, up)
     return f'''<!DOCTYPE html>
 <!-- Copyright (c) 2026 Stop60. All rights reserved. See LICENSE. -->
 <html lang="{t["htmllang"]}">
@@ -282,7 +310,7 @@ def page(L):
 <h3 class="sth">{e(t["stillh"])}</h3>
 <div class="row stills" tabindex="0" aria-label="{e(t["stillh"])}">{stills}</div>
 </div></section>
-{hefau}{sponsor}</main>
+{hefau}{logikk}{sponsor}</main>
 <footer><div class="wrap">
 <h2>{e(t["ph"])}</h2>
 <p>{e(t["priv"])}</p>
@@ -303,6 +331,9 @@ for L in ORDER:
 _HF = [("nb", "https://stop60.no/hefau/"), ("pl", "https://stop60.no/hefau/pl/"), ("en", "https://stop60.no/hefau/en/")]
 for _, u in _HF:
     sm += f'<url><loc>{u}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{v}"/>' for h, v in _HF) + '<xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/hefau/"/></url>\n'
+_LK = [("nb", "https://stop60.no/logikk/"), ("pl", "https://stop60.no/logikk/pl/"), ("en", "https://stop60.no/logikk/en/")]
+for _, u in _LK:
+    sm += f'<url><loc>{u}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{v}"/>' for h, v in _LK) + '<xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/logikk/"/></url>\n'
 open(os.path.join(ROOT, "sitemap.xml"), "w").write(sm + "</urlset>\n")
 open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
 json.dump({L:[T[L]["tag"],T[L]["ogsub"]] for L in ORDER}, open(os.path.join(ROOT,"src","og.json"),"w"), ensure_ascii=False)
