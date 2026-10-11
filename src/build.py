@@ -1,340 +1,339 @@
 #!/usr/bin/env python3
-"""Builds the Stop60 landing pages (NO at /, EN at /en/, PL at /pl/).
-Edit BASE when moving to the stop60.no domain, then re-run: python3 src/build.py"""
-import json, html, os
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+"""Stop60 home page generator (redesign 2026-10-11) (NO / EN / PL).
+Adding a game = one entry in GAMES. Output: prototype/{index.html,en/,pl/,sitemap.xml}.
+© 2026 Stop60"""
+import json, html, os, datetime
 BASE = os.environ.get("STOP60_BASE", "https://stop60.no/")
-GC   = "jtaczala-games"                             # GoatCounter code ("" = off)
-# contact addresses: shown as "user&#64;stop60.no" (works without JS); assets/contact.js assembles the mailto: link at runtime (light anti-spam)
-MAILDOM = "stop60.no"
-# root-relative: games are project sites served under the user-site custom domain stop60.no
-GAMES = {"no": "/strom/", "en": "/power/", "pl": "/prad/"}
-DEMO = "/strom/demo/"
-# Sponsor section (business pitch + link to the STRØM sponsor demo + sponsor@ address) is hidden from the
-# public site for now. The STRØM demo itself is withdrawn (removed from the strom repo 2026-10-04, /strom/demo/ = 404;
-# archived in git history and in _archiwum/strom_demo_20261004/). Restore the demo first, then set True + rebuild.
-SHOW_SPONSOR = False
-PRIV = {"no": "/strom/personvern/", "en": "/power/privacy/", "pl": "/prad/prywatnosc/"}
-SL = json.load(open(os.path.join(ROOT, "src", "main_slogans.json")))
-SLK = {"no": "strom", "en": "power", "pl": "prad"}
-PICK = ["stop", "lock", "meter", "helmet", "ruh"]
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.environ.get("STOP60_OUT") or (os.path.dirname(HERE) if os.path.basename(HERE) == "src" else os.path.join(HERE, "prototype"))
+import sys; sys.path.insert(0, HERE); import art
+TODAY = datetime.date(2026, 10, 11)
+e = html.escape
+LANGS = ["no", "en", "pl"]
+PATH = {"no": "", "en": "en/", "pl": "pl/"}
+HREFLANG = {"no": "nb", "en": "en", "pl": "pl"}
+LOCALE = {"no": "nb_NO", "en": "en_GB", "pl": "pl_PL"}
+LANGNAME = {"no": {"no": "norsk", "en": "engelsk", "pl": "polsk"},
+            "en": {"no": "Norwegian", "en": "English", "pl": "Polish"},
+            "pl": {"no": "norweski", "en": "angielski", "pl": "polski"}}
 
 T = {
-"no": dict(htmllang="nb", ogloc="nb_NO", path="",
-  title="Stop60 – et spill som støtter HMS på byggeplassen",
-  desc="Stop60 er et kort nettleserspill som støtter HMS på byggeplassen: 60 sekunder per runde med korte huskeregler om sikkerhet, for alle fag. Norsk, engelsk og polsk.",
-  tag="Stopp. Tenk. Jobb trygt – 60 sekunder.",
-  lead="Et spill som støtter HMS på byggeplassen.",
-  ogsub="Et spill som støtter HMS på byggeplassen",
-  btns=[("no","Spill","STRØM · norsk · HMS / FSE"),("en","Play","POWER · English · Health & Safety / EWR"),("pl","Graj","PRĄD · polski · BHP")],
-  playlabel="Velg språkversjon",
-  km="Oppdrag", mh="Et kort spill om trygt arbeid",
-  mp=["Stop60 er en serie korte mobilspill om arbeid der HMS-regler er en viktig del av å jobbe trygt.",
-      "Spillet har som mål å minne spillerne på disse reglene gjennom korte slagord og informasjon underveis i spillet.",
-      "Det kan bidra til å øke bevisstheten om risiko på jobben, men erstatter ikke HMS-opplæring eller instrukser på arbeidsplassen."],
-  smis="Spillet har som mål å minne om HMS-regler gjennom korte slagord og informasjon underveis – det erstatter ikke opplæring.", sponsorline="Sponsorer og bedrifter:", contactline="Kontakt:",
-  k1="Hva er det", h1="Slik støtter spillet HMS",
-  cards=[("Korte huskeregler","Hver runde på 60 sekunder viser 3–4 korte sikkerhetsbudskap."),
-         ("For alle fag","Tømrer, elektriker, rørlegger, maskinfører eller lærling – huskereglene gjelder alle på byggeplassen."),
-         ("Rask repetisjon","Ett minutt før eller etter jobb, eller i pausen."),
-         ("Samtalestarter","Spill en runde på morgenmøtet eller i en sikkerhetsprat, og snakk om huskereglene.")],
-  chipsh="Eksempler fra spillet:",
-  note="Stop60 erstatter ikke FSE-kurs, HMS-opplæring eller bedriftens egne rutiner.",
-  k3="Se hvordan det ser ut", h3="Ekte opptak fra spillet",
-  vlead="Korte opptak fra ekte runder på mobil: bevegelse på byggeplassen, travle kollegaer, en huskeregel som dukker opp – og sluttkortet etter 60 sekunder. Uten lyd.",
-  stillh="Huskeregler slik de vises i spillet", swipe="Sveip for flere →", vplay="Spill", valt="Opptak fra spillet {g} (uten lyd)",
-  k2="For bedrifter og sponsorer", h2="Sikkerhetskampanje på byggeplassen",
-  biz=["Bruk Stop60 i HMS-arbeidet: en enkel kampanje for egne ansatte og underentreprenører på byggeplassen.",
-       "Egen versjon med bedriftens navn, logo, farger og egne huskeregler.",
-       "Del lenken på oppslagstavla, i brakkeriggen eller på morgenmøtet."],
-  demo="Se sponsordemo", contact="Ta kontakt", demonote="Eksempelsponsoren i demoen er oppdiktet.",
-  mailsubj="Stop60 – sikkerhetskampanje", mailline="Kontakt:",
-  ph="Personvern",
-  priv="Denne siden bruker ingen informasjonskapsler (cookies). Besøk telles anonymt med GoatCounter (selvhostet skript): bare samlet statistikk lagres. IP-adresse og nettleser holdes kun i serverens minne i inntil 8 timer for å telle unike besøk, og lagres ikke. Spillene har egne personvernsider.",
-  privlink="Personvern i spillet (STRØM)",
-  langs="Språk"),
-"en": dict(htmllang="en", ogloc="en_GB", path="en/",
-  title="Stop60 – a game that supports health and safety on construction sites",
-  desc="Stop60 is a short browser game that supports health and safety on construction sites: 60-second rounds with short safety reminders, for every trade. In Norwegian, English and Polish.",
-  tag="Stop. Think. Work safe – in 60 seconds.",
-  lead="A game that supports health and safety on construction sites.",
-  ogsub="A game that supports health and safety on construction sites",
-  btns=[("en","Play","POWER · English · Health & Safety / EWR"),("no","Spill","STRØM · norsk · HMS / FSE"),("pl","Graj","PRĄD · polski · BHP")],
-  playlabel="Choose a language version",
-  km="Mission", mh="A short game about working safely",
-  mp=["Stop60 is a series of short mobile games about work where health and safety rules are a key part of working safely.",
-      "The game aims to remind players of these rules through short slogans and information shown during play.",
-      "It can help raise awareness of risks at work, but it does not replace health and safety training or workplace instructions."],
-  smis="The game aims to remind players of health and safety rules through short slogans and in-game information – it does not replace training.", sponsorline="Sponsors and companies:", contactline="Contact:",
-  k1="What it is", h1="How it supports health and safety",
-  cards=[("Short safety reminders","Each 60-second round shows 3–4 short safety slogans."),
-         ("For every trade","Carpenters, electricians, plumbers, plant operators, apprentices – the reminders apply to everyone on site."),
-         ("A quick refresher","One minute before or after work, or during a break."),
-         ("A conversation starter","Play a round at a toolbox talk or morning meeting, then talk about the reminders.")],
-  chipsh="Examples from the game:",
-  note="Stop60 does not replace EWR training, Health & Safety induction or your company's own procedures.",
-  k3="See it in action", h3="Real footage from the game",
-  vlead="Short clips from real rounds on a phone: moving around the site, busy co-workers, a safety slogan popping up – and the end card after 60 seconds. No sound.",
-  stillh="Safety slogans as they appear in the game", swipe="Swipe for more →", vplay="Play", valt="Gameplay clip from {g} (no sound)",
-  k2="For companies and sponsors", h2="A site safety campaign",
-  biz=["Use Stop60 in your health and safety work: a simple campaign for your own staff and subcontractors on site.",
-       "Your own version with your company name, logo, colours and your own safety reminders.",
-       "Share the link on the notice board, in the welfare cabin or at the morning briefing."],
-  demo="View sponsor demo", contact="Get in touch", demonote="The demo is in Norwegian; the example sponsor is fictional.",
-  mailsubj="Stop60 – site safety campaign", mailline="Contact:",
-  ph="Privacy",
-  priv="This page sets no cookies. Visits are counted anonymously with GoatCounter (self-hosted script): only aggregate statistics are stored. IP address and browser are kept only in the server's memory for up to 8 hours to count unique visits, and are not stored. The games have their own privacy pages.",
-  privlink="Privacy in the game (POWER)",
-  langs="Language"),
-"pl": dict(htmllang="pl", ogloc="pl_PL", path="pl/",
-  title="Stop60 – gra wspierająca bezpieczeństwo i higienę pracy na budowie",
-  desc="Stop60 to krótka gra w przeglądarce wspierająca bezpieczeństwo i higienę pracy na budowie: 60-sekundowe rundy z krótkimi hasłami BHP, dla każdej branży. Po polsku, norwesku i angielsku.",
-  tag="Stop. Pomyśl. Pracuj bezpiecznie – 60 sekund.",
-  lead="Gra wspierająca bezpieczeństwo i higienę pracy na budowie.",
-  ogsub="Gra wspierająca bezpieczeństwo i higienę pracy na budowie",
-  btns=[("pl","Graj","PRĄD · polski · BHP"),("no","Spill","STRØM · norsk · HMS / FSE"),("en","Play","POWER · English · Health & Safety / EWR")],
-  playlabel="Wybierz wersję językową",
-  km="Misja", mh="Krótka gra o bezpiecznej pracy",
-  mp=["Stop60 to seria krótkich gier na telefon o pracy w miejscach, gdzie zasady BHP są ważną częścią bezpiecznej pracy.",
-      "Gra ma na celu przypominać o tych zasadach przez krótkie hasła i informacje pokazywane w trakcie gry.",
-      "Może pomóc podnieść świadomość zagrożeń w pracy, ale nie zastępuje szkolenia BHP ani instrukcji na stanowisku pracy."],
-  smis="Gra ma na celu przypominać o zasadach BHP przez krótkie hasła i informacje w trakcie gry – nie zastępuje szkolenia.", sponsorline="Sponsorzy i firmy:", contactline="Kontakt:",
-  k1="Co to jest", h1="Jak gra wspiera BHP",
-  cards=[("Krótkie przypomnienia","Każda 60-sekundowa runda pokazuje 3–4 krótkie hasła BHP."),
-         ("Dla każdej branży","Cieśla, elektryk, hydraulik, operator maszyn, praktykant – hasła dotyczą wszystkich na budowie."),
-         ("Szybka powtórka","Minuta przed pracą lub po niej, albo w przerwie."),
-         ("Początek rozmowy","Zagrajcie rundę na odprawie lub porannym spotkaniu i porozmawiajcie o hasłach.")],
-  chipsh="Przykłady z gry:",
-  note="Stop60 nie zastępuje szkolenia BHP ani procedur Twojej firmy.",
-  k3="Zobacz, jak to wygląda", h3="Prawdziwe nagrania z gry",
-  vlead="Krótkie nagrania z prawdziwych rund na telefonie: ruch na budowie, zabiegani koledzy, hasło BHP, które się pojawia – i karta końcowa po 60 sekundach. Bez dźwięku.",
-  stillh="Hasła BHP tak, jak pojawiają się w grze", swipe="Przesuń, aby zobaczyć więcej →", vplay="Graj", valt="Nagranie z gry {g} (bez dźwięku)",
-  k2="Dla firm i sponsorów", h2="Kampania bezpieczeństwa na budowie",
-  biz=["Wykorzystaj Stop60 w działaniach BHP: prosta kampania dla własnych pracowników i podwykonawców na budowie.",
-       "Własna wersja z nazwą, logo, kolorami firmy i własnymi hasłami BHP.",
-       "Udostępnij link na tablicy ogłoszeń, w kontenerze socjalnym lub na porannej odprawie."],
-  demo="Zobacz demo sponsorskie", contact="Napisz do nas", demonote="Demo jest po norwesku; przykładowy sponsor jest fikcyjny.",
-  mailsubj="Stop60 – kampania BHP", mailline="Kontakt:",
-  ph="Prywatność",
-  priv="Ta strona nie używa plików cookie. Wizyty są liczone anonimowo przez GoatCounter (skrypt hostowany lokalnie): zapisywane są tylko zbiorcze statystyki. Adres IP i przeglądarka są trzymane wyłącznie w pamięci serwera do 8 godzin, aby policzyć unikalne wizyty, i nie są zapisywane. Gry mają własne strony o prywatności.",
-  privlink="Prywatność w grze (PRĄD)",
-  langs="Język"),
+ "no": dict(
+  tagline="laget med lidenskap",
+  title="Stop60 – gratis spill i nettleseren, uten reklame og uten konto",
+  desc="Små spill du starter rett i nettleseren: brettspill, logikk, action og læring. Laget med lidenskap og gratis for alle – ingen reklame, ingen konto, ingen app. På norsk, engelsk og polsk.",
+  navlang="Språk", nav_games="Spill", nav_about="Om", menu="Hovedmeny",
+  h1="Gratis spill rett i nettleseren",
+  lead="Små spill laget med lidenskap – gratis for alle, på mobil og PC.",
+  trust=["Gratis", "Ingen reklame", "Ingen konto", "Ingen app å installere"],
+  k_games="Spillene", h_games="Velg et spill", filt="Filtrer etter kategori", all="Alle",
+  cats={"board": "Brettspill", "logic": "Logikk", "action": "Action", "learning": "Læring"},
+  new="Ny", langs="Språk", play="Spill", modes="Spillemåter",
+  k_about="Om Stop60", h_about="Laget med lidenskap, gratis for alle",
+  about=[("Gratis for alle", "Alle spillene er helt gratis. Ingen reklame, ingen kjøp i spillet og ingen konto."),
+         ("Rett i nettleseren", "Åpne lenken og spill – på mobil, nettbrett eller PC. Vil du ha spillet som app, velg «Legg til på Hjem-skjerm»."),
+         ("Tre språk", "Sidene og de fleste spillene finnes på norsk, engelsk og polsk.")],
+  hms="STRØM, POWER og PRĄD viser korte HMS-huskeregler underveis, men erstatter ikke HMS-opplæring, FSE-kurs eller instrukser på arbeidsplassen.",
+  privacy_h="Personvern",
+  privacy="Denne siden bruker ingen informasjonskapsler (cookies). Besøk telles anonymt med GoatCounter (selvhostet skript): bare samlet statistikk lagres. IP-adresse og nettleser holdes kun i serverens minne i inntil 8 timer for å telle unike besøk, og lagres ikke. Spillene har egne personvernsider.",
+  priv_links="Personvern i spillene:", contact="Kontakt:", count="{n} spill"),
+ "en": dict(
+  tagline="made with passion",
+  title="Stop60 – free browser games, no ads and no account",
+  desc="Small games you start right in your browser: board, logic, action and learning. Made with passion and free for everyone – no ads, no account, no app. In Norwegian, English and Polish.",
+  navlang="Language", nav_games="Games", nav_about="About", menu="Main menu",
+  h1="Free games, right in your browser",
+  lead="Small games made with passion – free for everyone, on phone and computer.",
+  trust=["Free", "No ads", "No account", "Nothing to install"],
+  k_games="The games", h_games="Pick a game", filt="Filter by category", all="All",
+  cats={"board": "Board", "logic": "Logic", "action": "Action", "learning": "Learning"},
+  new="New", langs="Languages", play="Play", modes="Modes",
+  k_about="About Stop60", h_about="Made with passion, free for everyone",
+  about=[("Free for everyone", "Every game is completely free. No ads, no in-game purchases and no account."),
+         ("Right in your browser", "Open the link and play – on a phone, tablet or computer. Want it as an app? Choose “Add to Home Screen”."),
+         ("Three languages", "The site and most games are available in Norwegian, English and Polish.")],
+  hms="STRØM, POWER and PRĄD show short health & safety reminders while you play, but they do not replace safety training or instructions at your workplace.",
+  privacy_h="Privacy",
+  privacy="This site uses no cookies. Visits are counted anonymously with GoatCounter (self-hosted script): only aggregate statistics are stored. IP address and browser are kept only in the server’s memory for up to 8 hours to count unique visits, and are not stored. The games have their own privacy pages.",
+  priv_links="Privacy in the games:", contact="Contact:", count="{n} games"),
+ "pl": dict(
+  tagline="stworzone z pasji",
+  title="Stop60 – darmowe gry w przeglądarce, bez reklam i bez konta",
+  desc="Małe gry, które uruchamiasz od razu w przeglądarce: planszowe, logiczne, zręcznościowe i do nauki. Robione z pasji i darmowe dla wszystkich – bez reklam, bez konta, bez aplikacji. Po norwesku, angielsku i polsku.",
+  navlang="Język", nav_games="Gry", nav_about="O nas", menu="Menu główne",
+  h1="Darmowe gry prosto w przeglądarce",
+  lead="Małe gry robione z pasji – darmowe dla wszystkich, na telefonie i komputerze.",
+  trust=["Za darmo", "Bez reklam", "Bez konta", "Bez instalacji"],
+  k_games="Gry", h_games="Wybierz grę", filt="Filtruj według kategorii", all="Wszystkie",
+  cats={"board": "Planszowe", "logic": "Logiczne", "action": "Akcja", "learning": "Nauka"},
+  new="Nowość", langs="Języki", play="Graj", modes="Tryby",
+  k_about="O Stop60", h_about="Robione z pasji, darmowe dla wszystkich",
+  about=[("Za darmo dla wszystkich", "Wszystkie gry są całkowicie darmowe. Bez reklam, bez zakupów w grze i bez konta."),
+         ("Prosto w przeglądarce", "Otwórz link i graj – na telefonie, tablecie lub komputerze. Chcesz mieć grę jak aplikację? Wybierz „Dodaj do ekranu początkowego”."),
+         ("Trzy języki", "Strona i większość gier są po norwesku, angielsku i polsku.")],
+  hms="STRØM, POWER i PRĄD pokazują w trakcie gry krótkie hasła BHP, ale nie zastępują szkolenia BHP ani instrukcji w miejscu pracy.",
+  privacy_h="Prywatność",
+  privacy="Ta strona nie używa plików cookie. Wizyty są liczone anonimowo przez GoatCounter (skrypt na własnym serwerze): zapisywane są tylko zbiorcze statystyki. Adres IP i przeglądarka są trzymane wyłącznie w pamięci serwera do 8 godzin, aby policzyć unikalne wizyty, i nie są zapisywane. Gry mają własne strony o prywatności.",
+  priv_links="Prywatność w grach:", contact="Kontakt:", count="{n} gier"),
 }
-ORDER = ["no", "en", "pl"]
-CLIP = {"no": ("strom", "STRØM", "norsk"), "en": ("power", "POWER", "English"), "pl": ("prad", "PRĄD", "polski")}
-STILLS = [("no", "still-no-113-ambulanse", "113 – ambulanse", "STRØM"), ("no", "still-no-las-og-merk", "Lås og merk", "STRØM"),
-          ("en", "still-en-ra-risk-assessment", "RA – risk assessment", "POWER"), ("pl", "still-pl-bhp-ocena-ryzyka", "BHP – ocena ryzyka", "PRĄD")]
-LBL = {"no": ("NO", "Norsk"), "en": ("EN", "English"), "pl": ("PL", "Polski")}
-e = lambda s: html.escape(s, quote=True)
-from urllib.parse import quote
 
+# One entry per game. url/img/name may be per language. new_until: 'New' badge shown until this date.
+GAMES = [
+ dict(id="logikk", cats=["logic"], new_until="2026-12-31", langs=["no", "en", "pl"],
+      url={"no": "/logikk/", "en": "/logikk/en/", "pl": "/logikk/pl/"},
+      og={"no": "/logikk/og-no.jpg", "en": "/logikk/og-en.jpg", "pl": "/logikk/og-pl.jpg"},
+      img={l: "logikk" for l in LANGS},
+      name={"no": "Ren logikk", "en": "Pure Logic", "pl": "Czysta logika"},
+      sub={"no": "Tallgåte 1–9", "en": "Number puzzle 1–9", "pl": "Łamigłówka liczbowa 1–9"},
+      desc={"no": "Fyll inn tallene 1–9 slik at ingen gjentas i rad, kolonne eller boks. Tre nivåer, notater, hint og en daglig oppgave.",
+            "en": "Fill in the digits 1–9 so none repeats in a row, column or box. Three levels, pencil notes, hints and a daily puzzle.",
+            "pl": "Wpisz cyfry 1–9 tak, by żadna nie powtarzała się w wierszu, kolumnie ani kwadracie. Trzy poziomy, notatki, podpowiedzi i zagadka dnia."},
+      versions=[("no", "Ren logikk", "/logikk/"), ("en", "Pure Logic", "/logikk/en/"), ("pl", "Czysta logika", "/logikk/pl/")],
+      modes={"no": "Én spiller · daglig oppgave", "en": "Single player · daily puzzle", "pl": "Jeden gracz · zagadka dnia"}),
+ dict(id="hefau", cats=["board"], new_until="2026-11-30", langs=["no", "en", "pl"],
+      url={"no": "/hefau/", "en": "/hefau/en/", "pl": "/hefau/pl/"},
+      og={"no": "/hefau/og-no.jpg", "en": "/hefau/og-en.jpg", "pl": "/hefau/og-pl.jpg"},
+      img={"no": "hefau-no", "en": "hefau-en", "pl": "hefau-pl"},
+      name={"no": "Hefau", "en": "Hefau", "pl": "Hefau"},
+      sub={"no": "Slangespiralen", "en": "The Serpent Spiral", "pl": "Spirala Węża"},
+      desc={"no": "Brettspill inspirert av oldtidens Egypt: før tre løver langs en kveilet gullkobra helt til hodet.",
+            "en": "A board game inspired by ancient Egypt: race three lions along a coiled golden cobra all the way to its head.",
+            "pl": "Gra planszowa inspirowana starożytnym Egiptem: poprowadź trzy lwy po zwiniętej złotej kobrze aż do głowy."},
+      versions=[("no", "Hefau", "/hefau/"), ("en", "Hefau", "/hefau/en/"), ("pl", "Hefau", "/hefau/pl/")],
+      modes={"no": "Mot datamaskinen · to på én telefon · online", "en": "Vs computer · two on one phone · online", "pl": "Z komputerem · we dwoje na telefonie · online"}),
+ dict(id="strom", cats=["action", "learning"], brand_versions=True, langs=["no", "en", "pl"],
+      url={"no": "/strom/", "en": "/power/", "pl": "/prad/"},
+      og={"no": "/strom/og.jpg", "en": "/power/og.jpg", "pl": "/prad/og.jpg"},
+      img={"no": "strom", "en": "power", "pl": "prad"},
+      name={"no": "STRØM", "en": "POWER", "pl": "PRĄD"},
+      sub={"no": "60 sekunder på byggeplassen", "en": "60 seconds on site", "pl": "60 sekund na budowie"},
+      desc={"no": "Kort actionspill: kom deg gjennom en travel byggeplass på 60 sekunder og fang korte HMS-huskeregler underveis.",
+            "en": "A short action game: get through a busy building site in 60 seconds and pick up quick safety reminders on the way.",
+            "pl": "Krótka gra akcji: przejdź przez ruchliwą budowę w 60 sekund i łap po drodze krótkie hasła BHP."},
+      modes={"no": "Én spiller · runder på 60 s", "en": "Single player · 60-second rounds", "pl": "Jeden gracz · rundy po 60 s"},
+      versions=[("no", "STRØM", "/strom/"), ("en", "POWER", "/power/"), ("pl", "PRĄD", "/prad/")]),
+ dict(id="robaki", cats=["action"], langs=["pl", "en"],
+      url={"no": "/robaki/?lang=en", "en": "/robaki/?lang=en", "pl": "/robaki/"},
+      og={l: "/robaki/intro.jpg" for l in LANGS},
+      versions=[("pl", "Sneaky Bugs", "/robaki/"), ("en", "Sneaky Bugs", "/robaki/?lang=en")],
+      img={l: "robaki" for l in LANGS},
+      name={"no": "Sneaky Bugs", "en": "Sneaky Bugs", "pl": "Sneaky Bugs"},
+      sub={"no": "Angrep av de svarte krypene", "en": "Attack of the Black Bugs", "pl": "Atak Czarnych Robaków"},
+      desc={"no": "Kjør lastebilen over en nattlig parkeringsplass, knus svarte kryp med røde øyne og unngå giften. 60 sekunder per runde.",
+            "en": "Drive a truck across a night-time truck park, squash black bugs with red eyes and dodge their venom. 60 seconds a round.",
+            "pl": "Jedź ciężarówką po nocnym parkingu, rozgniataj czarne robaki o czerwonych oczach i unikaj jadu. 60 sekund na rundę."},
+      modes={"no": "Én spiller · runder på 60 s", "en": "Single player · 60-second rounds", "pl": "Jeden gracz · rundy po 60 s"}),
+ dict(id="angielski", cats=["learning"], langs=["pl"], aux="en",
+      url={l: "/angielski-elektryk/" for l in LANGS},
+      og={l: "/angielski-elektryk/icons/icon-512.png" for l in LANGS},
+      versions=[("pl", "Angielski elektryk", "/angielski-elektryk/")],
+      img={l: "tutor" for l in LANGS},
+      name={l: "Angielski elektryk" for l in LANGS},
+      sub={"no": "Engelsk samtaleøving for elektrikere", "en": "English conversation practice for electricians", "pl": "Rozmowa po angielsku dla elektryka"},
+      desc={"no": "Øv på britisk engelsk fra byggeplassen: samtaler, gloser og repetisjon på nivå A2–C1. Grensesnittet er på polsk.",
+            "en": "Practise British English from the building site: conversations, vocabulary and reviews at levels A2–C1. The interface is in Polish.",
+            "pl": "Ćwicz brytyjski angielski z budowy: rozmowy, słówka i powtórki na poziomach A2–C1."},
+      warn={"no": "AI-samtalen bruker din egen API-nøkkel (betales hos leverandøren).",
+            "en": "AI conversation uses your own API key (paid to the provider).",
+            "pl": "Rozmowa z AI wymaga własnego klucza API (płatnego u dostawcy)."},
+      modes={"no": "Læringsapp", "en": "Learning app", "pl": "Aplikacja do nauki"}),
+]
+PRIV = [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/")]
 
-# ---- Hefau tile (added at the Hefau launch; free game made with passion – no business wording) ----
-HEFAU_TILE = {
- "no": dict(k="Flere spill fra Stop60", h="Hefau – Slangespiralen", href="/hefau/",
-   p="Et brettspill inspirert av oldtidens Egypt: brettet er en kveilet gullkobra, og du fører tre løver fra halen til hodet. Spill mot datamaskinen, to på én telefon eller online med en venn.",
-   p2="Laget med lidenskap og helt gratis for alle – rett i nettleseren, uten app og uten konto.", b="Spill Hefau", s="Brettspill · norsk, polsk, engelsk",
-   alt="Hefau – spillbrettet er en kveilet gullkobra"),
- "pl": dict(k="Więcej gier od Stop60", h="Hefau – Spirala Węża", href="/hefau/pl/",
-   p="Gra planszowa inspirowana starożytnym Egiptem: plansza to zwinięta złota kobra, a Ty prowadzisz trzy lwy od ogona do głowy. Graj z komputerem, we dwoje na jednym telefonie lub online ze znajomym.",
-   p2="Powstała z pasji i jest całkowicie darmowa dla wszystkich – od razu w przeglądarce, bez aplikacji i bez konta.", b="Zagraj w Hefau", s="Gra planszowa · polski, norweski, angielski",
-   alt="Hefau – plansza to zwinięta złota kobra"),
- "en": dict(k="More games from Stop60", h="Hefau – The Serpent Spiral", href="/hefau/en/",
-   p="A board game inspired by ancient Egypt: the board is a coiled golden cobra, and you lead three lions from its tail to its head. Play the computer, two on one phone, or online with a friend.",
-   p2="Made with passion and completely free for everyone – right in your browser, no app and no account.", b="Play Hefau", s="Board game · English, Norwegian, Polish",
-   alt="Hefau – the board is a coiled golden cobra"),
+FLAG = {
+ "no": '<svg class="flag" viewBox="0 0 22 16" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#ba0c2f"/><path d="M0,8H22M8,0V16" stroke="#fff" stroke-width="4"/><path d="M0,8H22M8,0V16" stroke="#00205b" stroke-width="2"/></svg>',
+ "en": '<svg class="flag" viewBox="0 0 60 30" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" stroke="#c8102e" stroke-width="2.4"/><path d="M30,0V30M0,15H60" stroke="#fff" stroke-width="10"/><path d="M30,0V30M0,15H60" stroke="#c8102e" stroke-width="6"/></svg>',
+ "pl": '<svg class="flag" viewBox="0 0 16 10" aria-hidden="true" focusable="false"><rect width="16" height="10" fill="#fff"/><rect y="5" width="16" height="5" fill="#dc143c"/></svg>',
 }
-def hefau_tile(L, up):
-    h = HEFAU_TILE[L]
-    return (f'<section class="s hefau" id="hefau"><div class="wrap">'
-            f'<style>.hefau .hf{{display:grid;gap:22px;align-items:center}}@media(min-width:760px){{.hefau .hf{{grid-template-columns:minmax(0,420px) 1fr}}}}'
-            f'.hefau .hf a.im{{display:block;border-radius:18px;overflow:hidden;box-shadow:0 0 0 1px rgba(242,193,78,.45),0 12px 40px rgba(0,0,0,.55),0 0 46px rgba(242,193,78,.18)}}'
-            f'.hefau .hf img{{display:block;width:100%;height:auto}}.hefau .hf p{{margin:0 0 12px}}.hefau .hf .free{{color:#f2c14e}}.hefau .hf .btn{{max-width:340px;margin-top:6px}}</style>'
-            f'<p class="k">{e(h["k"])}</p><h2>{e(h["h"])}</h2><div class="hf">'
-            f'<a class="im" href="{h["href"]}" tabindex="-1" aria-hidden="true"><img src="{up}assets/hefau-tile-{L}-800.webp" srcset="{up}assets/hefau-tile-{L}-480.webp 480w, {up}assets/hefau-tile-{L}-800.webp 800w" sizes="(min-width:760px) 420px, 92vw" width="800" height="800" loading="lazy" decoding="async" alt="{e(h["alt"])}"/></a>'
-            f'<div><p>{e(h["p"])}</p><p class="free">{e(h["p2"])}</p>'
-            f'<a class="btn main" href="{h["href"]}" data-goatcounter-click="home-click-hefau-{L}"><b>{e(h["b"])}</b><span>{e(h["s"])}</span></a></div></div></div></section>\n')
+CODE = {"no": "NO", "en": "EN", "pl": "PL"}
 
+def is_new(g): return "new_until" in g and TODAY <= datetime.date.fromisoformat(g["new_until"])
 
-# ---- Ren logikk tile (added at the Ren logikk launch; free game made with passion – no business wording) ----
-LOGIKK_TILE = {
- "no": dict(k="Nytt spill fra Stop60", h="Ren logikk", href="/logikk/",
-   p="Et rolig tallpuslespill: fyll inn tallene 1 til 9 slik at ingen gjentas i noen rad, kolonne eller 3×3-rute. Ingen tilfeldigheter og ikke noe tidspress – lette brett tar vanligvis 2–5 minutter. Med notater, hint og dagens brett.",
-   p2="Laget med lidenskap og helt gratis for alle – rett i nettleseren, uten app, uten reklame og uten konto.", b="Spill Ren logikk", s="Tallpuslespill · norsk, polsk, engelsk",
-   alt="Ren logikk – et 9×9-brett med tall og notater"),
- "pl": dict(k="Nowa gra od Stop60", h="Czysta logika", href="/logikk/pl/",
-   p="Spokojna łamigłówka liczbowa: wpisz cyfry od 1 do 9 tak, aby nie powtarzały się w żadnym wierszu, kolumnie ani kwadracie 3×3. Bez elementu losowego i bez presji czasu – łatwe plansze zajmują zazwyczaj 2–5 minut. Z notatkami, podpowiedziami i planszą dnia.",
-   p2="Powstała z pasji i jest całkowicie darmowa dla wszystkich – od razu w przeglądarce, bez aplikacji, bez reklam i bez konta.", b="Zagraj w Czystą logikę", s="Łamigłówka liczbowa · polski, norweski, angielski",
-   alt="Czysta logika – plansza 9×9 z cyframi i notatkami"),
- "en": dict(k="New from Stop60", h="Pure Logic", href="/logikk/en/",
-   p="A calm number puzzle: fill in the digits 1 to 9 so that none repeats in any row, column or 3×3 box. No luck and no time pressure – easy boards usually take 2–5 minutes. With pencil notes, hints and a daily puzzle.",
-   p2="Made with passion and completely free for everyone – right in your browser, no app, no ads and no account.", b="Play Pure Logic", s="Number puzzle · English, Norwegian, Polish",
-   alt="Pure Logic – a 9×9 board with digits and pencil notes"),
-}
-def logikk_tile(L, up):
-    h = LOGIKK_TILE[L]
-    return (f'<section class="s logikk" id="logikk"><div class="wrap">'
-            f'<style>.logikk .lk{{display:grid;gap:22px;align-items:center}}@media(min-width:760px){{.logikk .lk{{grid-template-columns:minmax(0,420px) 1fr}}}}'
-            f'.logikk .lk a.im{{display:block;border-radius:18px;overflow:hidden;box-shadow:0 0 0 1px rgba(45,212,191,.45),0 12px 40px rgba(0,0,0,.55),0 0 46px rgba(45,212,191,.16)}}'
-            f'.logikk .lk img{{display:block;width:100%;height:auto}}.logikk .lk p{{margin:0 0 12px}}.logikk .lk .free{{color:var(--teal)}}.logikk .lk .btn{{max-width:420px;margin-top:6px}}</style>'
-            f'<p class="k">{e(h["k"])}</p><h2>{e(h["h"])}</h2><div class="lk">'
-            f'<a class="im" href="{h["href"]}" tabindex="-1" aria-hidden="true"><img src="{up}assets/logikk-tile-{L}-800.webp" srcset="{up}assets/logikk-tile-{L}-480.webp 480w, {up}assets/logikk-tile-{L}-800.webp 800w" sizes="(min-width:760px) 420px, 92vw" width="800" height="800" loading="lazy" decoding="async" alt="{e(h["alt"])}"/></a>'
-            f'<div><p>{e(h["p"])}</p><p class="free">{e(h["p2"])}</p>'
-            f'<a class="btn main" href="{h["href"]}" data-goatcounter-click="home-click-logikk-{L}"><b>{e(h["b"])}</b><span>{e(h["s"])}</span></a></div></div></div></section>\n')
+def lockup(t, rel, cls):
+    return (f'<span class="lockup {cls}"><img src="{rel}assets/logo-round.svg" alt="" width="40" height="40"/>'
+            f'<span class="wm"><b>STOP60</b><i lang="{HREFLANG[t["_l"]]}">{e(t["tagline"])}</i></span></span>')
 
-def em(u, t, cls="em", label=None):
-    return (f'<a class="{cls}" href="#" data-u="{u}" data-d="{MAILDOM}" rel="nofollow">'
-            f'{e(label) if label else u + "&#64;" + MAILDOM}</a>')
+def card(g, l, t, rel):
+    cats = " ".join(g["cats"])
+    nm, url = g["name"][l], g["url"][l]
+    badges = f'<span class="badge new">{e(t["new"])}</span>' if is_new(g) else ""
+    langs = ", ".join(LANGNAME[l][x] for x in g["langs"])
+    catlbl = " · ".join(t["cats"][c] for c in g["cats"])
+    vs = sorted(g["versions"], key=lambda v: (v[0] != l, v[0] != "en"))
+    prim = vs[0]
+    btns = (f'<a class="p" href="{prim[2]}" lang="{HREFLANG[prim[0]]}" data-goatcounter-click="home2-{g["id"]}-{prim[0]}">'
+            f'{e(t["play"])} →<span class="lc">{FLAG[prim[0]]}{CODE[prim[0]]}</span></a>')
+    same_name = not g.get("brand_versions")
+    for v in vs[1:]:
+        label = "" if same_name else f'{e(v[1])} '
+        btns += (f'<a class="o" href="{v[2]}" lang="{HREFLANG[v[0]]}" title="{e(v[1])} · {e(LANGNAME[l][v[0]])}" data-goatcounter-click="home2-{g["id"]}-{v[0]}">'
+                 f'{label}<span class="lc">{FLAG[v[0]]}{CODE[v[0]]}</span></a>')
+    warn = f'<p class="warn">{e(g["warn"][l])}</p>' if "warn" in g else ""
+    return (f'<li class="card" data-cat="{cats}" style="--acc:{art.ACCENT[g["id"]]}">'
+            f'<a class="im" href="{url}" tabindex="-1" aria-hidden="true">{art.card_svg(g["id"])}</a>'
+            f'<div class="badges">{badges}</div>'
+            f'<div class="body"><p class="cat">{e(catlbl)}</p><h3><a href="{url}">{e(nm)}</a><span class="sub">{e(g["sub"][l])}</span></h3>'
+            f'<p class="d">{e(g["desc"][l])}</p>{warn}'
+            f'<p class="meta"><b>{e(t["langs"])}:</b> {e(langs)}<span class="mo"><br/><b>{e(t["modes"])}:</b> {e(g["modes"][l])}</span></p>'
+            f'<div class="play">{btns}</div></div></li>')
 
-def page(L):
-    t = T[L]; up = "../" if t["path"] else ""
-    url = BASE + t["path"]
-    alts = "\n".join(f'<link rel="alternate" hreflang="{T[x]["htmllang"]}" href="{BASE+T[x]["path"]}"/>' for x in ORDER)
-    alts += f'\n<link rel="alternate" hreflang="x-default" href="{BASE}"/>'
-    ogalt = "\n".join(f'<meta property="og:locale:alternate" content="{T[x]["ogloc"]}"/>' for x in ORDER if x != L)
-    lang = "".join(
-        f'<li><a href="{up}{T[x]["path"] or "./"}" hreflang="{T[x]["htmllang"]}" lang="{T[x]["htmllang"]}" title="{LBL[x][1]}"'
-        + (' aria-current="page"' if x == L else '') + f'>{LBL[x][0]}</a></li>' for x in ORDER)
-    btns = "\n".join(
-        f'<a class="btn{" main" if i==0 else ""}" href="{GAMES[g]}" lang="{T[g]["htmllang"]}"><b>{e(w)}</b><span>{e(s)}</span></a>'
-        for i, (g, w, s) in enumerate(t["btns"]))
-    cards = "\n".join(f'<div class="card"><p class="n" aria-hidden="true">{i+1:02d}</p><h3>{e(h)}</h3><p>{e(p)}</p></div>' for i, (h, p) in enumerate(t["cards"]))
-    sl = {s["k"]: s["t"] for s in SL[SLK[L]]["slogans"]}
-    chips = "".join(f"<li>{e(sl[k])}</li>" for k in PICK if k in sl)
-    vorder = [L] + [x for x in ORDER if x != L]
-    vids = "\n".join(
-        f'<figure class="clip"><video class="lazyv" muted loop playsinline preload="metadata" width="390" height="664" '
-        f'data-poster="{up}media/stop60-{CLIP[x][0]}-poster.webp" aria-label="{e(t["valt"].format(g=CLIP[x][1]))}">'
-        f'<source data-src="{up}media/stop60-{CLIP[x][0]}.webm" type="video/webm"/>'
-        f'<source data-src="{up}media/stop60-{CLIP[x][0]}.mp4" type="video/mp4"/></video>'
-        f'<figcaption><span lang="{T[x]["htmllang"]}"><b>{CLIP[x][1]}</b> · {CLIP[x][2]}</span>'
-        f'<a href="{GAMES[x]}" lang="{T[x]["htmllang"]}">{e([b for b in T[x]["btns"] if b[0]==x][0][1])} →</a></figcaption></figure>'
-        for x in vorder)
-    sorder = [st for st in STILLS if st[0] == L] + [st for st in STILLS if st[0] != L]
-    stills = "".join(
-        f'<figure class="still"><img src="{up}media/{f}.webp" width="640" height="480" loading="lazy" decoding="async" alt="{e(cap)} – {g}"/>'
-        f'<figcaption lang="{T[x]["htmllang"]}"><b>{e(cap)}</b> · {g}</figcaption></figure>' for x, f, cap, g in sorder)
-    biz = "".join(f"<li>{e(x)}</li>" for x in t["biz"])
-    gc = (f'<script data-goatcounter="https://{GC}.goatcounter.com/count" async src="{up}count.js"></script>' if GC else "")
-    ogimg = f"{BASE}assets/og-{L}.jpg"
-    sponsor = (f'''<section class="s biz" id="sponsor"><div class="wrap">
-<p class="k">{e(t["k2"])}</p>
-<h2>{e(t["h2"])}</h2>
-<ul class="ticks">{biz}</ul>
-<p class="mtext">{e(t["smis"])}</p>
-<div class="cta">{em("sponsor", t, "em p", t["contact"])}<a class="o" href="{DEMO}" lang="nb">{e(t["demo"])} →</a></div>
-<p class="mail">{e(t["demonote"])}<br/>{e(t["sponsorline"])} {em("sponsor", t)}</p>
-</div></section>
-''') if SHOW_SPONSOR else ""
-    hefau = hefau_tile(L, up)
-    logikk = logikk_tile(L, up)
-    return f'''<!DOCTYPE html>
-<!-- Copyright (c) 2026 Stop60. All rights reserved. See LICENSE. -->
-<html lang="{t["htmllang"]}">
-<head>
-<meta charset="utf-8"/>
+def jsonld(l, t):
+    items = []
+    for i, g in enumerate(GAMES, 1):
+        items.append({"@type": "ListItem", "position": i, "item": {
+            "@type": "VideoGame", "name": g["name"][l], "url": BASE.rstrip("/") + g["url"][l],
+            "description": g["desc"][l], "inLanguage": [HREFLANG[x] for x in g["langs"]],
+            "image": BASE.rstrip("/") + g["og"][l], "genre": [T["en"]["cats"][c] for c in g["cats"]],
+            "gamePlatform": "Web browser", "operatingSystem": "Any", "applicationCategory": "GameApplication",
+            "isAccessibleForFree": "warn" not in g, "publisher": {"@id": BASE + "#org"}}})
+        if "warn" not in g: items[-1]["item"]["offers"] = {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}
+    d = {"@context": "https://schema.org", "@graph": [
+        {"@type": "Organization", "@id": BASE + "#org", "name": "Stop60", "url": BASE, "logo": BASE + "assets/apple-touch-icon.png"},
+        {"@type": "WebSite", "@id": BASE + "#site", "name": "Stop60", "url": BASE, "inLanguage": ["nb", "en", "pl"]},
+        {"@type": "ItemList", "name": t["title"], "url": BASE + PATH[l], "itemListElement": items}]}
+    return json.dumps(d, ensure_ascii=False, separators=(",", ":"))
+
+def head_common(l, t, rel, title, desc, canonical=True):
+    alt = "".join(f'<link rel="alternate" hreflang="{HREFLANG[x]}" href="{BASE}{PATH[x]}"/>' for x in LANGS)
+    return f'''<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>{e(t["title"])}</title>
-<meta name="description" content="{e(t["desc"])}"/>
+<title>{e(title)}</title>
+<meta name="description" content="{e(desc)}"/>
 <meta name="theme-color" content="#12110f"/>
 <meta name="color-scheme" content="dark"/>
-<link rel="canonical" href="{url}"/>
-{alts}
-<link rel="icon" type="image/svg+xml" href="{up}assets/favicon.svg"/>
-<link rel="apple-touch-icon" href="{up}assets/apple-touch-icon.png"/>
-<link rel="preload" href="{up}fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin/>
-<link rel="preload" as="image" href="{up}assets/hero-800.webp" imagesrcset="{up}assets/hero-800.webp 800w, {up}assets/hero-1280.webp 1280w, {up}assets/hero-1792.webp 1792w" imagesizes="100vw"/>
-<link rel="stylesheet" href="{up}fonts/fonts.css"/>
-<link rel="stylesheet" href="{up}assets/style.css"/>
-<meta property="og:type" content="website"/>
+''' + (f'''<link rel="canonical" href="{BASE}{PATH[l]}"/>
+{alt}<link rel="alternate" hreflang="x-default" href="{BASE}"/>
+''' if canonical else '<meta name="robots" content="noindex"/>\n') + f'''<link rel="icon" href="{rel}favicon.ico" sizes="48x48"/>
+<link rel="icon" type="image/svg+xml" href="{rel}assets/favicon.svg?v=3"/>
+<link rel="apple-touch-icon" href="{rel}assets/apple-touch-icon.png?v=3"/>
+<link rel="preload" href="{rel}fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin/>
+<link rel="stylesheet" href="{rel}fonts/fonts.css"/>
+<link rel="stylesheet" href="{rel}assets/home.css?v=1"/>
+'''
+
+def header(l, t, rel, langlinks=True):
+    lang = "".join(f'<li><a href="{rel}{PATH[x] or ("" if rel == "/" else "./")}" hreflang="{HREFLANG[x]}" lang="{HREFLANG[x]}" title="{e(LANGNAME[x][x].capitalize())}"{" aria-current=\"page\"" if x==l else ""}>{FLAG[x]}<span>{CODE[x]}</span></a></li>' for x in LANGS)
+    return (f'<header class="top"><div class="wrap">'
+            f'<a class="brand" href="{rel or "./"}" aria-label="Stop60 – {e(t["tagline"])}">{lockup(t, rel, "sm")}</a>'
+            f'<nav class="mnav" aria-label="{e(t["menu"])}"><a href="{rel}#spill">{e(t["nav_games"])}</a><a href="{rel}#om">{e(t["nav_about"])}</a></nav>'
+            f'<nav aria-label="{e(t["navlang"])}"><ul class="lang">{lang}</ul></nav></div></header>')
+
+def footer(t):
+    priv = " · ".join(f'<a href="{u}">{e(n)}</a>' for n, u in PRIV)
+    return f'''<footer><div class="wrap">
+<h2>{e(t["privacy_h"])}</h2>
+<p>{e(t["privacy"])}</p>
+<p>{e(t["priv_links"])} {priv}</p>
+<div class="row"><span>© 2026 Stop60</span><span>{e(t["contact"])} <a class="em" href="#" data-u="kontakt" data-d="stop60.no" rel="nofollow">kontakt&#64;stop60.no</a></span></div>
+</div></footer>'''
+
+def hero_art(t, rel):
+    return (f'<div class="hero-art">{art.hero_svg()}'
+            f'<div class="hero-logo">{lockup(t, rel, "lg")}</div></div>')
+
+def page(l):
+    t = dict(T[l], _l=l); rel = "" if l == "no" else "../"
+    used = [c for c in ["board", "logic", "action", "learning"] if any(c in g["cats"] for g in GAMES)]
+    filt = f'<button type="button" data-c="all" aria-pressed="true">{e(t["all"])}<span>{len(GAMES)}</span></button>' + "".join(
+        f'<button type="button" data-c="{c}" aria-pressed="false">{e(t["cats"][c])}<span>{sum(c in g["cats"] for g in GAMES)}</span></button>' for c in used)
+    games = sorted(GAMES, key=lambda g: not is_new(g))
+    cards = "".join(card(g, l, t, rel) for g in games)
+    trust = "".join(f"<li>{e(x)}</li>" for x in t["trust"])
+    about = "".join(f'<div class="box"><h3>{e(h)}</h3><p>{e(p)}</p></div>' for h, p in t["about"])
+    return f'''<!DOCTYPE html>
+<!-- Copyright (c) 2026 Stop60. All rights reserved. See LICENSE. Generated by src/build.py – do not edit by hand. -->
+<html lang="{HREFLANG[l]}">
+<head>
+{head_common(l, t, rel, t["title"], t["desc"])}<meta property="og:type" content="website"/>
 <meta property="og:site_name" content="Stop60"/>
 <meta property="og:title" content="{e(t["title"])}"/>
 <meta property="og:description" content="{e(t["desc"])}"/>
-<meta property="og:url" content="{url}"/>
-<meta property="og:locale" content="{t["ogloc"]}"/>
-{ogalt}
-<meta property="og:image" content="{ogimg}"/>
+<meta property="og:url" content="{BASE}{PATH[l]}"/>
+<meta property="og:locale" content="{LOCALE[l]}"/>
+{"".join(f'<meta property="og:locale:alternate" content="{LOCALE[x]}"/>' for x in LANGS if x != l)}
+<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=1"/>
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="Stop60 – {e(t["tag"])}"/>
+<meta property="og:image:alt" content="Stop60 – {e(t["tagline"])}"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="{e(t["title"])}"/>
-<meta name="twitter:description" content="{e(t["desc"])}"/>
-<meta name="twitter:image" content="{ogimg}"/>
-{gc}
-<script defer src="{up}assets/media.js"></script>
-<script defer src="{up}assets/contact.js?v=2"></script>
+<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=1"/>
+<script type="application/ld+json">{jsonld(l, t)}</script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
+<script defer src="{rel}assets/contact.js?v=2"></script>
+<script defer src="{rel}assets/filter.js?v=1"></script>
 </head>
 <body>
-<a class="skip" href="#main">↓</a>
-<header class="top"><div class="wrap">
-<a class="brand" href="./" aria-label="Stop60"><img src="{up}assets/favicon.svg" alt="Stop60" width="36" height="36"/></a>
-<nav aria-label="{e(t["langs"])}"><ul class="lang">{lang}</ul></nav>
-</div></header>
-<main id="main">
-<section class="hero">
-<picture><img src="{up}assets/hero-800.webp" srcset="{up}assets/hero-800.webp 800w, {up}assets/hero-1280.webp 1280w, {up}assets/hero-1792.webp 1792w" sizes="100vw" alt="" width="1792" height="1008" fetchpriority="high" decoding="async"/></picture>
-<div class="wrap">
-<h1><img src="{up}assets/logo.svg" alt="Stop60" width="281" height="100"/></h1>
-<p class="tag">{e(t["tag"])}</p>
+{art.defs_svg()}
+<a class="skip" href="#spill">↓</a>
+{header(l, t, rel)}
+<main>
+<section class="hero"><div class="wrap">
+{hero_art(t, rel)}
+<div class="in"><div>
+<h1>{e(t["h1"])}</h1>
 <p class="lead">{e(t["lead"])}</p>
-<nav class="play" aria-label="{e(t["playlabel"])}">
-{btns}
-</nav>
-</div>
-</section>
-<section class="s mission" id="mission"><div class="wrap">
-<p class="k">{e(t["km"])}</p>
-<h2>{e(t["mh"])}</h2>
-<p class="mtext">{" ".join(e(x) for x in t["mp"])}</p>
+</div><ul class="trust">{trust}</ul></div>
 </div></section>
-<section class="s" id="what"><div class="wrap">
-<p class="k">{e(t["k1"])}</p>
-<h2>{e(t["h1"])}</h2>
-<div class="grid">
-{cards}
-</div>
-<p class="note" style="margin-top:22px;color:#d6d3d1">{e(t["chipsh"])}</p>
-<ul class="chips">{chips}</ul>
-<p class="note">{e(t["note"])}</p>
+<section class="s" id="spill"><div class="wrap">
+<p class="k">{e(t["k_games"])} · {e(t["count"].format(n=len(GAMES)))}</p>
+<h2>{e(t["h_games"])}</h2>
+<div class="filters" role="group" aria-label="{e(t["filt"])}" hidden>{filt}</div>
+<ul class="cards">{cards}</ul>
 </div></section>
-<section class="s act" id="action"><div class="wrap">
-<p class="k">{e(t["k3"])}</p>
-<h2>{e(t["h3"])}</h2>
-<p class="vlead">{e(t["vlead"])}</p>
-<div class="row clips" tabindex="0" aria-label="{e(t["k3"])}">
-{vids}
-</div>
-<p class="swipe" aria-hidden="true">{e(t["swipe"])}</p>
-<h3 class="sth">{e(t["stillh"])}</h3>
-<div class="row stills" tabindex="0" aria-label="{e(t["stillh"])}">{stills}</div>
+<section class="s about" id="om"><div class="wrap">
+<p class="k">{e(t["k_about"])}</p>
+<h2>{e(t["h_about"])}</h2>
+<div class="cols">{about}</div>
+<p class="note">{e(t["hms"])}</p>
 </div></section>
-{hefau}{logikk}{sponsor}</main>
-<footer><div class="wrap">
-<h2>{e(t["ph"])}</h2>
-<p>{e(t["priv"])}</p>
-<p><a href="{PRIV[L]}">{e(t["privlink"])}</a></p>
-<div class="row"><span>© 2026 Stop60</span><span>{e(t["contactline"])} {em("kontakt", t)}</span><span>Created with Grok</span></div>
-</div></footer>
+</main>
+{footer(t)}
 </body>
 </html>
 '''
 
-for L in ORDER:
-    d = os.path.join(ROOT, T[L]["path"]); os.makedirs(d, exist_ok=True)
-    open(os.path.join(d, "index.html"), "w").write(page(L))
-# sitemap + robots
-sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
-for L in ORDER:
-    sm += f'<url><loc>{BASE+T[L]["path"]}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{T[x]["htmllang"]}" href="{BASE+T[x]["path"]}"/>' for x in ORDER) + '</url>\n'
-_HF = [("nb", "https://stop60.no/hefau/"), ("pl", "https://stop60.no/hefau/pl/"), ("en", "https://stop60.no/hefau/en/")]
-for _, u in _HF:
-    sm += f'<url><loc>{u}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{v}"/>' for h, v in _HF) + '<xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/hefau/"/></url>\n'
-_LK = [("nb", "https://stop60.no/logikk/"), ("pl", "https://stop60.no/logikk/pl/"), ("en", "https://stop60.no/logikk/en/")]
-for _, u in _LK:
-    sm += f'<url><loc>{u}</loc>' + "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{v}"/>' for h, v in _LK) + '<xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/logikk/"/></url>\n'
-open(os.path.join(ROOT, "sitemap.xml"), "w").write(sm + "</urlset>\n")
-open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
-json.dump({L:[T[L]["tag"],T[L]["ogsub"]] for L in ORDER}, open(os.path.join(ROOT,"src","og.json"),"w"), ensure_ascii=False)
-print("built", BASE)
+NF = {"no": ("Fant ikke siden", "Siden finnes ikke (lenger). Kanskje du leter etter et av spillene?", "Til forsiden"),
+      "en": ("Page not found", "This page doesn’t exist (any more). Maybe you’re looking for one of the games?", "Go to the home page"),
+      "pl": ("Nie znaleziono strony", "Ta strona nie istnieje (już). Może szukasz którejś z gier?", "Na stronę główną")}
+
+def page404():
+    t = dict(T["no"], _l="no")
+    blocks = "".join(f'<div class="box" lang="{HREFLANG[l]}"><h3>{FLAG[l]} {e(NF[l][0])}</h3><p>{e(NF[l][1])}</p><p class="play"><a class="p" href="/{PATH[l]}">{e(NF[l][2])} →</a></p></div>' for l in LANGS)
+    links = "".join(f'<li><a href="{g["url"]["no"]}">{e(g["name"]["no"])}</a></li>' for g in GAMES)
+    return f'''<!DOCTYPE html>
+<!-- Copyright (c) 2026 Stop60. Generated by src/build.py. Absolute paths: served for any missing URL. -->
+<html lang="nb">
+<head>
+{head_common("no", t, "/", "404 – Stop60", NF["no"][1], canonical=False)}<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+</head>
+<body>
+{header("no", t, "/")}
+<main><section class="s nf"><div class="wrap">
+<p class="k">404</p><h1 class="nfh">{e(NF["no"][0])} · {e(NF["en"][0])} · {e(NF["pl"][0])}</h1>
+<div class="cols">{blocks}</div>
+<ul class="nfl">{links}</ul>
+</div></section></main>
+{footer(t)}
+<script defer src="/assets/contact.js?v=2"></script>
+</body>
+</html>
+'''
+
+def sitemap():
+    def alts(paths): return "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{BASE}{p}"/>' for h, p in paths)
+    home = [(HREFLANG[x], PATH[x]) for x in LANGS] + [("x-default", "")]
+    hef = [("nb", "hefau/"), ("pl", "hefau/pl/"), ("en", "hefau/en/"), ("x-default", "hefau/")]
+    lk = [("nb", "logikk/"), ("pl", "logikk/pl/"), ("en", "logikk/en/"), ("x-default", "logikk/")]
+    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]]
+    urls += [("strom/", []), ("power/", []), ("prad/", []), ("robaki/", []), ("angielski-elektryk/", [])]
+    body = "".join(f"<url><loc>{BASE}{u}</loc>{alts(a)}</url>\n" for u, a in urls)
+    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'
+
+if __name__ == "__main__":
+    for l in LANGS:
+        d = os.path.join(OUT, PATH[l]); os.makedirs(d, exist_ok=True)
+        open(os.path.join(d, "index.html"), "w").write(page(l))
+    open(os.path.join(OUT, "404.html"), "w").write(page404())
+    open(os.path.join(OUT, "sitemap.xml"), "w").write(sitemap())
+    print("built", OUT)
