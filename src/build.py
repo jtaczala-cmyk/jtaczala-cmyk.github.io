@@ -123,7 +123,7 @@ GAMES = [
             "en": "Drive a truck across a night-time truck park, squash black bugs with red eyes and dodge their venom. 60 seconds a round.",
             "pl": "Jedź ciężarówką po nocnym parkingu, rozgniataj czarne robaki o czerwonych oczach i unikaj jadu. 60 sekund na rundę."},
       modes={"no": "Én spiller · runder på 60 s", "en": "Single player · 60-second rounds", "pl": "Jeden gracz · rundy po 60 s"}),
- dict(id="angielski", cats=["learning"], langs=["pl"], aux="en",
+ dict(id="angielski", hidden=True, cats=["learning"], langs=["pl"], aux="en",  # hidden 2026-10-11 (owner request): no card, not in sitemap; app still works at its URL
       url={l: "/angielski-elektryk/" for l in LANGS},
       og={l: "/angielski-elektryk/icons/icon-512.png" for l in LANGS},
       versions=[("pl", "Angielski elektryk", "/angielski-elektryk/")],
@@ -138,6 +138,9 @@ GAMES = [
             "pl": "Rozmowa z AI wymaga własnego klucza API (płatnego u dostawcy)."},
       modes={"no": "Læringsapp", "en": "Learning app", "pl": "Aplikacja do nauki"}),
 ]
+# hidden=True keeps a game's entry here (easy to restore: delete the flag) but leaves it off the home pages, 404 and sitemap
+GAMES_ALL = GAMES
+GAMES = [g for g in GAMES_ALL if not g.get("hidden")]
 PRIV = [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/")]
 
 FLAG = {
@@ -252,13 +255,13 @@ def page(l):
 <meta property="og:url" content="{BASE}{PATH[l]}"/>
 <meta property="og:locale" content="{LOCALE[l]}"/>
 {"".join(f'<meta property="og:locale:alternate" content="{LOCALE[x]}"/>' for x in LANGS if x != l)}
-<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=4"/>
+<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=5"/>
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:alt" content="Stop60 – {e(t["tagline"])}"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=4"/>
+<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=5"/>
 <script type="application/ld+json">{jsonld(l, t)}</script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
 <script defer src="{rel}assets/contact.js?v=2"></script>
@@ -327,7 +330,7 @@ def sitemap():
     hef = [("nb", "hefau/"), ("pl", "hefau/pl/"), ("en", "hefau/en/"), ("x-default", "hefau/")]
     lk = [("nb", "logikk/"), ("pl", "logikk/pl/"), ("en", "logikk/en/"), ("x-default", "logikk/")]
     urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]]
-    urls += [("strom/", []), ("power/", []), ("prad/", []), ("robaki/", []), ("angielski-elektryk/", [])]
+    urls += [("strom/", []), ("power/", []), ("prad/", []), ("robaki/", [])]
     body = "".join(f"<url><loc>{BASE}{u}</loc>{alts(a)}</url>\n" for u, a in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'
 

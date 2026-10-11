@@ -228,11 +228,8 @@ def hero_body(rel="", label="STRØM"):
            f'<ellipse cx="{f(bx+bw*.55)}" cy="{f(by+bh*.8)}" rx="50" ry="9" fill="#000" opacity=".5" filter="url(#soft)"/>'
            + img(rel, "hero-bug.webp", bx, by, bw, bh))
     mask = ('<radialGradient id="maskGlow"><stop offset="0" stop-color="#f2c14e" stop-opacity=".35"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
-            '<ellipse cx="364" cy="128" rx="110" ry="120" fill="url(#maskGlow)"/>'
-            + img(rel, "hero-pharaoh.webp", 302, 22, 124, 183))
-    tutor = ('<g transform="translate(306,222)">' + img(rel, "angielski-icon.webp", 0, 0, 50, 50) +
-             '<g transform="translate(58,2)"><rect width="58" height="32" rx="15" fill="#5ad4ff"/><path d="M8,30 L3,44 L21,30Z" fill="#5ad4ff"/>'
-             '<text x="29" y="22" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="17" text-anchor="middle" fill="#07111c">Hi!</text></g></g>')
+            '<ellipse cx="364" cy="142" rx="120" ry="132" fill="url(#maskGlow)"/>'
+            + img(rel, "hero-pharaoh.webp", 293, 36, 142, 210))
     return (            '<radialGradient id="gem" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d9fffb"/><stop offset=".35" stop-color="#3fe0d0"/><stop offset="1" stop-color="#0b6f68"/></radialGradient>'
             '<radialGradient id="hgA" cx=".28" cy=".3" r=".42"><stop offset="0" stop-color="#f2c14e" stop-opacity=".2"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
             '<radialGradient id="hgB" cx=".72" cy=".3" r=".42"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".22"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>'
@@ -242,8 +239,8 @@ def hero_body(rel="", label="STRØM"):
             + stars +
             '<circle cx="600" cy="220" r="175" fill="none" stroke="#f5f1e8" stroke-opacity=".08" stroke-width="2"/><circle cx="600" cy="220" r="232" fill="none" stroke="#f5f1e8" stroke-opacity=".05" stroke-width="2" stroke-dasharray="4 10"/>'
             + scales + gems +
-            L('<g class="mot">' + mask + '</g>' + '<g class="mot">' + tutor + '</g>' +
-              '<g class="mot">' + grid_svg(312, 306, 98, -8, hl=(20, 21, 22, 31, 40, 49)) + '</g>') +
+            L('<g class="mot">' + mask + '</g>' +
+              '<g class="mot">' + grid_svg(310, 286, 108, -8, hl=(20, 21, 22, 31, 40, 49)) + '</g>') +
             R(sparks + '<g class="mot">' + worker + '</g>' + '<g class="mot">' + bug + '</g>'))
 
 def hero_svg(rel="", label="STRØM"): return svg("0 0 1200 440", hero_body(rel, label), "hart")

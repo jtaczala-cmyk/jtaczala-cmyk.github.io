@@ -6,6 +6,7 @@ category filter `assets/filter.js`, round STOP logo `assets/logo-round.svg` (out
 `src/make_round_logo.py`), favicons, `og-home-{no,en,pl}.jpg`, custom `404.html`). To add a game: add one dict to `GAMES`,
 run `python3 src/build.py`, commit. The old landing generator is kept as `src/build_v1_landing.py` (legacy, do not run).
 Rollback point: tag `pre-home-redesign-2026-10-11`; revert the commits whose message starts with "Home redesign".
+**Angielski elektryk hidden 2026-10-11** (owner request): its `GAMES` entry has `hidden=True` (no card on `/`, `/en/`, `/pl/`, not in the 404 list or sitemap; tutor icon removed from the hero, mask/grid rebalanced, OG images v=5). The app itself still works at `/angielski-elektryk/` (own repo, now `noindex, nofollow`). To restore: delete `hidden=True`, re-add `("angielski-elektryk/", [])` to `sitemap()`, re-add the tutor group in `art.hero_body` (see git history), rebuild.
 The hero/HMS video clips in `media/` and `assets/hero-*.webp` are no longer used by the home page but are kept (URLs stay valid).
 
 Static site (HTML/CSS; JS only for self-hosted GoatCounter `count.js`, lazy video `assets/media.js` and click-to-reveal e-mail `assets/contact.js`).
