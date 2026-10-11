@@ -251,13 +251,13 @@ def page(l):
 <meta property="og:url" content="{BASE}{PATH[l]}"/>
 <meta property="og:locale" content="{LOCALE[l]}"/>
 {"".join(f'<meta property="og:locale:alternate" content="{LOCALE[x]}"/>' for x in LANGS if x != l)}
-<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=1"/>
+<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=2"/>
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:alt" content="Stop60 – {e(t["tagline"])}"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=1"/>
+<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=2"/>
 <script type="application/ld+json">{jsonld(l, t)}</script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
 <script defer src="{rel}assets/contact.js?v=2"></script>

@@ -167,12 +167,12 @@ def hero_body():
             '<rect width="1200" height="440" fill="#12110f"/><rect width="1200" height="440" fill="url(#hgA)"/><rect width="1200" height="440" fill="url(#hgB)"/><rect width="1200" height="440" fill="url(#hgC)"/><rect width="1200" height="440" fill="url(#hgD)"/>'
             + stars +
             '<circle cx="600" cy="220" r="175" fill="none" stroke="#f5f1e8" stroke-opacity=".08" stroke-width="2"/><circle cx="600" cy="220" r="225" fill="none" stroke="#f5f1e8" stroke-opacity=".05" stroke-width="2" stroke-dasharray="4 10"/>'
-            + scales + gems + eye_of_horus(300, 80, 1.15, "#f2c14e", 3.5) +
-            bolts + hardhat(850, 255, .62) +
-            grid_svg(300, 292, 116, -8, hl=(20, 21, 22, 31, 40, 49)) +
-            bug(790, 360, 1.25, -25) + bug(880, 330, .9, 40) +
-            '<g fill="#8cff3a" filter="url(#glowR)"><circle cx="745" cy="388" r="4"/><circle cx="830" cy="395" r="3"/><circle cx="915" cy="372" r="4"/></g>'
-            '<g transform="translate(905,140)"><rect width="104" height="50" rx="22" fill="#5ad4ff"/><path d="M18,48 L10,66 L36,48Z" fill="#5ad4ff"/>'
+            + scales + gems + '<g class="mot">' + eye_of_horus(300, 80, 1.15, "#f2c14e", 3.5) + '</g>' +
+            '<g class="mot">' + bolts + '</g><g class="mot">' + hardhat(850, 255, .62) + '</g>' +
+            '<g class="mot">' + grid_svg(262, 300, 104, -8, hl=(20, 21, 22, 31, 40, 49)) + '</g>' +
+            '<g class="mot">' + bug(860, 368, 1.1, -25) + '</g><g class="mot">' + bug(950, 318, .85, 40) + '</g>' +
+            '<g fill="#8cff3a" filter="url(#glowR)"><circle cx="812" cy="398" r="4"/><circle cx="905" cy="402" r="3"/><circle cx="990" cy="362" r="4"/></g>'
+            '<g class="mot" transform="translate(905,140)"><rect width="104" height="50" rx="22" fill="#5ad4ff"/><path d="M18,48 L10,66 L36,48Z" fill="#5ad4ff"/>'
             '<text x="52" y="34" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="24" text-anchor="middle" fill="#07111c">Hi!</text></g>'
             '<path d="M1010,140 l-10,22 h10 l-6,18 l18,-26 h-10 l8,-14z" fill="#f0d48a"/>')
 

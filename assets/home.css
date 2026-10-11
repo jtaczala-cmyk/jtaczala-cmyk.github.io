@@ -118,3 +118,7 @@ a.em{color:var(--teal)}
 .nf .cols{display:grid;gap:14px}@media(min-width:800px){.nf .cols{grid-template-columns:repeat(3,1fr)}}
 .nf .box h3{display:flex;align-items:center;gap:8px}.nf .box p+p{margin-top:12px}
 .nfl{display:flex;flex-wrap:wrap;gap:8px 16px;padding:0;margin:22px 0 0;list-style:none}
+/* hero clear space for the lockup (2026-10-11 follow-up) */
+.hero-logo::before{content:"";position:absolute;left:50%;top:50%;width:min(62%,420px);height:88%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(18,17,15,.62),rgba(18,17,15,0));pointer-events:none}
+.hero-logo .lockup{position:relative}
+@media(max-width:619px){.lockup.lg{gap:7px}.lockup.lg img{width:84px}.lockup.lg b{font-size:23px}.lockup.lg i{font-size:11px;letter-spacing:.12em;margin-top:4px}}
