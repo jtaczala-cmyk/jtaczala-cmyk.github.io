@@ -45,9 +45,6 @@ def bug(x, y, s, rot, eye="#ff1a1a", body="#0b0709", rim="#4a2a30"):
             f'<circle cx="0" cy="-16" r="6" fill="{body}"/>'
             f'<circle cx="-3" cy="-18" r="2.4" fill="{eye}" filter="url(#glowR)"/><circle cx="3" cy="-18" r="2.4" fill="{eye}" filter="url(#glowR)"/></g>')
 
-def hardhat(x, y, s, col="#f5c542"):
-    return (f'<g transform="translate({f(x)},{f(y)}) scale({s})"><path d="M-40,0 A40,38 0 0 1 40,0Z" fill="{col}"/>'
-            f'<rect x="-54" y="-2" width="108" height="10" rx="5" fill="{col}"/><path d="M-12,-36 Q0,-40 12,-36 L10,-4 L-10,-4Z" fill="#000" opacity=".14"/></g>')
 
 SUDOKU_P = "530070000600195000098000060800060003400803001700020006060000280000419005000080079"
 SUDOKU_S = "534678912672195348198342567859761423426853791713924856961537284287419635345286179"
@@ -65,49 +62,8 @@ def svg(vb, body, cls="", label=""):
     return f'<svg class="{cls}" xmlns="http://www.w3.org/2000/svg" viewBox="{vb}" preserveAspectRatio="xMidYMid slice"{a}>{body}</svg>'
 
 # ---------------- card art (800x420) ----------------
-def card_hefau(uid):
-    pts = spiral(560, 210, 22, 170, 2.6, start=1.2)
-    gems = "".join(f'<circle cx="{f(x)}" cy="{f(y)}" r="{7 if i%3 else 9}" fill="{"#3fe0d0" if i%3 else "#ff4d6a"}" stroke="#0a0805" stroke-width="2"/>'
-                   for i, (x, y) in enumerate(pts[25::14]))
-    head = pts[-1]
-    return (f'<rect width="800" height="420" fill="#0a0805"/>'
-            f'<radialGradient id="hg{uid}" cx=".7" cy=".5" r=".6"><stop offset="0" stop-color="#3a2a0e"/><stop offset="1" stop-color="#0a0805"/></radialGradient><rect width="800" height="420" fill="url(#hg{uid})"/>'
-            '<g opacity=".18" stroke="#d9bf86" stroke-width="1.5">' + "".join(f'<path d="M0,{y} H800"/>' for y in range(60, 420, 60)) +
-            "".join(f'<path d="M{x + (60 if (y//60)%2 else 0)},{y} v60"/>' for y in range(0, 420, 60) for x in range(0, 800, 120)) + '</g>'
-            f'<path d="{poly(pts)}" fill="none" stroke="#5c430f" stroke-width="40" stroke-linecap="round"/>'
-            f'<path d="{poly(pts)}" fill="none" stroke="url(#gold)" stroke-width="30" stroke-linecap="round" stroke-dasharray="20 4"/>'
-            f'{gems}<g transform="translate({f(head[0])},{f(head[1])})"><path d="M0,-34 C26,-30 34,-6 22,18 L8,30 H-8 L-22,18 C-34,-6 -26,-30 0,-34Z" fill="url(#gold)" stroke="#5c430f" stroke-width="4"/>'
-            f'<path d="M0,-22 V20" stroke="#3fe0d0" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#ff4d6a"/><circle cx="10" cy="-8" r="4" fill="#ff4d6a"/></g>'
-            + eye_of_horus(70, 90, 2.1, "#f2c14e", 3.5) +
-            ''.join(f'<circle cx="{x}" cy="300" r="20" fill="url(#gold)" stroke="#0a0805" stroke-width="3"/><circle cx="{x}" cy="300" r="8" fill="#1d47b8"/>' for x in (90, 150, 210)) +
-            '<path d="M60,350 H260" stroke="#3fe0d0" stroke-width="3" opacity=".7"/>')
 
-def card_strom(uid):
-    bolts = "".join(f'<path d="{bolt(x, 0, 420, math.pi/2 + a, s, 9, 22)}" stroke="#2dd4bf" stroke-width="{w}" fill="none" filter="url(#glowC)" stroke-linejoin="round"/>'
-                    for x, a, s, w in [(520, .12, 3, 5), (600, -.05, 7, 3.5), (690, .2, 11, 2.5)])
-    return ('<rect width="800" height="420" fill="#1c1917"/>'
-            f'<radialGradient id="sg{uid}" cx=".72" cy=".55" r=".55"><stop offset="0" stop-color="#134e48"/><stop offset="1" stop-color="#1c1917" stop-opacity="0"/></radialGradient><rect width="800" height="420" fill="url(#sg{uid})"/>'
-            '<g stroke="#3a3530" stroke-width="6">' + "".join(f'<path d="M{x},40 V360"/>' for x in (40, 200, 360)) + "".join(f'<path d="M30,{y} H370"/>' for y in (60, 170, 280)) + '</g>'
-            '<g stroke="#57524b" stroke-width="2">' + "".join(f'<path d="M{x},60 L{x+160},170 M{x+160},170 L{x},280"/>' for x in (40, 200)) + '</g>'
-            + bolts + hardhat(250, 250, 1.7) +
-            '<rect y="372" width="800" height="48" fill="url(#hz)"/>'
-            '<g font-family="Oswald,sans-serif" font-weight="600"><text x="560" y="150" font-size="120" fill="#f5f1e8" opacity=".95">60</text><text x="690" y="150" font-size="44" fill="#2dd4bf">s</text></g>'
-            '<circle cx="580" cy="300" r="5" fill="#e11d48"/><circle cx="600" cy="300" r="5" fill="#f5c542"/><circle cx="620" cy="300" r="5" fill="#2dd4bf"/>')
 
-def card_robaki(uid):
-    rnd = random.Random(4)
-    splats = "".join(f'<circle cx="{rnd.randint(330,780)}" cy="{rnd.randint(30,400)}" r="{rnd.choice([4,6,9])}" fill="#8cff3a" opacity=".85" filter="url(#glowR)"/>' for _ in range(12))
-    bugs = "".join(bug(x, y, s, r) for x, y, s, r in [(520, 120, 2.0, 20), (640, 250, 2.4, -30), (470, 300, 1.7, 160), (720, 110, 1.5, 70), (380, 180, 1.4, -80)])
-    return ('<rect width="800" height="420" fill="#1c1518"/>'
-            f'<radialGradient id="rg{uid}" cx=".6" cy=".5" r=".6"><stop offset="0" stop-color="#351b20"/><stop offset="1" stop-color="#1c1518"/></radialGradient><rect width="800" height="420" fill="url(#rg{uid})"/>'
-            '<path d="M0,210 H800" stroke="#f5f5f5" stroke-width="6" stroke-dasharray="40 30" opacity=".35"/>'
-            '<path d="M0,40 H800 M0,380 H800" stroke="#ffc94a" stroke-width="3" opacity=".35"/>'
-            f'<linearGradient id="beam{uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffc94a" stop-opacity=".55"/><stop offset="1" stop-color="#ffc94a" stop-opacity="0"/></linearGradient>'
-            f'<path d="M190,180 L560,60 L560,330 L190,240Z" fill="url(#beam{uid})"/>'
-            '<g transform="translate(40,150)"><rect width="150" height="120" rx="10" fill="#c62d31"/><rect x="110" y="10" width="34" height="100" rx="6" fill="#ed354b"/>'
-            '<rect x="-10" y="18" width="12" height="24" rx="3" fill="#111"/><rect x="-10" y="78" width="12" height="24" rx="3" fill="#111"/>'
-            '<circle cx="150" cy="30" r="7" fill="#fff6d0" filter="url(#glowR)"/><circle cx="150" cy="90" r="7" fill="#fff6d0" filter="url(#glowR)"/></g>'
-            + splats + bugs)
 
 def grid_svg(x, y, size, rot=0, lines="#f5f1e8", cell="#1c1a17", hl=(20, 21, 22, 31, 40, 49), red=30, digits=True):
     c = size / 9; out = [f'<g transform="translate({f(x)},{f(y)}) rotate({rot})"><rect width="{f(size)}" height="{f(size)}" rx="8" fill="{cell}"/>']
@@ -132,50 +88,129 @@ def card_logikk(uid):
             '<g font-family="Oswald,sans-serif" font-weight="600"><text x="60" y="230" font-size="170" fill="#f5f1e8">1<tspan fill="#e11d2a">–</tspan>9</text></g>'
             '<g fill="#99f6e4" opacity=".8">' + "".join(f'<rect x="{60 + i*34}" y="280" width="24" height="24" rx="5" opacity="{.3 + .08*i}"/>' for i in range(9)) + '</g>')
 
-def card_angielski(uid):
+
+
+
+# ---------------- hero (1200x440, logo overlaid in HTML at the centre) ----------------
+
+
+def defs_svg(): return '<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">' + defs() + "</svg>"
+
+
+# ---------- v2 (2026-10-11): each game's own main character ----------
+# Hefau: the game's golden cobra emblem (rendered from the game's own drawing code, window.__cobra) -> assets/games/hefau-cobra.webp
+# STRØM/POWER/PRĄD: the player "człowieczek" (drawn in-game with Phaser graphics: yellow helmet, orange vest with the game name),
+#   redrawn here as a clean vector from the game's look
+# Sneaky Bugs: the game's own bug.png and truck.png sprites -> assets/games/robaki-*.webp
+# Angielski elektryk: the app's own icon (icons/icon-512.png) -> assets/games/angielski-icon.webp (no character in the app)
+
+def img(rel, name, x, y, w, h, extra=""):
+    return f'<image href="{rel}assets/games/{name}" x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(h)}" preserveAspectRatio="xMidYMid meet"{extra}/>'
+
+def worker(x, y, s, label="STRØM"):
+    """The STRØM player figure; (x, y) = feet centre, ~150 units tall at s=1."""
+    fs = 15 if len(label) <= 5 else 13
+    return (f'<g transform="translate({f(x)},{f(y)}) scale({s})">'
+            '<ellipse cx="0" cy="-2" rx="30" ry="8" fill="#000" opacity=".3"/>'
+            '<rect x="-16" y="-48" width="13" height="42" rx="5" fill="#1e3a5f"/><rect x="3" y="-48" width="13" height="42" rx="5" fill="#1e3a5f"/>'
+            '<ellipse cx="-10" cy="-6" rx="10" ry="6" fill="#3f2a1a"/><ellipse cx="10" cy="-6" rx="10" ry="6" fill="#3f2a1a"/>'
+            '<rect x="-44" y="-100" width="14" height="40" rx="7" fill="#f5c542"/><rect x="30" y="-100" width="14" height="40" rx="7" fill="#f5c542"/>'
+            '<circle cx="-37" cy="-58" r="7" fill="#f3c9a0"/><circle cx="37" cy="-58" r="7" fill="#f3c9a0"/>'
+            '<rect x="-49" y="-66" width="10" height="20" rx="2" fill="#1c1917"/><rect x="-47" y="-72" width="6" height="8" rx="1" fill="#2dd4bf"/>'
+            '<rect x="30" y="-96" width="22" height="34" rx="6" fill="#f5c542" stroke="#d9a520" stroke-width="2"/>'
+            '<path d="M-32,-104 H32 Q36,-104 36,-98 V-50 H-36 V-98 Q-36,-104 -32,-104Z" fill="#f28c28"/>'
+            '<rect x="-36" y="-62" width="72" height="5" fill="#fde68a"/>'
+            '<rect x="-26" y="-96" width="52" height="22" rx="3" fill="#f5f1e8"/>'
+            f'<text x="0" y="-79" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="600" font-size="{fs}" fill="#1c1917">{label}</text>'
+            '<circle cx="0" cy="-124" r="21" fill="#f3c9a0"/>'
+            '<circle cx="-7" cy="-124" r="2.4" fill="#1c1917"/><circle cx="7" cy="-124" r="2.4" fill="#1c1917"/>'
+            '<path d="M-8,-115 Q0,-108 8,-115" stroke="#7a3b1e" stroke-width="2.5" fill="none" stroke-linecap="round"/>'
+            '<path d="M-25,-130 Q-25,-154 0,-155 Q25,-154 25,-130Z" fill="#f5c542"/>'
+            '<rect x="-30" y="-133" width="60" height="7" rx="3.5" fill="#f5c542"/><path d="M-4,-154 H4 V-134 H-4Z" fill="#d9a520"/>'
+            '<circle cx="0" cy="-141" r="4" fill="#1c1917"/></g>')
+
+def cone(x, y, s):
+    return (f'<g transform="translate({f(x)},{f(y)}) scale({s})"><path d="M-8,-60 H8 L22,0 H-22Z" fill="#f97316"/>'
+            '<path d="M-11.5,-45 H11.5 L14.5,-32 H-14.5Z M-17,-22 H17 L19.5,-11 H-19.5Z" fill="#fff"/><rect x="-30" y="-4" width="60" height="8" rx="3" fill="#ea580c"/></g>')
+
+def card_hefau(uid, rel, label):
+    pts = spiral(560, 210, 30, 190, 2.2, start=1.0)
+    return (f'<rect width="800" height="420" fill="#0a0805"/>'
+            f'<radialGradient id="hg{uid}" cx=".55" cy=".5" r=".6"><stop offset="0" stop-color="#3a2a0e"/><stop offset="1" stop-color="#0a0805"/></radialGradient><rect width="800" height="420" fill="url(#hg{uid})"/>'
+            '<g opacity=".16" stroke="#d9bf86" stroke-width="1.5">' + "".join(f'<path d="M0,{y} H800"/>' for y in range(60, 420, 60)) +
+            "".join(f'<path d="M{x + (60 if (y//60)%2 else 0)},{y} v60"/>' for y in range(0, 420, 60) for x in range(0, 800, 120)) + '</g>'
+            f'<path d="{poly(pts)}" fill="none" stroke="#5c430f" stroke-width="26" stroke-linecap="round" opacity=".8"/>'
+            f'<path d="{poly(pts)}" fill="none" stroke="url(#gold)" stroke-width="18" stroke-linecap="round" stroke-dasharray="16 4" opacity=".75"/>'
+            '<circle cx="560" cy="210" r="175" fill="#0a0805" opacity=".45"/>'
+            + img(rel, "hefau-cobra.webp", 440, 14, 240, 392) +
+            eye_of_horus(60, 70, 1.9, "#f2c14e", 3.5) +
+            ''.join(f'<circle cx="{x}" cy="300" r="20" fill="url(#gold)" stroke="#0a0805" stroke-width="3"/><circle cx="{x}" cy="300" r="8" fill="#3fe0d0"/>' for x in (80, 140, 200)) +
+            '<path d="M50,350 H250" stroke="#3fe0d0" stroke-width="3" opacity=".7"/>')
+
+def card_strom(uid, rel, label):
+    bolt1 = bolt(560, 216, 230, -0.35, 3, 8, 14); bolt2 = bolt(560, 216, 180, 0.15, 8, 7, 12)
+    return ('<rect width="800" height="420" fill="#2a2119"/>'
+            f'<radialGradient id="sg{uid}" cx=".55" cy=".55" r=".6"><stop offset="0" stop-color="#5a4632"/><stop offset="1" stop-color="#1c1917"/></radialGradient><rect width="800" height="420" fill="url(#sg{uid})"/>'
+            '<g stroke="#000" stroke-opacity=".14" stroke-width="10" fill="none"><path d="M0,120 Q200,90 400,130 T800,110"/><path d="M0,300 Q220,270 420,310 T800,290"/></g>'
+            + cone(150, 360, 1.5) + cone(700, 120, 1.0) + cone(240, 150, 0.9) +
+            f'<g filter="url(#glowC)" stroke-linejoin="round" fill="none"><path d="{bolt1}" stroke="#2dd4bf" stroke-width="5"/><path d="{bolt2}" stroke="#99f6e4" stroke-width="3"/></g>'
+            '<circle cx="770" cy="150" r="10" fill="#5eead4" opacity=".8" filter="url(#glowC)"/>'
+            + worker(500, 370, 2.05, label) +
+            '<rect y="392" width="800" height="28" fill="url(#hz)"/>'
+            '<g font-family="Oswald,sans-serif" font-weight="600"><text x="40" y="96" font-size="74" fill="#f5f1e8" opacity=".95">0:60</text></g>')
+
+def card_robaki(uid, rel, label):
+    rnd = random.Random(4)
+    splats = "".join(f'<circle cx="{rnd.randint(330,780)}" cy="{rnd.randint(30,400)}" r="{rnd.choice([4,6,8])}" fill="#8cff3a" opacity=".85" filter="url(#glowR)"/>' for _ in range(10))
+    bugs = "".join(f'<g transform="translate({x},{y}) rotate({r})">' + img(rel, "robaki-bug.webp", -w/2, -w*164/176/2, w, w*164/176) + '</g>'
+                   for x, y, w, r in [(560, 130, 130, 20), (680, 280, 160, -35), (450, 300, 100, 160), (730, 100, 90, 70), (370, 170, 80, -80)])
+    return ('<rect width="800" height="420" fill="#1c1518"/>'
+            f'<radialGradient id="rg{uid}" cx=".6" cy=".5" r=".6"><stop offset="0" stop-color="#351b20"/><stop offset="1" stop-color="#1c1518"/></radialGradient><rect width="800" height="420" fill="url(#rg{uid})"/>'
+            '<path d="M0,210 H800" stroke="#f5f5f5" stroke-width="6" stroke-dasharray="40 30" opacity=".3"/>'
+            '<path d="M0,40 H800 M0,380 H800" stroke="#ffc94a" stroke-width="3" opacity=".35"/>'
+            f'<linearGradient id="beam{uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffc94a" stop-opacity=".5"/><stop offset="1" stop-color="#ffc94a" stop-opacity="0"/></linearGradient>'
+            f'<path d="M300,170 L620,70 L620,330 L300,230Z" fill="url(#beam{uid})"/>'
+            + img(rel, "robaki-truck.webp", -10, 172, 320, 75) + splats + bugs)
+
+def card_angielski(uid, rel, label):
     return ('<rect width="800" height="420" fill="#07111c"/>'
             f'<linearGradient id="ag{uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0c2340"/><stop offset="1" stop-color="#07111c"/></linearGradient><rect width="800" height="420" fill="url(#ag{uid})"/>'
-            '<g opacity=".16"><path d="M520,0 L800,420 M800,0 L520,420" stroke="#e7eef6" stroke-width="60"/><path d="M660,0 V420 M520,210 H800" stroke="#e7eef6" stroke-width="80"/>'
-            '<path d="M520,0 L800,420 M800,0 L520,420" stroke="#c8102e" stroke-width="20"/><path d="M660,0 V420 M520,210 H800" stroke="#c8102e" stroke-width="44"/></g>'
-            '<circle cx="660" cy="210" r="110" fill="#0c2340" stroke="#f0d48a" stroke-width="10"/>'
-            '<path d="M676,128 L620,222 L660,222 L640,296 L708,190 L666,190Z" fill="#f7f3ea"/>'
+            + img(rel, "angielski-icon.webp", 520, 70, 280, 280, ' opacity=".95"') +
             '<g font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="30">'
             '<rect x="40" y="70" width="400" height="62" rx="26" fill="#f7f3ea"/><text x="66" y="111" fill="#122033">Where’s the fuse board?</text>'
             '<rect x="150" y="170" width="250" height="62" rx="26" fill="#5ad4ff"/><text x="178" y="211" fill="#07111c">Cheers, mate!</text>'
-            '<rect x="50" y="270" width="290" height="62" rx="26" fill="#f7f3ea"/><text x="78" y="311" fill="#122033">Isolate it first.</text></g>'
-            '<circle cx="420" cy="370" r="5" fill="#c8102e"/><circle cx="440" cy="370" r="5" fill="#f7f3ea"/><circle cx="460" cy="370" r="5" fill="#0c2340" stroke="#5ad4ff"/>')
+            '<rect x="50" y="270" width="290" height="62" rx="26" fill="#f7f3ea"/><text x="78" y="311" fill="#122033">Isolate it first.</text></g>')
 
-CARDS = {"hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": card_logikk, "angielski": card_angielski}
+CARDS = {"hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
 
-def card_svg(gid):
-    return svg("0 0 800 420", CARDS[gid](gid), "art")
+def card_svg(gid, rel="", label="STRØM"):
+    return svg("0 0 800 420", CARDS[gid](gid, rel, label), "art")
 
-# ---------------- hero (1200x440, logo overlaid in HTML at the centre) ----------------
-def hero_body():
+def hero_body(rel="", label="STRØM"):
     rnd = random.Random(9)
     stars = "".join(f'<circle cx="{rnd.randint(0,1200)}" cy="{rnd.randint(0,440)}" r="{rnd.choice([1,1,1.5,2])}" fill="{rnd.choice(["#f2c14e","#2dd4bf","#8cff3a","#5ad4ff","#f5f1e8"])}" opacity="{rnd.uniform(.25,.7):.2f}"/>' for _ in range(70))
-    arc = spiral(600, 220, 150, 205, 0.42, start=math.radians(150), n=60)  # cobra-scale arc on the left/top
+    arc = spiral(600, 220, 150, 205, 0.42, start=math.radians(150), n=60)
     scales = f'<path d="{poly(arc)}" fill="none" stroke="#5c430f" stroke-width="30" stroke-linecap="round"/><path d="{poly(arc)}" fill="none" stroke="url(#gold)" stroke-width="22" stroke-linecap="round" stroke-dasharray="16 4"/>'
     gems = "".join(f'<circle cx="{f(x)}" cy="{f(y)}" r="6" fill="#3fe0d0" stroke="#0a0805" stroke-width="2"/>' for x, y in arc[6::9])
-    bolts = "".join(f'<path d="{bolt(x, y, l, a, s, 7, 14)}" stroke="#2dd4bf" stroke-width="{w}" fill="none" filter="url(#glowC)" stroke-linejoin="round"/>'
-                    for x, y, l, a, s, w in [(770, 60, 170, 1.15, 1, 4), (830, 40, 220, 1.35, 2, 3), (900, 90, 150, 1.6, 5, 2.5)])
-    return (
-            '<radialGradient id="hgA" cx=".22" cy=".3" r=".45"><stop offset="0" stop-color="#f2c14e" stop-opacity=".22"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
+    bolts = "".join(f'<path d="{bolt(x, y, l, a, s, 7, 12)}" stroke="#2dd4bf" stroke-width="{w}" fill="none" filter="url(#glowC)" stroke-linejoin="round"/>'
+                    for x, y, l, a, s, w in [(790, 224, 150, -0.25, 1, 4), (790, 224, 120, 0.35, 2, 3)])
+    bug = lambda x, y, w, r: f'<g class="mot" transform="translate({x},{y}) rotate({r})">' + img(rel, "robaki-bug.webp", -w/2, -w*164/176/2, w, w*164/176) + '</g>'
+    return ('<radialGradient id="hgA" cx=".22" cy=".3" r=".45"><stop offset="0" stop-color="#f2c14e" stop-opacity=".22"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
             '<radialGradient id="hgB" cx=".78" cy=".25" r=".45"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".22"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>'
             '<radialGradient id="hgC" cx=".8" cy=".85" r=".4"><stop offset="0" stop-color="#8cff3a" stop-opacity=".14"/><stop offset="1" stop-color="#8cff3a" stop-opacity="0"/></radialGradient>'
             '<radialGradient id="hgD" cx=".5" cy=".5" r=".3"><stop offset="0" stop-color="#e11d2a" stop-opacity=".28"/><stop offset="1" stop-color="#e11d2a" stop-opacity="0"/></radialGradient>'
             '<rect width="1200" height="440" fill="#12110f"/><rect width="1200" height="440" fill="url(#hgA)"/><rect width="1200" height="440" fill="url(#hgB)"/><rect width="1200" height="440" fill="url(#hgC)"/><rect width="1200" height="440" fill="url(#hgD)"/>'
             + stars +
             '<circle cx="600" cy="220" r="175" fill="none" stroke="#f5f1e8" stroke-opacity=".08" stroke-width="2"/><circle cx="600" cy="220" r="225" fill="none" stroke="#f5f1e8" stroke-opacity=".05" stroke-width="2" stroke-dasharray="4 10"/>'
-            + scales + gems + '<g class="mot">' + eye_of_horus(300, 80, 1.15, "#f2c14e", 3.5) + '</g>' +
-            '<g class="mot">' + bolts + '</g><g class="mot">' + hardhat(850, 255, .62) + '</g>' +
+            + scales + gems +
+            '<g class="mot">' + img(rel, "hefau-cobra.webp", 278, 30, 120, 154) + '</g>' +
             '<g class="mot">' + grid_svg(262, 300, 104, -8, hl=(20, 21, 22, 31, 40, 49)) + '</g>' +
-            '<g class="mot">' + bug(860, 368, 1.1, -25) + '</g><g class="mot">' + bug(950, 318, .85, 40) + '</g>' +
-            '<g fill="#8cff3a" filter="url(#glowR)"><circle cx="812" cy="398" r="4"/><circle cx="905" cy="402" r="3"/><circle cx="990" cy="362" r="4"/></g>'
-            '<g class="mot" transform="translate(905,140)"><rect width="104" height="50" rx="22" fill="#5ad4ff"/><path d="M18,48 L10,66 L36,48Z" fill="#5ad4ff"/>'
-            '<text x="52" y="34" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="24" text-anchor="middle" fill="#07111c">Hi!</text></g>'
-            '<path d="M1010,140 l-10,22 h10 l-6,18 l18,-26 h-10 l8,-14z" fill="#f0d48a"/>')
+            '<g class="mot">' + bolts + '</g>' +
+            '<g class="mot">' + worker(845, 300, 0.95, label) + '</g>' +
+            bug(880, 380, 74, -25) + bug(985, 318, 56, 40) +
+            '<g fill="#8cff3a" filter="url(#glowR)"><circle cx="830" cy="410" r="4"/><circle cx="930" cy="404" r="3"/><circle cx="1020" cy="360" r="4"/></g>'
+            '<g class="mot" transform="translate(286,198)">' + img(rel, "angielski-icon.webp", 0, 0, 56, 56) +
+            '<g transform="translate(62,-2)"><rect width="62" height="34" rx="15" fill="#5ad4ff"/><path d="M8,32 L4,46 L22,32Z" fill="#5ad4ff"/>'
+            '<text x="31" y="23" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="18" text-anchor="middle" fill="#07111c">Hi!</text></g></g>')
 
-def hero_svg(): return svg("0 0 1200 440", hero_body(), "hart")
-
-def defs_svg(): return '<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">' + defs() + "</svg>"
+def hero_svg(rel="", label="STRØM"): return svg("0 0 1200 440", hero_body(rel, label), "hart")

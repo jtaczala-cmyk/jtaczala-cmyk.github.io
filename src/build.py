@@ -146,6 +146,7 @@ FLAG = {
  "pl": '<svg class="flag" viewBox="0 0 16 10" aria-hidden="true" focusable="false"><rect width="16" height="10" fill="#fff"/><rect y="5" width="16" height="5" fill="#dc143c"/></svg>',
 }
 CODE = {"no": "NO", "en": "EN", "pl": "PL"}
+VEST = {"no": "STRØM", "en": "POWER", "pl": "PRĄD"}  # label on the STRØM player's vest in each language version
 
 def is_new(g): return "new_until" in g and TODAY <= datetime.date.fromisoformat(g["new_until"])
 
@@ -170,7 +171,7 @@ def card(g, l, t, rel):
                  f'{label}<span class="lc">{FLAG[v[0]]}{CODE[v[0]]}</span></a>')
     warn = f'<p class="warn">{e(g["warn"][l])}</p>' if "warn" in g else ""
     return (f'<li class="card" data-cat="{cats}" style="--acc:{art.ACCENT[g["id"]]}">'
-            f'<a class="im" href="{url}" tabindex="-1" aria-hidden="true">{art.card_svg(g["id"])}</a>'
+            f'<a class="im" href="{url}" tabindex="-1" aria-hidden="true">{art.card_svg(g["id"], rel, VEST[l])}</a>'
             f'<div class="badges">{badges}</div>'
             f'<div class="body"><p class="cat">{e(catlbl)}</p><h3><a href="{url}">{e(nm)}</a><span class="sub">{e(g["sub"][l])}</span></h3>'
             f'<p class="d">{e(g["desc"][l])}</p>{warn}'
@@ -208,7 +209,7 @@ def head_common(l, t, rel, title, desc, canonical=True):
 <link rel="apple-touch-icon" href="{rel}assets/apple-touch-icon.png?v=3"/>
 <link rel="preload" href="{rel}fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <link rel="stylesheet" href="{rel}fonts/fonts.css"/>
-<link rel="stylesheet" href="{rel}assets/home.css?v=2"/>
+<link rel="stylesheet" href="{rel}assets/home.css?v=3"/>
 '''
 
 def header(l, t, rel, langlinks=True):
@@ -228,7 +229,7 @@ def footer(t):
 </div></footer>'''
 
 def hero_art(t, rel):
-    return (f'<div class="hero-art">{art.hero_svg()}'
+    return (f'<div class="hero-art">{art.hero_svg(rel, VEST[t["_l"]])}'
             f'<div class="hero-logo">{lockup(t, rel, "lg")}</div></div>')
 
 def page(l):
@@ -251,13 +252,13 @@ def page(l):
 <meta property="og:url" content="{BASE}{PATH[l]}"/>
 <meta property="og:locale" content="{LOCALE[l]}"/>
 {"".join(f'<meta property="og:locale:alternate" content="{LOCALE[x]}"/>' for x in LANGS if x != l)}
-<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=2"/>
+<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=3"/>
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:alt" content="Stop60 – {e(t["tagline"])}"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=2"/>
+<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=3"/>
 <script type="application/ld+json">{jsonld(l, t)}</script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
 <script defer src="{rel}assets/contact.js?v=2"></script>
