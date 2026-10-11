@@ -208,7 +208,7 @@ def head_common(l, t, rel, title, desc, canonical=True):
 <link rel="apple-touch-icon" href="{rel}assets/apple-touch-icon.png?v=3"/>
 <link rel="preload" href="{rel}fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <link rel="stylesheet" href="{rel}fonts/fonts.css"/>
-<link rel="stylesheet" href="{rel}assets/home.css?v=1"/>
+<link rel="stylesheet" href="{rel}assets/home.css?v=2"/>
 '''
 
 def header(l, t, rel, langlinks=True):
