@@ -35,7 +35,7 @@ T = {
          ("Tre språk", "Sidene og de fleste spillene finnes på norsk, engelsk og polsk.")],
   hms="STRØM, POWER og PRĄD viser korte HMS-huskeregler underveis, men erstatter ikke HMS-opplæring, FSE-kurs eller instrukser på arbeidsplassen.",
   privacy_h="Personvern",
-  privacy="Denne siden bruker ingen informasjonskapsler (cookies). Besøk telles anonymt med GoatCounter (selvhostet skript): bare samlet statistikk lagres. IP-adresse og nettleser holdes kun i serverens minne i inntil 8 timer for å telle unike besøk, og lagres ikke. Spillene har egne personvernsider.",
+  privacy="Denne siden bruker ingen informasjonskapsler (cookies). Besøk telles anonymt med GoatCounter (selvhostet skript): bare samlet statistikk lagres. IP-adresse og nettleser holdes kun i serverens minne i inntil 8 timer for å telle unike besøk, og lagres ikke. Spillene har egne personvernsider med behandlingsansvarlig, rettighetene dine og kontakt.",
   priv_links="Personvern i spillene:", contact="Kontakt:", count="{n} spill"),
  "en": dict(
   tagline="made with passion",
@@ -54,7 +54,7 @@ T = {
          ("Three languages", "The site and most games are available in Norwegian, English and Polish.")],
   hms="STRØM, POWER and PRĄD show short health & safety reminders while you play, but they do not replace safety training or instructions at your workplace.",
   privacy_h="Privacy",
-  privacy="This site uses no cookies. Visits are counted anonymously with GoatCounter (self-hosted script): only aggregate statistics are stored. IP address and browser are kept only in the server’s memory for up to 8 hours to count unique visits, and are not stored. The games have their own privacy pages.",
+  privacy="This site uses no cookies. Visits are counted anonymously with GoatCounter (self-hosted script): only aggregate statistics are stored. IP address and browser are kept only in the server’s memory for up to 8 hours to count unique visits, and are not stored. The games have their own privacy pages with the data controller, your rights and contact details.",
   priv_links="Privacy in the games:", contact="Contact:", count="{n} games"),
  "pl": dict(
   tagline="stworzone z pasji",
@@ -73,7 +73,7 @@ T = {
          ("Trzy języki", "Strona i większość gier są po norwesku, angielsku i polsku.")],
   hms="STRØM, POWER i PRĄD pokazują w trakcie gry krótkie hasła BHP, ale nie zastępują szkolenia BHP ani instrukcji w miejscu pracy.",
   privacy_h="Prywatność",
-  privacy="Ta strona nie używa plików cookie. Wizyty są liczone anonimowo przez GoatCounter (skrypt na własnym serwerze): zapisywane są tylko zbiorcze statystyki. Adres IP i przeglądarka są trzymane wyłącznie w pamięci serwera do 8 godzin, aby policzyć unikalne wizyty, i nie są zapisywane. Gry mają własne strony o prywatności.",
+  privacy="Ta strona nie używa plików cookie. Wizyty są liczone anonimowo przez GoatCounter (skrypt na własnym serwerze): zapisywane są tylko zbiorcze statystyki. Adres IP i przeglądarka są trzymane wyłącznie w pamięci serwera do 8 godzin, aby policzyć unikalne wizyty, i nie są zapisywane. Gry mają własne strony o prywatności z danymi administratora, Twoimi prawami i kontaktem.",
   priv_links="Prywatność w grach:", contact="Kontakt:", count="{n} gier"),
 }
 
@@ -141,7 +141,10 @@ GAMES = [
 # hidden=True keeps a game's entry here (easy to restore: delete the flag) but leaves it off the home pages, 404 and sitemap
 GAMES_ALL = GAMES
 GAMES = [g for g in GAMES_ALL if not g.get("hidden")]
-PRIV = [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/")]
+# Privacy pages linked in the footer, in the page's language (2026-10-11: all games, not only STRØM/Hefau)
+PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/")],
+        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/")],
+        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/")]}
 
 FLAG = {
  "no": '<svg class="flag" viewBox="0 0 22 16" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#ba0c2f"/><path d="M0,8H22M8,0V16" stroke="#fff" stroke-width="4"/><path d="M0,8H22M8,0V16" stroke="#00205b" stroke-width="2"/></svg>',
@@ -223,7 +226,7 @@ def header(l, t, rel, langlinks=True):
             f'<nav aria-label="{e(t["navlang"])}"><ul class="lang">{lang}</ul></nav></div></header>')
 
 def footer(t):
-    priv = " · ".join(f'<a href="{u}">{e(n)}</a>' for n, u in PRIV)
+    priv = " · ".join(f'<a href="{u}">{e(n)}</a>' for n, u in PRIV[t["_l"]])
     return f'''<footer><div class="wrap">
 <h2>{e(t["privacy_h"])}</h2>
 <p>{e(t["privacy"])}</p>
