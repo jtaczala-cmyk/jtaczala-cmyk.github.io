@@ -209,7 +209,7 @@ def head_common(l, t, rel, title, desc, canonical=True):
 <link rel="apple-touch-icon" href="{rel}assets/apple-touch-icon.png?v=3"/>
 <link rel="preload" href="{rel}fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <link rel="stylesheet" href="{rel}fonts/fonts.css"/>
-<link rel="stylesheet" href="{rel}assets/home.css?v=3"/>
+<link rel="stylesheet" href="{rel}assets/home.css?v=4"/>
 '''
 
 def header(l, t, rel, langlinks=True):
@@ -252,13 +252,13 @@ def page(l):
 <meta property="og:url" content="{BASE}{PATH[l]}"/>
 <meta property="og:locale" content="{LOCALE[l]}"/>
 {"".join(f'<meta property="og:locale:alternate" content="{LOCALE[x]}"/>' for x in LANGS if x != l)}
-<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=3"/>
+<meta property="og:image" content="{BASE}assets/og-home-{l}.jpg?v=4"/>
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:alt" content="Stop60 – {e(t["tagline"])}"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=3"/>
+<meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=4"/>
 <script type="application/ld+json">{jsonld(l, t)}</script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
 <script defer src="{rel}assets/contact.js?v=2"></script>

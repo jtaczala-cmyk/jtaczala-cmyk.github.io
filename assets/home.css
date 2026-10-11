@@ -122,3 +122,8 @@ a.em{color:var(--teal)}
 .hero-logo::before{content:"";position:absolute;left:50%;top:50%;width:min(62%,420px);height:88%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(18,17,15,.62),rgba(18,17,15,0));pointer-events:none}
 .hero-logo .lockup{position:relative}
 @media(max-width:619px){.lockup.lg{gap:7px}.lockup.lg img{width:84px}.lockup.lg b{font-size:23px}.lockup.lg i{font-size:11px;letter-spacing:.12em;margin-top:4px}}
+/* hero v3 (2026-10-11): rendered characters; side groups move outwards when the banner shows its full width */
+.hero-art{height:clamp(240px,32vw,380px)}
+.hart .hl,.hart .hr{transform-box:view-box}
+@media(min-width:480px){.hart .hl{transform:translateX(-70px)}.hart .hr{transform:translateX(70px)}}
+@media(min-width:620px){.hart .hl{transform:translateX(-150px)}.hart .hr{transform:translateX(150px)}}

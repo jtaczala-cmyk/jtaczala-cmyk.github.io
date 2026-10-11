@@ -51,7 +51,7 @@ SUDOKU_S = "53467891267219534819834256785976142342685379171392485696153728428741
 
 def defs():
     return ('<defs>'
-            '<filter id="glowC" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+            '<filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter><filter id="glowC" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
             '<filter id="glowR" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
             '<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe39a"/><stop offset=".5" stop-color="#f2c14e"/><stop offset="1" stop-color="#b8862b"/></linearGradient>'
             '<pattern id="hz" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="28" fill="#f5c542"/><rect x="14" width="14" height="28" fill="#1c1917"/></pattern>'
@@ -133,16 +133,25 @@ def cone(x, y, s):
     return (f'<g transform="translate({f(x)},{f(y)}) scale({s})"><path d="M-8,-60 H8 L22,0 H-22Z" fill="#f97316"/>'
             '<path d="M-11.5,-45 H11.5 L14.5,-32 H-14.5Z M-17,-22 H17 L19.5,-11 H-19.5Z" fill="#fff"/><rect x="-30" y="-4" width="60" height="8" rx="3" fill="#ea580c"/></g>')
 
+def worker_img(rel, x, y, w, h, label):
+    """Rendered STRØM worker (hero-worker.webp, render 414x1051) with the per-language word on the blank label plate."""
+    sx, sy = w / 414, h / 1051
+    px0, px1, py0, py1 = x + 184*sx, x + 366*sx, y + 405*sy, y + 516*sy
+    fs = (py1 - py0) * (.55 if len(label) <= 5 else .5)
+    return (f'<ellipse cx="{f(x+w*.5)}" cy="{f(y+h-6)}" rx="{f(w*.5)}" ry="{f(h*.03)}" fill="#000" opacity=".45" filter="url(#soft)"/>' + img(rel, "hero-worker.webp", x, y, w, h) +
+            f'<text x="{f((px0+px1)/2)}" y="{f((py0+py1)/2 + fs*.36)}" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="600" font-size="{f(fs)}" fill="#1c1917">{label}</text>')
+
 def card_hefau(uid, rel, label):
     pts = spiral(560, 210, 30, 190, 2.2, start=1.0)
     return (f'<rect width="800" height="420" fill="#0a0805"/>'
+            '<radialGradient id="maskGlowC"><stop offset="0" stop-color="#f2c14e" stop-opacity=".35"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
             f'<radialGradient id="hg{uid}" cx=".55" cy=".5" r=".6"><stop offset="0" stop-color="#3a2a0e"/><stop offset="1" stop-color="#0a0805"/></radialGradient><rect width="800" height="420" fill="url(#hg{uid})"/>'
             '<g opacity=".16" stroke="#d9bf86" stroke-width="1.5">' + "".join(f'<path d="M0,{y} H800"/>' for y in range(60, 420, 60)) +
             "".join(f'<path d="M{x + (60 if (y//60)%2 else 0)},{y} v60"/>' for y in range(0, 420, 60) for x in range(0, 800, 120)) + '</g>'
             f'<path d="{poly(pts)}" fill="none" stroke="#5c430f" stroke-width="26" stroke-linecap="round" opacity=".8"/>'
             f'<path d="{poly(pts)}" fill="none" stroke="url(#gold)" stroke-width="18" stroke-linecap="round" stroke-dasharray="16 4" opacity=".75"/>'
             '<circle cx="560" cy="210" r="175" fill="#0a0805" opacity=".45"/>'
-            + img(rel, "hefau-cobra.webp", 440, 14, 240, 392) +
+            + '<ellipse cx="560" cy="210" rx="150" ry="170" fill="url(#maskGlowC)"/>' + img(rel, "hero-pharaoh.webp", 431, 18, 258, 380) +
             eye_of_horus(60, 70, 1.9, "#f2c14e", 3.5) +
             ''.join(f'<circle cx="{x}" cy="300" r="20" fill="url(#gold)" stroke="#0a0805" stroke-width="3"/><circle cx="{x}" cy="300" r="8" fill="#3fe0d0"/>' for x in (80, 140, 200)) +
             '<path d="M50,350 H250" stroke="#3fe0d0" stroke-width="3" opacity=".7"/>')
@@ -155,7 +164,7 @@ def card_strom(uid, rel, label):
             + cone(150, 360, 1.5) + cone(700, 120, 1.0) + cone(240, 150, 0.9) +
             f'<g filter="url(#glowC)" stroke-linejoin="round" fill="none"><path d="{bolt1}" stroke="#2dd4bf" stroke-width="5"/><path d="{bolt2}" stroke="#99f6e4" stroke-width="3"/></g>'
             '<circle cx="770" cy="150" r="10" fill="#5eead4" opacity=".8" filter="url(#glowC)"/>'
-            + worker(500, 370, 2.05, label) +
+            + worker_img(rel, 432, 34, 142, 361, label) +
             '<rect y="392" width="800" height="28" fill="url(#hz)"/>'
             '<g font-family="Oswald,sans-serif" font-weight="600"><text x="40" y="96" font-size="74" fill="#f5f1e8" opacity=".95">0:60</text></g>')
 
@@ -187,30 +196,54 @@ def card_svg(gid, rel="", label="STRØM"):
     return svg("0 0 800 420", CARDS[gid](gid, rel, label), "art")
 
 def hero_body(rel="", label="STRØM"):
+    """Hero banner (1200x440, sliced). v3 2026-10-11: rendered characters (original pharaoh mask with uraeus = Hefau,
+    semi-3D STRØM worker, glossy bug = Sneaky Bugs) arranged symmetrically around the logo; .hl/.hr groups are pushed
+    outwards on wide screens by home.css so phones (narrow crop) and desktop both look balanced."""
     rnd = random.Random(9)
-    stars = "".join(f'<circle cx="{rnd.randint(0,1200)}" cy="{rnd.randint(0,440)}" r="{rnd.choice([1,1,1.5,2])}" fill="{rnd.choice(["#f2c14e","#2dd4bf","#8cff3a","#5ad4ff","#f5f1e8"])}" opacity="{rnd.uniform(.25,.7):.2f}"/>' for _ in range(70))
+    stars = "".join(f'<circle cx="{rnd.randint(0,1200)}" cy="{rnd.randint(0,440)}" r="{rnd.choice([1,1,1.5,2])}" fill="{rnd.choice(["#f2c14e","#2dd4bf","#8cff3a","#5ad4ff","#f5f1e8"])}" opacity="{rnd.uniform(.2,.6):.2f}"/>' for _ in range(80))
     arc = spiral(600, 220, 150, 205, 0.42, start=math.radians(150), n=60)
-    scales = f'<path d="{poly(arc)}" fill="none" stroke="#5c430f" stroke-width="30" stroke-linecap="round"/><path d="{poly(arc)}" fill="none" stroke="url(#gold)" stroke-width="22" stroke-linecap="round" stroke-dasharray="16 4"/>'
-    gems = "".join(f'<circle cx="{f(x)}" cy="{f(y)}" r="6" fill="#3fe0d0" stroke="#0a0805" stroke-width="2"/>' for x, y in arc[6::9])
-    bolts = "".join(f'<path d="{bolt(x, y, l, a, s, 7, 12)}" stroke="#2dd4bf" stroke-width="{w}" fill="none" filter="url(#glowC)" stroke-linejoin="round"/>'
-                    for x, y, l, a, s, w in [(790, 224, 150, -0.25, 1, 4), (790, 224, 120, 0.35, 2, 3)])
-    bug = lambda x, y, w, r: f'<g class="mot" transform="translate({x},{y}) rotate({r})">' + img(rel, "robaki-bug.webp", -w/2, -w*164/176/2, w, w*164/176) + '</g>'
-    return ('<radialGradient id="hgA" cx=".22" cy=".3" r=".45"><stop offset="0" stop-color="#f2c14e" stop-opacity=".22"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
-            '<radialGradient id="hgB" cx=".78" cy=".25" r=".45"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".22"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>'
-            '<radialGradient id="hgC" cx=".8" cy=".85" r=".4"><stop offset="0" stop-color="#8cff3a" stop-opacity=".14"/><stop offset="1" stop-color="#8cff3a" stop-opacity="0"/></radialGradient>'
-            '<radialGradient id="hgD" cx=".5" cy=".5" r=".3"><stop offset="0" stop-color="#e11d2a" stop-opacity=".28"/><stop offset="1" stop-color="#e11d2a" stop-opacity="0"/></radialGradient>'
+    scales = (f'<path d="{poly(arc)}" fill="none" stroke="#3d2c0a" stroke-width="34" stroke-linecap="round" opacity=".7" transform="translate(3,5)"/>'
+              f'<path d="{poly(arc)}" fill="none" stroke="#5c430f" stroke-width="30" stroke-linecap="round"/>'
+              f'<path d="{poly(arc)}" fill="none" stroke="url(#gold)" stroke-width="22" stroke-linecap="round" stroke-dasharray="16 4"/>'
+              f'<path d="{poly(arc)}" fill="none" stroke="#fff6d6" stroke-width="3" stroke-linecap="round" opacity=".45" transform="translate(-3,-4)"/>')
+    gems = "".join(f'<circle cx="{f(x)}" cy="{f(y)}" r="7" fill="url(#gem)" stroke="#0a0805" stroke-width="2"/>' for x, y in arc[6::9])
+    L = lambda body: f'<g class="hl">{body}</g>'
+    R = lambda body: f'<g class="hr">{body}</g>'
+    # STRØM worker: image 244x620 shown at 116x295; blank label plate at x 184-366 / y 405-516 of the 414x1051 render
+    wx, wy, ww, wh = 768, 36, 114, 290
+    sx = ww / 414; sy = wh / 1051
+    px0, px1, py0, py1 = wx + 184*sx, wx + 366*sx, wy + 405*sy, wy + 516*sy
+    fs = 15 if len(label) <= 5 else 14
+    worker = (f'<ellipse cx="{f(wx+ww*.5)}" cy="{f(wy+wh-6)}" rx="58" ry="10" fill="#000" opacity=".45" filter="url(#soft)"/>'
+              + img(rel, "hero-worker.webp", wx, wy, ww, wh) +
+              f'<text x="{f((px0+px1)/2)}" y="{f((py0+py1)/2 + fs*.36)}" text-anchor="middle" font-family="Oswald,sans-serif" font-weight="600" font-size="{fs}" letter-spacing=".5" fill="#1c1917">{label}</text>')
+    sparks = ('<g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowC)">'
+              f'<path d="M{wx+ww-8},{wy+128} C{wx+150},{wy+110} {wx+170},{wy+170} {wx+210},{wy+150} S{wx+250},{wy+120} {wx+300},{wy+132}" stroke="#2dd4bf" stroke-width="3.5"/>'
+              f'<path d="{bolt(wx+ww-6, wy+140, 120, 0.35, 5, 7, 11)}" stroke="#99f6e4" stroke-width="2.2"/>'
+              f'<path d="{bolt(wx+12, wy+150, 70, 3.4, 11, 6, 9)}" stroke="#5eead4" stroke-width="2"/></g>'
+              f'<circle cx="{wx+ww-4}" cy="{wy+134}" r="5" fill="#ccfbf1" filter="url(#glowC)"/>')
+    bx, by, bw = 786, 316, 120; bh = bw * 218 / 260
+    bug = ('<radialGradient id="bugGlow"><stop offset="0" stop-color="#ff2a3a" stop-opacity=".5"/><stop offset=".5" stop-color="#ff2a3a" stop-opacity=".14"/><stop offset="1" stop-color="#ff2a3a" stop-opacity="0"/></radialGradient>'
+           f'<ellipse cx="{f(bx+bw*.55)}" cy="{f(by+bh*.6)}" rx="78" ry="50" fill="url(#bugGlow)"/>'
+           f'<ellipse cx="{f(bx+bw*.55)}" cy="{f(by+bh*.8)}" rx="50" ry="9" fill="#000" opacity=".5" filter="url(#soft)"/>'
+           + img(rel, "hero-bug.webp", bx, by, bw, bh))
+    mask = ('<radialGradient id="maskGlow"><stop offset="0" stop-color="#f2c14e" stop-opacity=".35"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
+            '<ellipse cx="364" cy="128" rx="110" ry="120" fill="url(#maskGlow)"/>'
+            + img(rel, "hero-pharaoh.webp", 302, 22, 124, 183))
+    tutor = ('<g transform="translate(306,222)">' + img(rel, "angielski-icon.webp", 0, 0, 50, 50) +
+             '<g transform="translate(58,2)"><rect width="58" height="32" rx="15" fill="#5ad4ff"/><path d="M8,30 L3,44 L21,30Z" fill="#5ad4ff"/>'
+             '<text x="29" y="22" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="17" text-anchor="middle" fill="#07111c">Hi!</text></g></g>')
+    return (            '<radialGradient id="gem" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d9fffb"/><stop offset=".35" stop-color="#3fe0d0"/><stop offset="1" stop-color="#0b6f68"/></radialGradient>'
+            '<radialGradient id="hgA" cx=".28" cy=".3" r=".42"><stop offset="0" stop-color="#f2c14e" stop-opacity=".2"/><stop offset="1" stop-color="#f2c14e" stop-opacity="0"/></radialGradient>'
+            '<radialGradient id="hgB" cx=".72" cy=".3" r=".42"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".22"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>'
+            '<radialGradient id="hgC" cx=".74" cy=".9" r=".35"><stop offset="0" stop-color="#e11d2a" stop-opacity=".14"/><stop offset="1" stop-color="#e11d2a" stop-opacity="0"/></radialGradient>'
+            '<radialGradient id="hgD" cx=".5" cy=".5" r=".3"><stop offset="0" stop-color="#e11d2a" stop-opacity=".3"/><stop offset="1" stop-color="#e11d2a" stop-opacity="0"/></radialGradient>'
             '<rect width="1200" height="440" fill="#12110f"/><rect width="1200" height="440" fill="url(#hgA)"/><rect width="1200" height="440" fill="url(#hgB)"/><rect width="1200" height="440" fill="url(#hgC)"/><rect width="1200" height="440" fill="url(#hgD)"/>'
             + stars +
-            '<circle cx="600" cy="220" r="175" fill="none" stroke="#f5f1e8" stroke-opacity=".08" stroke-width="2"/><circle cx="600" cy="220" r="225" fill="none" stroke="#f5f1e8" stroke-opacity=".05" stroke-width="2" stroke-dasharray="4 10"/>'
+            '<circle cx="600" cy="220" r="175" fill="none" stroke="#f5f1e8" stroke-opacity=".08" stroke-width="2"/><circle cx="600" cy="220" r="232" fill="none" stroke="#f5f1e8" stroke-opacity=".05" stroke-width="2" stroke-dasharray="4 10"/>'
             + scales + gems +
-            '<g class="mot">' + img(rel, "hefau-cobra.webp", 278, 30, 120, 154) + '</g>' +
-            '<g class="mot">' + grid_svg(262, 300, 104, -8, hl=(20, 21, 22, 31, 40, 49)) + '</g>' +
-            '<g class="mot">' + bolts + '</g>' +
-            '<g class="mot">' + worker(845, 300, 0.95, label) + '</g>' +
-            bug(880, 380, 74, -25) + bug(985, 318, 56, 40) +
-            '<g fill="#8cff3a" filter="url(#glowR)"><circle cx="830" cy="410" r="4"/><circle cx="930" cy="404" r="3"/><circle cx="1020" cy="360" r="4"/></g>'
-            '<g class="mot" transform="translate(286,198)">' + img(rel, "angielski-icon.webp", 0, 0, 56, 56) +
-            '<g transform="translate(62,-2)"><rect width="62" height="34" rx="15" fill="#5ad4ff"/><path d="M8,32 L4,46 L22,32Z" fill="#5ad4ff"/>'
-            '<text x="31" y="23" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="18" text-anchor="middle" fill="#07111c">Hi!</text></g></g>')
+            L('<g class="mot">' + mask + '</g>' + '<g class="mot">' + tutor + '</g>' +
+              '<g class="mot">' + grid_svg(312, 306, 98, -8, hl=(20, 21, 22, 31, 40, 49)) + '</g>') +
+            R(sparks + '<g class="mot">' + worker + '</g>' + '<g class="mot">' + bug + '</g>'))
 
 def hero_svg(rel="", label="STRØM"): return svg("0 0 1200 440", hero_body(rel, label), "hart")
