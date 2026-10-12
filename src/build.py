@@ -79,6 +79,17 @@ T = {
 
 # One entry per game. url/img/name may be per language. new_until: 'New' badge shown until this date.
 GAMES = [
+ dict(id="ufobang", cats=["action"], new_until="2027-01-31", langs=["no", "en", "pl"],
+      url={"no": "/ufobang/", "en": "/ufobang/en/", "pl": "/ufobang/pl/"},
+      og={"no": "/ufobang/og-no.jpg", "en": "/ufobang/og-en.jpg", "pl": "/ufobang/og-pl.jpg"},
+      img={l: "ufobang" for l in LANGS},
+      name={"no": "Ufobang", "en": "Ufobang", "pl": "Ufobang"},
+      sub={"no": "Forsvar jorden", "en": "Defend the Earth", "pl": "Obroń Ziemię"},
+      desc={"no": "Arkadeklassiker i ny drakt: styr laserkanonen, skyt ned 55 marsjerende romvesener, gjem deg bak fire skjold og treff Rødmantaen for bonus.",
+            "en": "An arcade classic in a new coat: steer the laser cannon, shoot down 55 marching aliens, hide behind four shields and hit the Red Manta for a bonus.",
+            "pl": "Klasyka automatów w nowej odsłonie: steruj działem laserowym, zestrzel 55 maszerujących kosmitów, chowaj się za czterema tarczami i trafiaj Czerwoną Mantę."},
+      versions=[("no", "Ufobang", "/ufobang/"), ("en", "Ufobang", "/ufobang/en/"), ("pl", "Ufobang", "/ufobang/pl/")],
+      modes={"no": "Én spiller · bølge etter bølge", "en": "Single player · wave after wave", "pl": "Jeden gracz · fala za falą"}),
  dict(id="logikk", cats=["logic"], new_until="2026-12-31", langs=["no", "en", "pl"],
       url={"no": "/logikk/", "en": "/logikk/en/", "pl": "/logikk/pl/"},
       og={"no": "/logikk/og-no.jpg", "en": "/logikk/og-en.jpg", "pl": "/logikk/og-pl.jpg"},
@@ -142,9 +153,9 @@ GAMES = [
 GAMES_ALL = GAMES
 GAMES = [g for g in GAMES_ALL if not g.get("hidden")]
 # Privacy pages linked in the footer, in the page's language (2026-10-11: all games, not only STRØM/Hefau)
-PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/")],
-        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/")],
-        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/")]}
+PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/personvern/")],
+        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/en/privacy/")],
+        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/"), ("Ufobang", "/ufobang/prywatnosc/")]}
 
 FLAG = {
  "no": '<svg class="flag" viewBox="0 0 22 16" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#ba0c2f"/><path d="M0,8H22M8,0V16" stroke="#fff" stroke-width="4"/><path d="M0,8H22M8,0V16" stroke="#00205b" stroke-width="2"/></svg>',
@@ -332,7 +343,8 @@ def sitemap():
     home = [(HREFLANG[x], PATH[x]) for x in LANGS] + [("x-default", "")]
     hef = [("nb", "hefau/"), ("pl", "hefau/pl/"), ("en", "hefau/en/"), ("x-default", "hefau/")]
     lk = [("nb", "logikk/"), ("pl", "logikk/pl/"), ("en", "logikk/en/"), ("x-default", "logikk/")]
-    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]]
+    sk = [("nb", "ufobang/"), ("pl", "ufobang/pl/"), ("en", "ufobang/en/"), ("x-default", "ufobang/")]
+    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]] + [(p, sk) for _, p in sk[:3]]
     urls += [("strom/", []), ("power/", []), ("prad/", []), ("robaki/", [])]
     body = "".join(f"<url><loc>{BASE}{u}</loc>{alts(a)}</url>\n" for u, a in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'

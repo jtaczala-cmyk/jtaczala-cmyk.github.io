@@ -8,7 +8,7 @@ Palettes taken from the live games' CSS:
 © 2026 Stop60"""
 import math, random
 
-ACCENT = {"hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
+ACCENT = {"ufobang": "#4ade80", "hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
 
 def f(v): return f"{v:.1f}".rstrip("0").rstrip(".")
 
@@ -190,7 +190,11 @@ def card_angielski(uid, rel, label):
             '<rect x="150" y="170" width="250" height="62" rx="26" fill="#5ad4ff"/><text x="178" y="211" fill="#07111c">Cheers, mate!</text>'
             '<rect x="50" y="270" width="290" height="62" rx="26" fill="#f7f3ea"/><text x="78" y="311" fill="#122033">Isolate it first.</text></g>')
 
-CARDS = {"hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
+def card_ufobang(uid, rel, label):
+    """Ufobang: the game's own renders (Blink/Brumm/Gloppo formation, Red Manta, shields, laser cannon over the Earth) -> assets/games/ufobang-card.webp"""
+    return '<rect width="800" height="420" fill="#12110f"/>' + img(rel, "ufobang-card.webp", 0, 0, 800, 420)
+
+CARDS = {"ufobang": card_ufobang, "hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
 
 def card_svg(gid, rel="", label="STRØM"):
     return svg("0 0 800 420", CARDS[gid](gid, rel, label), "art")
