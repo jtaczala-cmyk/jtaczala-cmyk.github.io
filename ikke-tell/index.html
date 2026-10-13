@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Liczenie wizyt – to urządzenie</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:#111;color:#eee;margin:0;padding:24px;max-width:520px}
+h1{font-size:1.3rem}
+#st{font-size:1.15rem;padding:16px;border-radius:12px;margin:18px 0;font-weight:600}
+.off{background:#14532d;border:2px solid #22c55e}.on{background:#5b1d1d;border:2px solid #ef4444}.err{background:#444;border:2px solid #999}
+button{font-size:1.1rem;padding:14px 20px;border-radius:12px;border:0;background:#2563eb;color:#fff;width:100%}
+p{color:#bbb;line-height:1.45}
+</style>
+</head>
+<body>
+<h1>Liczenie wizyt (GoatCounter) na tym urządzeniu</h1>
+<div id="st" class="err">Sprawdzam…</div>
+<button id="b" type="button">…</button>
+<p>Ustawienie dotyczy tylko tej przeglądarki na tym urządzeniu (cała domena stop60.no: strona główna i wszystkie gry). Na iPhonie Safari i aplikacja dodana do ekranu początkowego mają osobne ustawienia – otwórz tę stronę w każdej z nich. Wyczyszczenie danych witryn w Safari usuwa ustawienie.</p>
+<script>
+(function () {
+  var st = document.getElementById('st'), b = document.getElementById('b');
+  function get() { try { return localStorage.getItem('skipgc') === 't'; } catch (e) { return null; } }
+  function show() {
+    var v = get();
+    if (v === null) { st.className = 'err'; st.textContent = 'Błąd: przeglądarka blokuje pamięć lokalną (tryb prywatny?). Nie da się zapisać ustawienia.'; b.disabled = true; b.textContent = 'Niedostępne'; return; }
+    st.className = v ? 'off' : 'on';
+    st.textContent = v ? 'WYŁĄCZONE: wizyty i zdarzenia z tego urządzenia NIE są liczone.' : 'WŁĄCZONE: wizyty i zdarzenia z tego urządzenia SĄ liczone.';
+    b.textContent = v ? 'Włącz liczenie z powrotem' : 'Nie licz moich wizyt';
+  }
+  b.addEventListener('click', function () {
+    try { if (get()) localStorage.removeItem('skipgc'); else localStorage.setItem('skipgc', 't'); } catch (e) {}
+    show();
+  });
+  show();
+})();
+</script>
+</body>
+</html>
