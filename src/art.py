@@ -8,7 +8,7 @@ Palettes taken from the live games' CSS:
 © 2026 Stop60"""
 import math, random
 
-ACCENT = {"ufobang": "#4ade80", "hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
+ACCENT = {"redning": "#2dd4bf", "ufobang": "#4ade80", "hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
 
 def f(v): return f"{v:.1f}".rstrip("0").rstrip(".")
 
@@ -194,7 +194,11 @@ def card_ufobang(uid, rel, label):
     """Ufobang: the game's own renders (Blink/Brumm/Gloppo formation, Red Manta, shields, laser cannon over the Earth) -> assets/games/ufobang-card.webp"""
     return '<rect width="800" height="420" fill="#12110f"/>' + img(rel, "ufobang-card.webp", 0, 0, 800, 420)
 
-CARDS = {"ufobang": card_ufobang, "hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
+def card_redning(uid, rel, label):
+    """Redning: a staged frame of the game's own canvas (ship, grabber beaming up a human, mutants, neon planet) -> assets/games/redning-card.webp"""
+    return '<rect width="800" height="420" fill="#0a0912"/>' + img(rel, "redning-card.webp", 0, 0, 800, 420)
+
+CARDS = {"redning": card_redning, "ufobang": card_ufobang, "hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
 
 def card_svg(gid, rel="", label="STRØM"):
     return svg("0 0 800 420", CARDS[gid](gid, rel, label), "art")

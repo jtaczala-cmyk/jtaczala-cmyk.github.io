@@ -79,6 +79,17 @@ T = {
 
 # One entry per game. url/img/name may be per language. new_until: 'New' badge shown until this date.
 GAMES = [
+ dict(id="redning", cats=["action"], new_until="2027-02-28", langs=["no", "en", "pl"],
+      url={"no": "/redning/", "en": "/redning/en/", "pl": "/redning/pl/"},
+      og={"no": "/redning/og-no.jpg", "en": "/redning/og-en.jpg", "pl": "/redning/og-pl.jpg"},
+      img={l: "redning" for l in LANGS},
+      name={"no": "Redning", "en": "Redning", "pl": "Redning"},
+      sub={"no": "Redd menneskene", "en": "Save the humans", "pl": "Ratuj ludzi"},
+      desc={"no": "Gripere snapper folk fra bakken! Skyt dem, fang menneskene i lufta og sett dem trygt ned – før de blir grønne mutanter. Én finger, neon og toppliste på nett.",
+            "en": "Grabbers are snatching people off the ground! Shoot them, catch the humans mid-air and set them down safely – before they turn into green mutants. One finger, neon, online leaderboard.",
+            "pl": "Chwytacze porywają ludzi z ziemi! Zestrzel je, łap ludzi w locie i odstawiaj bezpiecznie – zanim zmienią się w zielone mutanty. Jeden palec, neon i ranking online."},
+      versions=[("no", "Redning", "/redning/"), ("en", "Redning", "/redning/en/"), ("pl", "Redning", "/redning/pl/")],
+      modes={"no": "Én spiller · bølge etter bølge", "en": "Single player · wave after wave", "pl": "Jeden gracz · fala za falą"}),
  dict(id="ufobang", cats=["action"], new_until="2027-01-31", langs=["no", "en", "pl"],
       url={"no": "/ufobang/", "en": "/ufobang/en/", "pl": "/ufobang/pl/"},
       og={"no": "/ufobang/og-no.jpg", "en": "/ufobang/og-en.jpg", "pl": "/ufobang/og-pl.jpg"},
@@ -153,9 +164,9 @@ GAMES = [
 GAMES_ALL = GAMES
 GAMES = [g for g in GAMES_ALL if not g.get("hidden")]
 # Privacy pages linked in the footer, in the page's language (2026-10-11: all games, not only STRØM/Hefau)
-PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/personvern/")],
-        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/en/privacy/")],
-        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/"), ("Ufobang", "/ufobang/prywatnosc/")]}
+PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/personvern/"), ("Redning", "/redning/personvern/")],
+        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/en/privacy/"), ("Redning", "/redning/en/privacy/")],
+        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/"), ("Ufobang", "/ufobang/prywatnosc/"), ("Redning", "/redning/prywatnosc/")]}
 
 FLAG = {
  "no": '<svg class="flag" viewBox="0 0 22 16" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#ba0c2f"/><path d="M0,8H22M8,0V16" stroke="#fff" stroke-width="4"/><path d="M0,8H22M8,0V16" stroke="#00205b" stroke-width="2"/></svg>',
@@ -344,7 +355,8 @@ def sitemap():
     hef = [("nb", "hefau/"), ("pl", "hefau/pl/"), ("en", "hefau/en/"), ("x-default", "hefau/")]
     lk = [("nb", "logikk/"), ("pl", "logikk/pl/"), ("en", "logikk/en/"), ("x-default", "logikk/")]
     sk = [("nb", "ufobang/"), ("pl", "ufobang/pl/"), ("en", "ufobang/en/"), ("x-default", "ufobang/")]
-    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]] + [(p, sk) for _, p in sk[:3]]
+    rk = [("nb", "redning/"), ("pl", "redning/pl/"), ("en", "redning/en/"), ("x-default", "redning/")]
+    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]] + [(p, sk) for _, p in sk[:3]] + [(p, rk) for _, p in rk[:3]]
     urls += [("strom/", []), ("power/", []), ("prad/", []), ("robaki/", [])]
     body = "".join(f"<url><loc>{BASE}{u}</loc>{alts(a)}</url>\n" for u, a in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'
