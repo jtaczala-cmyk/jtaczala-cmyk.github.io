@@ -195,8 +195,59 @@ def card_ufobang(uid, rel, label):
     return '<rect width="800" height="420" fill="#12110f"/>' + img(rel, "ufobang-card.webp", 0, 0, 800, 420)
 
 def card_redning(uid, rel, label):
-    """Redning: a staged frame of the game's own canvas (ship, grabber beaming up a human, mutants, neon planet) -> assets/games/redning-card.webp"""
-    return '<rect width="800" height="420" fill="#0a0912"/>' + img(rel, "redning-card.webp", 0, 0, 800, 420)
+    """Redning: friendly animated card (inline SVG + CSS, ~8 KB, no image request). Ship bobbing with a smiling pilot,
+    a waving human floating up in the rescue beam, comical chef-hat grabbers wobbling, twinkling stars.
+    prefers-reduced-motion -> static frame. Animations only use transform/opacity (GPU-friendly on iPhone)."""
+    import random as _r
+    rnd = _r.Random(7)
+    stars = "".join(f'<circle class="rdS" cx="{rnd.randint(10,790)}" cy="{rnd.randint(8,250)}" r="{rnd.choice([1.4,1.8,2.2,2.8])}" fill="{rnd.choice(["#fff","#fef08a","#99f6e4","#f9a8d4"])}" style="animation-delay:-{rnd.uniform(0,2.4):.2f}s"/>' for _ in range(34))
+    def human(x, y, s=1, wave=True, cls="", shirt="#ef4444"):
+        arm = (f'<g class="rdWave" style="transform-origin:{f(x+5*s)}px {f(y-16*s)}px"><path d="M{f(x+5*s)},{f(y-16*s)} l{f(9*s)},{f(-11*s)}" stroke="#fde7d4" stroke-width="{f(3.4*s)}" stroke-linecap="round"/></g>' if wave else
+               f'<path d="M{f(x+5*s)},{f(y-16*s)} l{f(7*s)},{f(7*s)}" stroke="#fde7d4" stroke-width="{f(3.4*s)}" stroke-linecap="round"/>')
+        return (f'<g class="{cls}"><path d="M{f(x-3*s)},{f(y)} l{f(3*s)},{f(-10*s)} l{f(3*s)},{f(10*s)}" stroke="#1e293b" stroke-width="{f(3*s)}" fill="none" stroke-linecap="round"/>'
+                f'<rect x="{f(x-6*s)}" y="{f(y-22*s)}" width="{f(12*s)}" height="{f(13*s)}" rx="{f(4*s)}" fill="{shirt}"/>'
+                f'<path d="M{f(x-5*s)},{f(y-16*s)} l{f(-7*s)},{f(6*s)}" stroke="#fde7d4" stroke-width="{f(3.4*s)}" stroke-linecap="round"/>' + arm +
+                f'<circle cx="{f(x)}" cy="{f(y-29*s)}" r="{f(7.5*s)}" fill="#fde7d4"/><path d="M{f(x-6.5*s)},{f(y-31*s)} q{f(6.5*s)},{f(-9*s)} {f(13*s)},0" fill="#7c4a1e"/>'
+                f'<circle cx="{f(x-2.6*s)}" cy="{f(y-29*s)}" r="{f(1.1*s)}" fill="#1e293b"/><circle cx="{f(x+2.6*s)}" cy="{f(y-29*s)}" r="{f(1.1*s)}" fill="#1e293b"/>'
+                f'<path d="M{f(x-3*s)},{f(y-25.5*s)} q{f(3*s)},{f(3*s)} {f(6*s)},0" stroke="#1e293b" stroke-width="{f(1.3*s)}" fill="none" stroke-linecap="round"/></g>')
+    def grabber(x, y, s, d):
+        return (f'<g class="rdGrab" style="animation-delay:{d}s;transform-origin:{f(x)}px {f(y+10*s)}px">'
+                f'<path d="M{f(x-16*s)},{f(y+12*s)} l{f(-6*s)},{f(14*s)} M{f(x+16*s)},{f(y+12*s)} l{f(6*s)},{f(14*s)} M{f(x)},{f(y+14*s)} v{f(13*s)}" stroke="#65a30d" stroke-width="{f(3.2*s)}" stroke-linecap="round"/>'
+                f'<ellipse cx="{f(x)}" cy="{f(y+8*s)}" rx="{f(26*s)}" ry="{f(10*s)}" fill="#84cc16"/><path d="M{f(x-19*s)},{f(y+4*s)} a{f(19*s)},{f(18*s)} 0 0 1 {f(38*s)},0 z" fill="#bef264"/>'
+                f'<circle cx="{f(x-7*s)}" cy="{f(y-2*s)}" r="{f(6*s)}" fill="#fff"/><circle cx="{f(x+7*s)}" cy="{f(y-2*s)}" r="{f(6*s)}" fill="#fff"/>'
+                f'<circle cx="{f(x-5.5*s)}" cy="{f(y-1*s)}" r="{f(2.8*s)}" fill="#1e293b"/><circle cx="{f(x+8.5*s)}" cy="{f(y-3*s)}" r="{f(2.8*s)}" fill="#1e293b"/>'
+                f'<ellipse cx="{f(x)}" cy="{f(y+6*s)}" rx="{f(3.4*s)}" ry="{f(2.6*s)}" fill="#3f6212"/>'
+                f'<rect x="{f(x-10*s)}" y="{f(y-24*s)}" width="{f(20*s)}" height="{f(9*s)}" fill="#fff"/><circle cx="{f(x-8*s)}" cy="{f(y-26*s)}" r="{f(7*s)}" fill="#fff"/><circle cx="{f(x)}" cy="{f(y-30*s)}" r="{f(8*s)}" fill="#fff"/><circle cx="{f(x+8*s)}" cy="{f(y-26*s)}" r="{f(7*s)}" fill="#fff"/></g>')
+    css = ('<style>.rdA .rdS{animation:rdTw 2.4s ease-in-out infinite}.rdA .rdShip{animation:rdBob 2s ease-in-out infinite}'
+           '.rdA .rdFl{animation:rdFl .25s steps(2) infinite;transform-box:fill-box;transform-origin:right center}.rdA .rdHum{animation:rdUp 2s ease-in-out infinite}'
+           '.rdA .rdWave{animation:rdWv .5s ease-in-out infinite alternate}.rdA .rdGrab{animation:rdWb 1s ease-in-out infinite alternate}.rdA .rdBeam{animation:rdBm 1s ease-in-out infinite alternate}'
+           '.rdA .rdPop{animation:rdPp 2s ease-in-out infinite}'
+           '@keyframes rdTw{0%,100%{opacity:.25}50%{opacity:1}}@keyframes rdBob{0%,100%{transform:translateY(-5px)}50%{transform:translateY(5px)}}'
+           '@keyframes rdFl{0%{transform:scaleX(.7)}100%{transform:scaleX(1.15)}}@keyframes rdUp{0%,100%{transform:translateY(8px)}50%{transform:translateY(-10px)}}'
+           '@keyframes rdWv{0%{transform:rotate(-25deg)}100%{transform:rotate(30deg)}}@keyframes rdWb{0%{transform:rotate(-7deg) translateY(0)}100%{transform:rotate(7deg) translateY(-4px)}}'
+           '@keyframes rdBm{0%{opacity:.45}100%{opacity:.8}}@keyframes rdPp{0%,100%{transform:scale(.92);opacity:.85}50%{transform:scale(1.06);opacity:1}}'
+           '@media (prefers-reduced-motion:reduce){.rdA *{animation:none!important}}</style>')
+    defs = ('<defs><linearGradient id="rdSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c1d95"/><stop offset=".55" stop-color="#7c3aed"/><stop offset="1" stop-color="#f472b6"/></linearGradient>'
+            '<linearGradient id="rdGnd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14b8a6"/><stop offset="1" stop-color="#0f766e"/></linearGradient>'
+            '<linearGradient id="rdBeamG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a" stop-opacity=".9"/><stop offset="1" stop-color="#fef08a" stop-opacity=".15"/></linearGradient>'
+            '<radialGradient id="rdSun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#fde68a" stop-opacity="0"/></radialGradient></defs>')
+    ground = ('<path d="M0,330 C120,300 220,345 360,318 C500,292 600,340 800,310 L800,420 L0,420 Z" fill="#a78bfa" opacity=".55"/>'
+              '<path d="M0,352 C140,330 260,372 400,350 C540,328 660,370 800,346 L800,420 L0,420 Z" fill="url(#rdGnd)"/>'
+              '<path d="M0,352 C140,330 260,372 400,350 C540,328 660,370 800,346" fill="none" stroke="#5eead4" stroke-width="4"/>')
+    ship = ('<g class="rdShip"><g class="rdFl"><path d="M150,152 l-42,-10 l12,10 l-12,10 z" fill="#fb923c"/><path d="M150,152 l-26,-6 l7,6 l-7,6 z" fill="#fef08a"/></g>'
+            '<path d="M150,132 Q225,118 290,150 Q225,172 150,170 Q140,151 150,132 Z" fill="#f8fafc" stroke="#2dd4bf" stroke-width="3"/>'
+            '<path d="M160,133 l-6,-26 l34,24 z" fill="#ef4444"/><path d="M165,168 l18,14 l22,-12 z" fill="#2dd4bf"/>'
+            '<ellipse cx="222" cy="140" rx="26" ry="17" fill="#67e8f9" stroke="#0891b2" stroke-width="2.5"/>'
+            '<circle cx="222" cy="142" r="9" fill="#fde7d4"/><path d="M213,139 q9,-10 18,0" fill="#f59e0b"/><circle cx="219" cy="142" r="1.4" fill="#1e293b"/><circle cx="225.5" cy="142" r="1.4" fill="#1e293b"/>'
+            '<path d="M218,146 q4,3.5 8,0" stroke="#1e293b" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M206,131 q8,-5 14,-2" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>'
+            '<path class="rdBeam" d="M228,170 L258,170 L292,352 L196,352 Z" fill="url(#rdBeamG)"/></g>')
+    body = (css + defs + '<g class="rdA"><rect width="800" height="420" fill="url(#rdSky)"/><circle cx="640" cy="90" r="80" fill="url(#rdSun)" opacity=".7"/><circle cx="640" cy="90" r="34" fill="#fde68a"/>' + stars + ground
+            + human(70, 372, 1.15, True, shirt="#3b82f6") + human(120, 366, 1.05, False, shirt="#f59e0b") + human(400, 360, 1.1, True, shirt="#22c55e")
+            + ship + human(244, 300, 1.35, True, "rdHum") +
+            '<g class="rdPop" style="transform-origin:318px 228px"><rect x="282" y="210" width="76" height="34" rx="12" fill="#fff"/><path d="M296,244 l-8,12 l18,-12 z" fill="#fff"/>'
+            '<text x="320" y="233" text-anchor="middle" font-family="Oswald,Arial Narrow,sans-serif" font-weight="600" font-size="19" fill="#7c3aed">+500!</text></g>'
+            + grabber(560, 230, 1.5, 0) + grabber(690, 180, 1.2, -.5) + human(600, 352, 1.1, True, shirt="#ec4899") + human(730, 345, 1.05, False, shirt="#3b82f6") + '</g>')
+    return body
 
 CARDS = {"redning": card_redning, "ufobang": card_ufobang, "hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
 
