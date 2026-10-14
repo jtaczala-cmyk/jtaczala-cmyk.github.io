@@ -33,3 +33,9 @@ body.tilt .pad{opacity:.25}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.stats small{display:block;font:500 11px var(--disp);color:var(--mut);text-transform:uppercase}.stats b{font:600 22px var(--disp)}
 .nb{color:var(--amber);font:600 20px var(--disp)}
 @media (orientation:landscape) and (max-height:500px){.card{padding:12px 16px}h1{font-size:30px}.how{display:none}#hud .top{top:calc(8px + var(--sat))}#heat{top:calc(56px + var(--sat))}.pus{top:calc(74px + var(--sat))}}
+
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 4px}.row button{flex:1;min-width:90px}
+.panel{margin:8px 0;padding:8px;border:1px solid rgba(255,140,40,.25);border-radius:12px;text-align:left}
+#shopList{display:grid;gap:6px}.skin{display:flex;align-items:center;gap:10px}.skin i{width:26px;height:26px;border-radius:50%;flex:none}.skin span{flex:1}.skin.cur span{color:#5eead4;font-weight:600}
+.skin button:disabled{opacity:.45}#missList{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}#missList .done{color:#86efac}
+.pus span{display:inline-block;margin:0 3px}.pus .combo{color:#facc15;font-weight:700}#toast{white-space:pre-line}
