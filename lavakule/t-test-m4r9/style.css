@@ -39,3 +39,29 @@ body.tilt .pad{opacity:.25}
 #shopList{display:grid;gap:6px}.skin{display:flex;align-items:center;gap:10px}.skin i{width:26px;height:26px;border-radius:50%;flex:none}.skin span{flex:1}.skin.cur span{color:#5eead4;font-weight:600}
 .skin button:disabled{opacity:.45}#missList{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}#missList .done{color:#86efac}
 .pus span{display:inline-block;margin:0 3px}.pus .combo{color:#facc15;font-weight:700}#toast{white-space:pre-line}
+/* ---- vibrant polish ---- */
+.card{background:linear-gradient(160deg,rgba(60,10,80,.82),rgba(20,4,40,.86) 55%,rgba(90,10,50,.82));border:2px solid transparent;background-clip:padding-box;box-shadow:0 0 0 2px rgba(255,90,200,.55),0 0 50px rgba(255,60,160,.45),0 0 120px rgba(255,140,30,.25),inset 0 1px 0 rgba(255,255,255,.15);border-radius:26px;animation:cardIn .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes cardIn{from{transform:translate(-50%,-50%) scale(.85);opacity:0}}
+.brand{color:#5ff6ff;text-shadow:0 0 10px #5ff6ff}
+h1{font-size:52px;line-height:1;background:linear-gradient(180deg,#fffbe0 0%,#ffd040 30%,#ff7a20 55%,#ff2a8a 80%,#b020ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #4a0030) drop-shadow(0 0 18px rgba(255,80,160,.75));animation:logo 2.4s ease-in-out infinite}
+@keyframes logo{50%{transform:scale(1.04) rotate(-1deg);filter:drop-shadow(0 3px 0 #4a0030) drop-shadow(0 0 28px rgba(255,180,40,.9))}}
+.tag{color:#ffe0f4}.best b{color:#ffd040;text-shadow:0 0 8px #ff9a00}
+button{background:linear-gradient(180deg,#7a3aff,#4a10b0);border:0;border-radius:16px;color:#fff;box-shadow:0 4px 0 #2a0670,0 6px 16px rgba(120,40,255,.45),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .12s}
+button:active{transform:translateY(3px) scale(.97);box-shadow:0 1px 0 #2a0670}
+button.big{background:linear-gradient(180deg,#ffe040,#ff8a1a 50%,#ff2a7a);color:#fff;text-shadow:0 2px 0 rgba(120,0,40,.6);border-radius:22px;box-shadow:0 5px 0 #a0103a,0 0 30px rgba(255,120,40,.7),inset 0 2px 0 rgba(255,255,255,.5);animation:bounce 1.6s ease-in-out infinite}
+@keyframes bounce{50%{transform:scale(1.05)}}
+#dailyBtn{background:linear-gradient(180deg,#30e0ff,#1a70ff);box-shadow:0 4px 0 #0a3a9a,0 6px 16px rgba(40,160,255,.5),inset 0 1px 0 rgba(255,255,255,.4)}
+#shopBtn{background:linear-gradient(180deg,#ff5ad0,#c0108a);box-shadow:0 4px 0 #6a0050,0 6px 16px rgba(255,60,200,.5),inset 0 1px 0 rgba(255,255,255,.4)}
+#missBtn{background:linear-gradient(180deg,#5aff8a,#10a050);box-shadow:0 4px 0 #065a2a,0 6px 16px rgba(60,255,140,.45),inset 0 1px 0 rgba(255,255,255,.4)}
+.panel{background:rgba(0,0,0,.25);border-color:rgba(255,120,220,.35)}
+.how{color:#f0e0ff}.warn{color:#ffe070}
+#hud .top{text-shadow:0 0 8px rgba(255,60,180,.8),0 2px 3px #000}#hud small{color:#ffb0e8}#hud b{color:#fff}
+.hp{color:#ff4a8a!important;-webkit-text-fill-color:#ff4a8a;text-shadow:0 0 10px #ff2a6a}
+#heat i{border-color:rgba(255,90,200,.6);box-shadow:0 0 10px rgba(255,60,160,.4)}#heat span{background:linear-gradient(90deg,#ffe040,#ff7a20,#ff2a8a)}
+.pus span{background:linear-gradient(180deg,rgba(120,40,255,.75),rgba(60,10,140,.75));border:1px solid rgba(255,255,255,.3);border-radius:12px;box-shadow:0 0 12px rgba(160,80,255,.6);animation:pop .3s cubic-bezier(.2,1.8,.4,1)}
+@keyframes pop{from{transform:scale(.4)}}
+#toast{font-size:30px;color:#fff;text-shadow:0 0 14px #ff2a8a,0 0 30px #ff8a1a,0 3px 0 #5a0040}
+#toast.show{animation:toastPop .45s cubic-bezier(.2,1.8,.4,1)}@keyframes toastPop{from{transform:translate(-50%,-50%) scale(.3)}}
+.tools button,.pad button{background:linear-gradient(180deg,rgba(122,58,255,.7),rgba(74,16,176,.7))}
+.nb{color:#ffd040;text-shadow:0 0 12px #ff8a00;animation:bounce .8s infinite}
+.stats b{color:#ffd040}.skin i{box-shadow:0 0 10px rgba(255,255,255,.5)}
