@@ -169,17 +169,50 @@ def card_strom(uid, rel, label):
             '<g font-family="Oswald,sans-serif" font-weight="600"><text x="40" y="96" font-size="74" fill="#f5f1e8" opacity=".95">0:60</text></g>')
 
 def card_robaki(uid, rel, label):
-    rnd = random.Random(4)
-    splats = "".join(f'<circle cx="{rnd.randint(330,780)}" cy="{rnd.randint(30,400)}" r="{rnd.choice([4,6,8])}" fill="#8cff3a" opacity=".85" filter="url(#glowR)"/>' for _ in range(10))
-    bugs = "".join(f'<g transform="translate({x},{y}) rotate({r})">' + img(rel, "robaki-bug.webp", -w/2, -w*164/176/2, w, w*164/176) + '</g>'
-                   for x, y, w, r in [(560, 130, 130, 20), (680, 280, 160, -35), (450, 300, 100, 160), (730, 100, 90, 70), (370, 170, 80, -80)])
-    return ('<rect width="800" height="420" fill="#1c1518"/>'
-            f'<radialGradient id="rg{uid}" cx=".6" cy=".5" r=".6"><stop offset="0" stop-color="#351b20"/><stop offset="1" stop-color="#1c1518"/></radialGradient><rect width="800" height="420" fill="url(#rg{uid})"/>'
-            '<path d="M0,210 H800" stroke="#f5f5f5" stroke-width="6" stroke-dasharray="40 30" opacity=".3"/>'
-            '<path d="M0,40 H800 M0,380 H800" stroke="#ffc94a" stroke-width="3" opacity=".35"/>'
-            f'<linearGradient id="beam{uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffc94a" stop-opacity=".5"/><stop offset="1" stop-color="#ffc94a" stop-opacity="0"/></linearGradient>'
-            f'<path d="M300,170 L620,70 L620,330 L300,230Z" fill="url(#beam{uid})"/>'
-            + img(rel, "robaki-truck.webp", -10, 172, 320, 75) + splats + bugs)
+    """Sneaky Bugs: friendly animated card (inline SVG + CSS, no image request). Yellow truck bouncing along the road,
+    cheeky black red-eyed bugs sneaking and wiggling, one bug getting squished with a green 'SPLAT!' pop.
+    prefers-reduced-motion -> static frame. Only transform/opacity animations."""
+    import random as _r
+    rnd = _r.Random(5)
+    def bg(x, y, s, rot, cls="rbB", d=0):
+        legs = "".join(f'<path d="M{a},{b} q{c},{e} {g},{h}"/>' for a, b, c, e, g, h in
+                       [(-7, -2, -12, -8, -20, -2), (-8, 5, -14, 0, -22, 8), (-7, 12, -10, 6, -17, 17), (7, -2, 12, -8, 20, -2), (8, 5, 14, 0, 22, 8), (7, 12, 10, 6, 17, 17)])
+        return (f'<g transform="translate({x},{y}) rotate({rot}) scale({s})"><g class="{cls}" style="animation-delay:{d}s">'
+                f'<g class="rbL" stroke="#111" stroke-width="3" fill="none" stroke-linecap="round" style="animation-delay:{d}s">{legs}</g>'
+                '<ellipse cx="0" cy="8" rx="11" ry="14" fill="#16121a" stroke="#4a2a30" stroke-width="1.5"/><path d="M0,-4 V21" stroke="#4a2a30" stroke-width="1.3"/>'
+                '<ellipse cx="-4" cy="3" rx="2.5" ry="4" fill="#fff" opacity=".18"/><circle cx="0" cy="-9" r="8" fill="#16121a"/>'
+                '<path d="M-3,-16 q-5,-9 -10,-8 M3,-16 q5,-9 10,-8" stroke="#16121a" stroke-width="2" fill="none" stroke-linecap="round"/>'
+                '<circle cx="-3.2" cy="-10" r="3" fill="#ff2a2a"/><circle cx="3.2" cy="-10" r="3" fill="#ff2a2a"/><circle cx="-2.4" cy="-11" r="1" fill="#fff"/><circle cx="4" cy="-11" r="1" fill="#fff"/>'
+                '<path d="M-3.5,-5 q3.5,3 7,0" stroke="#ff8a8a" stroke-width="1.3" fill="none" stroke-linecap="round"/></g></g>')
+    css = ('<style>.rbA .rbB{animation:rbSn 1.6s ease-in-out infinite alternate}.rbA .rbL{animation:rbLg .18s linear infinite alternate;transform-origin:0 6px}'
+           '.rbA .rbTr{animation:rbBo .5s ease-in-out infinite alternate}.rbA .rbLn{animation:rbRd .6s linear infinite}.rbA .rbSq{animation:rbSq 2.4s ease-in infinite;transform-origin:530px 330px}'
+           '.rbA .rbPp{animation:rbPp 2.4s ease-out infinite;transform-origin:530px 300px}.rbA .rbBm{animation:rbBm 1s ease-in-out infinite alternate}'
+           '@keyframes rbSn{0%{transform:translate(-6px,2px) rotate(-6deg)}100%{transform:translate(6px,-2px) rotate(6deg)}}@keyframes rbLg{0%{transform:scaleX(.85)}100%{transform:scaleX(1.12)}}'
+           '@keyframes rbBo{0%{transform:translateY(0)}100%{transform:translateY(-4px)}}@keyframes rbRd{0%{transform:translateX(0)}100%{transform:translateX(-70px)}}'
+           '@keyframes rbSq{0%,35%{transform:scale(1,1)}45%{transform:scale(1.5,.25)}100%{transform:scale(1.5,.25);opacity:0}}'
+           '@keyframes rbPp{0%,38%{transform:scale(0);opacity:0}48%{transform:scale(1.15);opacity:1}75%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}'
+           '@keyframes rbBm{0%{opacity:.55}100%{opacity:.9}}@media (prefers-reduced-motion:reduce){.rbA *{animation:none!important}}</style>')
+    truck = ('<g class="rbTr"><rect x="70" y="150" width="270" height="110" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="3"/>'
+             '<path d="M78,235 H332" stroke="#f5b400" stroke-width="5"/><g fill="#16121a">' + "".join(f'<path d="M{316+i*0},{156+i*16} l20,-10 v10 l-20,10z" fill="{"#16121a" if i%2 else "#facc15"}"/>' for i in range(6)) + '</g>'
+             '<path d="M345,262 V170 Q345,150 368,148 L420,146 Q440,146 452,172 L470,205 Q478,218 478,236 V262 Z" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>'
+             '<path d="M380,160 L425,158 Q434,158 442,176 L454,200 H380 Z" fill="#7dd3fc" stroke="#0369a1" stroke-width="2.5"/><path d="M392,166 l18,0" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/>'
+             '<rect x="462" y="226" width="22" height="12" rx="3" fill="#fef3c7"/><rect x="338" y="252" width="150" height="14" rx="4" fill="#3f3f46"/>'
+             '<path d="M402,214 q9,8 20,0" stroke="#92400e" stroke-width="3" fill="none" stroke-linecap="round"/></g>'
+             + "".join(f'<g><circle cx="{x}" cy="270" r="20" fill="#1f1f23"/><circle cx="{x}" cy="270" r="8" fill="#a1a1aa"/></g>' for x in (120, 165, 290, 380, 450)))
+    road = ('<rect y="282" width="800" height="138" fill="#2a2228"/><rect y="282" width="800" height="5" fill="#ffc94a" opacity=".7"/>'
+            '<g class="rbLn"><path d="M0,350 H880" stroke="#f5f5f5" stroke-width="6" stroke-dasharray="40 30" opacity=".55"/></g>')
+    splat = ('<g class="rbPp"><path d="M530,300 ' + " ".join(f"L{530+(40 if i%2==0 else 20)*__import__('math').cos(i*0.5236):.0f},{300+(30 if i%2==0 else 15)*__import__('math').sin(i*0.5236):.0f}" for i in range(12)) + 'Z" fill="#8cff3a"/>'
+             '<rect x="478" y="222" width="104" height="38" rx="12" fill="#fff"/><path d="M520,260 l8,12 l8,-12z" fill="#fff"/>'
+             '<text x="530" y="248" text-anchor="middle" font-family="Oswald,Arial Narrow,sans-serif" font-weight="700" font-size="21" fill="#16a34a">SPLAT!</text></g>')
+    sky = (f'<radialGradient id="rbG{uid}" cx=".55" cy=".35" r=".75"><stop offset="0" stop-color="#4a2530"/><stop offset="1" stop-color="#1c1518"/></radialGradient>'
+           f'<rect width="800" height="420" fill="url(#rbG{uid})"/>' + "".join(f'<circle cx="{rnd.randint(10,790)}" cy="{rnd.randint(10,200)}" r="{rnd.choice([1.2,1.8])}" fill="#ffd9a8" opacity=".5"/>' for _ in range(20)) +
+           f'<linearGradient id="rbBe{uid}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".75"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></linearGradient>')
+    beam = f'<path class="rbBm" d="M480,226 L800,170 L800,320 L480,240 Z" fill="url(#rbBe{uid})"/>'
+    bugs = (bg(620, 210, 2.21, -70, d=0) + bg(720, 320, 2.6, -100, d=-.6) + bg(660, 395, 1.95, -80, d=-1.1) + bg(250, 330, 2.08, 95, d=-.3)
+            + bg(560, 120, 1.69, -40, d=-.9) + bg(40, 380, 1.82, 80, d=-1.3) + bg(760, 90, 1.56, -120, d=-.4))
+    return (css + '<g class="rbA">' + sky + road + beam + truck + bugs
+            + '<g class="rbSq">' + bg(530, 318, 2.3, -90, cls="") + '</g>' + splat + '</g>')
+
 
 def card_angielski(uid, rel, label):
     return ('<rect width="800" height="420" fill="#07111c"/>'
@@ -191,8 +224,60 @@ def card_angielski(uid, rel, label):
             '<rect x="50" y="270" width="290" height="62" rx="26" fill="#f7f3ea"/><text x="78" y="311" fill="#122033">Isolate it first.</text></g>')
 
 def card_ufobang(uid, rel, label):
-    """Ufobang: the game's own renders (Blink/Brumm/Gloppo formation, Red Manta, shields, laser cannon over the Earth) -> assets/games/ufobang-card.webp"""
-    return '<rect width="800" height="420" fill="#12110f"/>' + img(rel, "ufobang-card.webp", 0, 0, 800, 420)
+    """Ufobang: friendly animated card (inline SVG + CSS, no image request). Laser cannon over the glowing Earth,
+    Blink (teal one-eyed robot), Brumm (orange horned grump) and Gloppo (green blob) bobbing in a loose playful scatter
+    (no rows/grid), a laser shot popping Gloppo with a 'POP!', and the Red Manta zipping by. Reduced motion -> static frame."""
+    import random as _r
+    rnd = _r.Random(11)
+    stars = "".join(f'<circle class="ubS" cx="{rnd.randint(5,795)}" cy="{rnd.randint(5,300)}" r="{rnd.choice([1,1.4,1.9,2.4])}" fill="{rnd.choice(["#fff","#bae6fd","#fde68a"])}" style="animation-delay:-{rnd.uniform(0,3):.2f}s"/>' for _ in range(46))
+    def blink(x, y, s, d):
+        return (f'<g transform="translate({x},{y}) scale({s})"><g class="ubBob" style="animation-delay:{d}s">'
+                '<path d="M-10,-20 l-6,-12 M10,-20 l6,-12" stroke="#5eead4" stroke-width="3" stroke-linecap="round"/><circle cx="-16" cy="-33" r="3.5" fill="#f472b6"/><circle cx="16" cy="-33" r="3.5" fill="#f472b6"/>'
+                '<path d="M-24,0 a24,24 0 0 1 48,0 v6 q0,10 -10,10 h-28 q-10,0 -10,-10z" fill="#14b8a6" stroke="#0f766e" stroke-width="2.5"/>'
+                '<circle cx="0" cy="-3" r="12" fill="#fff"/><g class="ubEye"><circle cx="1.5" cy="-2" r="6.5" fill="#0e7490"/><circle cx="3.5" cy="-4" r="2.2" fill="#fff"/></g>'
+                '<path d="M-6,10 q6,4 12,0" stroke="#064e3b" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M-14,16 v6 M14,16 v6" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/></g></g>')
+    def brumm(x, y, s, d):
+        return (f'<g transform="translate({x},{y}) scale({s})"><g class="ubBob" style="animation-delay:{d}s">'
+                '<path d="M-18,-12 q-12,-10 -8,-24 q6,10 14,14z M18,-12 q12,-10 8,-24 q-6,10 -14,14z" fill="#fde68a"/>'
+                '<ellipse cx="0" cy="2" rx="25" ry="21" fill="#f97316" stroke="#c2410c" stroke-width="2.5"/><path d="M-25,4 l-8,6 M25,4 l8,6" stroke="#c2410c" stroke-width="4" stroke-linecap="round"/>'
+                '<circle cx="-9" cy="-2" r="6.5" fill="#fff"/><circle cx="9" cy="-2" r="6.5" fill="#fff"/><circle cx="-8" cy="-1" r="3" fill="#431407"/><circle cx="10" cy="-1" r="3" fill="#431407"/>'
+                '<path d="M-16,-11 l11,4 M16,-11 l-11,4" stroke="#7c2d12" stroke-width="3" stroke-linecap="round"/>'
+                '<path d="M-9,12 q9,-5 18,0" stroke="#7c2d12" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M-4,10 l2,4 l2,-4" fill="#fff"/></g></g>')
+    def gloppo(x, y, s, d, cls="ubBob"):
+        return (f'<g transform="translate({x},{y}) scale({s})"><g class="{cls}" style="animation-delay:{d}s">'
+                '<path d="M-8,-16 l-4,-10 M8,-16 l4,-10" stroke="#65a30d" stroke-width="3" stroke-linecap="round"/><circle cx="-12" cy="-27" r="4" fill="#bef264"/><circle cx="12" cy="-27" r="4" fill="#bef264"/>'
+                '<path d="M-24,16 q-4,-34 24,-36 q28,2 24,36 q-6,4 -10,0 q-4,5 -8,0 q-6,5 -12,0 q-4,5 -8,0 q-6,4 -10,0z" fill="#84cc16" stroke="#4d7c0f" stroke-width="2.5"/>'
+                '<ellipse cx="-12" cy="-6" rx="5" ry="7" fill="#d9f99d" opacity=".5"/>'
+                '<circle cx="-8" cy="-2" r="5.5" fill="#fff"/><circle cx="8" cy="-2" r="5.5" fill="#fff"/><circle cx="-7" cy="-1" r="2.6" fill="#1a2e05"/><circle cx="9" cy="-1" r="2.6" fill="#1a2e05"/>'
+                '<path d="M-7,7 q7,6 14,0" stroke="#1a2e05" stroke-width="2.2" fill="#3f6212" stroke-linecap="round"/></g></g>')
+    css = ('<style>.ubA .ubS{animation:ubTw 3s ease-in-out infinite}.ubA .ubBob{animation:ubBo 1.6s ease-in-out infinite alternate}'
+           '.ubA .ubEye{animation:ubEy 2.4s steps(1) infinite;transform-box:fill-box;transform-origin:center}.ubA .ubMan{animation:ubMa 4s linear infinite}.ubA .ubSh{animation:ubSh 2s ease-in infinite;transform-box:fill-box;transform-origin:center bottom}'
+           '.ubA .ubPt{animation:ubPt 2s linear infinite;transform-origin:420px 150px}.ubA .ubPp{animation:ubPp 2s ease-out infinite;transform-origin:420px 150px}.ubA .ubCn{animation:ubCn 2s ease-out infinite}'
+           '@keyframes ubTw{0%,100%{opacity:.3}50%{opacity:1}}@keyframes ubBo{0%{transform:translateY(-5px) rotate(-4deg)}100%{transform:translateY(5px) rotate(4deg)}}'
+           '@keyframes ubEy{0%,90%{transform:none}92%{transform:scaleY(.1)}}'
+           '@keyframes ubMa{0%{transform:translateX(-260px)}85%,100%{transform:translateX(1060px)}}'
+           '@keyframes ubSh{0%,8%{transform:scaleY(0);opacity:0}12%{opacity:1}30%{transform:scaleY(1);opacity:1}42%,100%{transform:scaleY(1);opacity:0}}'
+           '@keyframes ubPt{0%,30%{transform:scale(1);opacity:1}38%{transform:scale(1.25,.6);opacity:0}88%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}'
+           '@keyframes ubPp{0%,30%{transform:scale(0);opacity:0}38%{transform:scale(1.15);opacity:1}62%{transform:scale(1);opacity:1}75%,100%{opacity:0}}'
+           '@keyframes ubCn{0%,8%{transform:translateY(0)}14%{transform:translateY(5px)}30%,100%{transform:translateY(0)}}'
+           '@media (prefers-reduced-motion:reduce){.ubA *{animation:none!important}.ubA .ubPp{opacity:0}}</style>')
+    earth = (f'<radialGradient id="ubE{uid}" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".25" stop-color="#1e3a8a"/><stop offset="1" stop-color="#0b1220"/></radialGradient>'
+             f'<ellipse cx="400" cy="900" rx="760" ry="560" fill="url(#ubE{uid})"/><ellipse cx="400" cy="900" rx="760" ry="560" fill="none" stroke="#67e8f9" stroke-width="5" opacity=".75"/>'
+             '<path d="M120,380 q40,-14 90,-4 q30,8 60,-6 M520,372 q50,-16 110,0" stroke="#22c55e" stroke-width="10" fill="none" opacity=".35" stroke-linecap="round"/>')
+    cannon = ('<g class="ubCn"><ellipse cx="420" cy="375" rx="34" ry="8" fill="#2dd4bf" opacity=".4"/><rect x="396" y="340" width="48" height="26" rx="10" fill="#475569" stroke="#94a3b8" stroke-width="2.5"/>'
+              '<rect x="412" y="304" width="16" height="40" rx="5" fill="#64748b" stroke="#cbd5e1" stroke-width="2"/><rect x="408" y="330" width="24" height="7" rx="3" fill="#ef4444"/>'
+              '<circle cx="404" cy="352" r="3" fill="#22d3ee"/><circle cx="436" cy="352" r="3" fill="#22d3ee"/></g>')
+    shot = ('<rect class="ubSh" x="415" y="160" width="10" height="144" rx="5" fill="#67e8f9" opacity=".9"/>')
+    pop = ('<g class="ubPp"><circle cx="420" cy="150" r="34" fill="#fef9c3" opacity=".9"/>' + "".join(f'<path d="M420,150 l{30*__import__("math").cos(a*0.785):.0f},{30*__import__("math").sin(a*0.785):.0f}" stroke="#facc15" stroke-width="6" stroke-linecap="round" transform="translate({18*__import__("math").cos(a*0.785):.0f},{18*__import__("math").sin(a*0.785):.0f})"/>' for a in range(8)) +
+           '<text x="420" y="160" text-anchor="middle" font-family="Oswald,Arial Narrow,sans-serif" font-weight="700" font-size="26" fill="#a21caf">POP!</text></g>')
+    manta = ('<g class="ubMan"><g transform="translate(0,78)"><ellipse cx="0" cy="10" rx="70" ry="10" fill="#f43f5e" opacity=".25"/>'
+             '<path d="M-58,4 Q-30,-8 0,-8 Q30,-8 58,4 L44,16 Q20,10 0,22 Q-20,10 -44,16 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="2.5"/>'
+             '<ellipse cx="0" cy="-8" rx="18" ry="13" fill="#facc15" stroke="#a16207" stroke-width="2"/><ellipse cx="-5" cy="-12" rx="6" ry="3.5" fill="#fff" opacity=".7"/>'
+             '<path d="M-90,6 h-60 M-84,14 h-40" stroke="#fda4af" stroke-width="3" stroke-linecap="round" opacity=".7"/></g></g>')
+    shields = "".join(f'<path d="M{x},300 v-20 a26,22 0 0 1 52,0 v20 h-14 v-8 a12,10 0 0 0 -24,0 v8z" fill="#22c55e" stroke="#15803d" stroke-width="2" opacity=".9"/>' for x in (140, 610))
+    aliens = (blink(170, 130, 1.75, 0) + brumm(285, 200, 1.68, -.5) + blink(560, 205, 1.47, -1.1) + brumm(665, 120, 1.61, -.2)
+              + gloppo(110, 238, 1.4, -.8) + gloppo(720, 240, 1.4, -1.3) + '<g class="ubPt">' + gloppo(420, 150, 1.82, 0, cls="") + '</g>')
+    return (css + '<g class="ubA"><rect width="800" height="420" fill="#0a0a14"/>' + stars + earth + shields + aliens + manta + shot + pop + cannon + '</g>')
 
 def card_redning(uid, rel, label):
     """Redning: friendly animated card (inline SVG + CSS, ~8 KB, no image request). Ship bobbing with a smiling pilot,
