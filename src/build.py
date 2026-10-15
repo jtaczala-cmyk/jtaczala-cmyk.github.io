@@ -79,6 +79,17 @@ T = {
 
 # One entry per game. url/img/name may be per language. new_until: 'New' badge shown until this date.
 GAMES = [
+ dict(id="lavakule", cats=["action"], new_until="2027-03-31", langs=["no", "en", "pl"],
+      url={"no": "/lavakule/", "en": "/lavakule/en/", "pl": "/lavakule/pl/"},
+      og={"no": "/lavakule/og-no.jpg", "en": "/lavakule/og-en.jpg", "pl": "/lavakule/og-pl.jpg"},
+      img={l: "lavakule" for l in LANGS},
+      name={"no": "Lavakule", "en": "Lava Marble", "pl": "Lawowa kulka"},
+      sub={"no": "Rull over lavaen", "en": "Roll over the lava", "pl": "Tocz się nad lawą"},
+      desc={"no": "Vipp mobilen og styr en glødende glasskule langs en smal bane over lava. Unngå hindringer, samle mynter – og ikke stopp, lavaen stiger! Tastatur eller knapper på PC.",
+            "en": "Tilt your phone to steer a glowing glass marble along a narrow track over lava. Dodge obstacles, grab coins – and don't stop, the lava is rising! Keyboard or buttons on PC.",
+            "pl": "Przechylaj telefon i prowadź świecącą szklaną kulkę wąskim torem nad lawą. Omijaj przeszkody, zbieraj monety – i nie stawaj, lawa rośnie! Na PC klawiatura lub przyciski."},
+      versions=[("no", "Lavakule", "/lavakule/"), ("en", "Lava Marble", "/lavakule/en/"), ("pl", "Lawowa kulka", "/lavakule/pl/")],
+      modes={"no": "Én spiller · styr med vipping", "en": "Single player · tilt to steer", "pl": "Jeden gracz · sterowanie przechyłem"}),
  dict(id="redning", cats=["action"], new_until="2027-02-28", langs=["no", "en", "pl"],
       url={"no": "/redning/", "en": "/redning/en/", "pl": "/redning/pl/"},
       og={"no": "/redning/og-no.jpg", "en": "/redning/og-en.jpg", "pl": "/redning/og-pl.jpg"},
@@ -164,9 +175,9 @@ GAMES = [
 GAMES_ALL = GAMES
 GAMES = [g for g in GAMES_ALL if not g.get("hidden")]
 # Privacy pages linked in the footer, in the page's language (2026-10-11: all games, not only STRØM/Hefau)
-PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/personvern/"), ("Redning", "/redning/personvern/")],
-        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/en/privacy/"), ("Redning", "/redning/en/privacy/")],
-        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/"), ("Ufobang", "/ufobang/prywatnosc/"), ("Redning", "/redning/prywatnosc/")]}
+PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/personvern/"), ("Redning", "/redning/personvern/"), ("Lavakule", "/lavakule/personvern/")],
+        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/en/privacy/"), ("Redning", "/redning/en/privacy/"), ("Lava Marble", "/lavakule/en/privacy/")],
+        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/"), ("Ufobang", "/ufobang/prywatnosc/"), ("Redning", "/redning/prywatnosc/"), ("Lawowa kulka", "/lavakule/prywatnosc/")]}
 
 FLAG = {
  "no": '<svg class="flag" viewBox="0 0 22 16" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#ba0c2f"/><path d="M0,8H22M8,0V16" stroke="#fff" stroke-width="4"/><path d="M0,8H22M8,0V16" stroke="#00205b" stroke-width="2"/></svg>',
@@ -356,7 +367,8 @@ def sitemap():
     lk = [("nb", "logikk/"), ("pl", "logikk/pl/"), ("en", "logikk/en/"), ("x-default", "logikk/")]
     sk = [("nb", "ufobang/"), ("pl", "ufobang/pl/"), ("en", "ufobang/en/"), ("x-default", "ufobang/")]
     rk = [("nb", "redning/"), ("pl", "redning/pl/"), ("en", "redning/en/"), ("x-default", "redning/")]
-    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]] + [(p, sk) for _, p in sk[:3]] + [(p, rk) for _, p in rk[:3]]
+    lv = [("nb", "lavakule/"), ("pl", "lavakule/pl/"), ("en", "lavakule/en/"), ("x-default", "lavakule/")]
+    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]] + [(p, sk) for _, p in sk[:3]] + [(p, rk) for _, p in rk[:3]] + [(p, lv) for _, p in lv[:3]]
     urls += [("strom/", []), ("power/", []), ("prad/", []), ("robaki/", [])]
     body = "".join(f"<url><loc>{BASE}{u}</loc>{alts(a)}</url>\n" for u, a in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'

@@ -8,7 +8,7 @@ Palettes taken from the live games' CSS:
 © 2026 Stop60"""
 import math, random
 
-ACCENT = {"redning": "#2dd4bf", "ufobang": "#4ade80", "hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
+ACCENT = {"lavakule": "#fb923c", "redning": "#2dd4bf", "ufobang": "#4ade80", "hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
 
 def f(v): return f"{v:.1f}".rstrip("0").rstrip(".")
 
@@ -334,7 +334,45 @@ def card_redning(uid, rel, label):
             + grabber(560, 230, 1.5, 0) + grabber(690, 180, 1.2, -.5) + human(600, 352, 1.1, True, shirt="#ec4899") + human(730, 345, 1.05, False, shirt="#3b82f6") + '</g>')
     return body
 
-CARDS = {"redning": card_redning, "ufobang": card_ufobang, "hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
+def card_lavakule(uid, rel, label):
+    """Lavakule: animated card (inline SVG + CSS). Glowing glass marble bobbing over a neon track above bubbling lava,
+    pulsing glow, rising embers, shimmering lava waves. prefers-reduced-motion -> static. transform/opacity only."""
+    import random as _r
+    rnd = _r.Random(11)
+    emb = "".join(f'<circle class="lkE" cx="{rnd.randint(20,780)}" cy="{rnd.randint(260,400)}" r="{rnd.choice([2,2.6,3.2,4])}" fill="{rnd.choice(["#fde047","#fb923c","#f472b6","#fff7ae"])}" style="animation-delay:-{rnd.uniform(0,3):.2f}s;animation-duration:{rnd.uniform(2.2,3.8):.2f}s"/>' for _ in range(26))
+    stars = "".join(f'<circle class="lkS" cx="{rnd.randint(10,790)}" cy="{rnd.randint(8,130)}" r="{rnd.choice([1.2,1.6,2.2])}" fill="#fff" style="animation-delay:-{rnd.uniform(0,2.4):.2f}s"/>' for _ in range(22))
+    css = ('<style>.lkA .lkS{animation:lkTw 2.4s ease-in-out infinite}.lkA .lkM{animation:lkBob 1.8s ease-in-out infinite}'
+           '.lkA .lkG{animation:lkPu 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}.lkA .lkE{animation:lkUp 3s linear infinite}'
+           '.lkA .lkW1{animation:lkWv 3s ease-in-out infinite alternate}.lkA .lkW2{animation:lkWv 2.3s ease-in-out infinite alternate-reverse}'
+           '.lkA .lkT{animation:lkSl 1s linear infinite}.lkA .lkC{animation:lkSp 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}'
+           '@keyframes lkTw{0%,100%{opacity:.2}50%{opacity:1}}@keyframes lkBob{0%,100%{transform:translate(-14px,0)}50%{transform:translate(14px,-12px)}}'
+           '@keyframes lkPu{0%,100%{transform:scale(.9);opacity:.7}50%{transform:scale(1.12);opacity:1}}@keyframes lkUp{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-170px);opacity:0}}'
+           '@keyframes lkWv{0%{transform:translateX(-30px)}100%{transform:translateX(30px)}}@keyframes lkSl{0%{transform:translateY(0)}100%{transform:translateY(40px)}}'
+           '@keyframes lkSp{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.2)}}'
+           '@media (prefers-reduced-motion:reduce){.lkA *{animation:none!important}}</style>')
+    defs = ('<defs><linearGradient id="lkSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e0a3c"/><stop offset=".55" stop-color="#be123c"/><stop offset="1" stop-color="#fb923c"/></linearGradient>'
+            '<linearGradient id="lkLava" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fde047"/><stop offset=".4" stop-color="#f97316"/><stop offset="1" stop-color="#be185d"/></linearGradient>'
+            '<linearGradient id="lkTr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9d174d"/><stop offset="1" stop-color="#ec4899"/></linearGradient>'
+            '<radialGradient id="lkGl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff7ae" stop-opacity=".95"/><stop offset=".45" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#f43f5e" stop-opacity="0"/></radialGradient>'
+            '<radialGradient id="lkBall" cx=".34" cy=".3" r=".75"><stop offset="0" stop-color="#ffffff"/><stop offset=".18" stop-color="#cffafe" stop-opacity=".9"/><stop offset=".5" stop-color="#38bdf8" stop-opacity=".75"/><stop offset=".85" stop-color="#7c3aed" stop-opacity=".8"/><stop offset="1" stop-color="#fb923c"/></radialGradient>'
+            '<clipPath id="lkTc"><path d="M370,190 L430,190 L640,420 L160,420 Z"/></clipPath></defs>')
+    lava = ('<rect y="190" width="800" height="230" fill="url(#lkLava)"/>'
+            '<path class="lkW1" d="M-40,250 C60,230 140,270 240,248 C340,226 420,272 520,250 C620,228 700,268 840,246 L840,300 L-40,300 Z" fill="#fde047" opacity=".55"/>'
+            '<path class="lkW2" d="M-40,330 C80,305 170,350 290,326 C410,302 500,352 620,328 C720,308 780,340 840,326 L840,380 L-40,380 Z" fill="#f472b6" opacity=".5"/>'
+            '<path class="lkW1" d="M-40,385 C90,370 200,400 330,382 C460,364 560,404 700,384 C760,376 800,390 840,384 L840,420 L-40,420 Z" fill="#9d174d" opacity=".55"/>')
+    track = ('<path d="M370,190 L430,190 L640,420 L160,420 Z" fill="url(#lkTr)"/>'
+             '<g clip-path="url(#lkTc)"><g class="lkT">' + "".join(f'<rect x="150" y="{y}" width="500" height="10" fill="#fff" opacity=".12"/>' for y in range(150, 430, 40)) + '</g></g>'
+             '<path d="M370,190 L160,420 M430,190 L640,420" stroke="#22d3ee" stroke-width="5" filter="drop-shadow(0 0 6px #22d3ee)"/>')
+    coins = "".join(f'<g class="lkC" style="animation-delay:-{d}s"><ellipse cx="{x}" cy="{y}" rx="{r}" ry="{r}" fill="#facc15" stroke="#a16207" stroke-width="2"/></g>' for x, y, r, d in ((400, 212, 6, 0), (406, 240, 8, .3), (414, 276, 10, .6)))
+    marble = ('<g class="lkM"><ellipse cx="400" cy="372" rx="48" ry="11" fill="#7c2d12" opacity=".55"/>'
+              '<circle class="lkG" cx="400" cy="326" r="92" fill="url(#lkGl)"/>'
+              '<circle cx="400" cy="326" r="44" fill="url(#lkBall)" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>'
+              '<ellipse cx="386" cy="308" rx="14" ry="9" fill="#fff" opacity=".9"/><path d="M372,346 q28,16 56,-4" stroke="#fde047" stroke-width="4" fill="none" opacity=".75" stroke-linecap="round"/></g>')
+    body = (css + defs + '<g class="lkA"><rect width="800" height="420" fill="url(#lkSky)"/>' + stars +
+            '<circle cx="640" cy="120" r="70" fill="url(#lkGl)" opacity=".6"/>' + lava + track + coins + emb + marble + '</g>')
+    return body
+
+CARDS = {"lavakule": card_lavakule, "redning": card_redning, "ufobang": card_ufobang, "hefau": card_hefau, "strom": card_strom, "robaki": card_robaki, "logikk": lambda uid, rel, label: card_logikk(uid), "angielski": card_angielski}
 
 def card_svg(gid, rel="", label="STRØM"):
     return svg("0 0 800 420", CARDS[gid](gid, rel, label), "art")

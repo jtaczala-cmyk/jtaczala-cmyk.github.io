@@ -737,6 +737,3 @@ let menuT = 0;
 function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.fov = innerHeight > innerWidth ? 70 : 58; camera.updateProjectionMatrix(); }
 addEventListener('resize', resize); resize(); reset(); state = 'menu'; renderMissions();
 requestAnimationFrame(frame);
-/* test hook */
-window.__lk = { add: addItem, get state() { return state; }, get S() { return S; }, get inp() { return inp; }, start: (d) => start(false, !!d), get best() { return best; },
-  step: (dt) => { if (state === 'play' || state === 'over') update(dt); }, feat: (s) => featAt(s), at: (s) => at(s), items: () => items, hit: (it, ds, x, t) => obstHit(it, ds, x, R, t), plat: (s, t) => { const m = movers.find(m => s >= m.s0 && s <= m.s1); return m ? platOff(m, t) : null; } };
