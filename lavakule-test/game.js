@@ -445,6 +445,31 @@ const eyes = [-1, 1].map(sd => { const g = new THREE.Group(), ball = new THREE.G
   pu.position.z = 0.002; hl.position.set(0.016, 0.018, 0.004); pu.add(hl); ball.add(w, pu); arc.position.set(0, -0.025, 0.003); arc.visible = false; g.add(ball, arc);
   const ax = sd * 0.36, ay = 0.2; g.position.set(Math.sin(ax) * Math.cos(ay) * R * 1.01, Math.sin(ay) * R * 1.01, Math.cos(ax) * Math.cos(ay) * R * 1.01); g.rotation.set(-ay, ax, 0, 'YXZ');
   face.add(g); return { g, ball, pu, arc, c: 0 }; });
+/* cute mouth: smile arc by default, open grin (with tongue) on wink / combos / power-ups, worried 'o' on a near miss */
+const mouthM = new THREE.MeshBasicMaterial({ color: 0x1a1030 }), tongueM = new THREE.MeshBasicMaterial({ color: 0xff6f8a });
+const mouthG = new THREE.Group(), MA = 0.78 * Math.PI;
+const smileArc = new THREE.Mesh(new THREE.TorusGeometry(0.056, 0.0125, 4, 18, MA), mouthM);
+smileArc.rotation.z = -Math.PI / 2 - MA / 2; smileArc.position.set(0, 0.03, 0.003);
+const grinM = new THREE.Mesh(new THREE.CircleGeometry(0.066, 22, Math.PI, Math.PI), mouthM), tongue = new THREE.Mesh(new THREE.CircleGeometry(0.036, 14, Math.PI, Math.PI), tongueM);
+grinM.position.set(0, 0.012, 0.002); tongue.position.set(0, -0.03, 0.001); grinM.add(tongue);
+const ohM = new THREE.Mesh(new THREE.CircleGeometry(0.03, 16), mouthM); ohM.position.set(0, -0.005, 0.002);
+mouthG.add(smileArc, grinM, ohM);
+{ const ay = -0.2; mouthG.position.set(0, Math.sin(ay) * R * 1.02, Math.cos(ay) * R * 1.02); mouthG.rotation.x = -ay; }
+face.add(mouthG);
+const mouth = { g: 0, w: 0, gt: 0, wt: 0, pw: 0 };   // g grin / w worry amounts, gt/wt timers, pw pending near-miss wink
+function grin(t) { mouth.gt = Math.max(mouth.gt, t); }
+function nearMissFace() { if (blink.cd > 0 || blink.t >= 0 || mouth.pw > 0) return; blink.cd = 3.3; mouth.wt = mouth.pw = 0.3; }
+function updMouth(dt) {
+  if (mouth.pw > 0) { mouth.pw -= dt; if (mouth.pw <= 0) { eyeAct(1); grin(0.5); } }
+  mouth.gt = Math.max(0, mouth.gt - dt); mouth.wt = Math.max(0, mouth.wt - dt);
+  const tw = mouth.wt > 0 ? 1 : 0, tg = !tw && (mouth.gt > 0 || (blink.kind === 1 && blink.t >= 0)) ? 1 : 0, k = Math.min(1, dt * 14);
+  mouth.g += (tg - mouth.g) * k; mouth.w += (tw - mouth.w) * k;
+  if (Math.abs(tg - mouth.g) < 1e-3) mouth.g = tg; if (Math.abs(tw - mouth.w) < 1e-3) mouth.w = tw;
+  const g = mouth.g, w = mouth.w, sm = 1 - w;
+  smileArc.visible = sm > 0.02; smileArc.scale.set(sm * (1 + 0.15 * g), sm, 1);
+  grinM.visible = g > 0.02; grinM.scale.set(0.85 + 0.25 * g, g, 1);
+  ohM.visible = w > 0.02; ohM.scale.set(w * 0.85, w * 1.15, 1);
+}
 let eyeTS = 1;
 const blink = { next: 2 + Math.random() * 3, t: -1, d: 0.15, kind: 0, side: 0, cd: 0, dbl: false };   // kind 0 blink, 1 wink
 function eyeAct(kind, side) { if (blink.t >= 0) return; blink.t = 0; blink.kind = kind; blink.side = side == null ? (Math.random() < 0.5 ? 0 : 1) : side; blink.d = kind ? 0.42 : fx(0.12, 0.18); }
@@ -453,7 +478,7 @@ function updEyes(dt) { dt *= eyeTS;
   face.visible = marble.visible && glass.visible; if (!face.visible) return;
   face.position.copy(marble.position); face.scale.copy(marble.scale); face.lookAt(camera.position);
   blink.cd = Math.max(0, blink.cd - dt);
-  if (blink.t < 0) { blink.next -= dt; if (blink.next <= 0) { if (Math.random() < 0.15) eyeAct(1); else { eyeAct(0); blink.dbl = Math.random() < 0.2; } blink.next = 4 + Math.random() * 4; } }
+  if (blink.t < 0 && mouth.pw <= 0) { blink.next -= dt; if (blink.next <= 0) { if (Math.random() < 0.15) eyeAct(1); else { eyeAct(0); blink.dbl = Math.random() < 0.2; } blink.next = 4 + Math.random() * 4; } }
   let c0 = 0, c1 = 0;
   if (blink.t >= 0) { blink.t += dt; const u = Math.min(1, blink.t / blink.d);
     if (blink.kind === 0) c0 = c1 = Math.sin(Math.PI * u);
@@ -465,6 +490,7 @@ function updEyes(dt) { dt *= eyeTS;
     E.ball.scale.set(1 - Math.min(0, c) * 0.6, Math.max(0.06, 1 - Math.max(0, c)) - Math.min(0, c), 1); E.ball.visible = !(w && c > 0.8);
     E.arc.visible = w && c > 0.5;
     E.pu.position.x = look * 0.022; }
+  updMouth(dt);
 }
 const shards = [];
 function shatterFx(pos) { for (let i = 0; i < 22; i++) { const m = new THREE.Mesh(new THREE.TetrahedronGeometry(fx(0.04, 0.1)), glassMat); m.position.copy(pos);
@@ -598,7 +624,7 @@ function hurt() {   // obstacle collision
   if (S.hp <= 0) { S.dead = true; shatterFx(marble.position); glass.visible = false; sfx.shatter(); haptic(500, 1.2); flash('#ffffff', 0.5); gameOver('shattered'); }
   else { setCracks(MAXHP - S.hp); burst(marble.position, 0xffffff, 24, 5); sfx.crack(); haptic(150, 0.7); toast(T.crack); flash('#ffffff', 0.25); }
 }
-function grabPU(type) { S.pus++; cheekyWink(); sfx.power(); haptic(40, 0.15);
+function grabPU(type) { S.pus++; cheekyWink(); grin(1.4); sfx.power(); haptic(40, 0.15);
   if (type === 'repair') { S.hp = Math.min(MAXHP, S.hp + 1); S.cap = Math.max(S.cap, S.hp); setCracks(MAXHP - S.hp); sfx.heal(); toast(T.repair); return; }
   S.pu[type] = PU[type].d; toast(T[PU[type].k]); }
 
@@ -700,13 +726,13 @@ function update(dtReal) {
         S.v *= 0.4; S.vx = (S.x > it.x ? 1 : -1) * 4; it.hit = true; hurt(); it.alive = false; scene.remove(it.m); continue; }
       if (Math.abs(ds) < 1.2) it.near = Math.min(it.near, Math.abs(S.x - it.x));
       if (ds < -1.2 && !it.hit && !it.nearDone) { it.nearDone = true;
-        if (!['bumper', 'divider', 'hole'].includes(it.type) && (it.near < r + 1.05 || ['bar', 'hammer', 'jet', 'gate', 'blade', 'slider', 'wave', 'boulder'].includes(it.type))) { S.nears++; S.pts += 25; cheekyWink(); toast(T.near + ' +25', 700); } }
+        if (!['bumper', 'divider', 'hole'].includes(it.type) && (it.near < r + 1.05 || ['bar', 'hammer', 'jet', 'gate', 'blade', 'slider', 'wave', 'boulder'].includes(it.type))) { S.nears++; S.pts += 25; nearMissFace(); toast(T.near + ' +25', 700); } }
       continue;
     }
     const hitR = it.type === 'coin' ? 0.6 : 0.65;
     if (Math.abs(it.s - S.s) < hitR && Math.abs(it.x - S.x) < hitR + (mini ? 0 : 0)) {
       if (it.type === 'coin') { S.combo = Math.min(S.combo + 1, 99); S.comboT = 1.6; const mult = Math.min(5, 1 + Math.floor(S.combo / 5)), v = (S.pu.x2 > 0 ? 2 : 1);
-        if (S.combo % 10 === 0) cheekyWink(); S.coins += v; S.pts += 10 * mult * v; burst(it.m.position, mult > 2 ? 0xff7ad0 : 0xffd040, 7, 3); tone(1320 + Math.min(mult, 5) * 120, 0.12, 'triangle', 0.18); tone(1980, 0.18, 'triangle', 0.14, null, 0.05); }
+        if (S.combo % 10 === 0) { cheekyWink(); grin(1.3); } else if (S.combo % 5 === 0) grin(0.8); S.coins += v; S.pts += 10 * mult * v; burst(it.m.position, mult > 2 ? 0xff7ad0 : 0xffd040, 7, 3); tone(1320 + Math.min(mult, 5) * 120, 0.12, 'triangle', 0.18); tone(1980, 0.18, 'triangle', 0.14, null, 0.05); }
       else { burst(it.m.position, PU[it.type].c, 34, 5); flash('#' + new THREE.Color(PU[it.type].c).getHexString(), 0.22); grabPU(it.type); }
       it.alive = false; scene.remove(it.m);
     }
@@ -770,5 +796,5 @@ function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.asp
 addEventListener('resize', resize); resize(); reset(); state = 'menu'; renderMissions();
 requestAnimationFrame(frame);
 /* test hook */
-window.__lk = { scr: () => { const v = marble.position.clone().project(camera); return [v.x, v.y]; }, eyeSlow: (k) => { eyeTS = k; }, blink: () => eyeAct(0), wink: (sd) => eyeAct(1, sd), add: addItem, get state() { return state; }, get S() { return S; }, get inp() { return inp; }, start: (d) => start(false, !!d), get best() { return best; },
+window.__lk = { scr: () => { const v = marble.position.clone().project(camera); return [v.x, v.y]; }, eyeSlow: (k) => { eyeTS = k; }, blink: () => eyeAct(0), wink: (sd) => eyeAct(1, sd), grin: (t) => grin(t == null ? 1.2 : t), near: () => { blink.cd = 0; mouth.gt = 0; nearMissFace(); }, get mouth() { return mouth; }, add: addItem, get state() { return state; }, get S() { return S; }, get inp() { return inp; }, start: (d) => start(false, !!d), get best() { return best; },
   step: (dt) => { if (state === 'play' || state === 'over') update(dt); }, feat: (s) => featAt(s), at: (s) => at(s), items: () => items, hit: (it, ds, x, t) => obstHit(it, ds, x, R, t), plat: (s, t) => { const m = movers.find(m => s >= m.s0 && s <= m.s1); return m ? platOff(m, t) : null; } };
