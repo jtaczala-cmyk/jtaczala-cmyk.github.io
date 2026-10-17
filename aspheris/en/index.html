@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<title>Aspheris – steer a glowing orb through space | free game</title>
+<meta name="description" content="Aspheris is a free 3D game: tilt your phone (or drag with a finger) to steer Lumen, a glowing energy orb, through colourful cosmic worlds. Collect Heart fragments, escape the Drift and fly through the black-hole portal. With a story, free for everyone.">
+<link rel="canonical" href="https://stop60.no/aspheris/en/">
+<link rel="alternate" hreflang="nb" href="https://stop60.no/aspheris/">
+<link rel="alternate" hreflang="pl" href="https://stop60.no/aspheris/pl/">
+<link rel="alternate" hreflang="en" href="https://stop60.no/aspheris/en/">
+<link rel="alternate" hreflang="x-default" href="https://stop60.no/aspheris/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stop60">
+<meta property="og:title" content="Aspheris – steer a glowing orb through space | free game">
+<meta property="og:description" content="Aspheris is a free 3D game: tilt your phone (or drag with a finger) to steer Lumen, a glowing energy orb, through colourful cosmic worlds. Collect Heart fragments, escape the Drift and fly through the black-hole portal. With a story, free for everyone.">
+<meta property="og:url" content="https://stop60.no/aspheris/en/">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://stop60.no/aspheris/og-en.jpg?v=1">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Aspheris: a glowing energy orb and shots from neon worlds">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Aspheris – steer a glowing orb through space | free game">
+<meta name="twitter:description" content="Aspheris is a free 3D game: tilt your phone (or drag with a finger) to steer Lumen, a glowing energy orb, through colourful cosmic worlds. Collect Heart fragments, escape the Drift and fly through the black-hole portal. With a story, free for everyone.">
+<meta name="twitter:image" content="https://stop60.no/aspheris/og-en.jpg?v=1">
+<meta name="twitter:image:alt" content="Aspheris: a glowing energy orb and shots from neon worlds">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Aspheris", "url": "https://stop60.no/aspheris/en/", "description": "Aspheris is a free 3D game: tilt your phone (or drag with a finger) to steer Lumen, a glowing energy orb, through colourful cosmic worlds. Collect Heart fragments, escape the Drift and fly through the black-hole portal. With a story, free for everyone.", "image": "https://stop60.no/aspheris/og-en.jpg?v=1", "inLanguage": ["nb", "pl", "en"], "genre": ["Arcade", "Adventure"], "gamePlatform": "Web browser", "applicationCategory": "GameApplication", "operatingSystem": "Any (web browser)", "playMode": "SinglePlayer", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "copyrightYear": 2026}</script>
+<meta name="apple-mobile-web-app-title" content="Aspheris">
+<meta name="application-name" content="Aspheris">
+<meta name="theme-color" content="#12002a">
+<link rel="apple-touch-icon" sizes="180x180" href="/aspheris/apple-touch-icon.png?v=4">
+<link rel="icon" type="image/png" sizes="32x32" href="/aspheris/icons/favicon-32.png?v=4">
+<link rel="icon" href="/aspheris/favicon.ico?v=4" sizes="any">
+<link rel="manifest" href="/aspheris/manifest.webmanifest?v=4">
+<style>
+  body{margin:0;background:#12002a;overflow:hidden;touch-action:none;font-family:system-ui,-apple-system,sans-serif;color:#fff}
+  #hud{position:absolute;top:14px;left:14px;padding:10px 16px;border-radius:999px;font-size:15px;font-weight:800;z-index:10;pointer-events:none;background:linear-gradient(90deg,rgba(255,60,170,.55),rgba(120,60,255,.55));box-shadow:0 0 18px rgba(255,80,200,.6);border:2px solid rgba(255,255,255,.5);text-shadow:0 1px 4px #0006}
+  #lvl{display:block;font-size:11px;letter-spacing:2px;opacity:.9}
+  #overlay{position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,#ff4fd8 0%,#7b2cff 38%,#1a0550 75%,#090022 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:20;text-align:center;overflow:hidden}
+  #overlay h1,#win h1{margin:0 0 10px;font-size:52px;font-weight:900;background:linear-gradient(90deg,#ffe600,#ff4fd8,#3ff5ff,#7dff4f,#ffe600);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(255,120,255,.9)) drop-shadow(0 4px 0 #3a0a7a);animation:sh 4s linear infinite,bob 2.4s ease-in-out infinite}
+  #win h1{font-size:34px}
+  @keyframes sh{to{background-position:300% 0}}
+  @keyframes bob{50%{transform:translateY(-8px) scale(1.04)}}
+  @keyframes pulse{50%{transform:scale(1.08);box-shadow:0 0 50px #ffb300,0 6px 0 #b84a00}}
+  #overlay p{font-weight:700;opacity:.95;text-shadow:0 2px 6px #0008}
+  #overlay button,#win button{margin-top:18px;padding:18px 54px;font-size:22px;font-weight:900;letter-spacing:1px;background:linear-gradient(180deg,#fff36b,#ffb300 55%,#ff7a00);color:#5a1800;border:none;border-radius:999px;box-shadow:0 0 30px #ffb300,0 6px 0 #b84a00;cursor:pointer;animation:pulse 1.4s ease-in-out infinite}
+  .orb{position:absolute;border-radius:50%;filter:blur(2px);opacity:.7;animation:fl 6s ease-in-out infinite}
+  @keyframes fl{50%{transform:translateY(-30px)}}
+  canvas{display:block}
+  #story{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:25;text-align:center;padding:28px;box-sizing:border-box;background:radial-gradient(circle at 50% 30%,rgba(70,20,140,.92),rgba(6,2,20,.97) 75%)}
+  #story h2{margin:0 0 6px;font-size:13px;letter-spacing:4px;opacity:.75;font-weight:800}
+  #story h1{margin:0 0 16px;font-size:30px;font-weight:900;background:linear-gradient(90deg,#ffe600,#ff4fd8,#3ff5ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 12px rgba(255,120,255,.7))}
+  #story p{max-width:340px;font-size:16px;line-height:1.5;font-weight:600;opacity:.92;margin:0 0 8px;text-shadow:0 2px 6px #000}
+  #story button{margin-top:18px;padding:15px 44px;font-size:19px;font-weight:900;background:linear-gradient(180deg,#fff36b,#ffb300 55%,#ff7a00);color:#5a1800;border:none;border-radius:999px;box-shadow:0 0 26px #ffb300,0 5px 0 #b84a00}
+  #langs{margin-top:14px;display:flex;gap:8px;justify-content:center}
+  #langs button{margin:0;padding:7px 14px;font-size:13px;animation:none;box-shadow:none;background:rgba(255,255,255,.18);color:#fff;border:2px solid rgba(255,255,255,.4)}
+  #langs button.on{background:#fff;color:#4a0a8a}
+  #toast.long{font-size:20px;max-width:86vw;text-align:center}
+  #tiltBtn{position:absolute;top:14px;right:14px;z-index:10;padding:10px 14px;font-size:14px;font-weight:800;border-radius:999px;border:2px solid rgba(255,255,255,.6);background:linear-gradient(90deg,rgba(0,220,255,.55),rgba(60,120,255,.55));color:#fff;display:none;box-shadow:0 0 14px rgba(0,220,255,.6)}
+  #toast{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:40px;font-weight:900;color:#fff;text-shadow:0 0 12px #ff4fd8,0 0 30px #ffe600,0 3px 0 #7a0a6a;z-index:15;pointer-events:none;opacity:0;transition:opacity .3s,transform .3s}
+  #win{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:20;background:radial-gradient(circle,rgba(255,80,200,.75),rgba(40,0,90,.92));text-align:center;font-weight:700}
+  #splash{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 42%,#14063a 0%,#040018 62%);transition:opacity .55s ease;-webkit-tap-highlight-color:transparent;cursor:pointer}
+  #splash.out{opacity:0;pointer-events:none}
+  #splashOrb{position:relative;width:min(72vw,46vh,380px);aspect-ratio:1;-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 71%);mask-image:radial-gradient(circle,#000 58%,transparent 71%)}
+  #splashOrb img,#splashOrb video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  #splashOrb video{opacity:0;transition:opacity .35s}
+  #splashOrb.playing video{opacity:1}
+  #splash h1{margin:6px 0 0;font-size:46px;font-weight:900;letter-spacing:3px;background:linear-gradient(90deg,#3ff5ff,#b98cff,#ff7ae6,#3ff5ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(120,160,255,.85));animation:sh 4s linear infinite}
+  #splashHint{margin-top:14px;font-size:13px;letter-spacing:2px;opacity:.55;font-weight:700}
+</style>
+</head>
+<body>
+<div id="hud"><span id="lvl">STREFA 1</span>Fragmenty: <span id="sc">0</span>/7</div>
+<button id="tiltBtn">Żyroskop: wył</button>
+<div id="toast"></div>
+<div id="story"><h2 id="sk"></h2><h1 id="st"></h1><div id="sb"></div><button id="sn">Dalej</button></div>
+<div id="win"><h1 id="wh">Wszystkie strefy!</h1><p id="wend" style="max-width:320px;line-height:1.5"></p><p id="wt"></p><button id="again" onclick="location.reload()">Jeszcze raz</button></div>
+<div id="overlay">
+  <div class="orb" style="width:90px;height:90px;left:8%;top:12%;background:radial-gradient(#fff,#3ff5ff 40%,transparent 70%)"></div>
+  <div class="orb" style="width:60px;height:60px;right:10%;top:22%;background:radial-gradient(#fff,#ffe600 40%,transparent 70%);animation-delay:-2s"></div>
+  <div class="orb" style="width:120px;height:120px;left:60%;bottom:10%;background:radial-gradient(#fff,#7dff4f 40%,transparent 70%);animation-delay:-4s"></div>
+  <div class="orb" style="width:70px;height:70px;left:12%;bottom:18%;background:radial-gradient(#fff,#ff4fd8 40%,transparent 70%);animation-delay:-1s"></div>
+  <h1>Aspheris</h1>
+  <p id="hint" style="opacity:.85">Przeciągaj palcem</p>
+  <button id="go">Start</button>
+  <div id="langs"><button data-l="pl">PL</button><button data-l="en">EN</button><button data-l="no">NO</button></div>
+</div>
+<div id="splash" aria-label="Aspheris">
+  <div id="splashOrb"><img src="/aspheris/media/orb_poster.jpg?v=4" alt="" width="400" height="400"><video id="splashVid" muted playsinline webkit-playsinline autoplay loop preload="auto" disablepictureinpicture disableremoteplayback poster="/aspheris/media/orb_poster.jpg?v=4"><source src="/aspheris/media/orb_anim.mp4?v=4" type="video/mp4"><source src="/aspheris/media/orb_anim.webm?v=4" type="video/webm"></video></div>
+  <h1>Aspheris</h1>
+  <div id="splashHint">&nbsp;</div>
+</div>
+<script src="/aspheris/vendor/three.min.js"></script>
+<script src="/aspheris/vendor/CopyShader.js"></script>
+<script src="/aspheris/vendor/LuminosityHighPassShader.js"></script>
+<script src="/aspheris/vendor/EffectComposer.js"></script>
+<script src="/aspheris/vendor/ShaderPass.js"></script>
+<script src="/aspheris/vendor/RenderPass.js"></script>
+<script src="/aspheris/vendor/UnrealBloomPass.js"></script>
+<script>
+window.goatcounter={path:location.pathname.replace(/index\.html$/,'')};
+(function(){var g=document.createElement('script');g.async=true;g.src='/count.js';g.dataset.goatcounter='https://jtaczala-games.goatcounter.com/count';document.head.appendChild(g);})();
+</script>
+<script>
+const sc=document.getElementById('sc');
+// Story (GDD: Lumen vs Drift). PL default, EN/NO from GDD dialogues.
+const TX={
+ pl:{hint:'Przeciągaj palcem',tap:'Dotknij, aby kontynuować',start:'Start',next:'Dalej',go:'Leć!',frag:'Fragmenty',zone:'STREFA',again:'Jeszcze raz',time:'Czas',gyroOff:'Żyroskop: wył',gyroOn:'Żyroskop: wł',
+  pk:'PROLOG',pt:'Lumen. Obudź się. Stacja spada.',pb:['Serce Równowagi stacji Aspheris pękło. Załoga zniknęła.','Drift — chaotyczna anomalia z rozbitego Serca — rozrywa sektory i pożera fragmenty równowagi.','Jesteś Lumen, ostatnią działającą sferą energii. Zbierz fragmenty Serca w trzech strefach, zanim Drift pochłonie wszystko.'],
+  m:['Laguna chłodzenia wciąż świeci. Zbierz 7 fragmentów Serca.','Drift rozgrzał rdzeń do czerwoności. Zbierz 7 fragmentów, zanim lawa je pochłonie.','Ogród hydroponiczny zdziczał i zatruł powietrze. Ostatnie 7 fragmentów — potem Serce.'],
+  ev:['„Lumen, jeśli to słyszysz…”','Drift się zbliża.','Rośliny otwierają ci drogę…'],got:'Fragment odzyskany.',
+  wh:'Serce bije. Aspheris żyje.',wb:'Lumen złożył Serce Równowagi. Drift cofa się w ciemność — na razie.'},
+ en:{hint:'Drag with your finger',tap:'Tap to continue',start:'Start',next:'Next',go:'Fly!',frag:'Fragments',zone:'ZONE',again:'Play again',time:'Time',gyroOff:'Gyro: off',gyroOn:'Gyro: on',
+  pk:'PROLOGUE',pt:'Lumen. Wake up. The station is falling.',pb:['The Heart of Balance of station Aspheris has cracked. The crew is gone.','The Drift — a chaotic anomaly born from the broken Heart — tears the sectors apart and devours the fragments.','You are Lumen, the last working energy sphere. Collect the Heart fragments in three zones before the Drift consumes everything.'],
+  m:['The cooling lagoon still glows. Collect 7 Heart fragments.','The Drift has heated the core red-hot. Collect 7 fragments before the lava takes them.','The hydroponic garden has gone wild and toxic. The last 7 fragments — then the Heart.'],
+  ev:['“Lumen, if you can hear this…”','The Drift is approaching.','The plants open a path for you…'],got:'Fragment recovered.',
+  wh:'The Heart beats. Aspheris lives.',wb:'Lumen has rebuilt the Heart of Balance. The Drift retreats into the dark — for now.'},
+ no:{hint:'Dra med fingeren',tap:'Trykk for å fortsette',start:'Start',next:'Videre',go:'Fly!',frag:'Fragmenter',zone:'SONE',again:'Spill igjen',time:'Tid',gyroOff:'Gyro: av',gyroOn:'Gyro: på',
+  pk:'PROLOG',pt:'Lumen. Våkn opp. Stasjonen faller.',pb:['Balansens hjerte på stasjonen Aspheris har sprukket. Mannskapet er borte.','Driften — en kaotisk anomali fra det knuste hjertet — river sektorene i stykker og sluker fragmentene.','Du er Lumen, den siste fungerende energisfæren. Samle hjertefragmentene i tre soner før Driften sluker alt.'],
+  m:['Kjølelagunen lyser fortsatt. Samle 7 hjertefragmenter.','Driften har varmet kjernen rødglødende. Samle 7 fragmenter før lavaen tar dem.','Den hydroponiske hagen er blitt vill og giftig. De siste 7 fragmentene — så hjertet.'],
+  ev:['«Lumen, hvis du hører dette…»','Driften nærmer seg.','Plantene åpner veien for deg…'],got:'Fragment gjenopprettet.',
+  wh:'Hjertet slår. Aspheris lever.',wb:'Lumen har satt sammen Balansens hjerte. Driften trekker seg tilbake i mørket — for nå.'}};
+let LANG=(()=>{try{return 'en'}catch(e){return 'en'}})(),paused=false;
+const $=id=>document.getElementById(id),L=()=>TX[LANG];
+function applyLang(){const t=L();document.documentElement.lang=LANG==='no'?'nb':LANG;$('hint').textContent=t.hint;$('splashHint').textContent=t.tap;$('go').textContent=t.start;$('again').textContent=t.again;$('wh').textContent=t.wh;
+  $('hud').childNodes[1].nodeValue=t.frag+': ';$('tiltBtn').textContent=tilt.on?t.gyroOn:t.gyroOff;
+  document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));}
+document.querySelectorAll('#langs button').forEach(b=>b.onclick=()=>{LANG=b.dataset.l;try{localStorage.setItem('zs_lang',LANG)}catch(e){}applyLang();});
+function story(k,t,paras,btn,cb){$('sk').textContent=k;$('st').textContent=t;$('sb').innerHTML='';paras.forEach(x=>{const p=document.createElement('p');p.textContent=x;$('sb').appendChild(p);});
+  $('sn').textContent=btn;$('story').style.display='flex';paused=true;$('sn').onclick=()=>{$('story').style.display='none';paused=false;cb&&cb();};}
+// Splash: animated orb (muted inline loop) for ~2.6 s or until tap; static poster if video can't play.
+(function(){const sp=$('splash'),v=$('splashVid'),box=$('splashOrb');let done=false;
+  function close(){if(done)return;done=true;sp.classList.add('out');setTimeout(()=>{sp.style.display='none';try{v.pause();v.removeAttribute('src');v.querySelectorAll('source').forEach(x=>x.remove());v.load();}catch(e){}},600);}
+  v.muted=true;v.defaultMuted=true;v.setAttribute('muted','');
+  v.addEventListener('playing',()=>box.classList.add('playing'));
+  v.addEventListener('error',()=>box.classList.remove('playing'),true);
+  try{const p=v.play();p&&p.catch&&p.catch(()=>box.classList.remove('playing'));}catch(e){}
+  sp.addEventListener('click',close);setTimeout(close,2600);})();
+$('go').onclick=()=>{$('overlay').style.display='none';const t=L();story(t.pk,t.pt,t.pb,t.next,()=>{t0=Date.now();try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());A.resume&&A.resume();}catch(e){}init();});};
+let tilt={on:false,b:0,g:0,b0:null,g0:null},t0=0;
+const DEAD=3,FULL=25;function ax(v){const a=Math.abs(v);return a<DEAD?0:Math.sign(v)*Math.min(1,(a-DEAD)/(FULL-DEAD));}
+addEventListener('deviceorientation',e=>{if(e.beta==null)return;tilt.b=e.beta;tilt.g=e.gamma;if(tilt.on&&tilt.b0===null){tilt.b0=e.beta;tilt.g0=e.gamma;}});
+const tb=document.getElementById('tiltBtn');
+if(window.DeviceOrientationEvent&&matchMedia('(pointer:coarse)').matches)tb.style.display='block';
+tb.onclick=async()=>{if(tilt.on){tilt.on=false;tb.textContent=L().gyroOff;return;}
+  const D=window.DeviceOrientationEvent;if(typeof D.requestPermission==='function'){try{if(await D.requestPermission()!=='granted'){toast('Brak dostępu');return;}}catch(e){toast('Brak dostępu');return;}}
+  tilt.on=true;tilt.b0=null;tb.textContent=L().gyroOn;toast('✓');};
+applyLang();
+function toast(m,ms){const t=document.getElementById('toast');t.textContent=m;t.className=m.length>8?'long':'';t.style.opacity=1;clearTimeout(t._h);t._h=setTimeout(()=>t.style.opacity=0,ms||700);}
+const ZONES=[
+ {name:'NEON LAGUNA',top:0xff3fb4,mid:0x8a2bff,bot:0x1fd8ff,fog:0x6a1bbf,floor:0x2a0a5a,grid:0xff4fd8,ring:0x3ff5ff,cr:[0xffe600,0x3ff5ff,0xff4fd8],light:[0xff4fd8,0x3ff5ff]},
+ {name:'ZACHÓD LAWY',top:0xffd23f,mid:0xff5a1f,bot:0xc4106a,fog:0xb02a4a,floor:0x3a0820,grid:0xffb300,ring:0xffe600,cr:[0x7dff4f,0xffe600,0xff2a6a],light:[0xff7a00,0xffe600]},
+ {name:'TOKSYCZNA DŻUNGLA',top:0x00ffc8,mid:0x20b04a,bot:0x0a3a7a,fog:0x0a6a5a,floor:0x04241e,grid:0x7dff4f,ring:0xff4fd8,cr:[0xff4fd8,0xffe600,0x3ff5ff],light:[0x7dff4f,0x00ffd0]}];
+let SM,HALO,HL,fx=[],fil,zone=0,sky,floorM,gridH,ring,L1,L2,trail=[],spark,sparkV,dotTex,glowTex,shell;
+let floorMesh,hs=null,bh={on:false},bhG,bhPass,gridBase,appear=1,bhLow=false;
+let scene,camera,renderer,composer,bloom,sphere,crystals=[],parts,score=0,total=0,tx=0,tz=0,shake=0;
+const PR_MAX=1.75,BLOOM_BASE=0.85;let q={lvl:0,fr:0,acc:0};
+// mobile profile (MOBILE_OPTIMIZATIONS.md): half-res bloom on dpr>2, shorter trail, fewer sparkles, lighter sphere
+const MOB=(window.devicePixelRatio||1)>2||matchMedia('(pointer:coarse)').matches;const HI_DPR=(window.devicePixelRatio||1)>2;
+function bk(){return (q.lvl>1||HI_DPR)?2:1;}
+// adaptive quality: if avg FPS<45 for ~2s, step down pixel ratio and bloom res
+function adapt(dt){q.fr++;q.acc+=dt;if(q.fr<120)return;q.fr=0;const avg=1000/(q.acc*16.67/120);q.acc=0;
+  if(avg<45&&q.lvl<3){q.lvl++;if(q.lvl===3){trail.forEach(s=>s.visible=false);parts.geometry.setDrawRange(0,200);return;}const pr=[PR_MAX,1.35,1][q.lvl];renderer.setPixelRatio(Math.min(devicePixelRatio,pr));composer.setSize(innerWidth,innerHeight);const k=bk();bloom.resolution.set(innerWidth/k,innerHeight/k);bloom.setSize&&bloom.setSize(innerWidth/k,innerHeight/k);}}
+function radTex(stops){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');const g=x.createRadialGradient(32,32,0,32,32,32);stops.forEach(s=>g.addColorStop(s[0],s[1]));x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);}
+function init(){
+  scene=new THREE.Scene();
+  dotTex=radTex([[0,'rgba(255,255,255,1)'],[.25,'rgba(255,255,255,.8)'],[1,'rgba(255,255,255,0)']]);
+  glowTex=radTex([[0,'rgba(255,255,255,.9)'],[.4,'rgba(255,255,255,.25)'],[1,'rgba(255,255,255,0)']]);
+  camera=new THREE.PerspectiveCamera(56,innerWidth/innerHeight,0.1,120);
+  camera.position.set(0,4.2,10);
+  renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance'});
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,PR_MAX));
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.05;
+  document.body.appendChild(renderer.domElement);
+  composer=new THREE.EffectComposer(renderer);
+  composer.addPass(new THREE.RenderPass(scene,camera));
+  bloom=new THREE.UnrealBloomPass(new THREE.Vector2(innerWidth/bk(),innerHeight/bk()),BLOOM_BASE,0.5,0.82);composer.setPixelRatio&&composer.setPixelRatio(renderer.getPixelRatio());
+  composer.addPass(bloom);if(HI_DPR)bloom.setSize(innerWidth/2|0,innerHeight/2|0);
+  // gradient sky dome
+  sky=new THREE.Mesh(new THREE.SphereGeometry(80,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,
+    uniforms:{top:{value:new THREE.Color()},mid:{value:new THREE.Color()},bot:{value:new THREE.Color()},t:{value:0}},
+    vertexShader:'varying vec3 vP;void main(){vP=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:'uniform vec3 top,mid,bot;uniform float t;varying vec3 vP;void main(){float h=vP.y+0.04*sin(vP.x*6.+t);vec3 c=h>0.?mix(mid,top,smoothstep(0.,.55,h)):mix(mid,bot,smoothstep(0.,-.3,h));float st=step(.997,fract(sin(dot(floor(vP*180.),vec3(12.9,78.2,37.7)))*43758.5));c+=st*smoothstep(.1,.6,h)*(.6+.4*sin(t*3.+vP.x*40.));gl_FragColor=vec4(c,1.);}'}));
+  scene.add(sky);
+  scene.fog=new THREE.FogExp2(0x000000,0.034);
+  HL=new THREE.HemisphereLight(0xffffff,0x000000,0.35);scene.add(HL);
+  // cinematic: warm key, two coloured rims (per zone), soft fill
+  const key=new THREE.DirectionalLight(0xfff1e0,1.1);key.position.set(3,8,6);scene.add(key);
+  L1=new THREE.PointLight(0xffffff,4.5,22,1.6);L1.position.set(-6,3,-4);scene.add(L1);
+  L2=new THREE.PointLight(0xffffff,3.5,22,1.6);L2.position.set(6,2.5,2);scene.add(L2);
+  floorM=new THREE.MeshStandardMaterial({color:0x222222,metalness:0.92,roughness:0.22,emissive:0x000000,emissiveIntensity:0.25});
+  const floor=floorMesh=new THREE.Mesh(new THREE.CircleGeometry(30,64),floorM);floor.rotation.x=-Math.PI/2;scene.add(floor);
+  gridH=new THREE.GridHelper(60,40,0xffffff,0xffffff);gridH.material.transparent=true;gridH.material.opacity=0.16;gridH.material.blending=THREE.AdditiveBlending;gridH.position.y=0.01;scene.add(gridH);gridBase=gridH.geometry.attributes.position.array.slice();
+  ring=new THREE.Group();
+  for(let i=0;i<3;i++){const m=new THREE.Mesh(new THREE.RingGeometry(3+i*3.5,3.08+i*3.5,72),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.3,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=0.03;ring.add(m);}
+  scene.add(ring);
+  // player orb
+  const sm=new THREE.MeshPhysicalMaterial({color:0xffffff,emissive:0x3ff5ff,emissiveIntensity:0.12,metalness:0,roughness:0.04,transmission:0.92,ior:1.45,transparent:true,opacity:1,depthWrite:false,clearcoat:1,clearcoatRoughness:0.03,reflectivity:0.6});
+  sphere=new THREE.Mesh(new THREE.SphereGeometry(0.9,MOB?32:48,MOB?24:32),sm);sphere.position.y=0.9;scene.add(sphere);
+  sphere.add(new THREE.Mesh(new THREE.SphereGeometry(0.12,16,12),new THREE.MeshBasicMaterial({color:0xffffff})));
+  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0x9ff8ff,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.25}));halo.scale.set(2.6,2.6,1);sphere.add(halo);SM=sm;HALO=halo;
+  fil=new THREE.Group();sphere.add(fil);
+  for(let i=0;i<9;i++){const pts=[];const ph=Math.random()*6.28,k=2+Math.floor(Math.random()*3);
+    for(let j=0;j<=80;j++){const t=j/80*Math.PI*2;const r=0.25+0.45*Math.abs(Math.sin(t*k+ph));pts.push(new THREE.Vector3(Math.cos(t)*r,Math.sin(t*k*0.5+ph)*0.55,Math.sin(t)*r));}
+    const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts,true),100,0.016,4,true),new THREE.MeshBasicMaterial({color:new THREE.Color().setHSL(i/9,1,0.6),transparent:true,opacity:0.55,blending:THREE.AdditiveBlending,depthWrite:false}));
+    m.rotation.set(Math.random()*3,Math.random()*3,0);m.userData.sp=(Math.random()-.5)*0.04;fil.add(m);}
+  // trail (rainbow sprite pool)
+  const TN=MOB?16:26;for(let i=0;i<TN;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:dotTex,color:new THREE.Color().setHSL(i/TN,1,0.6),blending:THREE.AdditiveBlending,depthWrite:false,transparent:true}));s.scale.setScalar(1);scene.add(s);trail.push(s);}
+  // sparkles (shared points)
+  const SN=MOB?150:300;const sg=new THREE.BufferGeometry();const sp=new Float32Array(SN*3),scl=new Float32Array(SN*3);sparkV=[];
+  for(let i=0;i<SN;i++){sp[i*3+1]=-99;sparkV.push({v:new THREE.Vector3(),life:0});}
+  sg.setAttribute('position',new THREE.BufferAttribute(sp,3));sg.setAttribute('color',new THREE.BufferAttribute(scl,3));
+  spark=new THREE.Points(sg,new THREE.PointsMaterial({size:0.32,map:dotTex,vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));spark.frustumCulled=false;scene.add(spark);spark.userData.i=0;
+  // ambient floating motes
+  const pg=new THREE.BufferGeometry();const N=500;const pos=new Float32Array(N*3),pc=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*50;pos[i*3+1]=Math.random()*14;pos[i*3+2]=(Math.random()-.5)*50;const c=new THREE.Color().setHSL(Math.random(),1,.65);pc.set([c.r,c.g,c.b],i*3);}
+  pg.setAttribute('position',new THREE.BufferAttribute(pos,3));pg.setAttribute('color',new THREE.BufferAttribute(pc,3));
+  parts=new THREE.Points(pg,new THREE.PointsMaterial({size:0.16,map:dotTex,vertexColors:true,transparent:true,opacity:0.6,blending:THREE.AdditiveBlending,depthWrite:false}));scene.add(parts);
+  shell=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));scene.add(shell);
+  initBH();
+  const el=renderer.domElement;
+  el.addEventListener('touchstart',e=>{e.preventDefault();setT(e.touches[0])},{passive:false});
+  el.addEventListener('touchmove',e=>{e.preventDefault();setT(e.touches[0])},{passive:false});
+  el.addEventListener('mousemove',e=>{if(e.buttons)setT(e)});el.addEventListener('mousedown',setT);
+  function setT(t){if(bh.on){skipBH();return;}if(tilt.on)return;tx=((t.clientX/innerWidth)*2-1)*8;tz=((t.clientY/innerHeight)*2-1)*5.5;}
+  window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);composer.setSize(innerWidth,innerHeight);const k=bk();bloom.setSize(innerWidth/k,innerHeight/k);});
+  setZone(0);
+  animate();
+}
+function setZone(z){
+  zone=z;const Z=ZONES[z];
+  sky.material.uniforms.top.value.setHex(Z.top);sky.material.uniforms.mid.value.setHex(Z.mid);sky.material.uniforms.bot.value.setHex(Z.bot);
+  scene.fog.color.setHex(Z.fog).multiplyScalar(0.45);floorM.color.setHex(Z.floor);floorM.emissive.setHex(Z.floor);
+  gridH.material.color.setHex(Z.grid);ring.children.forEach(m=>m.material.color.setHex(Z.ring));
+  L1.color.setHex(Z.light[0]);L2.color.setHex(Z.light[1]);HL.color.setHex(Z.top);HL.groundColor.setHex(Z.floor);
+  SM.emissive.setHex(Z.ring);SM.color.setHex(Z.top).lerp(new THREE.Color(0xffffff),0.75);HALO.material.color.setHex(Z.ring);
+  const pc=parts.geometry.attributes.color;for(let i=0;i<pc.count;i++){const c=new THREE.Color(Z.cr[i%3]).lerp(new THREE.Color(Z.top),Math.random()*.5);pc.setXYZ(i,c.r,c.g,c.b);}pc.needsUpdate=true;
+  document.getElementById('lvl').textContent=L().zone+' '+(z+1)+' · '+Z.name;
+  crystals.forEach(c=>scene.remove(c));crystals=[];score=0;sc.textContent=0;
+  const shapes=[new THREE.OctahedronGeometry(0.45,0),new THREE.IcosahedronGeometry(0.42,0),new THREE.DodecahedronGeometry(0.42,0)];
+  for(let i=0;i<7;i++){
+    const col=Z.cr[i%3];
+    const c=new THREE.Mesh(shapes[z],new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.32,metalness:0.55,roughness:0.15,flatShading:true}));
+    const g=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:col,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0.5}));g.scale.set(1.8,1.8,1);c.add(g);
+    const a=i/7*Math.PI*2+z,d=3.6+Math.random()*2.8;
+    c.position.set(Math.cos(a)*d,0.8,Math.sin(a)*d*0.8);
+    c.userData={ok:false,s:0.6+Math.random()*0.8,col:new THREE.Color(col)};
+    scene.add(c);crystals.push(c);
+  }
+  if(!bh.on)mission(z);
+}
+function mission(z){const t=L();story(t.zone+' '+(z+1)+' / '+ZONES.length,ZONES[z].name,[t.m[z]],t.go);}
+function emit(p,col,n,spd){const pa=spark.geometry.attributes.position,ca=spark.geometry.attributes.color;
+  for(let k=0;k<n;k++){const i=spark.userData.i=(spark.userData.i+1)%sparkV.length;const o=sparkV[i];
+    pa.setXYZ(i,p.x,p.y,p.z);const c=col||new THREE.Color().setHSL(Math.random(),1,.6);ca.setXYZ(i,c.r,c.g,c.b);
+    o.v.set((Math.random()-.5),(Math.random()-.2),(Math.random()-.5)).normalize().multiplyScalar(spd*(0.4+Math.random()));o.life=1;}
+  ca.needsUpdate=true;}
+function pickup(c){
+  const p=c.position;if(score===3)toast(L().ev[zone],2200);else toast(score>=7?L().got:'+1',score>=7?1200:700);if(navigator.vibrate)navigator.vibrate(30);
+  try{const A=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());const o=A.createOscillator(),g=A.createGain();o.type='triangle';o.frequency.setValueAtTime(660+score*80,A.currentTime);o.frequency.exponentialRampToValueAtTime(1320+score*80,A.currentTime+0.15);g.gain.setValueAtTime(0.15,A.currentTime);g.gain.exponentialRampToValueAtTime(0.001,A.currentTime+0.3);o.connect(g).connect(A.destination);o.start();o.stop(A.currentTime+0.3);}catch(e){}
+  emit(p,c.userData.col,40,0.22);emit(p,null,30,0.14);
+  shell.position.copy(p);shell.material.color.copy(c.userData.col);shell.material.opacity=0.8;shell.scale.setScalar(0.3);
+  shake=0.25;bloom.strength=1.8;
+  if(score>=7){total++;
+    if(zone<ZONES.length-1)setTimeout(startBH,350);
+    else setTimeout(()=>{document.getElementById('wend').textContent=L().wb;document.getElementById('wt').textContent=L().time+': '+((Date.now()-t0)/1000).toFixed(1)+' s';document.getElementById('win').style.display='flex';},600);}
+}
+let lt=performance.now();
+function animate(){
+  requestAnimationFrame(animate);
+  if(!sphere)return;
+  const now=performance.now(),rdt=(now-lt)/16.67,dt=Math.min(2,rdt);lt=now;const T=Date.now();if(!paused&&!bh.on&&!document.hidden)adapt(Math.min(rdt,6));
+  if(bh.on)updateBH(now,dt);
+  else if(tilt.on&&tilt.b0!==null){tx=Math.max(-8,Math.min(8,tx+ax(tilt.g-tilt.g0)*0.25));tz=Math.max(-5.5,Math.min(5.5,tz+ax(tilt.b-tilt.b0)*0.25));}
+  if(!bh.on){sphere.position.x+=(tx-sphere.position.x)*0.07;
+  sphere.position.z+=(tz-sphere.position.z)*0.07;
+  sphere.position.y=0.9+Math.sin(T*0.0018)*0.1;}
+  sphere.rotation.y+=0.025;
+  fil.children.forEach((m,i)=>{const k=bh.on?bh.spin:1;m.rotation.x+=m.userData.sp*k*dt;m.rotation.z+=m.userData.sp*0.7*k*dt;});
+  // trail
+  for(let i=trail.length-1;i>0;i--)trail[i].position.lerp(trail[i-1].position,0.55);
+  trail[0].position.copy(sphere.position);
+  trail.forEach((s,i)=>{const k=1-i/trail.length;s.scale.setScalar(0.9*k+0.08);s.material.opacity=0.42*k;s.material.color.setHex(ZONES[zone].cr[i%3]);});
+  // sparkles
+  const pa=spark.geometry.attributes.position;
+  for(let i=0;i<sparkV.length;i++){const o=sparkV[i];if(o.life<=0)continue;o.life-=0.025*dt;o.v.y-=0.004*dt;o.v.multiplyScalar(0.97);
+    pa.setXYZ(i,pa.getX(i)+o.v.x*dt,pa.getY(i)+o.v.y*dt,pa.getZ(i)+o.v.z*dt);if(o.life<=0)pa.setY(i,-99);}
+  pa.needsUpdate=true;
+  if(shell.material.opacity>0){shell.scale.multiplyScalar(1+0.12*dt);shell.material.opacity=Math.max(0,shell.material.opacity-0.05*dt);}
+  if(!bh.on)bloom.strength+=(BLOOM_BASE-bloom.strength)*0.08;
+  shake*=0.88;
+  camera.position.x=sphere.position.x*0.18+(Math.random()-.5)*shake;
+  camera.position.y=4.2+(Math.random()-.5)*shake;
+  camera.position.z=sphere.position.z*0.18+10;
+  if(bh.on){camera.lookAt(bh.look);bhG.lookAt(camera.position);if(hsG&&hsG.visible){hsG.position.copy(camera.position);hsG.quaternion.copy(camera.quaternion);const k=bh.shk||0;// subtle camera shake on the tunnel rig
+    camera.rotateZ((Math.random()-.5)*k*0.6);camera.rotateX((Math.random()-.5)*k*0.25);camera.rotateY((Math.random()-.5)*k*0.25);}}else camera.lookAt(sphere.position.x,0.6,sphere.position.z);
+  crystals.forEach((c,i)=>{
+    if(c.userData.ok)return;
+    c.rotation.y+=c.userData.s*0.03;c.rotation.x+=0.012;
+    c.position.y=0.85+Math.sin(T*0.0025+i)*0.22;
+    const s=(1+0.12*Math.sin(T*0.006+i))*appear;c.scale.setScalar(s);
+    if(Math.random()<0.08)emit(c.position.clone().add(new THREE.Vector3((Math.random()-.5)*.8,(Math.random()-.5)*.8,(Math.random()-.5)*.8)),c.userData.col,1,0.02);
+    if(!bh.on&&!paused&&sphere.position.distanceTo(c.position)<1.2){c.userData.ok=true;c.visible=false;score++;sc.textContent=score;pickup(c);}
+  });
+  ring.rotation.y+=0.003;ring.children.forEach((m,i)=>m.material.opacity=0.3+0.25*Math.sin(T*0.003+i));
+  parts.rotation.y+=0.0008;
+  sky.material.uniforms.t.value=T*0.001;
+  composer.render();
+}
+// ===== Black hole portal (BLACK_HOLE_EFFECT.md): 7.6 s transition between sectors (pull -> hyperspace -> exit) =====
+const BHP=new THREE.Vector3(0,1.5,-4.5);
+const BH_SHADER={uniforms:{tDiffuse:{value:null},c:{value:new THREE.Vector2(.5,.5)},asp:{value:1},amt:{value:0},ca:{value:0},bright:{value:1},t:{value:0}},
+ vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+ fragmentShader:'uniform sampler2D tDiffuse;uniform vec2 c;uniform float asp,amt,ca,bright,t;varying vec2 vUv;'+
+ 'void main(){vec2 d=vUv-c;d.x*=asp;float r=length(d);float a=amt*2.2*exp(-r*3.5);float cs=cos(a),sn=sin(a);d=mat2(cs,-sn,sn,cs)*d;'+
+ 'd*=1.+amt*0.10/(r+0.06);d.x/=asp;vec2 u=c+d;float e=smoothstep(.3,.75,length(vUv-.5));'+
+ 'u+=vec2(sin(vUv.y*22.+t*7.),cos(vUv.x*18.-t*5.))*0.006*ca*e;vec2 o=(vUv-.5)*ca*e*0.035;u=clamp(u,0.,1.);'+
+ 'vec3 col=vec3(texture2D(tDiffuse,clamp(u+o,0.,1.)).r,texture2D(tDiffuse,u).g,texture2D(tDiffuse,clamp(u-o,0.,1.)).b);gl_FragColor=vec4(col*bright,1.);}'};
+function initBH(){
+  bhPass=new THREE.ShaderPass(BH_SHADER);bhPass.enabled=false;composer.addPass(bhPass);
+  bhG=new THREE.Group();bhG.position.copy(BHP);bhG.visible=false;scene.add(bhG);
+  const ab=(c,o)=>new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false});
+  const disk=new THREE.Mesh(new THREE.CircleGeometry(1,48),new THREE.MeshBasicMaterial({color:0,fog:false}));bhG.add(disk);
+  const acc=new THREE.Mesh(new THREE.RingGeometry(1.0,1.16,96),ab(new THREE.Color(1.7,2.0,2.4),1));bhG.add(acc);// blue-white accretion ring
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0x6fb8ff,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:.8,fog:false}));glow.scale.set(5,5,1);glow.position.z=-0.05;bhG.add(glow);
+  bhG.userData.arcs=[];// lensed light arcs
+  for(let i=0;i<6;i++){const r=1.35+i*0.32;const m=new THREE.Mesh(new THREE.RingGeometry(r,r+0.035+0.02*(i%2),64,1,Math.random()*6.28,1.4+Math.random()*1.8),ab(0xffffff,0));m.userData.sp=(i%2?1:-1)*(0.6+Math.random()*0.8);bhG.add(m);bhG.userData.arcs.push(m);}
+}
+const lerp=(a,b,k)=>a+(b-a)*k,cl=x=>Math.max(0,Math.min(1,x)),sm=x=>x*x*(3-2*x);
+const _ca=new THREE.Color(),_cb=new THREE.Color();
+function mixHex(a,b,k){return _ca.setHex(a).lerp(_cb.setHex(b),k);}
+function palette(A,B,k){const u=sky.material.uniforms;u.top.value.copy(mixHex(A.top,B.top,k));u.mid.value.copy(mixHex(A.mid,B.mid,k));u.bot.value.copy(mixHex(A.bot,B.bot,k));
+  scene.fog.color.copy(mixHex(A.fog,B.fog,k)).multiplyScalar(.45);gridH.material.color.copy(mixHex(A.grid,B.grid,k));ring.children.forEach(m=>m.material.color.copy(mixHex(A.ring,B.ring,k)));
+  L1.color.copy(mixHex(A.light[0],B.light[0],k));L2.color.copy(mixHex(A.light[1],B.light[1],k));floorM.color.copy(mixHex(A.floor,B.floor,k));floorM.emissive.copy(floorM.color);}
+function stretchGrid(k){const p=gridH.geometry.attributes.position,a=p.array;
+  for(let i=0;i<a.length;i+=3){const x=gridBase[i],z=gridBase[i+2],dx=BHP.x-x,dz=BHP.z-z,d=Math.sqrt(dx*dx+dz*dz),f=k*Math.exp(-d/7)*0.85;
+    a[i]=x+dx*f;a[i+2]=z+dz*f;a[i+1]=-k*2.6*Math.exp(-d/4);}p.needsUpdate=true;}
+function world(v){[sky,floorMesh,gridH,ring,parts,spark,bhG].forEach(o=>o.visible=v);trail.forEach(s=>s.visible=v&&q.lvl<3);crystals.forEach(c=>{if(!c.userData.ok)c.visible=v;});
+  sphere.material.visible=v;sphere.children[0].visible=v;sphere.children[1].visible=v;}
+// ---- HYPERSPACE v3 (base: hyperspace_v2.html, PR #9) ----
+// Streaks: ONE draw call (single indexed quad mesh), all motion in the vertex shader (distance/stretch/speed uniforms).
+// Each streak = camera-space quad along -z, width along the screen tangent -> bright white-blue core + zone-coloured halo, tapered tail.
+// Group (streaks + tunnel + core glow) is locked to the camera; visible only during the stage.
+let hsG=null,hsT=null,hsGlow=null,rbPass=null,hsAu=null;
+const HS0=4.0,HS1=6.3,BH_END=7.6;// hyperspace 4.0-6.3 s (2.3 s), exit 6.3-7.6 s
+const HS_N=800;
+function hsCount(){const n=MOB?450:HS_N;return q.lvl>=3?n*0.4|0:q.lvl>=2?n*0.55|0:q.lvl>=1?n*0.8|0:n;}
+function initHS(){const N=HS_N,g=new THREE.BufferGeometry(),P=new Float32Array(N*4*3),A=new Float32Array(N*4*4),C=new Float32Array(N*4*2),I=new Uint16Array(N*6);
+  for(let i=0;i<N;i++){const a=Math.random()*6.2832,r=0.7+Math.pow(Math.random(),0.7)*10,z0=Math.random(),w=0.55+Math.random()*0.9,c=Math.random();
+    for(let k=0;k<4;k++){const j=i*4+k;P[j*3]=Math.cos(a)*r;P[j*3+1]=Math.sin(a)*r;P[j*3+2]=0;A[j*4]=z0;A[j*4+1]=w;A[j*4+2]=c;A[j*4+3]=a;C[j*2]=k>>1;C[j*2+1]=(k&1)*2-1;}
+    I.set([i*4,i*4+1,i*4+2,i*4+2,i*4+1,i*4+3],i*6);}
+  g.setAttribute('position',new THREE.BufferAttribute(P,3));g.setAttribute('s',new THREE.BufferAttribute(A,4));g.setAttribute('cn',new THREE.BufferAttribute(C,2));g.setIndex(new THREE.BufferAttribute(I,1));
+  const m=new THREE.ShaderMaterial({uniforms:{D:{value:0},str:{value:0},spd:{value:0},op:{value:0},zo:{value:0},wd:{value:1},c1:{value:new THREE.Color()},c2:{value:new THREE.Color()},c3:{value:new THREE.Color()},core:{value:new THREE.Color(0xe4f2ff)}},
+   vertexShader:'attribute vec4 s;attribute vec2 cn;uniform float D,str,spd,zo,wd;uniform vec3 c1,c2,c3;varying vec3 vc;varying vec2 vu;varying float va;'+
+    'void main(){float L=56.;float z=-L+mod(s.x*L+D*s.y,L)+zo;'+
+    'float len=(0.06+str*(1.5+spd*30.)*s.y);'+// speed-based length: point -> long line
+    'float zz=z-cn.x*0.+(1.-cn.x)*(-len);'+// cn.x=1 head, 0 tail
+    'vec2 tg=vec2(-sin(s.w),cos(s.w));float w=wd*(0.012+max(-zz,0.5)*0.0065*(0.7+0.5*s.y))*(1.+1.4*(1.-str));'+
+    'vec3 p=vec3(position.xy+tg*cn.y*w,zz);vc=s.z<.34?c1:(s.z<.67?c2:c3);vu=cn;'+
+    'va=smoothstep(-L,-L*.3,z)*(1.-smoothstep(-1.5,0.5,z));gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}',
+   fragmentShader:'uniform float op,str;uniform vec3 core;varying vec3 vc;varying vec2 vu;varying float va;'+
+    'void main(){float v=vu.y;float tap=mix(1.,pow(vu.x,1.6),str);'+// tapered alpha toward the tail
+    'float k=exp(-v*v*20.),h=exp(-v*v*2.2)*(1.-abs(v));vec3 c=core*k*1.5+vc*h*1.5;gl_FragColor=vec4(c*tap*va*op,1.);}',
+   side:THREE.DoubleSide,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,depthTest:false,fog:false});
+  const hs=new THREE.Mesh(g,m);hs.frustumCulled=false;hs.renderOrder=999;
+  // tunnel: open cylinder along -z with scrolling luminous bands; brightens toward the vanishing point
+  const tm=new THREE.ShaderMaterial({uniforms:{t:{value:0},op:{value:0},c1:{value:new THREE.Color()},c2:{value:new THREE.Color()}},side:THREE.BackSide,
+   vertexShader:'varying vec2 vU;void main(){vU=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+   fragmentShader:'uniform float t,op;uniform vec3 c1,c2;varying vec2 vU;float h(float n){return fract(sin(n)*43758.5);}'+
+    'void main(){float a=floor(vU.x*72.);float r=h(a);float b=smoothstep(.55,1.,sin(vU.y*(14.+r*10.)+t*(1.+r)+r*30.)*.5+.5);'+
+    'float d=pow(vU.y,2.2);vec3 c=mix(c1,c2,r)*b*(.35+r*.65)+vec3(.75,.88,1.)*d*.25;gl_FragColor=vec4(c*op*d*.9,1.);}',
+   blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,depthTest:false,fog:false});
+  const cyl=new THREE.CylinderGeometry(15,15,56,48,1,true);cyl.rotateX(-Math.PI/2);cyl.translate(0,0,-28);
+  hsT=new THREE.Mesh(cyl,tm);hsT.frustumCulled=false;hsT.renderOrder=998;
+  hsGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xbfe0ff,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,transparent:true,opacity:0,fog:false}));hsGlow.position.z=-30;hsGlow.renderOrder=1000;
+  hsG=new THREE.Group();hsG.add(hsT,hs,hsGlow);hsG.visible=false;hsG.userData.hs=hs;scene.add(hsG);
+  rbPass=new RBPass();rbPass.enabled=false;composer.addPass(rbPass);}
+// radial (zoom) blur + chromatic aberration + flash pass. Blur is rendered at half res on mobile / low adaptive quality, then composited full-res.
+class RBPass extends THREE.Pass{constructor(){super();this.sc=(MOB||q.lvl>=2)?0.5:1;this.rt=new THREE.WebGLRenderTarget(4,4,{minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter});
+  const vs='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}';
+  this.bm=new THREE.ShaderMaterial({defines:{NS:MOB?10:16},uniforms:{tDiffuse:{value:null},c:{value:new THREE.Vector2(.5,.5)},str:{value:0}},vertexShader:vs,
+   fragmentShader:'uniform sampler2D tDiffuse;uniform vec2 c;uniform float str;varying vec2 vUv;float h(vec2 p){return fract(sin(dot(p,vec2(12.9,78.2)))*43758.5);}'+
+    'void main(){vec2 d=vUv-c;vec3 s=vec3(0.);float tw=0.;float j=h(vUv*731.);for(int i=0;i<NS;i++){float f=(float(i)+j)/float(NS);float w=1.-f*.6;s+=texture2D(tDiffuse,c+d*(1.-str*f)).rgb*w;tw+=w;}gl_FragColor=vec4(s/tw,1.);}'});
+  this.cm=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null},tB:{value:null},c:{value:new THREE.Vector2(.5,.5)},ca:{value:0},mixk:{value:0},flash:{value:0},glow:{value:0},gc:{value:new THREE.Color(0x9fd0ff)},asp:{value:1}},vertexShader:vs,
+   fragmentShader:'uniform sampler2D tDiffuse,tB;uniform vec2 c;uniform float ca,mixk,flash,glow,asp;uniform vec3 gc;varying vec2 vUv;'+
+    'void main(){vec2 d=vUv-c;vec2 dd=d;dd.x*=asp;float r=length(dd);float e=smoothstep(.12,.75,r);vec2 o=d*ca*.045*e;'+
+    'vec3 b=vec3(texture2D(tB,vUv+o).r,texture2D(tB,vUv).g,texture2D(tB,vUv-o).b);vec3 sh=texture2D(tDiffuse,vUv).rgb;'+
+    'vec3 col=mix(sh,b,clamp(mixk*(.35+r*1.6),0.,1.));col+=gc*glow*(exp(-r*r*14.)*1.4+exp(-r*4.)*.08);'+
+    'col*=1.-smoothstep(.45,1.1,r)*.55*mixk;col=mix(col,vec3(.9,.95,1.)*1.6,flash);gl_FragColor=vec4(col,1.);}'});
+  this.fq=new THREE.FullScreenQuad(this.bm);}
+setSize(w,h){this.w=w;this.h=h;this.rt.setSize(Math.max(2,w*this.sc|0),Math.max(2,h*this.sc|0));this.cm.uniforms.asp.value=w/h;}
+  setScale(s){if(s!==this.sc){this.sc=s;if(this.w)this.setSize(this.w,this.h);}}
+  render(r,wb,rb){this.bm.uniforms.tDiffuse.value=rb.texture;this.fq.material=this.bm;r.setRenderTarget(this.rt);this.fq.render(r);
+    this.cm.uniforms.tDiffuse.value=rb.texture;this.cm.uniforms.tB.value=this.rt.texture;this.fq.material=this.cm;r.setRenderTarget(this.renderToScreen?null:wb);if(this.clear)r.clear();this.fq.render(r);}}
+// ---- hyperspace audio (all generated with WebAudio) ----
+let _nb=null;function noiseBuf(A){if(!_nb){_nb=A.createBuffer(1,A.sampleRate*2|0,A.sampleRate);const d=_nb.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;}return _nb;}
+function hsSnd(kind){const A=window._ac;if(!A)return;try{const t=A.currentTime,out=A.createGain();out.connect(A.destination);const st=[];hsAu=hsAu||[];
+  const osc=(ty,f0,f1,d,dst)=>{const o=A.createOscillator();o.type=ty;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+d);o.connect(dst);o.start(t);o.stop(t+d+0.05);st.push(o);return o;};
+  const nz=(d,dst)=>{const n=A.createBufferSource();n.buffer=noiseBuf(A);n.loop=true;n.connect(dst);n.start(t);n.stop(t+d);st.push(n);return n;};
+  if(kind==='charge'){// rising charge-up whine (0.85 s): detuned saws through a sweeping resonant lowpass + tremolo
+    out.gain.setValueAtTime(0.0001,t);out.gain.exponentialRampToValueAtTime(0.22,t+0.8);out.gain.exponentialRampToValueAtTime(0.0001,t+0.9);
+    const lp=A.createBiquadFilter();lp.type='lowpass';lp.Q.value=9;lp.frequency.setValueAtTime(400,t);lp.frequency.exponentialRampToValueAtTime(7000,t+0.85);lp.connect(out);
+    osc('sawtooth',180,2600,0.88,lp);osc('sawtooth',182,2640,0.88,lp);const s=osc('sine',360,5200,0.88,out);
+    const tr=A.createOscillator(),tg=A.createGain();tr.frequency.setValueAtTime(8,t);tr.frequency.exponentialRampToValueAtTime(40,t+0.85);tg.gain.value=0.08;tr.connect(tg).connect(out.gain);tr.start(t);tr.stop(t+0.9);st.push(tr);}
+  else if(kind==='thump'){// deep thump at the jump: pitched-down sine kick + click
+    out.gain.setValueAtTime(0.9,t);out.gain.exponentialRampToValueAtTime(0.0001,t+0.7);osc('sine',140,32,0.6,out);
+    const cg=A.createGain();cg.gain.setValueAtTime(0.5,t);cg.gain.exponentialRampToValueAtTime(0.0001,t+0.05);const hp=A.createBiquadFilter();hp.type='highpass';hp.frequency.value=1500;hp.connect(cg).connect(out);nz(0.06,hp);}
+  else if(kind==='roar'){// rushing roar (slam -> drop): noise through a rising bandpass + sub rumble
+    out.gain.setValueAtTime(0.0001,t);out.gain.exponentialRampToValueAtTime(0.55,t+0.18);out.gain.setValueAtTime(0.55,t+0.85);out.gain.exponentialRampToValueAtTime(0.0001,t+1.12);
+    const bp=A.createBiquadFilter();bp.type='bandpass';bp.Q.value=0.8;bp.frequency.setValueAtTime(300,t);bp.frequency.exponentialRampToValueAtTime(2600,t+1.0);bp.connect(out);nz(1.15,bp);
+    const lp=A.createBiquadFilter();lp.frequency.value=180;const sg=A.createGain();sg.gain.value=0.35;lp.connect(sg).connect(out);osc('sawtooth',38,62,1.1,lp);osc('sawtooth',38.4,61,1.1,lp);}
+  else if(kind==='boom'){// release boom on drop-out: sub drop + filtered noise burst
+    out.gain.setValueAtTime(1.0,t);out.gain.exponentialRampToValueAtTime(0.0001,t+1.6);osc('sine',90,24,1.4,out);
+    const lp=A.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(3000,t);lp.frequency.exponentialRampToValueAtTime(120,t+1.2);const ng=A.createGain();ng.gain.value=0.6;lp.connect(ng).connect(out);nz(1.3,lp);}
+  hsAu.push({out,st});}catch(e){}}
+function hsHush(){const A=window._ac;if(!A||!hsAu)return;const t=A.currentTime;hsAu.forEach(a=>{try{a.out.gain.cancelScheduledValues(t);a.out.gain.setValueAtTime(Math.max(a.out.gain.value,0.0002),t);a.out.gain.exponentialRampToValueAtTime(0.0001,t+0.06);a.st.forEach(o=>{try{o.stop(t+0.1)}catch(e){}});}catch(e){}});hsAu=[];}
+// ---- audio ----
+function bhAudio(){const A=window._ac;if(!A)return null;try{A.resume&&A.resume();const t=A.currentTime,M=A.createGain();M.gain.setValueAtTime(0.0001,t);M.gain.exponentialRampToValueAtTime(0.9,t+0.8);M.connect(A.destination);
+  const nodes=[];const lp=A.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(120,t);lp.frequency.exponentialRampToValueAtTime(420,t+3.8);lp.connect(M);
+  // rising sub-bass drone
+  [[1,'sawtooth',.16],[1.006,'sawtooth',.16],[.5,'sine',.35]].forEach(([m,ty,g])=>{const o=A.createOscillator(),G=A.createGain();o.type=ty;o.frequency.setValueAtTime(32*m,t);o.frequency.exponentialRampToValueAtTime(74*m,t+3.8);
+    G.gain.setValueAtTime(0.0001,t);G.gain.exponentialRampToValueAtTime(g,t+2.5);o.connect(G).connect(lp);o.start(t);o.stop(t+4.4);nodes.push(o);});
+  // high crystalline tones that stretch & detune
+  [1760,2217,2637,3520].forEach((f,i)=>{const o=A.createOscillator(),G=A.createGain();o.type='sine';o.frequency.setValueAtTime(f,t+0.5);o.frequency.exponentialRampToValueAtTime(f*0.62,t+3.8);
+    o.detune.setValueAtTime(0,t);o.detune.linearRampToValueAtTime((i%2?1:-1)*(40+i*25),t+3.6);
+    G.gain.setValueAtTime(0.0001,t);G.gain.setValueAtTime(0.0001,t+0.5);G.gain.exponentialRampToValueAtTime(0.035,t+1.4);G.gain.exponentialRampToValueAtTime(0.012,t+3.7);
+    o.connect(G).connect(M);o.start(t);o.stop(t+4.4);nodes.push(o);});
+  // faint vacuum hiss
+  const nb=A.createBuffer(1,A.sampleRate*2,A.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
+  const n=A.createBufferSource();n.buffer=nb;n.loop=true;const bp=A.createBiquadFilter();bp.type='bandpass';bp.frequency.value=3000;bp.Q.value=.7;const ng=A.createGain();ng.gain.value=0.02;n.connect(bp).connect(ng).connect(M);n.start(t);n.stop(t+4.4);nodes.push(n);
+  return {M,nodes};}catch(e){return null;}}
+function bhSilence(){const a=bh.au,A=window._ac;if(!a||!A)return;const t=A.currentTime;a.M.gain.cancelScheduledValues(t);a.M.gain.setValueAtTime(Math.max(a.M.gain.value,0.0002),t);a.M.gain.exponentialRampToValueAtTime(0.0001,t+0.08);a.nodes.forEach(o=>{try{o.stop(t+0.2)}catch(e){}});}
+function bhExitAudio(z){const A=window._ac;if(!A)return;try{const t=A.currentTime;
+  const len=A.sampleRate*1.8|0,ib=A.createBuffer(2,len,A.sampleRate);for(let ch=0;ch<2;ch++){const d=ib.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);}
+  const cv=A.createConvolver();cv.buffer=ib;const wet=A.createGain();wet.gain.value=.6;cv.connect(wet).connect(A.destination);
+  const dry=A.createGain();dry.gain.value=.5;dry.connect(A.destination);
+  const root=[220,196,247][z];[1,1.5,2,2.52].forEach((m,i)=>{const o=A.createOscillator(),G=A.createGain();o.type=i?'triangle':'sine';o.frequency.value=root*m;
+    G.gain.setValueAtTime(0.0001,t);G.gain.exponentialRampToValueAtTime(0.09/(i+1),t+0.12);G.gain.exponentialRampToValueAtTime(0.0001,t+1.4);o.connect(G);G.connect(cv);G.connect(dry);o.start(t);o.stop(t+1.5);});
+  const o=A.createOscillator(),G=A.createGain();o.frequency.setValueAtTime(90,t);o.frequency.exponentialRampToValueAtTime(38,t+0.5);G.gain.setValueAtTime(0.3,t);G.gain.exponentialRampToValueAtTime(0.0001,t+0.6);o.connect(G).connect(dry);o.start(t);o.stop(t+0.7);}catch(e){}}
+// ---- sequence ----
+function startBH(){if(bh.on)return;const from=zone,to=zone+1;
+  bh={on:true,t0:performance.now(),from,to,ph:0,spin:1,look:new THREE.Vector3(sphere.position.x,0.6,sphere.position.z),start:sphere.position.clone(),au:bhAudio(),slow:0,frames:0};
+  bhG.visible=true;bhG.scale.setScalar(0.001);bhPass.enabled=true;bhPass.uniforms.asp.value=innerWidth/innerHeight;}
+function skipBH(){const e=(performance.now()-bh.t0)/1000;if(e>1&&e<3.8)bh.t0=performance.now()-3800;else if(e>HS0&&e<HS0+1.9){hsHush();bh.t0=performance.now()-(HS0+1.9)*1000;}}// tap: black hole -> silent beat; hyperspace -> drop-out
+const _v=new THREE.Vector3();
+function updateBH(now,dt){const e=(now-bh.t0)/1000,U=bhPass.uniforms,A=ZONES[bh.from],B=ZONES[bh.to];U.t.value=e;
+  // adaptive: if FPS drops during the sequence, halve bloom resolution (only during the sequence)
+  bh.frames++;if(dt>1.45)bh.slow++;if(!bhLow&&bh.frames>20&&bh.slow>bh.frames*0.3){bhLow=true;bloom.setSize(innerWidth/4|0,innerHeight/4|0);}
+  let gk=0,amt=0,ca=0,br=1,fov=56,bs=1;
+  if(e<0.8){const p=e/0.8;bs=1-Math.pow(1-p,3)*(1-p*0.15);gk=0.3*p;bloom.strength=0.9;
+    bh.look.lerp(_v.set(lerp(sphere.position.x,BHP.x,.5),0.9,lerp(sphere.position.z,BHP.z,.5)),0.08);}
+  else if(e<2.5){const p=(e-0.8)/1.7,pe=p*p;sphere.position.lerpVectors(bh.start,BHP,pe);bh.spin=1+14*p;fil.scale.set(1+2.6*p,1+0.6*p,1+2.6*p);
+    sphere.material.opacity=1*(1-p);sphere.children[1].material.opacity=0.25*(1-p);sphere.children[0].scale.setScalar(1-p*.9);
+    bloom.strength=lerp(0.9,2.8,sm(p));gk=lerp(0.3,0.8,p);amt=0.6*p;fov=lerp(56,70,sm(p));bh.look.lerp(BHP,0.1);}
+  else if(e<3.8){const q=(e-2.5)/1.3;sphere.position.copy(BHP);bh.spin=15+8*q;fil.scale.set(3.6+0.8*q,1.6,3.6+0.8*q);sphere.material.opacity=0;sphere.children[1].material.opacity=0;
+    bloom.strength=2.8;gk=0.8+0.2*q;amt=0.6+0.4*q;ca=q;fov=70+4*q;br=1+0.16*Math.sin(e*Math.PI*2*2.5);palette(A,B,sm(q));bh.look.copy(BHP);}
+  else if(e<4.0){if(bh.ph<3){bh.ph=3;world(false);bhSilence();}// near-silence, almost black, only filaments
+    bloom.strength=0.35;gk=1;amt=0.7;ca=0.4;fov=74;br=1;bh.spin=10;}
+  else if(e<HS1){const h=e-HS0;// HYPERSPACE 2.3 s: charge 0-0.7 | lurch/pullback 0.7-0.85 | slam+cruise 0.85-1.9 | drop-out 1.9-2.3
+    if(bh.ph<3.5){bh.ph=3.5;if(!hsG)initHS();const S=hsG.userData.hs,M=S.material.uniforms,wb=new THREE.Color(0xa8d4ff);
+      S.geometry.setDrawRange(0,hsCount()*6);M.c1.value.setHex(B.cr[0]).lerp(wb,.15);M.c2.value.setHex(B.cr[1]).lerp(wb,.15);M.c3.value.setHex(B.top).lerp(wb,.2);
+      hsT.material.uniforms.c1.value.setHex(B.cr[1]).lerp(wb,.3);hsT.material.uniforms.c2.value.setHex(B.top).lerp(wb,.3);hsGlow.material.color.setHex(0xd8ecff).lerp(new THREE.Color(B.ring),.3);
+      rbPass.setScale((MOB||q.lvl>=2)?0.5:1);rbPass.cm.uniforms.gc.value.setHex(0xd8ecff).lerp(new THREE.Color(B.ring),.25);rbPass.enabled=true;hsG.visible=true;sphere.visible=false;bh.D=0;bh.vel=0;bh.shk=0;bh.snd=0;hsAu=[];hsSnd('charge');}
+    const S=hsG.userData.hs,M=S.material.uniforms,R=rbPass.cm.uniforms;let vel,str,zo=0,blur,mixk,ca,gl,tun,flash=0,f,shk;
+    if(h<0.7){const p=h/0.7;vel=lerp(0.6,3.5,p*p);str=0.04*p;blur=0.05*p;mixk=0.4*p;ca=0.25*p;gl=lerp(0.1,0.7,p*p);tun=0.05*p;f=lerp(74,80,sm(p));shk=0.004+0.02*p*p;M.op.value=cl(h/0.15);}
+    else if(h<0.85){const p=(h-0.7)/0.15,b=Math.sin(p*Math.PI*0.5);// the lurch: everything recoils, short pullback
+      vel=-26*(1-p*0.6);str=0.12;zo=-4.5*b;blur=0.12;mixk=0.6;ca=0.6;gl=0.7-0.4*b;tun=0.08;f=lerp(80,64,b);shk=0.07;}
+    else if(h<1.9){const p=(h-0.85)/1.05,a=cl(p/0.22),ae=1-Math.pow(1-a,3);// SLAM forward then roaring cruise
+      if(bh.snd<1){bh.snd=1;hsSnd('thump');hsSnd('roar');}
+      vel=lerp(10,190,ae)+30*p;str=ae;zo=-4.5*(1-cl(p/0.08));blur=lerp(0.55,0.32,cl((p-0.1)/0.4));mixk=1;ca=lerp(1.4,0.9,p);gl=lerp(0.9,1.5,p);tun=ae*(0.7+0.3*p);
+      f=lerp(64,98,1-Math.pow(1-cl(p/0.25),3));shk=lerp(0.1,0.025,cl(p/0.3));}
+    else{const p=(h-1.9)/0.4,sn=Math.pow(cl(p/0.3),0.5);// DROP OUT: streaks snap back to points, flash, reveal
+      if(bh.snd<2){bh.snd=2;hsSnd('boom');}
+      vel=lerp(220,0.5,sn);str=1-sn;blur=0.55*(1-sn)+0.15;mixk=1-p*0.5;ca=lerp(1.2,0.3,p);gl=lerp(1.5,2.4,p);tun=1-sn;f=lerp(98,70,sn);shk=0.06*(1-p);flash=Math.pow(p,3.5);M.op.value=1-p*0.6;}
+    bh.D+=vel*dt*0.0167;M.D.value=bh.D;M.str.value=str;M.spd.value=cl(Math.abs(vel)/220);M.zo.value=zo;M.wd.value=MOB?1.25:1;
+    hsT.material.uniforms.t.value=bh.D*0.35;hsT.material.uniforms.op.value=tun;hsGlow.material.opacity=cl(gl*0.28);hsGlow.scale.setScalar(2.5+gl*4+tun*3);
+    rbPass.bm.uniforms.str.value=blur;R.mixk.value=mixk;R.ca.value=ca;R.glow.value=gl*0.14;R.flash.value=flash;bh.shk=shk;
+    bloom.strength=lerp(0.7,1.15,cl(str));gk=0;amt=0;ca=0;fov=f;br=1;bh.spin=10;}
+  else if(e<BH_END){if(bh.ph<4){bh.ph=4;hsOff();palette(A,B,1);setZone(bh.to);world(true);bhExitAudio(bh.to);tx=0;tz=1.5;bh.start=BHP.clone();}
+    const r=(e-HS1)/1.3,rs=sm(r);appear=rs;sphere.position.lerpVectors(bh.start,_v.set(0,0.9,1.5),rs);bh.spin=lerp(10,1,r);const fs=lerp(4.4,1,rs);fil.scale.set(fs,lerp(1.6,1,rs),fs);
+    sphere.material.opacity=1*rs;sphere.children[1].material.opacity=0.25*rs;sphere.children[0].scale.setScalar(0.1+0.9*rs);
+    bloom.strength=lerp(0.35,0.9,rs);gk=1-rs;amt=0.7*(1-rs);ca=0.4*(1-rs);br=lerp(3.2,1,sm(cl(r*2.5)))*Math.max(Math.pow(r,0.4),0.35);fov=lerp(70,56,rs);bs=1-rs;bh.look.lerp(_v.set(sphere.position.x,0.6,sphere.position.z),0.15);}
+  else{hsOff();if(bh.ph<4){palette(A,B,1);setZone(bh.to);world(true);tx=0;tz=1.5;}endBH();return;}// frame hitch safety: never skip the zone switch
+  bhG.scale.setScalar(Math.max(bs,0.001));bhG.children[0].rotation.z+=0.02*dt;bhG.children[1].material.opacity=0.85+0.15*Math.sin(e*20);
+  bhG.userData.arcs.forEach((m,i)=>{m.rotation.z+=m.userData.sp*0.03*dt*(1+amt*3);const c=i<3?A.cr[i]:0x9ff8ff;m.material.color.setHex(c);m.material.opacity=cl((e-0.6)/1.2)*0.9;m.scale.set(1+amt*0.35,1-amt*0.12,1);});
+  trail.forEach((s,i)=>s.position.lerp(BHP,0.04*amt));
+  stretchGrid(gk);if(camera.fov!==fov){camera.fov=fov;camera.updateProjectionMatrix();}
+  _v.copy(BHP).project(camera);U.c.value.set(_v.x*.5+.5,_v.y*.5+.5);U.amt.value=amt;U.ca.value=ca;U.bright.value=br;}
+function hsOff(){if(hsG)hsG.visible=false;sphere.visible=true;if(rbPass)rbPass.enabled=false;bh.shk=0;}
+function endBH(){bh.on=false;hsOff();bhPass.enabled=false;bhG.visible=false;appear=1;fil.scale.set(1,1,1);sphere.material.opacity=1;sphere.children[1].material.opacity=0.25;sphere.children[0].scale.setScalar(1);
+  stretchGrid(0);camera.fov=56;camera.updateProjectionMatrix();bloom.strength=BLOOM_BASE;if(bhLow){bhLow=false;const k=bk();bloom.setSize(innerWidth/k|0,innerHeight/k|0);}mission(zone);}
+</script>
+<style>#qrbox{position:fixed;right:18px;bottom:18px;z-index:30;background:rgba(10,2,30,.82);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px;text-align:center;font:700 12px/1.3 system-ui,sans-serif;color:#fff;box-shadow:0 0 24px rgba(255,80,220,.35)}#qrbox img{display:block;width:132px;height:132px;border-radius:8px;margin:0 auto 6px}#qrbox a{color:#ffd6f6;font-weight:400;font-size:11px}@media (max-width:899px),(pointer:coarse){#qrbox{display:none}}</style>
+<div id="qrbox"><img src="/aspheris/qr.png" alt="QR: stop60.no/aspheris" width="132" height="132">Scan to play on your phone<br><a href="/aspheris/en/privacy/">Privacy</a> · <a href="/">Stop60</a></div>
+<script>(function(){var o=document.getElementById('overlay'),q=document.getElementById('qrbox');setInterval(function(){q.style.visibility=(o&&getComputedStyle(o).display!=='none')?'visible':'hidden'},500)})();</script>
+</body>
+</html>
