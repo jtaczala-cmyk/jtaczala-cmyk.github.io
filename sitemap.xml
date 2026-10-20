@@ -21,8 +21,9 @@
 <url><loc>https://stop60.no/lavakule/</loc><xhtml:link rel="alternate" hreflang="nb" href="https://stop60.no/lavakule/"/><xhtml:link rel="alternate" hreflang="pl" href="https://stop60.no/lavakule/pl/"/><xhtml:link rel="alternate" hreflang="en" href="https://stop60.no/lavakule/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/lavakule/"/></url>
 <url><loc>https://stop60.no/lavakule/pl/</loc><xhtml:link rel="alternate" hreflang="nb" href="https://stop60.no/lavakule/"/><xhtml:link rel="alternate" hreflang="pl" href="https://stop60.no/lavakule/pl/"/><xhtml:link rel="alternate" hreflang="en" href="https://stop60.no/lavakule/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/lavakule/"/></url>
 <url><loc>https://stop60.no/lavakule/en/</loc><xhtml:link rel="alternate" hreflang="nb" href="https://stop60.no/lavakule/"/><xhtml:link rel="alternate" hreflang="pl" href="https://stop60.no/lavakule/pl/"/><xhtml:link rel="alternate" hreflang="en" href="https://stop60.no/lavakule/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/lavakule/"/></url>
-<url><loc>https://stop60.no/strom/</loc></url>
-<url><loc>https://stop60.no/power/</loc></url>
-<url><loc>https://stop60.no/prad/</loc></url>
+<url><loc>https://stop60.no/strom/</loc><xhtml:link rel="alternate" hreflang="nb" href="https://stop60.no/strom/"/><xhtml:link rel="alternate" hreflang="pl" href="https://stop60.no/prad/"/><xhtml:link rel="alternate" hreflang="en" href="https://stop60.no/power/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/strom/"/></url>
+<url><loc>https://stop60.no/power/</loc><xhtml:link rel="alternate" hreflang="nb" href="https://stop60.no/strom/"/><xhtml:link rel="alternate" hreflang="pl" href="https://stop60.no/prad/"/><xhtml:link rel="alternate" hreflang="en" href="https://stop60.no/power/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/strom/"/></url>
+<url><loc>https://stop60.no/prad/</loc><xhtml:link rel="alternate" hreflang="nb" href="https://stop60.no/strom/"/><xhtml:link rel="alternate" hreflang="pl" href="https://stop60.no/prad/"/><xhtml:link rel="alternate" hreflang="en" href="https://stop60.no/power/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://stop60.no/strom/"/></url>
 <url><loc>https://stop60.no/robaki/</loc></url>
+<url><loc>https://stop60.no/robaki/en/</loc></url>
 </urlset>
