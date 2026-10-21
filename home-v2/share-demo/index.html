@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2026 Stop60. HIDDEN PROTOTYPE: share.js demo (noindex, unlinked). -->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>share.js demo – Stop60 (prototype)</title>
+<meta name="color-scheme" content="dark"/>
+<link rel="icon" href="/favicon.ico" sizes="48x48"/>
+<link rel="stylesheet" href="/fonts/fonts.css"/>
+<link rel="stylesheet" href="/assets/home.css?v=4"/>
+<script defer src="/home-v2/share.js?v=1"></script>
+<style>
+body{padding:16px}.wrap{max-width:640px;margin:0 auto}
+.f{display:grid;gap:10px;margin:16px 0}.f label{display:grid;gap:4px;font-size:14px;color:#d6d3d1}
+.f input,.f select{min-height:44px;padding:0 12px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:#1c1b19;color:#f5f5f4;font-size:16px}
+.b{min-height:52px;padding:0 24px;border-radius:999px;border:0;background:#5eead4;color:#04201c;font:600 18px/1 'IBM Plex Sans',sans-serif;cursor:pointer}
+pre{white-space:pre-wrap;word-break:break-all;background:#1c1b19;border-radius:10px;padding:12px;font-size:13px;color:#d6d3d1}
+.end{border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:18px;text-align:center;background:#16151a}
+.end h2{margin:0 0 4px;font:600 28px/1.1 'Oswald',sans-serif}.end p{margin:0 0 14px;font-size:20px}
+</style>
+</head>
+<body><div class="wrap">
+<p class="k">Stop60 · prototype</p>
+<h1 style="font:600 28px/1.15 'Oswald',sans-serif">share.js demo</h1>
+<p>Mock end screen. On phones the native share sheet opens (navigator.share); on desktop the text + link is copied and a toast is shown.</p>
+<div class="end"><h2 id="eg">Ufobang</h2><p><span id="el">Score</span>: <b id="es">1 234</b></p><button class="b" id="go" type="button">Share</button></div>
+<div class="f">
+<label>Language <select id="l"><option value="no">Norsk</option><option value="pl">Polski</option><option value="en" selected>English</option></select></label>
+<label>Game <select id="g">
+<option value="ufobang|Ufobang|/ufobang/">Ufobang</option><option value="redning|Redning|/redning/">Redning</option>
+<option value="lavakule|Lavakule|/lavakule/">Lavakule / Lava Marble</option><option value="aspheris|Aspheris|/aspheris/">Aspheris</option>
+<option value="logikk|Ren logikk|/logikk/">Ren logikk / Pure Logic</option><option value="hefau|Hefau|/hefau/">Hefau</option>
+<option value="strom|STRØM|/strom/">STRØM / PRĄD / POWER</option><option value="robaki|Sneaky Bugs|/robaki/">Sneaky Bugs</option></select></label>
+<label>Score <input id="n" type="number" value="1234" inputmode="numeric"/></label>
+</div>
+<p>Preview of what will be shared:</p><pre id="pv"></pre>
+<p>Result: <b id="r">–</b></p>
+</div>
+<script>
+var LP={no:["/","pl/","en/"],pl:"/pl/",en:"/en/"};
+var NM={lavakule:{no:"Lavakule",pl:"Lawowa kulka",en:"Lava Marble"},logikk:{no:"Ren logikk",pl:"Czysta logika",en:"Pure Logic"},strom:{no:"STRØM",pl:"PRĄD",en:"POWER"}};
+var UR={strom:{no:"/strom/",pl:"/prad/",en:"/power/"},robaki:{no:"/robaki/?lang=en",pl:"/robaki/",en:"/robaki/?lang=en"}};
+var SC={no:"Poeng",pl:"Wynik",en:"Score"},BT={no:"Del resultatet",pl:"Udostępnij wynik",en:"Share result"};
+function opts(){var p=document.getElementById("g").value.split("|"),l=document.getElementById("l").value,id=p[0];
+ var u=(UR[id]&&UR[id][l])||(p[2]+(l==="no"?"":l+"/"));
+ return {id:id,game:(NM[id]&&NM[id][l])||p[1],score:+document.getElementById("n").value||0,lang:l,url:"https://stop60.no"+u};}
+function upd(){if(!window.StopShare)return;var o=opts();document.documentElement.lang=o.lang==="no"?"nb":o.lang;
+ document.getElementById("eg").textContent=o.game;document.getElementById("el").textContent=SC[o.lang];
+ document.getElementById("es").textContent=o.score.toLocaleString(o.lang==="no"?"nb-NO":o.lang==="pl"?"pl-PL":"en-GB");
+ document.getElementById("go").textContent=BT[o.lang];
+ document.getElementById("pv").textContent=StopShare.text(o)+"\n"+StopShare.link(o,"web-share")+"\n\n(copy fallback link)\n"+StopShare.link(o,"copy");}
+["l","g","n"].forEach(function(i){document.getElementById(i).addEventListener("input",upd);});
+document.getElementById("go").addEventListener("click",function(){StopShare.share(opts()).then(function(r){document.getElementById("r").textContent=r;});});
+window.addEventListener("DOMContentLoaded",upd);
+</script>
+</body>
+</html>
