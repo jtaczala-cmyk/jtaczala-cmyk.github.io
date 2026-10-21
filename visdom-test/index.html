@@ -1,0 +1,21 @@
+<!doctype html><html lang="no"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><title>visdom-test</title>
+<style>html,body{margin:0;height:100%;background:#070a1a;color:#fff;font-family:system-ui,sans-serif;overflow:hidden}
+#start{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 70%,#2a1a4a 0%,#0b0e22 60%,#05060f 100%)}
+h1{font-size:44px;margin:0 0 8px;letter-spacing:.06em;text-shadow:0 0 18px #ff7a3c}.sub{opacity:.7;margin-bottom:34px}
+#play{font-size:22px;padding:16px 54px;border-radius:40px;border:0;background:linear-gradient(#ff9a3c,#ff5a1f);color:#fff;font-weight:700;box-shadow:0 0 24px #ff5a1f88;cursor:pointer}
+.ball{position:absolute;bottom:14%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd36b,#e2451c 60%,#5a1206)}
+#info{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;opacity:.45}#info a{color:#fff}</style></head>
+<body><div id="start"><h1>STOP60</h1><div class="sub" id="sub">Prototype</div><button id="play">▶ SPILL</button><div class="ball"></div>
+<div id="info"></div></div>
+<script src="wisdom.js"></script>
+<script>
+var q=new URLSearchParams(location.search),lang=q.get("lang")||"no",date=q.get("date")||undefined;
+document.documentElement.lang=lang;
+document.getElementById("play").textContent={no:"▶ SPILL",pl:"▶ GRAJ",en:"▶ PLAY"}[lang]||"▶ PLAY";
+document.getElementById("play").onclick=function(){alert("play")};
+StopWisdom.show({lang:lang,date:date,force:true,parent:document.getElementById("start")});
+var w=StopWisdom.pick(lang,date);
+document.getElementById("info").innerHTML="#"+(w.i+1)+"/"+StopWisdom.count+" · "+w.date+" · <a href='?lang=no'>no</a> <a href='?lang=pl'>pl</a> <a href='?lang=en'>en</a>";
+</script></body></html>
