@@ -19,20 +19,24 @@ function pick(lang,date){
 var CSS=".s60w{position:absolute;left:50%;top:max(12px,env(safe-area-inset-top));transform:translateX(-50%);z-index:50;width:min(88vw,380px);box-sizing:border-box;padding:12px 38px 12px 16px;border-radius:14px;background:rgba(14,16,30,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,214,140,.35);box-shadow:0 6px 24px rgba(0,0,0,.45);color:#f4efe4;font:15px/1.35 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-align:left;animation:s60wIn .6s ease-out both}"+
 ".s60w h4{margin:0 0 4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#ffd68c;font-weight:600}"+
 ".s60w p{margin:0;font-size:16px;font-style:italic}.s60w small{display:block;margin-top:5px;font-size:11.5px;opacity:.7}"+
-".s60w button{position:absolute;top:6px;right:6px;width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:#f4efe4;font-size:18px;line-height:30px;cursor:pointer;opacity:.75}.s60w button:hover{opacity:1;background:rgba(255,255,255,.1)}"+
-".s60w.s60w-in{position:relative;left:auto;top:auto;transform:none;width:100%;max-width:380px;margin:0 auto 12px;text-align:left;animation:s60wF .4s ease-out}@keyframes s60wF{from{opacity:0}to{opacity:1}}"+
+".s60w .s60w-x{all:unset!important;box-sizing:border-box!important;text-align:center!important;position:absolute!important;top:6px!important;right:6px!important;width:30px!important;height:30px!important;border:0!important;border-radius:50%!important;background:transparent!important;color:#f4efe4!important;font-size:18px!important;line-height:30px!important;cursor:pointer!important;opacity:.75!important}.s60w .s60w-x:hover{opacity:1!important;background:rgba(255,255,255,.1)!important}"+
+".s60w.s60w-in{grid-column:1/-1;flex:none;position:relative;left:auto;top:auto;transform:none;width:100%;max-width:380px;margin:0 auto 12px;text-align:left;animation:s60wF .4s ease-out}@keyframes s60wF{from{opacity:0}to{opacity:1}}"+
 "@keyframes s60wIn{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}@media (prefers-reduced-motion:reduce){.s60w{animation:none}}";
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+var watching=0,last=null;
 function show(o){
-  o=o||{}; var w=pick(o.lang||document.documentElement.lang.slice(0,2),o.date), K="s60w-hidden";
+  o=o||{}; var lg=String(o.lang||document.documentElement.lang||"en").slice(0,2).toLowerCase(); if(lg==="nb"||lg==="nn")lg="no";
+  var w=pick(lg,o.date), K="s60w-hidden";
+  if(!o.lang&&!watching&&window.MutationObserver){watching=1;new MutationObserver(function(){var c=document.querySelector(".s60w");if(c&&last){var n=last;n.force=1;show(n);n.force=0;}}).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});}
+  last=o;
   try{if(!o.force&&localStorage.getItem(K)===w.date)return null;}catch(e){}
   if(!document.getElementById("s60w-css")){var st=document.createElement("style");st.id="s60w-css";st.textContent=CSS;document.head.appendChild(st);}
   var old=document.querySelector(".s60w"); if(old)old.remove();
   var el=document.createElement("aside"); el.className="s60w"; el.setAttribute("role","note"); el.setAttribute("aria-label",w.label);
-  el.innerHTML="<h4>"+esc(w.label)+"</h4><p>"+Q[w.lang][0]+esc(w.text)+Q[w.lang][1]+"</p>"+(w.origin?"<small>\u2014 "+esc(w.origin)+"</small>":"")+"<button type='button' aria-label='"+CLOSE[w.lang]+"'>\u00D7</button>";
-  el.querySelector("button").onclick=function(e){e.stopPropagation();el.remove();try{localStorage.setItem(K,w.date);}catch(_){}};
+  el.innerHTML="<h4>"+esc(w.label)+"</h4><p>"+Q[w.lang][0]+esc(w.text)+Q[w.lang][1]+"</p>"+(w.origin?"<small>\u2014 "+esc(w.origin)+"</small>":"")+"<button type='button' class='s60w-x' aria-label='"+CLOSE[w.lang]+"'>\u00D7</button>";
+  el.querySelector(".s60w-x").onclick=function(e){e.stopPropagation();el.remove();try{localStorage.setItem(K,w.date);}catch(_){}};
   if(o.before&&o.before.parentNode){el.className+=" s60w-in";o.before.parentNode.insertBefore(el,o.before);}else(o.parent||document.body).appendChild(el); return el;
 }
-function hide(){var e=document.querySelector(".s60w");if(e)e.remove();}
+function hide(){var e=document.querySelector(".s60w");if(e)e.remove();last=null;}
 window.StopWisdom={pick:pick,show:show,hide:hide,count:DATA.sayings.length};
 })();
