@@ -73,5 +73,7 @@
 <div id="toast"></div>
 <script type="module" src="/lavakule/game.js"></script>
 <script>document.getElementById("shareBtn").onclick=function(){var u=location.origin+location.pathname,t=document.title;if(navigator.share){navigator.share({title:t,url:u}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){var e=document.getElementById("toast");if(e){e.textContent="Skopiowano link";e.classList.add("show");setTimeout(function(){e.classList.remove("show")},1800)}})}try{window.goatcounter&&goatcounter.count&&goatcounter.count({path:"lavakule-share",title:"lavakule share",event:true})}catch(e){}};</script>
+<script src="https://stop60.no/assets/wisdom.js" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"pl",before:document.getElementById("startBtn")})});</script>
 </body>
 </html>

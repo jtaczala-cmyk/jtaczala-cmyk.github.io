@@ -521,7 +521,7 @@ function skyLerp(k) { const B = BIOMES[S.biome || 0], u = skyMat.uniforms; ['c0'
 function toast(msg, ms = 1600) { const t = $('toast'); t.textContent = msg; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), ms); }
 function show(id, on) { $(id).hidden = !on; }
 async function start(fromTap, isDaily = daily) {
-  audioInit(); if (fromTap) await askTilt();
+  window.StopWisdom && StopWisdom.hide(); audioInit(); if (fromTap) await askTilt();
   daily = isDaily; reset(); state = 'play'; show('menu', false); show('over', false); show('hud', true); show('pauseBox', false);
   runs++; SV('lavakule_runs_v1', runs);
   setTimeout(calibrate, 150); gcT0 = Date.now(); gc(daily ? 'game-start-daily' : 'game-start');
