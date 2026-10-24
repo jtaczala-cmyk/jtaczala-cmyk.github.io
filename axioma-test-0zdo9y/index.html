@@ -48,7 +48,7 @@
     font-size: 0.85rem;
   }
   .lang button.active { background: var(--player); color: #2A0F14; }
-  #wisdom, #status, #level-info {
+  #status, #level-info {
     font-size: 0.85rem;
     margin: 3px 0;
     text-shadow: 0 1px 3px #000;
@@ -92,6 +92,12 @@
     pointer-events: none;
     z-index: 5;
   }
+  #joy { display: none; position: absolute; left: 22px; bottom: 130px; width: 120px; height: 120px; border-radius: 50%;
+    background: rgba(42,15,20,0.55); border: 2px solid rgba(232,179,60,0.6); z-index: 12; touch-action: none; }
+  #joyKnob { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%;
+    background: rgba(232,179,60,0.85); box-shadow: 0 0 12px rgba(232,179,60,0.6); pointer-events: none; }
+  body.touch #joy { display: block; }
+  body.touch canvas { touch-action: none; }
 </style>
 </head>
 <body>
@@ -102,11 +108,11 @@
     <button data-lang="en">EN</button>
     <button data-lang="no">NO</button>
   </div>
-  <div id="wisdom"></div>
   <div id="status"></div>
   <div id="level-info"></div>
 </div>
 <div id="crosshair"></div>
+<div id="joy" aria-hidden="true"><div id="joyKnob"></div></div>
 
 <div id="controls">
   <button id="activate">Aktywuj regułę</button>
@@ -126,7 +132,6 @@ const CELL = 4;
 const translations = {
   pl: {
     title: "Axioma 3D – Labirynt",
-    wisdom: "Wróżba na dzisiaj: Prawda jest tym, co sam zdefiniujesz.",
     statusStart: "Aktywuj regułę, żeby otworzyć przejście.",
     statusWin: "Gratulacje! Wydostałeś się.",
     activate: "Aktywuj regułę",
@@ -137,7 +142,6 @@ const translations = {
   },
   en: {
     title: "Axioma 3D – Maze",
-    wisdom: "Today's fortune: Truth is what you define.",
     statusStart: "Activate the rule to open the passage.",
     statusWin: "Congratulations! You escaped.",
     activate: "Activate rule",
@@ -148,7 +152,6 @@ const translations = {
   },
   no: {
     title: "Axioma 3D – Irrgang",
-    wisdom: "Dagens visdom: Sannheten er det du definerer.",
     statusStart: "Aktiver regelen for å åpne passasjen.",
     statusWin: "Gratulerer! Du kom deg ut.",
     activate: "Aktiver regel",
@@ -167,6 +170,7 @@ let walls = [];
 let goalMesh;
 let ruleActive = false;
 let currentLevel = 0;
+let levelDone = false;
 let moveForward = false, moveBack = false, moveLeft = false, moveRight = false;
 
 const levels = [
@@ -200,8 +204,8 @@ function makeBorderWalls() {
 
 function init() {
   scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x12080a, 0.045);
-  scene.background = new THREE.Color(0x12080a);
+  scene.fog = new THREE.FogExp2(0x2A0F14, 0.022);
+  scene.background = new THREE.Color(0x2A0F14);
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
 
@@ -213,8 +217,9 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   // Lighting
-  scene.add(new THREE.AmbientLight(0x331818, 0.5));
-  const dir = new THREE.DirectionalLight(0xffaa66, 0.7);
+  scene.add(new THREE.AmbientLight(0xF6EEDC, 0.35));
+  scene.add(new THREE.HemisphereLight(0xFFE7C2, 0x2A0F14, 0.5));
+  const dir = new THREE.DirectionalLight(0xFFD9A0, 0.85);
   dir.position.set(15, 25, 10);
   dir.castShadow = true;
   dir.shadow.mapSize.width = 1024;
@@ -228,7 +233,7 @@ function init() {
 
   // Floor
   const floorGeo = new THREE.PlaneGeometry(GRID * CELL + 4, GRID * CELL + 4);
-  const floorMat = new THREE.MeshStandardMaterial({ color: 0x2A1216, roughness: 0.95, metalness: 0.05 });
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0x4A1E24, roughness: 0.95, metalness: 0.05 });
   const floor = new THREE.Mesh(floorGeo, floorMat);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
@@ -247,7 +252,7 @@ function loadLevel(n) {
   if (goalMesh) scene.remove(goalMesh);
 
   playerPos.set(lvl.player.x * CELL, 1.6, lvl.player.z * CELL);
-  yaw = 0;
+  yaw = Math.atan2(-(lvl.goal.x - lvl.player.x), -(lvl.goal.z - lvl.player.z));
   pitch = 0;
 
   // Goal
@@ -266,19 +271,23 @@ function loadLevel(n) {
   // Walls
   const allWalls = [...makeBorderWalls(), ...lvl.extraWalls];
   const wallGeo = new THREE.BoxGeometry(CELL, 3.2, CELL);
-  const wallMat = new THREE.MeshStandardMaterial({ color: 0x5C1A24, roughness: 0.8, metalness: 0.1 });
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0x7E2A36, roughness: 0.8, metalness: 0.05, emissive: 0x2A0F14, emissiveIntensity: 0.4 });
+  const edgeGeo = new THREE.EdgesGeometry(wallGeo);
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0xE8B33C, transparent: true, opacity: 0.55 });
   allWalls.forEach(coord => {
     const [x, z] = coord.split(",").map(Number);
     const wall = new THREE.Mesh(wallGeo, wallMat);
     wall.position.set(x * CELL, 1.6, z * CELL);
     wall.castShadow = true;
     wall.receiveShadow = true;
+    wall.add(new THREE.LineSegments(edgeGeo, edgeMat));
     wall.userData.unlockable = lvl.unlocks.includes(coord);
     scene.add(wall);
     walls.push(wall);
   });
 
   ruleActive = false;
+  levelDone = false;
   document.getElementById("level-info").textContent = `${translations[lang].level} ${currentLevel + 1} / ${levels.length}`;
   document.getElementById("status").textContent = translations[lang].statusStart;
 }
@@ -306,7 +315,8 @@ function tryMove(dx, dz) {
   const gx = Math.round(playerPos.x / CELL);
   const gz = Math.round(playerPos.z / CELL);
   const lvl = levels[currentLevel];
-  if (gx === lvl.goal.x && gz === lvl.goal.z) {
+  if (!levelDone && gx === lvl.goal.x && gz === lvl.goal.z) {
+    levelDone = true;
     document.getElementById("status").textContent = translations[lang].statusWin;
     setTimeout(() => loadLevel(currentLevel + 1), 1400);
   }
@@ -316,7 +326,6 @@ function setLang(l) {
   lang = l;
   document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
   document.getElementById("title").textContent = translations[l].title;
-  document.getElementById("wisdom").textContent = translations[l].wisdom;
   document.getElementById("activate").textContent = translations[l].activate;
   document.getElementById("reset").textContent = translations[l].reset;
   document.getElementById("slogan").textContent = translations[l].slogan;
@@ -331,7 +340,7 @@ document.getElementById("activate").onclick = () => {
 };
 
 // Pointer lock for mouse look
-addEventListener("click", e => { if (renderer && e.target === renderer.domElement) renderer.domElement.requestPointerLock(); });
+addEventListener("click", e => { if (!isTouch && renderer && e.target === renderer.domElement) renderer.domElement.requestPointerLock(); });
 document.addEventListener("mousemove", e => {
   if (document.pointerLockElement === renderer.domElement) {
     yaw -= e.movementX * 0.002;
@@ -353,24 +362,45 @@ document.addEventListener("keyup", e => {
   if (e.key === "ArrowRight" || e.key === "d") moveRight = false;
 });
 
-// Touch
-let touchStart = null;
+// Touch: virtual joystick (move) + drag-to-look; shown only on touch devices
+const isTouch = ("ontouchstart" in window) || navigator.maxTouchPoints > 0 || matchMedia("(pointer: coarse)").matches;
+let joyX = 0, joyY = 0, joyId = null, lookId = null, lookLast = null;
+const joy = document.getElementById("joy"), knob = document.getElementById("joyKnob");
+if (isTouch) document.body.classList.add("touch");
+function joySet(t) {
+  const r = joy.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2, max = r.width/2;
+  let dx = t.clientX - cx, dy = t.clientY - cy; const d = Math.hypot(dx, dy);
+  if (d > max) { dx *= max/d; dy *= max/d; }
+  joyX = dx/max; joyY = dy/max;
+  knob.style.transform = `translate(${dx}px,${dy}px)`;
+}
 document.addEventListener("touchstart", e => {
-  if (e.target.closest("button")) return;
-  touchStart = {x: e.touches[0].clientX, y: e.touches[0].clientY};
-}, {passive: true});
-document.addEventListener("touchend", e => {
-  if (!touchStart) return;
-  const dx = e.changedTouches[0].clientX - touchStart.x;
-  const dy = e.changedTouches[0].clientY - touchStart.y;
-  const dist = Math.hypot(dx, dy);
-  if (dist > 30) {
-    const angle = Math.atan2(dy, dx);
-    const speed = 2.5;
-    tryMove(Math.cos(angle + yaw) * speed, Math.sin(angle + yaw) * speed);
+  for (const t of e.changedTouches) {
+    if (t.target.closest && t.target.closest("button, .s60w")) continue;
+    if (joyId === null && joy.contains(t.target)) { joyId = t.identifier; joySet(t); }
+    else if (lookId === null) { lookId = t.identifier; lookLast = {x: t.clientX, y: t.clientY}; }
   }
-  touchStart = null;
-});
+}, {passive: true});
+document.addEventListener("touchmove", e => {
+  for (const t of e.changedTouches) {
+    if (t.identifier === joyId) joySet(t);
+    else if (t.identifier === lookId) {
+      yaw -= (t.clientX - lookLast.x) * 0.006;
+      pitch -= (t.clientY - lookLast.y) * 0.004;
+      pitch = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, pitch));
+      lookLast = {x: t.clientX, y: t.clientY};
+    }
+  }
+  if (e.cancelable) e.preventDefault();
+}, {passive: false});
+function touchEnd(e) {
+  for (const t of e.changedTouches) {
+    if (t.identifier === joyId) { joyId = null; joyX = joyY = 0; knob.style.transform = ""; }
+    if (t.identifier === lookId) lookId = null;
+  }
+}
+document.addEventListener("touchend", touchEnd);
+document.addEventListener("touchcancel", touchEnd);
 
 function animate() {
   requestAnimationFrame(animate);
@@ -381,6 +411,10 @@ function animate() {
   if (moveBack) tryMove(dirX * speed * 8, dirZ * speed * 8);
   if (moveLeft) tryMove(-dirZ * speed * 8, dirX * speed * 8);
   if (moveRight) tryMove(dirZ * speed * 8, -dirX * speed * 8);
+  if (joyX || joyY) {
+    const ts = speed * 1.6;
+    tryMove((dirX * joyY + dirZ * joyX) * ts, (dirZ * joyY - dirX * joyX) * ts);
+  }
 
   camera.position.copy(playerPos);
   camera.rotation.order = "YXZ";
