@@ -92,12 +92,7 @@
     pointer-events: none;
     z-index: 5;
   }
-  #joy { display: none; position: absolute; left: 22px; bottom: 130px; width: 120px; height: 120px; border-radius: 50%;
-    background: rgba(42,15,20,0.55); border: 2px solid rgba(232,179,60,0.6); z-index: 12; touch-action: none; }
-  #joyKnob { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%;
-    background: rgba(232,179,60,0.85); box-shadow: 0 0 12px rgba(232,179,60,0.6); pointer-events: none; }
-  body.touch #joy { display: block; }
-  body.touch canvas { touch-action: none; }
+  body.touch, body.touch canvas { touch-action: none; -webkit-user-select: none; user-select: none; }
 </style>
 </head>
 <body>
@@ -112,7 +107,6 @@
   <div id="level-info"></div>
 </div>
 <div id="crosshair"></div>
-<div id="joy" aria-hidden="true"><div id="joyKnob"></div></div>
 
 <div id="controls">
   <button id="activate">Aktywuj regułę</button>
@@ -362,45 +356,33 @@ document.addEventListener("keyup", e => {
   if (e.key === "ArrowRight" || e.key === "d") moveRight = false;
 });
 
-// Touch: virtual joystick (move) + drag-to-look; shown only on touch devices
+// Touch: direct finger drag anywhere (like the other Stop60 games), no on-screen widgets.
+// Horizontal drag turns the view; holding the finger above/below where it touched down walks forward/back.
 const isTouch = ("ontouchstart" in window) || navigator.maxTouchPoints > 0 || matchMedia("(pointer: coarse)").matches;
-let joyX = 0, joyY = 0, joyId = null, lookId = null, lookLast = null;
-const joy = document.getElementById("joy"), knob = document.getElementById("joyKnob");
+let drag = null, turnTarget = 0, walk = 0, walkTarget = 0;
+const TURN = 0.0075, DEAD = 14, FULL = 80;
 if (isTouch) document.body.classList.add("touch");
-function joySet(t) {
-  const r = joy.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2, max = r.width/2;
-  let dx = t.clientX - cx, dy = t.clientY - cy; const d = Math.hypot(dx, dy);
-  if (d > max) { dx *= max/d; dy *= max/d; }
-  joyX = dx/max; joyY = dy/max;
-  knob.style.transform = `translate(${dx}px,${dy}px)`;
+function uiTarget(e) { return e.target.closest && e.target.closest("button, .s60w, .lang"); }
+document.addEventListener("pointerdown", e => {
+  if (e.pointerType === "mouse" || uiTarget(e)) return;
+  drag = { id: e.pointerId, y0: e.clientY, lastX: e.clientX };          // a second finger takes over
+});
+document.addEventListener("pointermove", e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  const ev = e.getCoalescedEvents ? e.getCoalescedEvents() : null, p = ev && ev.length ? ev[ev.length - 1] : e;
+  turnTarget += (p.clientX - drag.lastX) * TURN; drag.lastX = p.clientX;
+  const dy = drag.y0 - p.clientY, a = Math.abs(dy);
+  walkTarget = a < DEAD ? 0 : Math.sign(dy) * Math.min(1, (a - DEAD) / (FULL - DEAD));
+});
+function dragEnd(e) { if (drag && e.pointerId === drag.id) { drag = null; walkTarget = 0; } }
+document.addEventListener("pointerup", dragEnd);
+document.addEventListener("pointercancel", dragEnd);
+document.addEventListener("touchmove", e => { if (e.cancelable && !uiTarget(e)) e.preventDefault(); }, {passive: false});
+function touchStep() {
+  const t = turnTarget * 0.35; yaw -= t; turnTarget -= t;               // smoothed turning
+  walk += (walkTarget - walk) * 0.18;                                    // smoothed walking
+  if (Math.abs(walk) > 0.01) tryMove(-Math.sin(yaw) * walk * 0.16, -Math.cos(yaw) * walk * 0.16);
 }
-document.addEventListener("touchstart", e => {
-  for (const t of e.changedTouches) {
-    if (t.target.closest && t.target.closest("button, .s60w")) continue;
-    if (joyId === null && joy.contains(t.target)) { joyId = t.identifier; joySet(t); }
-    else if (lookId === null) { lookId = t.identifier; lookLast = {x: t.clientX, y: t.clientY}; }
-  }
-}, {passive: true});
-document.addEventListener("touchmove", e => {
-  for (const t of e.changedTouches) {
-    if (t.identifier === joyId) joySet(t);
-    else if (t.identifier === lookId) {
-      yaw -= (t.clientX - lookLast.x) * 0.006;
-      pitch -= (t.clientY - lookLast.y) * 0.004;
-      pitch = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, pitch));
-      lookLast = {x: t.clientX, y: t.clientY};
-    }
-  }
-  if (e.cancelable) e.preventDefault();
-}, {passive: false});
-function touchEnd(e) {
-  for (const t of e.changedTouches) {
-    if (t.identifier === joyId) { joyId = null; joyX = joyY = 0; knob.style.transform = ""; }
-    if (t.identifier === lookId) lookId = null;
-  }
-}
-document.addEventListener("touchend", touchEnd);
-document.addEventListener("touchcancel", touchEnd);
 
 function animate() {
   requestAnimationFrame(animate);
@@ -411,10 +393,7 @@ function animate() {
   if (moveBack) tryMove(dirX * speed * 8, dirZ * speed * 8);
   if (moveLeft) tryMove(-dirZ * speed * 8, dirX * speed * 8);
   if (moveRight) tryMove(dirZ * speed * 8, -dirX * speed * 8);
-  if (joyX || joyY) {
-    const ts = speed * 1.6;
-    tryMove((dirX * joyY + dirZ * joyX) * ts, (dirZ * joyY - dirX * joyX) * ts);
-  }
+  touchStep();
 
   camera.position.copy(playerPos);
   camera.rotation.order = "YXZ";
