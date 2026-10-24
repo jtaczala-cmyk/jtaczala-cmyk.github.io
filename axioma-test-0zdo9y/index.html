@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Axioma 3D – Irrgang / Maze / Labirynt</title>
+<style>
+  :root {
+    --bg: #2A0F14;
+    --player: #E8B33C;
+    --goal: #3FC7A8;
+    --text: #F6EEDC;
+    --hint: #B9A88F;
+    --trap: #D7262E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #12080a;
+    color: var(--text);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+  }
+  #ui {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 10px;
+    pointer-events: none;
+    text-align: center;
+  }
+  #ui * { pointer-events: auto; }
+  h1 {
+    font-size: 1.5rem;
+    color: var(--player);
+    text-shadow: 0 0 14px rgba(232,179,60,0.8);
+  }
+  .lang { margin: 4px 0; }
+  .lang button {
+    background: rgba(42,15,20,0.75);
+    border: 1px solid var(--hint);
+    color: var(--text);
+    padding: 3px 10px;
+    margin: 0 3px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .lang button.active { background: var(--player); color: #2A0F14; }
+  #wisdom, #status, #level-info {
+    font-size: 0.85rem;
+    margin: 3px 0;
+    text-shadow: 0 1px 3px #000;
+  }
+  #status { color: var(--text); font-weight: 500; }
+  #controls {
+    position: absolute;
+    bottom: 70px;
+    left: 0; right: 0;
+    text-align: center;
+    z-index: 10;
+  }
+  button {
+    background: rgba(92,26,36,0.9);
+    color: var(--text);
+    border: 1px solid #7A2A34;
+    padding: 9px 14px;
+    margin: 3px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  button:hover, button:active { background: var(--player); color: #2A0F14; }
+  footer {
+    position: absolute;
+    bottom: 6px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--hint);
+    z-index: 10;
+  }
+  .logo { color: var(--trap); font-weight: bold; letter-spacing: 1px; }
+  #crosshair {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 8px; height: 8px;
+    margin: -4px 0 0 -4px;
+    border: 2px solid rgba(232,179,60,0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+<div id="ui">
+  <h1 id="title">Axioma 3D</h1>
+  <div class="lang">
+    <button data-lang="pl" class="active">PL</button>
+    <button data-lang="en">EN</button>
+    <button data-lang="no">NO</button>
+  </div>
+  <div id="wisdom"></div>
+  <div id="status"></div>
+  <div id="level-info"></div>
+</div>
+<div id="crosshair"></div>
+
+<div id="controls">
+  <button id="activate">Aktywuj regułę</button>
+  <button id="reset">Reset</button>
+</div>
+
+<footer>
+  <div class="logo">STOP</div>
+  stop60.no · <span id="slogan">Zrobione z pasji</span>
+</footer>
+
+<script src="/assets/vendor/three/r128/three.min.js"></script>
+<script>
+const GRID = 13;
+const CELL = 4;
+
+const translations = {
+  pl: {
+    title: "Axioma 3D – Labirynt",
+    wisdom: "Wróżba na dzisiaj: Prawda jest tym, co sam zdefiniujesz.",
+    statusStart: "Aktywuj regułę, żeby otworzyć przejście.",
+    statusWin: "Gratulacje! Wydostałeś się.",
+    activate: "Aktywuj regułę",
+    reset: "Reset",
+    slogan: "Zrobione z pasji",
+    level: "Poziom",
+    ruleText: "ŚCIANA JEST DRZWI"
+  },
+  en: {
+    title: "Axioma 3D – Maze",
+    wisdom: "Today's fortune: Truth is what you define.",
+    statusStart: "Activate the rule to open the passage.",
+    statusWin: "Congratulations! You escaped.",
+    activate: "Activate rule",
+    reset: "Reset",
+    slogan: "Made with passion",
+    level: "Level",
+    ruleText: "WALL IS DOOR"
+  },
+  no: {
+    title: "Axioma 3D – Irrgang",
+    wisdom: "Dagens visdom: Sannheten er det du definerer.",
+    statusStart: "Aktiver regelen for å åpne passasjen.",
+    statusWin: "Gratulerer! Du kom deg ut.",
+    activate: "Aktiver regel",
+    reset: "Nullstill",
+    slogan: "Laget med lidenskap",
+    level: "Nivå",
+    ruleText: "VEGG ER DØR"
+  }
+};
+
+let lang = "pl";
+let scene, camera, renderer;
+let playerPos = new THREE.Vector3();
+let yaw = 0, pitch = 0;
+let walls = [];
+let goalMesh;
+let ruleActive = false;
+let currentLevel = 0;
+let moveForward = false, moveBack = false, moveLeft = false, moveRight = false;
+
+const levels = [
+  {
+    player: {x: 1, z: 1},
+    goal: {x: 11, z: 11},
+    unlocks: ["4,4","4,5","4,6","5,6"],
+    extraWalls: ["4,4","4,5","4,6","5,6","6,3","7,3","8,3","6,8","7,8","8,8"]
+  },
+  {
+    player: {x: 1, z: 6},
+    goal: {x: 11, z: 6},
+    unlocks: ["6,4","6,5","6,7","6,8"],
+    extraWalls: ["3,3","3,4","3,5","3,7","3,8","3,9","5,2","6,2","7,2","8,2","5,10","6,10","7,10","8,10","9,4","9,5","9,7","9,8"]
+  },
+  {
+    player: {x: 2, z: 2},
+    goal: {x: 10, z: 10},
+    unlocks: ["5,5","6,5","7,5","5,6","7,6","5,7","6,7","7,7"],
+    extraWalls: ["5,5","6,5","7,5","5,6","7,6","5,7","6,7","7,7","3,8","4,8","8,3","9,3","3,4","4,4"]
+  }
+];
+
+function makeBorderWalls() {
+  const w = [];
+  for (let i = 0; i < GRID; i++) {
+    w.push(`0,${i}`, `${GRID-1},${i}`, `${i},0`, `${i},${GRID-1}`);
+  }
+  return w;
+}
+
+function init() {
+  scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x12080a, 0.045);
+  scene.background = new THREE.Color(0x12080a);
+
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  document.body.appendChild(renderer.domElement);
+
+  // Lighting
+  scene.add(new THREE.AmbientLight(0x331818, 0.5));
+  const dir = new THREE.DirectionalLight(0xffaa66, 0.7);
+  dir.position.set(15, 25, 10);
+  dir.castShadow = true;
+  dir.shadow.mapSize.width = 1024;
+  dir.shadow.mapSize.height = 1024;
+  scene.add(dir);
+
+  const goalLight = new THREE.PointLight(0x3FC7A8, 2, 25);
+  goalLight.position.set(0, 3, 0);
+  scene.add(goalLight);
+  window.goalLight = goalLight;
+
+  // Floor
+  const floorGeo = new THREE.PlaneGeometry(GRID * CELL + 4, GRID * CELL + 4);
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0x2A1216, roughness: 0.95, metalness: 0.05 });
+  const floor = new THREE.Mesh(floorGeo, floorMat);
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  scene.add(floor);
+
+  loadLevel(0);
+  animate();
+}
+
+function loadLevel(n) {
+  currentLevel = n % levels.length;
+  const lvl = levels[currentLevel];
+
+  walls.forEach(w => scene.remove(w));
+  walls = [];
+  if (goalMesh) scene.remove(goalMesh);
+
+  playerPos.set(lvl.player.x * CELL, 1.6, lvl.player.z * CELL);
+  yaw = 0;
+  pitch = 0;
+
+  // Goal
+  const goalGeo = new THREE.BoxGeometry(1.4, 2.4, 0.4);
+  const goalMat = new THREE.MeshStandardMaterial({
+    color: 0x3FC7A8,
+    emissive: 0x3FC7A8,
+    emissiveIntensity: 1.2,
+    roughness: 0.3
+  });
+  goalMesh = new THREE.Mesh(goalGeo, goalMat);
+  goalMesh.position.set(lvl.goal.x * CELL, 1.2, lvl.goal.z * CELL);
+  scene.add(goalMesh);
+  window.goalLight.position.copy(goalMesh.position).y += 1;
+
+  // Walls
+  const allWalls = [...makeBorderWalls(), ...lvl.extraWalls];
+  const wallGeo = new THREE.BoxGeometry(CELL, 3.2, CELL);
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0x5C1A24, roughness: 0.8, metalness: 0.1 });
+  allWalls.forEach(coord => {
+    const [x, z] = coord.split(",").map(Number);
+    const wall = new THREE.Mesh(wallGeo, wallMat);
+    wall.position.set(x * CELL, 1.6, z * CELL);
+    wall.castShadow = true;
+    wall.receiveShadow = true;
+    wall.userData.unlockable = lvl.unlocks.includes(coord);
+    scene.add(wall);
+    walls.push(wall);
+  });
+
+  ruleActive = false;
+  document.getElementById("level-info").textContent = `${translations[lang].level} ${currentLevel + 1} / ${levels.length}`;
+  document.getElementById("status").textContent = translations[lang].statusStart;
+}
+
+function isBlocked(x, z) {
+  const gx = Math.round(x / CELL);
+  const gz = Math.round(z / CELL);
+  if (gx < 0 || gz < 0 || gx >= GRID || gz >= GRID) return true;
+  return walls.some(w => {
+    const wx = Math.round(w.position.x / CELL);
+    const wz = Math.round(w.position.z / CELL);
+    if (wx === gx && wz === gz) {
+      return !(ruleActive && w.userData.unlockable);
+    }
+    return false;
+  });
+}
+
+function tryMove(dx, dz) {
+  const nx = playerPos.x + dx;
+  const nz = playerPos.z + dz;
+  if (!isBlocked(nx, playerPos.z)) playerPos.x = nx;
+  if (!isBlocked(playerPos.x, nz)) playerPos.z = nz;
+
+  const gx = Math.round(playerPos.x / CELL);
+  const gz = Math.round(playerPos.z / CELL);
+  const lvl = levels[currentLevel];
+  if (gx === lvl.goal.x && gz === lvl.goal.z) {
+    document.getElementById("status").textContent = translations[lang].statusWin;
+    setTimeout(() => loadLevel(currentLevel + 1), 1400);
+  }
+}
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+  document.getElementById("title").textContent = translations[l].title;
+  document.getElementById("wisdom").textContent = translations[l].wisdom;
+  document.getElementById("activate").textContent = translations[l].activate;
+  document.getElementById("reset").textContent = translations[l].reset;
+  document.getElementById("slogan").textContent = translations[l].slogan;
+  loadLevel(currentLevel);
+}
+
+document.querySelectorAll(".lang button").forEach(btn => btn.onclick = () => setLang(btn.dataset.lang));
+document.getElementById("reset").onclick = () => loadLevel(currentLevel);
+document.getElementById("activate").onclick = () => {
+  ruleActive = true;
+  document.getElementById("status").textContent = translations[lang].ruleText + " ✓";
+};
+
+// Pointer lock for mouse look
+renderer.domElement.addEventListener("click", () => renderer.domElement.requestPointerLock());
+document.addEventListener("mousemove", e => {
+  if (document.pointerLockElement === renderer.domElement) {
+    yaw -= e.movementX * 0.002;
+    pitch -= e.movementY * 0.002;
+    pitch = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, pitch));
+  }
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowUp" || e.key === "w") moveForward = true;
+  if (e.key === "ArrowDown" || e.key === "s") moveBack = true;
+  if (e.key === "ArrowLeft" || e.key === "a") moveLeft = true;
+  if (e.key === "ArrowRight" || e.key === "d") moveRight = true;
+});
+document.addEventListener("keyup", e => {
+  if (e.key === "ArrowUp" || e.key === "w") moveForward = false;
+  if (e.key === "ArrowDown" || e.key === "s") moveBack = false;
+  if (e.key === "ArrowLeft" || e.key === "a") moveLeft = false;
+  if (e.key === "ArrowRight" || e.key === "d") moveRight = false;
+});
+
+// Touch
+let touchStart = null;
+document.addEventListener("touchstart", e => {
+  if (e.target.closest("button")) return;
+  touchStart = {x: e.touches[0].clientX, y: e.touches[0].clientY};
+}, {passive: true});
+document.addEventListener("touchend", e => {
+  if (!touchStart) return;
+  const dx = e.changedTouches[0].clientX - touchStart.x;
+  const dy = e.changedTouches[0].clientY - touchStart.y;
+  const dist = Math.hypot(dx, dy);
+  if (dist > 30) {
+    const angle = Math.atan2(dy, dx);
+    const speed = 2.5;
+    tryMove(Math.cos(angle + yaw) * speed, Math.sin(angle + yaw) * speed);
+  }
+  touchStart = null;
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  const speed = 0.12;
+  const dirX = Math.sin(yaw);
+  const dirZ = Math.cos(yaw);
+  if (moveForward) tryMove(-dirX * speed * 8, -dirZ * speed * 8);
+  if (moveBack) tryMove(dirX * speed * 8, dirZ * speed * 8);
+  if (moveLeft) tryMove(-dirZ * speed * 8, dirX * speed * 8);
+  if (moveRight) tryMove(dirZ * speed * 8, -dirX * speed * 8);
+
+  camera.position.copy(playerPos);
+  camera.rotation.order = "YXZ";
+  camera.rotation.y = yaw;
+  camera.rotation.x = pitch;
+
+  // Gentle pulse on goal
+  if (goalMesh) goalMesh.material.emissiveIntensity = 1.0 + Math.sin(Date.now() * 0.003) * 0.4;
+
+  renderer.render(scene, camera);
+}
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+init();
+setLang("pl");
+</script>
+<script>document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){document.documentElement.lang=b.dataset.lang})});</script>
+<script src="https://stop60.no/assets/wisdom.js" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({before:document.getElementById("controls")})});</script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+</body>
+</html>
