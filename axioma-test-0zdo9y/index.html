@@ -331,7 +331,7 @@ document.getElementById("activate").onclick = () => {
 };
 
 // Pointer lock for mouse look
-renderer.domElement.addEventListener("click", () => renderer.domElement.requestPointerLock());
+addEventListener("click", e => { if (renderer && e.target === renderer.domElement) renderer.domElement.requestPointerLock(); });
 document.addEventListener("mousemove", e => {
   if (document.pointerLockElement === renderer.domElement) {
     yaw -= e.movementX * 0.002;
@@ -404,7 +404,7 @@ setLang("pl");
 </script>
 <script>document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){document.documentElement.lang=b.dataset.lang})});</script>
 <script src="https://stop60.no/assets/wisdom.js" defer></script>
-<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({before:document.getElementById("controls")})});</script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({before:document.getElementById("status")})});</script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
 </body>
 </html>
