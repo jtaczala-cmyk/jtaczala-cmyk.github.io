@@ -46,6 +46,7 @@ h2{font-size:1.6rem;color:var(--gold);margin-bottom:6px}
 #hud b{font-size:1.15rem}
 #hHp{display:flex;gap:2px;margin-top:4px}#hHp i{width:12px;height:10px;border-radius:3px;background:#5a3a3f}#hHp i.on{background:var(--red);box-shadow:0 0 6px rgba(215,38,46,.8)}
 #hud .sp{flex:1}
+#muteBtn{pointer-events:auto;padding:6px 10px;font-size:1.1rem;background:rgba(42,15,20,.6);border:1px solid rgba(232,179,60,.3)}
 #pauseBtn{pointer-events:auto;padding:6px 12px;font-size:1.1rem;background:rgba(42,15,20,.6)}
 #toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:40;background:var(--cream);color:var(--bg2);padding:8px 16px;border-radius:20px;font-weight:700;transition:.25s;pointer-events:none}
 #toast.show{opacity:1;transform:translateX(-50%)}
@@ -76,6 +77,7 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
   <div class="v"><small data-t="hp"></small><div id="hHp"></div></div>
   <div class="v"><small data-t="coins"></small><b id="hCoins" style="color:var(--gold)">0</b></div>
   <div class="sp"></div>
+  <button id="muteBtn" aria-label="Sound">🔊</button>
   <button id="pauseBtn" aria-label="Pause">⏸</button>
 </div>
 
@@ -163,42 +165,85 @@ function refreshStats(){
 function toast(s){ var e = $("toast"); e.textContent = s; e.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(function(){ e.classList.remove("show"); }, 1600); }
 
 /* ---------- audio + haptics ---------- */
-var AC = null, master = null, mute = !!P.mute, novib = !!P.novib;
-function audio(){ if (!AC){ try { AC = new (window.AudioContext || window.webkitAudioContext)(); master = AC.createGain(); master.gain.value = .5; master.connect(AC.destination); } catch(e){} } if (AC && AC.state === "suspended") AC.resume(); }
+var AC = null, master = null, sfxBus = null, musBus = null, comp = null, mute = !!P.mute, novib = !!P.novib, unlocked = false;
+// iOS: let Web Audio play even when the ring/silent switch is on (Safari 17+)
+try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch(e){}
+function audio(){
+  if (!AC){ try {
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    comp = AC.createDynamicsCompressor(); comp.threshold.value = -14; comp.knee.value = 10; comp.ratio.value = 12; comp.attack.value = .003; comp.release.value = .2;
+    master = AC.createGain(); master.gain.value = mute ? 0 : .8; master.connect(comp); comp.connect(AC.destination);
+    sfxBus = AC.createGain(); sfxBus.gain.value = .7; sfxBus.connect(master);
+    musBus = AC.createGain(); musBus.gain.value = .22; musBus.connect(master);
+  } catch(e){ AC = null; return; } }
+  if (AC.state !== "running"){ try { AC.resume(); } catch(e){} }
+  if (!unlocked){ try { var sb = AC.createBufferSource(); sb.buffer = AC.createBuffer(1, 1, 22050); sb.connect(AC.destination); sb.start(0); unlocked = true; } catch(e){} }
+  startMusic();
+}
+["touchstart", "touchend", "pointerdown", "mousedown", "keydown"].forEach(function(ev){ addEventListener(ev, audio, {capture: true, passive: true}); });
+document.addEventListener("visibilitychange", function(){ if (!AC) return; if (document.hidden){ try { AC.suspend(); } catch(e){} } else { try { AC.resume(); } catch(e){} } });
+addEventListener("pageshow", function(){ if (AC) try { AC.resume(); } catch(e){} });
+function setMute(m){ mute = P.mute = m; save(); refreshToggles(); if (master) master.gain.setTargetAtTime(mute ? 0 : .8, AC.currentTime, .03); }
 var lastTone = {};
-function tone(f, d, type, vol, slide, key){
-  if (mute || !AC) return; var now = AC.currentTime;
-  if (key){ if (lastTone[key] && now - lastTone[key] < .045) return; lastTone[key] = now; }
+function tone(f, d, type, vol, slide, key, delay, bus){
+  if (mute || !AC || AC.state !== "running") return; var now = AC.currentTime + (delay || 0);
+  if (key){ if (lastTone[key] && now - lastTone[key] < (key === "shot" ? .075 : .045)) return; lastTone[key] = now; }
   var o = AC.createOscillator(), g = AC.createGain();
   o.type = type || "sine"; o.frequency.setValueAtTime(f, now); if (slide) o.frequency.exponentialRampToValueAtTime(slide, now + d);
-  g.gain.setValueAtTime(vol || .15, now); g.gain.exponentialRampToValueAtTime(.0001, now + d);
-  o.connect(g); g.connect(master); o.start(now); o.stop(now + d + .02);
+  g.gain.setValueAtTime(.0001, now); g.gain.linearRampToValueAtTime(vol || .15, now + .006); g.gain.exponentialRampToValueAtTime(.0001, now + d);
+  o.connect(g); g.connect(bus || sfxBus); o.start(now); o.stop(now + d + .03);
 }
 var noiseBuf = null;
-function noise(d, vol, fc){
-  if (mute || !AC) return;
+function noise(d, vol, fc, type, delay, sweep){
+  if (mute || !AC || AC.state !== "running") return;
   if (!noiseBuf){ noiseBuf = AC.createBuffer(1, AC.sampleRate, AC.sampleRate); var a = noiseBuf.getChannelData(0); for (var i = 0; i < a.length; i++) a[i] = Math.random()*2-1; }
-  var s = AC.createBufferSource(), g = AC.createGain(), f = AC.createBiquadFilter(), now = AC.currentTime;
-  s.buffer = noiseBuf; f.type = "lowpass"; f.frequency.value = fc || 1200;
-  g.gain.setValueAtTime(vol || .3, now); g.gain.exponentialRampToValueAtTime(.0001, now + d);
-  s.connect(f); f.connect(g); g.connect(master); s.start(now); s.stop(now + d);
+  var s = AC.createBufferSource(), g = AC.createGain(), f = AC.createBiquadFilter(), now = AC.currentTime + (delay || 0);
+  s.buffer = noiseBuf; s.loop = d > 1; f.type = type || "lowpass"; f.frequency.setValueAtTime(fc || 1200, now); if (sweep) f.frequency.exponentialRampToValueAtTime(sweep, now + d);
+  g.gain.setValueAtTime(.0001, now); g.gain.linearRampToValueAtTime(vol || .3, now + .01); g.gain.exponentialRampToValueAtTime(.0001, now + d);
+  s.connect(f); f.connect(g); g.connect(sfxBus); s.start(now, Math.random()*.5); s.stop(now + d + .02);
 }
 var SFX = {
-  shot: function(){ tone(620, .05, "square", .022, 260, "shot"); if (Math.random() < .5) noise(.035, .035, 2600); },
-  hit: function(){ tone(300, .05, "triangle", .06, 180, "hit"); },
-  boom: function(big){ noise(big ? .9 : .3, big ? .5 : .22, big ? 700 : 1500); tone(big ? 90 : 160, big ? .6 : .2, "sine", .2, 40); },
-  coin: function(){ tone(1320, .07, "sine", .07, 1760, "coin"); },
-  pu: function(){ tone(520, .12, "triangle", .12, 1040); setTimeout(function(){ tone(780, .14, "triangle", .12, 1560); }, 80); },
-  hurt: function(){ tone(200, .3, "sawtooth", .15, 60); noise(.25, .3, 800); },
-  buy: function(){ tone(660, .08, "square", .06); setTimeout(function(){ tone(990, .12, "square", .06); }, 70); },
-  alarm: function(){ for (var i = 0; i < 3; i++) setTimeout(function(){ tone(440, .25, "sawtooth", .1, 220); }, i*320); }
+  shot: function(){ tone(520 + Math.random()*60, .06, "triangle", .035, 300, "shot"); },
+  hit: function(){ tone(300, .04, "triangle", .035, 180, "hit"); },
+  boom: function(big){ if (big){ noise(.7, .38, 900, "lowpass", 0, 120); tone(110, .5, "sine", .3, 38, "boomB"); } else { noise(.22, .18, 1800, "lowpass", 0, 300); tone(170, .16, "sine", .12, 60, "boomS"); } },
+  bossBoom: function(){ noise(1.8, .5, 1400, "lowpass", 0, 60); tone(90, 1.4, "sine", .4, 28); tone(60, 1.6, "sawtooth", .08, 25); for (var i = 1; i < 5; i++){ noise(.5, .3, 1200, "lowpass", i*.22, 150); } },
+  coin: function(){ tone(1320, .06, "sine", .06, 1760, "coin"); tone(1980, .08, "sine", .04, 0, null, .045); },
+  pu: function(){ [523, 659, 784, 1047].forEach(function(f, i){ tone(f, .16, "triangle", .1, 0, null, i*.07); tone(f*2, .1, "sine", .03, 0, null, i*.07); }); },
+  orb: function(){ tone(520, .12, "triangle", .1, 1040); tone(780, .14, "triangle", .1, 1560, null, .08); },
+  hurt: function(){ tone(220, .35, "sawtooth", .14, 55); noise(.3, .3, 900, "lowpass", 0, 200); },
+  buy: function(){ tone(660, .08, "square", .05); tone(990, .12, "square", .05, 0, null, .07); },
+  whoosh: function(){ noise(.6, .16, 300, "bandpass", 0, 3200); tone(330, .4, "sine", .05, 660, null, .05); },
+  alarm: function(){ for (var i = 0; i < 4; i++){ tone(440, .22, "sawtooth", .08, 220, null, i*.3); tone(660, .22, "square", .03, 330, null, i*.3 + .1); } }
 };
+/* light looping synth music: lookahead scheduler, A-minor progression */
+var musT = 0, musStep = 0, musTimer = null;
+var CH = [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
+function mtof(n){ return 440*Math.pow(2, (n - 69)/12); }
+function startMusic(){
+  if (musTimer || !AC) return; musT = AC.currentTime + .1;
+  musTimer = setInterval(function(){
+    if (!AC || AC.state !== "running") return;
+    if (musT < AC.currentTime) musT = AC.currentTime + .05;
+    while (musT < AC.currentTime + .25){
+      var spb = .125, bar = Math.floor(musStep/16) % 4, st = musStep % 16, ch = CH[bar], dl = musT - AC.currentTime;
+      if (!mute){
+        var arp = ch[[0, 1, 2, 1][st % 4]] + 12 + (st >= 8 && st % 4 === 3 ? 12 : 0);
+        tone(mtof(arp), .2, "triangle", .12, 0, null, dl, musBus);
+        if (st % 4 === 0) tone(mtof(ch[0] - 24), .45, "sine", .3, 0, null, dl, musBus);
+        if (st === 0) ch.forEach(function(n){ tone(mtof(n), 1.9, "sine", .04, 0, null, dl, musBus); });
+        if (st % 4 === 2){ var nb = musBus; noise(.03, .05, 7000, "highpass", dl); }
+      }
+      musT += spb; musStep++;
+    }
+  }, 60);
+}
 function vib(p){ if (!novib && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(p); } catch(e){} }
 function refreshToggles(){
-  document.querySelectorAll(".sndB").forEach(function(b){ b.textContent = (mute ? "🔇 " : "🔊 ") + t("snd"); });
+  document.querySelectorAll(".sndB").forEach(function(b){ b.textContent = (mute ? "🔇 " : "🔊 ") + t("snd"); }); var hm = $("muteBtn"); if (hm) hm.textContent = mute ? "🔇" : "🔊";
   document.querySelectorAll(".vibB").forEach(function(b){ b.textContent = (novib ? "📴 " : "📳 ") + t("vib"); });
 }
-document.querySelectorAll(".sndB").forEach(function(b){ b.onclick = function(){ mute = P.mute = !mute; save(); refreshToggles(); audio(); SFX.coin(); }; });
+document.querySelectorAll(".sndB").forEach(function(b){ b.onclick = function(){ audio(); setMute(!mute); SFX.coin(); }; });
+$("muteBtn").onclick = function(ev){ ev.stopPropagation(); audio(); setMute(!mute); };
 document.querySelectorAll(".vibB").forEach(function(b){ b.onclick = function(){ novib = P.novib = !novib; save(); refreshToggles(); vib(40); }; });
 
 /* ---------- canvas ---------- */
@@ -273,7 +318,7 @@ function addPow(n){
   while (player.pow < POW_MAX && player.pk >= POW_TH[player.pow]){
     player.pk -= POW_TH[player.pow]; player.pow++; player.powFx = 1;
     banner = {txt: t("pup") + " " + (player.pow + 1), t: 1.3, col: "#3FC7A8"};
-    ring(player.x, player.y, "63,199,168", 90); SFX.coin(); vib([30, 30, 60]);
+    ring(player.x, player.y, "63,199,168", 90); SFX.pu(); vib([30, 30, 60]);
   }
   if (player.pow >= POW_MAX) player.pk = 0;
 }
@@ -296,7 +341,7 @@ function startWave(){
     banner = {txt: t("stage") + " " + wave + " · " + t("boss"), t: 2, col: "#FF6B8A", small: true}; SFX.alarm(); vib([80,60,80]);
     waveQ.push({at: 1.6, boss: true});
   } else {
-    banner = {txt: t("stage") + " " + wave, t: 1.5, col: "#E8B33C", small: true};
+    banner = {txt: t("stage") + " " + wave, t: 1.5, col: "#E8B33C", small: true}; SFX.whoosh();
     var groups = 2 + Math.min(6, Math.floor(wave*.7)), at = 1.2, pats = ["arc","vee","swirl","dive"];
     for (var g = 0; g < groups; g++){
       var pat = pats[(g + wave) % 4]; if (Math.random() < .35) pat = pats[Math.floor(Math.random()*4)];
@@ -566,7 +611,7 @@ function update(dt){
       drops.splice(i, 1);
       if (d.k === "c"){ P.coins++; runCoins++; score += 5; SFX.coin(); }
       else {
-        SFX.pu(); vib(25); floatText(d.x, d.y - 10, t("pu")[d.k], "#3FC7A8"); ring(d.x, d.y, "63,199,168", 50);
+        SFX.orb(); vib(25); floatText(d.x, d.y - 10, t("pu")[d.k], "#3FC7A8"); ring(d.x, d.y, "63,199,168", 50);
         if (d.k === "w"){ if (player.wpn < 4) player.wpn++; else score += 500; }
         else if (d.k === "s") player.shield = 9;
         else if (d.k === "m") player.magnet = 10;
@@ -614,7 +659,7 @@ function updateBoss(dt){
   }
   if (Math.hypot(B.x - player.x, B.y - player.y) < B.r + 10) hurtPlayer();
   if (B.hp <= 0){
-    score += 1500*lv; addPow(25); boomFx(B.x, B.y, 6, "255,120,80"); boomFx(B.x - 40, B.y + 10, 3); boomFx(B.x + 40, B.y - 10, 3); flash = 1; flashCol = "232,179,60"; shake = 20; SFX.boom(true); setTimeout(function(){ SFX.boom(true); }, 250); vib([100, 50, 200]);
+    score += 1500*lv; addPow(25); boomFx(B.x, B.y, 6, "255,120,80"); boomFx(B.x - 40, B.y + 10, 3); boomFx(B.x + 40, B.y - 10, 3); flash = 1; flashCol = "232,179,60"; shake = 20; SFX.bossBoom(); vib([100, 50, 200]);
     for (var z = 0; z < 4; z++) burst(B.x + rnd(-40, 40), B.y + rnd(-25, 25), 30, ["232,179,60","215,38,46","246,238,220","166,108,255"][z], 320, 1.1);
     for (var c = 0; c < 25 + lv*5; c++) drops.push({k: "c", x: B.x + rnd(-40, 40), y: B.y + rnd(-20, 20), vx: rnd(-140, 140), vy: rnd(-200, -40), r: 6});
     dropPU(B.x - 30, B.y, "w"); dropPU(B.x + 30, B.y, Math.random() < .5 ? "s" : "m");
