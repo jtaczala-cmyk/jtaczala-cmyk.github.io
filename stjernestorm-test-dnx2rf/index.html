@@ -89,6 +89,7 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
   <p class="stat"><span data-t="best"></span>: <b class="bestV">0</b> · 🪙 <b class="coinV">0</b></p>
   <button id="playBtn" class="big" data-t="play"></button>
   <div class="row"><button id="menuShop" data-t="shop"></button><button class="shareB" data-t="share"></button></div>
+  <div id="sxMenu"></div>
   <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
   <ul class="how"><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li></ul>
   <p class="love" data-t="love"></p>
@@ -119,11 +120,14 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
   <p id="oNew" class="love" hidden data-t="newbest"></p>
   <button id="retryBtn" class="big" data-t="retry"></button>
   <div class="row"><button id="overShop" data-t="shop"></button><button class="shareB" data-t="share"></button><button id="overMenu" data-t="menu"></button></div>
-  <p class="love" data-t="love"></p>
+  <div id="sxOver"></div>
+  <p class="love" id="overLove" data-t="love"></p>
   <p class="small"><a href="/">stop60.no</a></p>
 </section>
 <div id="toast"></div>
 
+<script src="/assets/vendor/qrcode/qrcode.min.js"></script>
+<script src="/assets/s60-social.js"></script>
 <script>
 "use strict";
 var T = {
@@ -155,7 +159,7 @@ function applyLang(){
   document.querySelectorAll("[data-t]").forEach(function(e){ e.textContent = t(e.dataset.t); });
   document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
   refreshToggles(); refreshStats(); if (!$("shop").hidden) renderShop();
-  if (window.StopWisdom && !$("menu").hidden) StopWisdom.show({lang: lang, before: $("playBtn"), force: true});
+  if (typeof SX !== "undefined"){ SX.relabel(); if (!$("menu").hidden) SX.fortune($("playBtn"), true); else if (!$("over").hidden) SX.fortune($("overLove"), true); }
 }
 document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = P.lang = b.dataset.l; save(); applyLang(); }; });
 function refreshStats(){
@@ -327,7 +331,7 @@ function magR(){ return 46 + P.up.mag*28; }
 function newRun(){
   player = {x: W/2, y: H*.78, hp: maxHp(), wpn: P.up.wpn, cd: 0, inv: 0, shield: 0, magnet: 0, bank: 0, tilt: 0, pow: 0, pk: 0, powFx: 0};
   enemies = []; pb = []; eb = []; drops = []; parts = []; texts = []; boss = null;
-  score = 0; runCoins = 0; wave = DEBUG ? 4 : 0;
+  score = 0; runCoins = 0; wave = DEBUG ? 4 : 0; runT0 = Date.now(); SX.start();
   if (DEBUG && QS.get("wpn") !== null) player.wpn = clamp(+QS.get("wpn") || 0, 0, 4); else if (DEBUG && player.wpn < 2) player.wpn = 2;
   if (DEBUG && QS.get("pow") !== null) player.pow = clamp(+QS.get("pow") || 0, 0, POW_MAX);
   if (DEBUG && QS.get("wave") !== null) wave = Math.max(0, (+QS.get("wave") || 1) - 1);
@@ -417,7 +421,8 @@ function setMode(m){
   $("hud").hidden = !(m === "play" || m === "pause" || m === "shop");
   $("langs").hidden = !(m === "menu");
   refreshStats();
-  if (m === "menu" && window.StopWisdom) StopWisdom.show({lang: lang, before: $("playBtn"), force: true});
+  if (m === "menu") SX.fortune($("playBtn"), true);
+  if (m === "over") SX.fortune($("overLove"));
 }
 function pauseGame(){ if (mode === "play"){ setMode("pause"); drag = null; } }
 function resumeGame(){ if (mode === "pause"){ setMode("play"); last = performance.now(); } }
@@ -456,12 +461,13 @@ function renderShop(){
   }; });
 }
 function finishRun(dead){
-  if (score > P.best){ P.best = score; if (dead) $("oNew").hidden = false; }
+  if (score > P.best){ P.best = score; if (dead) $("oNew").hidden = false; } if (score >= P.best) P.bestW = wave;
   save();
   try { window.goatcounter && goatcounter.count && goatcounter.count({path: "stjernestorm-over", title: "stjernestorm over w" + wave, event: true}); } catch(e){}
 }
 function gameOver(){
   $("oNew").hidden = true; finishRun(true);
+  if (!DEBUG) SX.result({score: score, ko: 0, wave: wave, secs: Math.round((Date.now() - runT0) / 1000)});
   $("oScore").textContent = score; $("oWave").textContent = wave; $("oCoins").textContent = runCoins;
   setTimeout(function(){ setMode("over"); }, 1100);
   mode = "dying";
@@ -473,6 +479,18 @@ function share(){
   try { window.goatcounter && goatcounter.count && goatcounter.count({path: "stjernestorm-share", title: "stjernestorm share", event: true}); } catch(e){}
 }
 document.querySelectorAll(".shareB").forEach(function(b){ b.onclick = share; });
+/* ---------- QR, share score, online top 10 (shared /assets/s60-social.js) ---------- */
+T.no.sxShare = "Jeg fikk {s} poeng og nådde etappe {w} i Stjernestorm – klarer du å slå meg?"; T.pl.sxShare = "Zdobyłem {s} punktów i doleciałem do etapu {w} w Gwiezdnej burzy – pobijesz mnie?"; T.en.sxShare = "I got {s} points and reached stage {w} in Star Storm – can you beat me?";
+T.no.sxRow = "{s} p · etappe {w}"; T.pl.sxRow = "{s} pkt · etap {w}"; T.en.sxRow = "{s} pts · stage {w}";
+var runT0 = Date.now();
+var SX = window.S60Social ? S60Social.create({
+  game: "stjernestorm", url: "https://stop60.no/stjernestorm-test-dnx2rf/", lang: function(){ return lang; }, gameName: function(){ return t("name"); },
+  shareText: function(r){ return t("sxShare").replace("{s}", r ? r.score : P.best).replace("{w}", r ? r.wave : Math.max(1, P.bestW || 1)); },
+  fmt: function(r){ return t("sxRow").replace("{s}", r.score).replace("{w}", r.wave); },
+  rpc: {start: "stjernestorm_start", submit: "stjernestorm_submit"}, args: function(r, tok){ return {p_name: r.name, p_score: r.score, p_wave: r.wave, p_secs: r.secs | 0, p_token: tok || null}; },
+  toast: toast
+}) : {block: function(){ return document.createElement("div"); }, relabel: function(){}, fortune: function(){}, result: function(){}, start: function(){}};
+$("sxMenu").appendChild(SX.block()); $("sxOver").appendChild(SX.block());
 
 /* ---------- HUD ---------- */
 var hudCache = {};
