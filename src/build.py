@@ -20,8 +20,8 @@ LANGNAME = {"no": {"no": "norsk", "en": "engelsk", "pl": "polsk"},
 T = {
  "no": dict(
   tagline="laget med lidenskap",
-  title="Stop60 – gratis spill i nettleseren, uten reklame og uten konto",
-  desc="Små spill du starter rett i nettleseren: brettspill, logikk, action og læring. Laget med lidenskap og gratis for alle – ingen reklame, ingen konto, ingen app. På norsk, engelsk og polsk.",
+  title="Stop60 – gratis spill uten reklame i nettleseren",
+  desc="Gratis spill uten reklame, rett i nettleseren: brettspill, logikk, action og læring. Laget med lidenskap – uten konto og uten app. På norsk, engelsk og polsk.",
   navlang="Språk", nav_games="Spill", nav_about="Om", menu="Hovedmeny",
   h1="Gratis spill rett i nettleseren",
   lead="Små spill laget med lidenskap – gratis for alle, på mobil og PC.",
@@ -39,8 +39,8 @@ T = {
   priv_links="Personvern i spillene:", contact="Kontakt:", count="{n} spill"),
  "en": dict(
   tagline="made with passion",
-  title="Stop60 – free browser games, no ads and no account",
-  desc="Small games you start right in your browser: board, logic, action and learning. Made with passion and free for everyone – no ads, no account, no app. In Norwegian, English and Polish.",
+  title="Stop60 – free browser games, no ads",
+  desc="Free browser games, no ads: small board, logic, action and learning games you start right in the browser. No account and no app. In Norwegian, English and Polish.",
   navlang="Language", nav_games="Games", nav_about="About", menu="Main menu",
   h1="Free games, right in your browser",
   lead="Small games made with passion – free for everyone, on phone and computer.",
@@ -58,8 +58,8 @@ T = {
   priv_links="Privacy in the games:", contact="Contact:", count="{n} games"),
  "pl": dict(
   tagline="stworzone z pasji",
-  title="Stop60 – darmowe gry w przeglądarce, bez reklam i bez konta",
-  desc="Małe gry, które uruchamiasz od razu w przeglądarce: planszowe, logiczne, zręcznościowe i do nauki. Robione z pasji i darmowe dla wszystkich – bez reklam, bez konta, bez aplikacji. Po norwesku, angielsku i polsku.",
+  title="Stop60 – darmowe gry bez reklam w przeglądarce",
+  desc="Darmowe gry bez reklam, od razu w przeglądarce: planszowe, logiczne, zręcznościowe i do nauki. Robione z pasji – bez konta i bez aplikacji. Po norwesku, angielsku i polsku.",
   navlang="Język", nav_games="Gry", nav_about="O nas", menu="Menu główne",
   h1="Darmowe gry prosto w przeglądarce",
   lead="Małe gry robione z pasji – darmowe dla wszystkich, na telefonie i komputerze.",
@@ -297,6 +297,8 @@ def page(l):
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:alt" content="Stop60 – {e(t["tagline"])}"/>
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="{e(t["title"])}"/>
+<meta name="twitter:description" content="{e(t["desc"])}"/>
 <meta name="twitter:image" content="{BASE}assets/og-home-{l}.jpg?v=5"/>
 <script type="application/ld+json">{jsonld(l, t)}</script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
@@ -361,16 +363,27 @@ def page404():
 '''
 
 def sitemap():
-    def alts(paths): return "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{BASE}{p}"/>' for h, p in paths)
-    home = [(HREFLANG[x], PATH[x]) for x in LANGS] + [("x-default", "")]
-    hef = [("nb", "hefau/"), ("pl", "hefau/pl/"), ("en", "hefau/en/"), ("x-default", "hefau/")]
-    lk = [("nb", "logikk/"), ("pl", "logikk/pl/"), ("en", "logikk/en/"), ("x-default", "logikk/")]
-    sk = [("nb", "ufobang/"), ("pl", "ufobang/pl/"), ("en", "ufobang/en/"), ("x-default", "ufobang/")]
-    rk = [("nb", "redning/"), ("pl", "redning/pl/"), ("en", "redning/en/"), ("x-default", "redning/")]
-    lv = [("nb", "lavakule/"), ("pl", "lavakule/pl/"), ("en", "lavakule/en/"), ("x-default", "lavakule/")]
-    urls = [(PATH[x], home) for x in LANGS] + [(p, hef) for _, p in hef[:3]] + [(p, lk) for _, p in lk[:3]] + [(p, sk) for _, p in sk[:3]] + [(p, rk) for _, p in rk[:3]] + [(p, lv) for _, p in lv[:3]]
-    urls += [("strom/", []), ("power/", []), ("prad/", []), ("robaki/", [])]
-    body = "".join(f"<url><loc>{BASE}{u}</loc>{alts(a)}</url>\n" for u, a in urls)
+    """Indexable trailing-slash URLs only. lastmod is the last publish date of that URL.
+    /robaki/en/ stays out until it is a real self-canonical page (the live URL is still a soft redirect).
+    Tests, graj/play/spill and eddie-dice stay out."""
+    def block(locs, paths, day):
+        links = "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{BASE}{p}"/>' for h, p in paths)
+        return "".join(f"<url><loc>{BASE}{p}</loc><lastmod>{day}</lastmod>{links}</url>\n" for p in locs)
+    home = [("nb", ""), ("en", "en/"), ("pl", "pl/"), ("x-default", "")]
+    def game(slug, day):
+        return [("nb", f"{slug}/"), ("pl", f"{slug}/pl/"), ("en", f"{slug}/en/"), ("x-default", f"{slug}/")], day
+    parts = [block(["", "en/", "pl/"], home, "2026-11-09")]
+    for slug, day in (("hefau", "2026-10-26"), ("logikk", "2026-10-26"), ("ufobang", "2026-11-09"),
+                      ("redning", "2026-11-08"), ("aspheris", "2026-11-09"), ("lavakule", "2026-11-09")):
+        paths, day = game(slug, day)
+        parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
+    power = [("nb", "strom/"), ("pl", "prad/"), ("en", "power/"), ("x-default", "strom/")]
+    parts.append(block(["strom/", "power/", "prad/"], power, "2026-10-26"))
+    parts.append(f"<url><loc>{BASE}robaki/</loc><lastmod>2026-10-26</lastmod></url>\n")
+    for slug in ("aximore", "stjernestorm"):
+        paths, day = game(slug, "2026-11-09")
+        parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
+    body = "".join(parts)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'
 
 if __name__ == "__main__":
