@@ -146,9 +146,9 @@ GAMES = [
       modes={"no": "Én spiller · runder på 60 s", "en": "Single player · 60-second rounds", "pl": "Jeden gracz · rundy po 60 s"},
       versions=[("no", "STRØM", "/strom/"), ("en", "POWER", "/power/"), ("pl", "PRĄD", "/prad/")]),
  dict(id="robaki", cats=["action"], langs=["pl", "en"],
-      url={"no": "/robaki/?lang=en", "en": "/robaki/?lang=en", "pl": "/robaki/"},
+      url={"no": "/robaki/en/", "en": "/robaki/en/", "pl": "/robaki/"},
       og={l: "/robaki/intro.jpg" for l in LANGS},
-      versions=[("pl", "Sneaky Bugs", "/robaki/"), ("en", "Sneaky Bugs", "/robaki/?lang=en")],
+      versions=[("pl", "Sneaky Bugs", "/robaki/"), ("en", "Sneaky Bugs", "/robaki/en/")],
       img={l: "robaki" for l in LANGS},
       name={"no": "Sneaky Bugs", "en": "Sneaky Bugs", "pl": "Sneaky Bugs"},
       sub={"no": "Angrep av de svarte krypene", "en": "Attack of the Black Bugs", "pl": "Atak Czarnych Robaków"},
@@ -364,8 +364,7 @@ def page404():
 
 def sitemap():
     """Indexable trailing-slash URLs only. lastmod is the last publish date of that URL.
-    /robaki/en/ stays out until it is a real self-canonical page (the live URL is still a soft redirect).
-    Tests, graj/play/spill and eddie-dice stay out."""
+    /robaki/en/ is a real English page (self-canonical). Tests, graj/play/spill and eddie-dice stay out."""
     def block(locs, paths, day):
         links = "".join(f'<xhtml:link rel="alternate" hreflang="{h}" href="{BASE}{p}"/>' for h, p in paths)
         return "".join(f"<url><loc>{BASE}{p}</loc><lastmod>{day}</lastmod>{links}</url>\n" for p in locs)
@@ -379,7 +378,8 @@ def sitemap():
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
     power = [("nb", "strom/"), ("pl", "prad/"), ("en", "power/"), ("x-default", "strom/")]
     parts.append(block(["strom/", "power/", "prad/"], power, "2026-10-26"))
-    parts.append(f"<url><loc>{BASE}robaki/</loc><lastmod>2026-10-26</lastmod></url>\n")
+    robaki = [("pl", "robaki/"), ("en", "robaki/en/"), ("x-default", "robaki/")]
+    parts.append(block(["robaki/", "robaki/en/"], robaki, "2026-11-09"))
     for slug in ("aximore", "stjernestorm"):
         paths, day = game(slug, "2026-11-09")
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
