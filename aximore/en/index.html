@@ -246,6 +246,8 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <p class="tag" id="doneInfo"></p>
     <div class="row"><button id="nextBtn" class="big"><span data-t="next"></span><span class="ico" data-i="play"></span></button></div>
     <div class="row"><button id="replayBtn"><span class="ico" data-i="restart"></span><span data-t="replay"></span></button><button id="doneLevels"><span class="ico" data-i="grid"></span><span data-t="levels"></span></button></div>
+    <div class="row"><button id="doneShare" type="button"><span data-t="shareScore"></span></button></div>
+    <div id="doneLinks"></div>
   </div>
 </section>
 
@@ -257,7 +259,8 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <p class="prog" style="font-size:1.4rem;margin:12px 0"><span class="ico" data-i="star"></span><b id="wdStars">0</b> / <span id="wdMax">0</span></p>
     <p class="tag hl" id="wdNext"></p>
     <div class="row"><button id="wdBtn" class="big"><span data-t="nextWorld"></span><span class="ico" data-i="play"></span></button></div>
-    <div class="row"><button id="wdLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button class="shareB"><span class="ico" data-i="share"></span><span data-t="share2"></span></button></div>
+    <div class="row"><button id="wdLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="wdShare" type="button"><span data-t="shareScore"></span></button></div>
+    <div id="wdLinks"></div>
     <div id="sxWd"></div>
     <p class="love" id="wdLove" data-t="love"></p>
   </div>
@@ -269,7 +272,8 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <h2 data-t="endTitle" style="margin-top:8px"></h2>
     <p class="tag" data-t="endText"></p>
     <p class="prog" style="font-size:1.4rem;margin:12px 0"><span class="ico" data-i="star"></span><b id="endStars">0</b> / <span id="endMax">0</span></p>
-    <div class="row"><button id="endShare" class="big"><span class="ico" data-i="share"></span><span data-t="share2"></span></button></div>
+    <div class="row"><button id="endShare" class="big" type="button"><span data-t="shareScore"></span></button></div>
+    <div id="endLinks"></div>
     <div class="row"><button id="endLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="endMenu"><span class="ico" data-i="home"></span><span data-t="menu"></span></button></div>
     <div id="sxEnd"></div>
     <div class="stop">STOP</div>
@@ -283,6 +287,7 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
 
 <script src="/assets/vendor/qrcode/qrcode.min.js"></script>
 <script src="/assets/s60-social.js"></script>
+<script src="/assets/score-share.js"></script>
 <script src="/assets/vendor/three/r128/three.min.js"></script>
 <script>
 /*ENGINE*/
@@ -357,9 +362,9 @@ var T = {
 };
 var WSTART = [0,18,35,52,69,86,103];
 var T2 = {
- no:{worlds:"Verdener",share2:"Del",settings:"Innstillinger",sound:"Lyd",music:"Musikk",vib:"Vibrasjon",language:"Språk",pause:"Pause",resume:"Fortsett",restart:"Start på nytt",undo:"Angre",hintsLeft:"Tips: {n} igjen i dag",noHints:"Ingen flere tips i dag – kom tilbake i morgen",hintShow:"Tips: dra dit pilen peker",goal3:"★★★ på maks. {n} trekk",worldDone:"Verden fullført!",nextWorld:"Neste verden",wdNext:"Ny verden låst opp: {w}",levelsN:"{n} nivåer",locked:"Låst",continueAt:"Verden {w} · Nivå {l}",doneInfo2:"{m} trekk · ★★★ på maks. {o}",perfect:"Perfekt! Færrest mulige trekk.",pauseInfo:"Nivå {l} · {m} trekk",lvl:"Nivå"},
- pl:{worlds:"Światy",share2:"Udostępnij",settings:"Ustawienia",sound:"Dźwięk",music:"Muzyka",vib:"Wibracje",language:"Język",pause:"Pauza",resume:"Wznów",restart:"Od nowa",undo:"Cofnij",hintsLeft:"Podpowiedzi na dziś: {n}",noHints:"Brak podpowiedzi na dziś – wróć jutro",hintShow:"Podpowiedź: przeciągnij palcem tam, gdzie wskazuje strzałka",goal3:"★★★ za maks. {n} ruchów",worldDone:"Świat ukończony!",nextWorld:"Następny świat",wdNext:"Odblokowano nowy świat: {w}",levelsN:"Poziomów: {n}",locked:"Zablokowane",continueAt:"Świat {w} · Poziom {l}",doneInfo2:"Ruchy: {m} · ★★★ za maks. {o}",perfect:"Idealnie! Najmniej możliwych ruchów.",pauseInfo:"Poziom {l} · ruchy: {m}",lvl:"Poziom"},
- en:{worlds:"Worlds",share2:"Share",settings:"Settings",sound:"Sound",music:"Music",vib:"Vibration",language:"Language",pause:"Paused",resume:"Resume",restart:"Restart",undo:"Undo",hintsLeft:"Hints: {n} left today",noHints:"No more hints today – come back tomorrow",hintShow:"Hint: drag where the arrow points",goal3:"★★★ in {n} moves or fewer",worldDone:"World complete!",nextWorld:"Next world",wdNext:"New world unlocked: {w}",levelsN:"{n} levels",locked:"Locked",continueAt:"World {w} · Level {l}",doneInfo2:"{m} moves · ★★★ in {o} or fewer",perfect:"Perfect! Fewest possible moves.",pauseInfo:"Level {l} · {m} moves",lvl:"Level"}
+ no:{worlds:"Verdener",share2:"Del",shareScore:"Del poengsummen",settings:"Innstillinger",sound:"Lyd",music:"Musikk",vib:"Vibrasjon",language:"Språk",pause:"Pause",resume:"Fortsett",restart:"Start på nytt",undo:"Angre",hintsLeft:"Tips: {n} igjen i dag",noHints:"Ingen flere tips i dag – kom tilbake i morgen",hintShow:"Tips: dra dit pilen peker",goal3:"★★★ på maks. {n} trekk",worldDone:"Verden fullført!",nextWorld:"Neste verden",wdNext:"Ny verden låst opp: {w}",levelsN:"{n} nivåer",locked:"Låst",continueAt:"Verden {w} · Nivå {l}",doneInfo2:"{m} trekk · ★★★ på maks. {o}",perfect:"Perfekt! Færrest mulige trekk.",pauseInfo:"Nivå {l} · {m} trekk",lvl:"Nivå"},
+ pl:{worlds:"Światy",share2:"Udostępnij",shareScore:"Udostępnij wynik",settings:"Ustawienia",sound:"Dźwięk",music:"Muzyka",vib:"Wibracje",language:"Język",pause:"Pauza",resume:"Wznów",restart:"Od nowa",undo:"Cofnij",hintsLeft:"Podpowiedzi na dziś: {n}",noHints:"Brak podpowiedzi na dziś – wróć jutro",hintShow:"Podpowiedź: przeciągnij palcem tam, gdzie wskazuje strzałka",goal3:"★★★ za maks. {n} ruchów",worldDone:"Świat ukończony!",nextWorld:"Następny świat",wdNext:"Odblokowano nowy świat: {w}",levelsN:"Poziomów: {n}",locked:"Zablokowane",continueAt:"Świat {w} · Poziom {l}",doneInfo2:"Ruchy: {m} · ★★★ za maks. {o}",perfect:"Idealnie! Najmniej możliwych ruchów.",pauseInfo:"Poziom {l} · ruchy: {m}",lvl:"Poziom"},
+ en:{worlds:"Worlds",share2:"Share",shareScore:"Share your score",settings:"Settings",sound:"Sound",music:"Music",vib:"Vibration",language:"Language",pause:"Paused",resume:"Resume",restart:"Restart",undo:"Undo",hintsLeft:"Hints: {n} left today",noHints:"No more hints today – come back tomorrow",hintShow:"Hint: drag where the arrow points",goal3:"★★★ in {n} moves or fewer",worldDone:"World complete!",nextWorld:"Next world",wdNext:"New world unlocked: {w}",levelsN:"{n} levels",locked:"Locked",continueAt:"World {w} · Level {l}",doneInfo2:"{m} moves · ★★★ in {o} or fewer",perfect:"Perfect! Fewest possible moves.",pauseInfo:"Level {l} · {m} moves",lvl:"Level"}
 };
 for (var lk in T2) for (var kk in T2[lk]) T[lk][kk] = T2[lk][kk];
 var IC = {
@@ -876,7 +881,8 @@ function share(){
   else if (navigator.clipboard){ navigator.clipboard.writeText(u).then(function(){ toast(t("copied")); }).catch(function(){}); }
   try { window.goatcounter && goatcounter.count && goatcounter.count({path: "aximore-share", title: "aximore share", event: true}); } catch(e){}
 }
-$("shareBtn").onclick = share; $("endShare").onclick = share; document.querySelectorAll(".shareB").forEach(function(b){ b.onclick = share; });
+$("shareBtn").onclick = share;
+["done", "wd", "end"].forEach(function(id){ var b = $(id === "end" ? "endShare" : id + "Share"); if (b && window.S60ScoreShare) S60ScoreShare.bind(b, { game: "aximore", links: $(id + "Links"), lang: function(){ return lang; }, gameName: function(){ return "Aximore"; }, score: function(){ return totalStars(); } }); });
 
 /* ---------- input: swipe anywhere + keyboard ---------- */
 var sw = null;

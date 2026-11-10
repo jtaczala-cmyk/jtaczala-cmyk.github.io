@@ -2,7 +2,7 @@
 <html lang="nb" data-lang="no">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="description" content="Lavakule er et gratis spill uten reklame i nettleseren: vipp mobilen og styr en glødende glasskule langs en smal bane over lava. Unngå hindringer, samle mynter og kom lengst mulig.">
 <link rel="canonical" href="https://stop60.no/lavakule/">
@@ -38,6 +38,7 @@
 <link rel="stylesheet" href="/lavakule/style.css">
 </head>
 <body>
+<canvas id="land"></canvas>
 <canvas id="c"></canvas>
 <div id="flash"></div>
 <nav class="langs"><a href="/lavakule/" class="cur" aria-label="Norsk">🇳🇴</a><a href="/lavakule/pl/" class="" aria-label="Polski">🇵🇱</a><a href="/lavakule/en/" class="" aria-label="English">🇬🇧</a></nav>
@@ -46,11 +47,11 @@
   <h1 data-t="title"></h1>
   <p class="tag" data-t="tag"></p>
   <p class="best"><span data-t="best"></span>: <b id="bestVal">0</b></p>
+  <p class="howto" data-t="howShort"></p>
   <button id="startBtn" class="big" data-t="start"></button>
   <div class="row"><button id="dailyBtn" data-t="daily"></button><button id="shopBtn" data-t="shop"></button><button id="missBtn" data-t="missions"></button></div>
   <div id="shop" class="panel" hidden><p class="small"><span data-t="bank"></span>: <b id="bankVal">0</b> 🪙</p><div id="shopList"></div></div>
   <div id="miss" class="panel" hidden><ul id="missList"></ul></div>
-  <p><button id="shareBtn" type="button">🔗 Del</button></p>
   <ul class="how"><li data-t="howTilt"></li><li data-t="howKb"></li><li data-t="pu"></li></ul>
   <p class="warn">⚠ <span data-t="flash"></span></p>
   <p class="small"><span data-t="local"></span> · <a href="/lavakule/personvern/">Personvern</a> · <a href="/lavakule/lisenser.html" data-t="lic"></a> · <a href="/">stop60.no</a></p>
@@ -66,13 +67,19 @@
 <section id="over" class="card" hidden>
   <h2 data-t="over"></h2><p id="ovReason" class="tag"></p>
   <p id="newBest" class="nb" data-t="newbest" hidden></p>
-  <div class="stats"><div><small data-t="score"></small><b id="ovScore"></b></div><div><small data-t="dist"></small><b id="ovDist"></b></div><div><small data-t="coins"></small><b id="ovCoins"></b></div><div><small data-t="best"></small><b id="ovBest"></b></div></div>
+  <p class="bigscore"><small data-t="score"></small><b id="ovScore"></b></p>
+  <div class="stats"><div><small data-t="dist"></small><b id="ovDist"></b></div><div><small data-t="coins"></small><b id="ovCoins"></b></div><div><small data-t="best"></small><b id="ovBest"></b></div></div>
   <p id="ovExtra" class="small"></p>
-  <button id="againBtn" class="big" data-t="again"></button> <button id="menuBtn" data-t="menu"></button>
+  <button id="againBtn" class="big" data-t="again"></button>
+  <button id="scoreShare" type="button" data-t="shareScore"></button>
+  <div id="scoreLinks"></div>
+  <p><button id="menuBtn" data-t="menu"></button></p>
 </section>
+<div id="pops"></div>
 <div id="toast"></div>
+<script src="/assets/score-share.js"></script>
 <script type="module" src="/lavakule/game.js"></script>
-<script>document.getElementById("shareBtn").onclick=function(){var u=location.origin+location.pathname,t=document.title;if(navigator.share){navigator.share({title:t,url:u}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){var e=document.getElementById("toast");if(e){e.textContent="Lenke kopiert";e.classList.add("show");setTimeout(function(){e.classList.remove("show")},1800)}})}try{window.goatcounter&&goatcounter.count&&goatcounter.count({path:"lavakule-share",title:"lavakule share",event:true})}catch(e){}};</script>
+<script>S60ScoreShare.bind(document.getElementById("scoreShare"),{game:"lavakule",links:document.getElementById("scoreLinks"),lang:function(){return document.documentElement.dataset.lang||"no"},gameName:function(){var h=document.querySelector("h1");return (h&&h.textContent)||"Lavakule"},score:function(){return document.getElementById("ovScore").textContent||"0"}});</script>
 <script src="https://stop60.no/assets/wisdom.js" defer></script>
 <script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"no",before:document.getElementById("startBtn")})});</script>
 </body>

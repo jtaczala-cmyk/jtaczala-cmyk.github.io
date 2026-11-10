@@ -1,12 +1,15 @@
 /* Lavakule / Lawowa kulka / Lava Marble — Stop60 (c) 2026. Three.js (MIT) vendored, see lisenser.html */
 import * as THREE from './three.module.min.js';
+import { createLand } from './land.js';
 
 const LANG = document.documentElement.dataset.lang || 'no';
 const T = {
   no: { title:'Lavakule', tag:'Rull glasskula over lavaen. Ikke stopp – lavaen stiger!', start:'Start / Tillat tilt', startKb:'Start', calib:'Kalibrer', again:'Spill igjen', menu:'Meny',
     best:'Rekord', score:'Poeng', dist:'Distanse', coins:'Mynter', over:'Spillet er over', newbest:'Ny rekord!',
+    howShort:'Dra fingeren: sidelengs styrer, oppover gir fart.',
     howTilt:'Vipp telefonen: venstre/høyre styrer, fremover gir fart, bakover bremser. Svinger du for fort, ryker du av banen.',
     howKb:'PC: piltaster / WASD. Mobil uten tilt: dra fingeren eller bruk knappene.',
+    shareScore:'Del poengsummen',
     pu:'3 liv · sjekkpunkt hver 300 m · samle krafter: 🧲 magnet, 🪨 steinskall, 🫧 skjold, 🐢 sakte film, ✖2 doble mynter, 🎈 sveving, 🔹 minikule, ✚ reparasjon',
     flash:'Advarsel: spillet har korte lysglimt og risting av skjermen.', noTilt:'Tilt ikke tilgjengelig – bruk dra/knapper.',
     denied:'Tilt ble ikke tillatt – bruk dra/knapper.', fell:'Du falt av banen', burnt:'Lavaen tok deg', shattered:'Kula knuste',
@@ -19,8 +22,10 @@ const T = {
     s0:'Klassisk', s1:'Rubin', s2:'Smaragd', s3:'Gull', s4:'Obsidian', s5:'Regnbue' },
   pl: { title:'Lawowa kulka', tag:'Tocz szklaną kulkę nad lawą. Nie zatrzymuj się – lawa rośnie!', start:'Start / Zezwól na przechył', startKb:'Start', calib:'Kalibruj', again:'Zagraj ponownie', menu:'Menu',
     best:'Rekord', score:'Wynik', dist:'Dystans', coins:'Monety', over:'Koniec gry', newbest:'Nowy rekord!',
+    howShort:'Przeciągnij palcem: na boki skręt, w górę szybciej.',
     howTilt:'Przechylaj telefon: lewo/prawo – skręt, do przodu – szybciej, do tyłu – hamowanie. Za szybko w zakręt = wypadasz z toru.',
     howKb:'PC: strzałki / WASD. Telefon bez przechyłu: przeciągaj palcem albo użyj przycisków.',
+    shareScore:'Udostępnij wynik',
     pu:'3 życia · punkt kontrolny co 300 m · ulepszenia: 🧲 magnes, 🪨 skorupa, 🫧 tarcza, 🐢 spowolnienie, ✖2 podwójne monety, 🎈 lewitacja, 🔹 mini kulka, ✚ naprawa',
     flash:'Uwaga: w grze występują krótkie błyski i drgania ekranu.', noTilt:'Przechył niedostępny – użyj przeciągania/przycisków.',
     denied:'Brak zgody na przechył – użyj przeciągania/przycisków.', fell:'Spadłeś z toru', burnt:'Lawa cię dopadła', shattered:'Kulka pękła',
@@ -33,8 +38,10 @@ const T = {
     s0:'Klasyczna', s1:'Rubin', s2:'Szmaragd', s3:'Złota', s4:'Obsydian', s5:'Tęcza' },
   en: { title:'Lava Marble', tag:'Roll a glass marble over the lava. Don\u2019t stop – the lava is rising!', start:'Start / Allow tilt', startKb:'Start', calib:'Calibrate', again:'Play again', menu:'Menu',
     best:'Best', score:'Score', dist:'Distance', coins:'Coins', over:'Game over', newbest:'New best!',
+    howShort:'Drag your finger: sideways steers, upward speeds up.',
     howTilt:'Tilt the phone: left/right steers, forward speeds up, back slows down. Take a corner too fast and you fly off.',
     howKb:'Desktop: arrow keys / WASD. Phone without tilt: drag your finger or use the buttons.',
+    shareScore:'Share your score',
     pu:'3 lives · checkpoint every 300 m · power-ups: 🧲 magnet, 🪨 stone shell, 🫧 shield, 🐢 slow-mo, ✖2 double coins, 🎈 hover, 🔹 mini marble, ✚ repair',
     flash:'Warning: this game contains brief flashes and screen shake.', noTilt:'Tilt unavailable – use drag/buttons.',
     denied:'Tilt not allowed – use drag/buttons.', fell:'You fell off the track', burnt:'The lava got you', shattered:'The marble shattered',
@@ -61,7 +68,7 @@ function gc(n) { (window.__gcLog = window.__gcLog || []).push(n); setTimeout(() 
 let gcT0 = 0;
 function gcTime() { if (!gcT0) return; const m = (Date.now() - gcT0) / 60000; gcT0 = 0;
   gc('time-' + (m < 1 ? '0-1m' : m < 3 ? '1-3m' : m < 5 ? '3-5m' : m < 10 ? '5-10m' : m < 20 ? '10-20m' : '20m+')); }
-addEventListener('pagehide', gcTime); document.addEventListener('visibilitychange', () => { if (document.hidden) { gcTime(); if (state === 'play') pause(true); } });
+addEventListener('pagehide', gcTime); document.addEventListener('visibilitychange', () => { if (document.hidden) { gcTime(); releaseInput(); if (state === 'play') pause(true); } });
 
 /* ---------- audio (WebAudio, all generated) ---------- */
 let ac = null, master, rollG, rollF, sizzleG;
@@ -112,17 +119,17 @@ function flash(color, a) { if (REDUCED) a *= 0.3; const f = $('flash'); f.style.
 
 /* ---------- renderer / scene ---------- */
 const canvas = $('c');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+const land = createLand($('land'));
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: false, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1;
+renderer.setClearColor(0x000000, 0);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
 const scene = new THREE.Scene();
-{ const cv = document.createElement('canvas'); cv.width = 2; cv.height = 256; const cx2 = cv.getContext('2d'), gr = cx2.createLinearGradient(0, 0, 0, 256);
-  gr.addColorStop(0, '#07040a'); gr.addColorStop(0.55, '#2a0c06'); gr.addColorStop(0.85, '#8a2a08'); gr.addColorStop(1, '#ff6a18'); cx2.fillStyle = gr; cx2.fillRect(0, 0, 2, 256);
-  const bt = new THREE.CanvasTexture(cv); bt.colorSpace = THREE.SRGBColorSpace; scene.background = bt; window.__bgTex = bt; } scene.fog = new THREE.Fog(0x3a0828, 40, 140);
+scene.background = null; scene.fog = new THREE.Fog(0xc8e4f4, 70, 210);
 const camera = new THREE.PerspectiveCamera(62, 1, 0.1, 300);
-scene.add(new THREE.HemisphereLight(0xffd0f0, 0x6a1040, 1.3));
-const sun = new THREE.DirectionalLight(0xfff0e0, 1.6); sun.position.set(-6, 14, 4); scene.add(sun); scene.add(sun.target);
-const lavaLight = new THREE.PointLight(0xff5a10, 60, 30, 1.6); scene.add(lavaLight);
+scene.add(new THREE.HemisphereLight(0xd7ecff, 0x6d8f5c, 1.15));
+const sun = new THREE.DirectionalLight(0xfff6e4, 1.35); sun.position.set(-6, 14, 4); scene.add(sun); scene.add(sun.target);
+const lavaLight = new THREE.PointLight(0xffc27a, 8, 24, 1.6); scene.add(lavaLight);
 
 /* environment for glass reflections: generated gradient room */
 { const envScene = new THREE.Scene();
@@ -150,12 +157,12 @@ const lavaMat = new THREE.ShaderMaterial({
       float fog = clamp((vD-30.)/90.,0.,1.); col = mix(col, vec3(.6,.12,.25)*tint, fog*.6);
       float l = min(1.1, dot(col, vec3(.3,.5,.2))); col = mix(col, l*normalize(tint)*1.25, step(.01, abs(tint.r-1.)+abs(tint.g-1.)+abs(tint.b-1.))*.8); gl_FragColor = vec4(col,1.); }`
 });
-const lava = new THREE.Mesh(new THREE.PlaneGeometry(400, 400, 1, 1), lavaMat); lava.rotation.x = -Math.PI / 2; scene.add(lava);
+const lava = new THREE.Mesh(new THREE.PlaneGeometry(400, 400, 1, 1), lavaMat); lava.rotation.x = -Math.PI / 2;
 /* embers */
 const EMB = 160, embGeo = new THREE.BufferGeometry(), embPos = new Float32Array(EMB * 3);
 embGeo.setAttribute('position', new THREE.BufferAttribute(embPos, 3));
 const embers = new THREE.Points(embGeo, new THREE.PointsMaterial({ color: 0xffa040, size: 0.18, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }));
-scene.add(embers);
+/* embers stay off the scene – the backdrop is the landscape, not a glow under the track */
 
 /* ---------- seeded RNG (random run or daily seed) ---------- */
 let seedState = 1;
@@ -185,7 +192,7 @@ const skyMat = new THREE.ShaderMaterial({ depthWrite: false, fog: false, side: T
       float a = atan(vP.x, vP.z); float band = sin(a*3.+t*.15+sin(a*7.+t*.3)*.6)*.5+.5; float ay = smoothstep(.15,.35,y)*(1.-smoothstep(.45,.75,y));
       col += aur * pow(band, 3.) * ay * (.7+.3*sin(a*20.+t)) * .9;
       gl_FragColor = vec4(col,1.); }` });
-const sky = new THREE.Mesh(new THREE.SphereGeometry(240, 32, 16), skyMat); sky.renderOrder = -1; sky.frustumCulled = false; scene.add(sky); scene.background = null;
+const sky = new THREE.Mesh(new THREE.SphereGeometry(240, 32, 16), skyMat); sky.renderOrder = -1; sky.frustumCulled = false; scene.background = null;
 /* ---------- track generation ---------- */
 // surface features per sample: 0 normal, 1 ice, 2 mud, 3 gap, 4 boost pad, 5 crumbling tiles, 6 moving platform, 7 jump ramp, 8 tunnel, 9 narrow bridge
 const DS = 0.5;
@@ -461,7 +468,11 @@ function renderMissions() { $('missList').innerHTML = ACH.map(([k]) => `<li clas
 const inp = { steer: 0, gas: 0, tilt: false, b0: null, g0: null, beta: 0, gamma: 0, kbS: 0, kbG: 0, touchS: 0, touchG: 0, btnS: 0, btnG: 0 };
 const DEAD = 2.5, FULL = 30;   // slightly lower tilt sensitivity
 function axis(v) { const a = Math.abs(v); if (a < DEAD) return 0; return Math.sign(v) * Math.min(1, Math.pow((a - DEAD) / (FULL - DEAD), 1.15)); }
-function orientAngle() { return (screen.orientation && screen.orientation.angle) ?? (window.orientation || 0); }
+function orientAngle() {
+  const so = screen.orientation;
+  if (so && typeof so.angle === 'number') return so.angle;
+  return window.orientation || 0;
+}
 function rawTilt() { const a = ((orientAngle() % 360) + 360) % 360, b = inp.beta, g = inp.gamma;
   if (a === 90) return { s: b, p: g };  if (a === 270) return { s: -b, p: -g }; if (a === 180) return { s: -g, p: -b }; return { s: g, p: b }; }
 let calRaw = null;
@@ -474,27 +485,89 @@ async function askTilt() {
   if (typeof D.requestPermission === 'function') { try { const r = await D.requestPermission(); if (r !== 'granted') toast(T.denied); } catch (e) { toast(T.denied); } }
 }
 const keys = {};
-addEventListener('keydown', e => { keys[e.code] = 1; if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault(); if (e.code === 'KeyC') doCalib(); if (e.code === 'Escape' || e.code === 'KeyP') { if (state === 'play') pause(true); else if (state === 'pause') pause(false); } });
+addEventListener('keydown', e => {
+  if (e.repeat) return;
+  keys[e.code] = 1; if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault();
+  if (e.code === 'KeyC') doCalib(); if (e.code === 'Escape' || e.code === 'KeyP') { if (state === 'play') pause(true); else if (state === 'pause') pause(false); }
+});
 addEventListener('keyup', e => { keys[e.code] = 0; });
-let tStart = null;
-canvas.addEventListener('pointerdown', e => { tStart = { x: e.clientX, y: e.clientY, id: e.pointerId }; });
-canvas.addEventListener('pointermove', e => { if (!tStart || e.pointerId !== tStart.id) return; const k = Math.min(innerWidth, innerHeight) * 0.25;
-  inp.touchS = Math.max(-1, Math.min(1, (e.clientX - tStart.x) / k)); inp.touchG = Math.max(-1, Math.min(1, -(e.clientY - tStart.y) / k)); });
-const endT = () => { tStart = null; inp.touchS = 0; inp.touchG = 0; };
-canvas.addEventListener('pointerup', endT); canvas.addEventListener('pointercancel', endT);
-document.querySelectorAll('[data-b]').forEach(b => { const [ax, v] = b.dataset.b.split(':');
-  const on = e => { e.preventDefault(); inp[ax] = +v; b.classList.add('on'); }, off = () => { inp[ax] = 0; b.classList.remove('on'); };
-  b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointerleave', off); b.addEventListener('pointercancel', off); });
+function clearKeys() { for (const k in keys) keys[k] = 0; }
+/* One drag at a time. setPointerCapture keeps move/up arriving on iOS even if the finger slides off the canvas.
+   touch-action and a non-passive touch listener stop Safari from turning the drag into a scroll or a zoom. */
+let dragId = null, dragX = 0, dragY = 0;
+function dragFrom(x, y) {
+  const k = Math.max(48, Math.min(innerWidth, innerHeight) * 0.22);
+  inp.touchS = Math.max(-1, Math.min(1, (x - dragX) / k));
+  inp.touchG = Math.max(-1, Math.min(1, -(y - dragY) / k));
+}
+function releaseDrag() { dragId = null; inp.touchS = 0; inp.touchG = 0; }
+canvas.addEventListener('pointerdown', e => {
+  if (e.button != null && e.button !== 0) return;
+  if (dragId != null) return;
+  dragId = e.pointerId; dragX = e.clientX; dragY = e.clientY; inp.touchS = 0; inp.touchG = 0;
+  try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+  e.preventDefault();
+});
+canvas.addEventListener('pointermove', e => {
+  if (e.pointerId !== dragId) return;
+  dragFrom(e.clientX, e.clientY);
+  e.preventDefault();
+});
+function endDrag(e) { if (!e || e.pointerId === dragId) releaseDrag(); }
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+canvas.addEventListener('lostpointercapture', e => { if (e.pointerId === dragId) releaseDrag(); });
+const eatGesture = e => {
+  if (e.target && e.target.closest && e.target.closest('.card, a, input, textarea, select')) return;
+  if (e.cancelable) e.preventDefault();
+};
+canvas.addEventListener('touchstart', eatGesture, { passive: false });
+canvas.addEventListener('touchmove', eatGesture, { passive: false });
+document.addEventListener('touchmove', eatGesture, { passive: false });
+document.addEventListener('gesturestart', e => e.preventDefault());
+canvas.addEventListener('touchend', e => { if (!e.touches.length) releaseDrag(); });
+canvas.addEventListener('touchcancel', e => { if (!e.touches.length) releaseDrag(); });
+const heldBtns = [];
+function syncBtns() {
+  inp.btnS = 0; inp.btnG = 0;
+  for (const b of heldBtns) { const [ax, v] = b.dataset.b.split(':'); inp[ax] = +v; }
+}
+document.querySelectorAll('[data-b]').forEach(b => {
+  b.addEventListener('pointerdown', e => {
+    if (e.button != null && e.button !== 0) return;
+    e.preventDefault(); e.stopPropagation();
+    try { b.setPointerCapture(e.pointerId); } catch (err) {}
+    b._pid = e.pointerId;
+    if (!heldBtns.includes(b)) heldBtns.push(b);
+    b.classList.add('on'); syncBtns();
+  });
+  const off = e => {
+    if (e && b._pid != null && e.pointerId !== b._pid) return;
+    const i = heldBtns.indexOf(b); if (i >= 0) heldBtns.splice(i, 1);
+    b.classList.remove('on'); b._pid = null; syncBtns();
+  };
+  b.addEventListener('pointerup', off);
+  b.addEventListener('pointercancel', off);
+  b.addEventListener('lostpointercapture', off);
+  b.addEventListener('touchstart', e => { if (e.cancelable) e.preventDefault(); }, { passive: false });
+  b.addEventListener('touchmove', e => { if (e.cancelable) e.preventDefault(); }, { passive: false });
+});
 let smS = 0, smG = 0;
+function releaseInput() {
+  releaseDrag(); clearKeys(); heldBtns.splice(0, heldBtns.length);
+  document.querySelectorAll('.pad button').forEach(b => { b.classList.remove('on'); b._pid = null; });
+  syncBtns(); smS = 0; smG = 0; inp.steer = 0; inp.gas = 0;
+}
 function readInput(dt) {
   let s = 0, g = 0;
-  if (inp.tilt && calRaw) { const r = rawTilt(); s = axis(r.s - calRaw.s); g = axis(-(r.p - calRaw.p)); }
+  if (inp.tilt && calRaw && state === 'play') { const r = rawTilt(); s = axis(r.s - calRaw.s); g = axis(-(r.p - calRaw.p)); }
   const kS = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0), kG = (keys.ArrowUp || keys.KeyW ? 1 : 0) - (keys.ArrowDown || keys.KeyS ? 1 : 0);
   const os = kS || inp.touchS || inp.btnS, og = kG || inp.touchG || inp.btnG;
   if (os) s = os; if (og) g = og;
-  const a = 1 - Math.exp(-dt * 12); smS += (s - smS) * a; smG += (g - smG) * a;
+  const a = 1 - Math.exp(-dt * 14); smS += (s - smS) * a; smG += (g - smG) * a;
   inp.steer = smS; inp.gas = smG;
 }
+addEventListener('blur', releaseInput);
 function doCalib() { if (inp.tilt) { calibrate(); toast(T.calibrated); sfx.calib(); } }
 $('calBtn').onclick = doCalib;
 
@@ -513,11 +586,12 @@ function reset() {
   S = { s: 2, x: 0, v: 5, vx: 0, t: 0, coins: 0, pts: 0, hp: MAXHP, lastCp: 0, cps: 0, inv: 0, healT: 0, edgeT: 0, rescue: 1, respawnT: 0, air: null, tile: -1, tileT: 0, boost: 0,
     pu: {}, cap: MAXHP, combo: 0, comboT: 0, nears: 0, pus: 0, lastHitS: 0, biome: 0, tip: 0,
     fall: null, dead: false, sway: 0, q: new THREE.Quaternion(), heatW: 0, lava: -9, gap: 9 };
+  floatPop.last = 0;
   marble.quaternion.identity(); applyBiome(0, true);
   while (chunkNext * CH * DS < 140) buildChunk(chunkNext++ * CH);
 }
-function applyBiome(b, instant) { S.biome = b; if (instant) { scene.fog.color.copy(BIOMES[b].fogC); lavaMat.uniforms.tint.value.copy(BIOMES[b].lavaC); skyLerp(1); } }
-function skyLerp(k) { const B = BIOMES[S.biome || 0], u = skyMat.uniforms; ['c0', 'c1', 'c2', 'c3'].forEach((n, i) => u[n].value.lerp(B.skyC[i], k)); u.aur.value.lerp(B.aurC, k); }
+function applyBiome(b) { S.biome = b; }
+function tintFog(k) { const f = scene.fog.color; f.r += (land.fog[0] - f.r) * k; f.g += (land.fog[1] - f.g) * k; f.b += (land.fog[2] - f.b) * k; }
 function toast(msg, ms = 1600) { const t = $('toast'); t.textContent = msg; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), ms); }
 function show(id, on) { $(id).hidden = !on; }
 async function start(fromTap, isDaily = daily) {
@@ -526,9 +600,9 @@ async function start(fromTap, isDaily = daily) {
   runs++; SV('lavakule_runs_v1', runs);
   setTimeout(calibrate, 150); gcT0 = Date.now(); gc(daily ? 'game-start-daily' : 'game-start');
 }
-function pause(on) { state = on ? 'pause' : 'play'; show('pauseBox', on); if (!on) { last = performance.now(); calibrate(); } }
+function pause(on) { if (on) releaseInput(); state = on ? 'pause' : 'play'; show('pauseBox', on); if (!on) { last = performance.now(); calibrate(); } }
 function gameOver(reason) {
-  if (state !== 'play') return; state = 'over';
+  if (state !== 'play') return; state = 'over'; releaseInput();
   const sc = score(); const nb = sc > best; if (nb) { best = sc; localStorage.setItem(BEST_KEY, best); }
   bank += S.coins; SV('lavakule_bank_v1', bank);
   let dTxt = ''; if (daily) { const k = 'lavakule_daily_' + todayKey(), db = Math.max(sc, +(localStorage.getItem(k) || 0)); localStorage.setItem(k, db); dTxt = T.dailyBest + ': ' + db; }
@@ -627,7 +701,7 @@ function update(dtReal) {
     // biome change
     const b = biomeOf(S.s); if (b !== S.biome) { applyBiome(b); toast(T[BIOMES[b].k], 1400); }
   }
-  scene.fog.color.lerp(BIOMES[S.biome].fogC, Math.min(1, dtReal * 0.8)); skyLerp(Math.min(1, dtReal * 0.8)); lavaMat.uniforms.tint.value.lerp(BIOMES[S.biome].lavaC, Math.min(1, dtReal * 0.8));
+  tintFog(Math.min(1, dtReal * 0.8));
   const q = at(S.s), cx = Math.cos(q.h), sz = Math.sin(q.h);
   let my = q.y + R * marble.scale.x + (S.air ? S.air.y : 0) + (S.pu.hover > 0 ? 0.25 + 0.05 * Math.sin(S.t * 6) : 0);
   if (S.fall) { S.fall.vy -= 18 * dt; S.fall.y += S.fall.vy * dt; S.x += S.fall.vside * dt; S.s += S.v * 0.6 * dt; my += S.fall.y;
@@ -693,6 +767,7 @@ function update(dtReal) {
   if (ac) { const playing = state === 'play' && !S.fall && !S.air && !S.dead; rollG.gain.setTargetAtTime(playing ? Math.min(0.5, S.v / 30) : 0, ac.currentTime, 0.05); rollF.frequency.setTargetAtTime(150 + S.v * 40, ac.currentTime, 0.1);
     sizzleG.gain.setTargetAtTime(state === 'play' ? 0.02 + S.heatW * 0.12 : 0, ac.currentTime, 0.2); }
   // HUD
+  if (S.pts > (floatPop.last || 0)) { const d = S.pts - (floatPop.last || 0); floatPop.last = S.pts; if (state === 'play' && d > 0 && d < 400) floatPop('+' + d); }
   $('hScore').textContent = score(); $('hCoins').textContent = S.coins; $('hDist').textContent = Math.floor(S.s) + ' m';
   $('heatBar').style.transform = `scaleX(${S.heatW.toFixed(3)})`; $('heat').classList.toggle('hot', S.heatW > 0.7);
   let pus = ''; for (const k in S.pu) if (S.pu[k] > 0) pus += `<span>${PU[k].e} ${Math.ceil(S.pu[k])}</span>`;
@@ -711,7 +786,7 @@ function frame(now) {
   else if (state === 'menu') { menuT += dt; if (!S.q) reset(); S.s += dt * 6; const q = at(S.s); marble.position.set(q.x + Math.cos(q.h) * Math.sin(menuT * .6) * 0.8, q.y + R, q.z + Math.sin(q.h) * Math.sin(menuT * .6) * 0.8);
     marble.rotateX(-dt * 6 / R); while (chunkNext * CH < S.s / DS + 260) buildChunk(chunkNext++ * CH); while (chunks.length && chunks[0].i0 + CH < S.s / DS - 40) dropChunk(chunks.shift());
     S.lava = q.y - 7; for (const it of items) if (OBST.has(it.type) && Math.abs(it.s - S.s) < 70) animObst(it, menuT);
-    const b = biomeOf(S.s); if (b !== S.biome) applyBiome(b); scene.fog.color.lerp(BIOMES[S.biome].fogC, dt); skyLerp(Math.min(1, dt)); lavaMat.uniforms.tint.value.lerp(BIOMES[S.biome].lavaC, dt); }
+    const b = biomeOf(S.s); if (b !== S.biome) applyBiome(b); tintFog(Math.min(1, dt)); }
   const q = at(S.s + 0.0), ahead = at(S.s + 7), hd = q.h;
   const portrait = innerHeight > innerWidth;
   const back = portrait ? 6.2 : 5.2, hgt = portrait ? 3.4 : 2.6;
@@ -723,17 +798,26 @@ function frame(now) {
   if (shake > 0) { camera.position.x += (Math.random() - .5) * shake * 0.4; camera.position.y += (Math.random() - .5) * shake * 0.4; shake = Math.max(0, shake - dt * 2.5); }
   camera.up.set(Math.sin(-(S.sway || 0) * 1.2) * Math.cos(hd), 1, Math.sin(-(S.sway || 0) * 1.2) * Math.sin(hd)).normalize();
   camera.lookAt(camLook);
-  sky.position.copy(camera.position); skyMat.uniforms.t.value = now / 1000; updSparks(dt);
-  lava.position.set(camPos.x, S.lava, camPos.z); lavaMat.uniforms.t.value = now / 1000;
-  lavaLight.position.set(marble.position.x, S.lava + 2.5, marble.position.z); lavaLight.intensity = 6 + 14 * (S.heatW || 0) + Math.sin(now / 130) * 1.5;
+  updSparks(dt);
+  lavaLight.position.set(marble.position.x, marble.position.y + 0.4, marble.position.z);
+  lavaLight.intensity = 1.2 + 18 * (S.heatW || 0);
   sun.position.set(marble.position.x - 6, marble.position.y + 14, marble.position.z + 4); sun.target.position.copy(marble.position);
-  for (let i = 0; i < EMB; i++) { let y = embPos[i * 3 + 1] + dt * (1 + (i % 5) * 0.4);
-    if (y > S.lava + 12 || Math.abs(embPos[i * 3] - camPos.x) > 30 || Math.abs(embPos[i * 3 + 2] - camPos.z) > 30) { embPos[i * 3] = camPos.x + fx(-25, 25); embPos[i * 3 + 2] = camPos.z + fx(-25, 25); y = S.lava + fx(0, 2); }
-    embPos[i * 3 + 1] = y; }
-  embGeo.attributes.position.needsUpdate = true;
+  land.draw(S.s || 0, S.x || 0, dt);
   renderer.render(scene, camera);
 }
+function floatPop(text) {
+  const box = $('pops'); if (!box || REDUCED) return;
+  const b = document.createElement('b'); b.textContent = text; box.appendChild(b);
+  setTimeout(() => b.remove(), 800);
+}
 let menuT = 0;
-function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.fov = innerHeight > innerWidth ? 70 : 58; camera.updateProjectionMatrix(); }
-addEventListener('resize', resize); resize(); reset(); state = 'menu'; renderMissions();
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = h > w ? 70 : 58; camera.updateProjectionMatrix();
+  land.resize();
+}
+addEventListener('resize', resize);
+if (window.visualViewport) visualViewport.addEventListener('resize', resize);
+addEventListener('scroll', () => { if (scrollX || scrollY) scrollTo(0, 0); }, { passive: true });
+resize(); reset(); state = 'menu'; renderMissions();
 requestAnimationFrame(frame);
