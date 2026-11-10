@@ -140,7 +140,8 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
   <p class="stat"><span data-t="wave"></span>: <b id="oWave">1</b> · 🪙 +<b id="oCoins">0</b></p>
   <p id="oNew" class="love" hidden data-t="newbest"></p>
   <button id="retryBtn" class="big" data-t="retry"></button>
-  <div class="row"><button id="overShop" data-t="shop"></button><button class="shareB" data-t="share"></button><button id="overMenu" data-t="menu"></button></div>
+  <div class="row"><button id="overShop" data-t="shop"></button><button id="scoreShare" type="button" data-t="shareScore"></button><button id="overMenu" data-t="menu"></button></div>
+  <div id="scoreLinks"></div>
   <div id="sxOver"></div>
   <p class="love" id="overLove" data-t="love"></p>
   <p class="small"><a href="/">stop60.no</a></p>
@@ -149,18 +150,19 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
 
 <script src="/assets/vendor/qrcode/qrcode.min.js"></script>
 <script src="/assets/s60-social.js"></script>
+<script src="/assets/score-share.js"></script>
 <script>
 "use strict";
 var T = {
- no:{name:"Stjernestorm",tag:"Styr skipet med fingeren, skyt deg gjennom etappe etter etappe uten pause!",play:"Spill",shop:"🛠 Verksted",share:"🔗 Del",how1:"👆 Dra hvor som helst – skipet følger fingeren",how2:"🔫 Skipet skyter selv · samle kuler og mynter",how3:"👾 Hver 5. etapp kommer en sjef – uten pauser",local:"Fremgang lagres bare på denne enheten",love:"Laget med lidenskap",score:"Poeng",wave:"Etapp",stage:"ETAPP",hp:"Liv",coins:"Mynter",best:"Rekord",next:"▶ Neste bølge",start:"▶ Spill",menu:"Meny",paused:"Pause",resume:"Fortsett",over:"Skipet er tapt!",retry:"Prøv igjen",newbest:"Ny rekord!",cleared:"Bølge {w} klar!",boss:"SJEF!",pup:"KRAFT OPP!",pdown:"Kraft −1",pw:"Kraft",snd:"Lyd",vib:"Vibrasjon",copied:"Lenke kopiert",max:"MAKS",
+ no:{name:"Stjernestorm",tag:"Styr skipet med fingeren, skyt deg gjennom etappe etter etappe uten pause!",play:"Spill",shop:"🛠 Verksted",share:"🔗 Del",shareScore:"Del poengsummen",how1:"👆 Dra hvor som helst – skipet følger fingeren",how2:"🔫 Skipet skyter selv · samle kuler og mynter",how3:"👾 Hver 5. etapp kommer en sjef – uten pauser",local:"Fremgang lagres bare på denne enheten",love:"Laget med lidenskap",score:"Poeng",wave:"Etapp",stage:"ETAPP",hp:"Liv",coins:"Mynter",best:"Rekord",next:"▶ Neste bølge",start:"▶ Spill",menu:"Meny",paused:"Pause",resume:"Fortsett",over:"Skipet er tapt!",retry:"Prøv igjen",newbest:"Ny rekord!",cleared:"Bølge {w} klar!",boss:"SJEF!",pup:"KRAFT OPP!",pdown:"Kraft −1",pw:"Kraft",snd:"Lyd",vib:"Vibrasjon",copied:"Lenke kopiert",max:"MAKS",
   u:{dmg:["Skadekraft","Sterkere skudd"],rate:["Skuddtakt","Raskere skyting"],hp:["Skrog","+1 maks liv"],mag:["Magnet","Større rekkevidde for mynter"],wpn:["Startvåpen","Begynn med bedre våpen"]},
   pu:{w:"Våpen opp!",s:"Skjold!",m:"Magnet!",b:"Bombe!"},
   title:"Stjernestorm – romskyting | gratis spill uten reklame",shareText:"Jeg fikk {s} poeng i Stjernestorm! Klarer du mer?"},
- pl:{name:"Gwiezdna burza",tag:"Steruj statkiem palcem, przebijaj się przez kolejne etapy bez przerw!",play:"Graj",shop:"🛠 Warsztat",share:"🔗 Udostępnij",how1:"👆 Przeciągnij gdziekolwiek – statek podąża za palcem",how2:"🔫 Statek strzela sam · zbieraj kule i monety",how3:"👾 Co 5. etap nadlatuje boss – bez przerw",local:"Postęp zapisuje się tylko na tym urządzeniu",love:"Stworzone z pasji",score:"Punkty",wave:"Etap",stage:"ETAP",hp:"Życie",coins:"Monety",best:"Rekord",next:"▶ Następna fala",start:"▶ Graj",menu:"Menu",paused:"Pauza",resume:"Wznów",over:"Statek zniszczony!",retry:"Jeszcze raz",newbest:"Nowy rekord!",cleared:"Fala {w} pokonana!",boss:"BOSS!",pup:"MOC W GÓRĘ!",pdown:"Moc −1",pw:"Moc",snd:"Dźwięk",vib:"Wibracje",copied:"Link skopiowany",max:"MAX",
+ pl:{name:"Gwiezdna burza",tag:"Steruj statkiem palcem, przebijaj się przez kolejne etapy bez przerw!",play:"Graj",shop:"🛠 Warsztat",share:"🔗 Udostępnij",shareScore:"Udostępnij wynik",how1:"👆 Przeciągnij gdziekolwiek – statek podąża za palcem",how2:"🔫 Statek strzela sam · zbieraj kule i monety",how3:"👾 Co 5. etap nadlatuje boss – bez przerw",local:"Postęp zapisuje się tylko na tym urządzeniu",love:"Stworzone z pasji",score:"Punkty",wave:"Etap",stage:"ETAP",hp:"Życie",coins:"Monety",best:"Rekord",next:"▶ Następna fala",start:"▶ Graj",menu:"Menu",paused:"Pauza",resume:"Wznów",over:"Statek zniszczony!",retry:"Jeszcze raz",newbest:"Nowy rekord!",cleared:"Fala {w} pokonana!",boss:"BOSS!",pup:"MOC W GÓRĘ!",pdown:"Moc −1",pw:"Moc",snd:"Dźwięk",vib:"Wibracje",copied:"Link skopiowany",max:"MAX",
   u:{dmg:["Siła ognia","Mocniejsze strzały"],rate:["Szybkostrzelność","Szybsze strzelanie"],hp:["Pancerz","+1 maks. życie"],mag:["Magnes","Większy zasięg zbierania monet"],wpn:["Broń startowa","Zaczynaj z lepszą bronią"]},
   pu:{w:"Broń w górę!",s:"Tarcza!",m:"Magnes!",b:"Bomba!"},
   title:"Gwiezdna burza – kosmiczna strzelanka | darmowa gra bez reklam",shareText:"Zdobyłem {s} punktów w Gwiezdnej burzy! Pobijesz?"},
- en:{name:"Star Storm",tag:"Steer your ship with a finger, blast through stage after stage with no breaks!",play:"Play",shop:"🛠 Workshop",share:"🔗 Share",how1:"👆 Drag anywhere – the ship follows your finger",how2:"🔫 Auto-fire · grab orbs and coins",how3:"👾 Every 5th stage brings a boss – no breaks",local:"Progress is saved on this device only",love:"Made with passion",score:"Score",wave:"Stage",stage:"STAGE",hp:"HP",coins:"Coins",best:"Best",next:"▶ Next wave",start:"▶ Play",menu:"Menu",paused:"Paused",resume:"Resume",over:"Ship lost!",retry:"Retry",newbest:"New best!",cleared:"Wave {w} cleared!",boss:"BOSS!",pup:"POWER UP!",pdown:"Power −1",pw:"Power",snd:"Sound",vib:"Vibration",copied:"Link copied",max:"MAX",
+ en:{name:"Star Storm",tag:"Steer your ship with a finger, blast through stage after stage with no breaks!",play:"Play",shop:"🛠 Workshop",share:"🔗 Share",shareScore:"Share your score",how1:"👆 Drag anywhere – the ship follows your finger",how2:"🔫 Auto-fire · grab orbs and coins",how3:"👾 Every 5th stage brings a boss – no breaks",local:"Progress is saved on this device only",love:"Made with passion",score:"Score",wave:"Stage",stage:"STAGE",hp:"HP",coins:"Coins",best:"Best",next:"▶ Next wave",start:"▶ Play",menu:"Menu",paused:"Paused",resume:"Resume",over:"Ship lost!",retry:"Retry",newbest:"New best!",cleared:"Wave {w} cleared!",boss:"BOSS!",pup:"POWER UP!",pdown:"Power −1",pw:"Power",snd:"Sound",vib:"Vibration",copied:"Link copied",max:"MAX",
   u:{dmg:["Damage","Stronger shots"],rate:["Fire rate","Faster shooting"],hp:["Hull","+1 max HP"],mag:["Magnet","Wider coin pickup"],wpn:["Starting weapon","Start with a better gun"]},
   pu:{w:"Weapon up!",s:"Shield!",m:"Magnet!",b:"Bomb!"},
   title:"Star Storm – space shooter | free browser game, no ads",shareText:"I scored {s} in Star Storm! Can you beat it?"}
@@ -500,6 +502,7 @@ function share(){
   try { window.goatcounter && goatcounter.count && goatcounter.count({path: "stjernestorm-share", title: "stjernestorm share", event: true}); } catch(e){}
 }
 document.querySelectorAll(".shareB").forEach(function(b){ b.onclick = share; });
+if (window.S60ScoreShare) S60ScoreShare.bind($("scoreShare"), { game: "stjernestorm", links: $("scoreLinks"), lang: function(){ return lang; }, gameName: function(){ return t("name"); }, score: function(){ return $("oScore").textContent || 0; } });
 /* ---------- QR, share score, online top 10 (shared /assets/s60-social.js) ---------- */
 T.no.sxShare = "Jeg fikk {s} poeng og nådde etappe {w} i Stjernestorm – klarer du å slå meg?"; T.pl.sxShare = "Zdobyłem {s} punktów i doleciałem do etapu {w} w Gwiezdnej burzy – pobijesz mnie?"; T.en.sxShare = "I got {s} points and reached stage {w} in Star Storm – can you beat me?";
 T.no.sxRow = "{s} p · etappe {w}"; T.pl.sxRow = "{s} pkt · etap {w}"; T.en.sxRow = "{s} pts · stage {w}";

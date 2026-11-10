@@ -77,7 +77,7 @@
 <button id="tiltBtn">Żyroskop: wył</button>
 <div id="toast"></div>
 <div id="story"><h2 id="sk"></h2><h1 id="st"></h1><div id="sb"></div><button id="sn">Dalej</button></div>
-<div id="win"><h1 id="wh">Wszystkie strefy!</h1><p id="wend" style="max-width:320px;line-height:1.5"></p><p id="wt"></p><button id="again" onclick="location.reload()">Jeszcze raz</button></div>
+<div id="win"><h1 id="wh">Wszystkie strefy!</h1><p id="wend" style="max-width:320px;line-height:1.5"></p><p id="wscore">0</p><p id="wt"></p><button id="again" onclick="location.reload()">Jeszcze raz</button><button id="scoreShare" type="button"></button><div id="scoreLinks"></div></div>
 <div id="overlay">
   <div class="orb" style="width:90px;height:90px;left:8%;top:12%;background:radial-gradient(#fff,#3ff5ff 40%,transparent 70%)"></div>
   <div class="orb" style="width:60px;height:60px;right:10%;top:22%;background:radial-gradient(#fff,#ffe600 40%,transparent 70%);animation-delay:-2s"></div>
@@ -108,24 +108,24 @@ window.goatcounter={path:location.pathname.replace(/index\.html$/,'')};
 const sc=document.getElementById('sc');
 // Story (GDD: Lumen vs Drift). PL default, EN/NO from GDD dialogues.
 const TX={
- pl:{hint:'Przeciągaj palcem',tap:'Dotknij, aby kontynuować',start:'Start',next:'Dalej',go:'Leć!',frag:'Fragmenty',zone:'STREFA',again:'Jeszcze raz',time:'Czas',gyroOff:'Żyroskop: wył',gyroOn:'Żyroskop: wł',
+ pl:{hint:'Przeciągaj palcem',tap:'Dotknij, aby kontynuować',start:'Start',next:'Dalej',go:'Leć!',frag:'Fragmenty',zone:'STREFA',again:'Jeszcze raz',time:'Czas',shareScore:'Udostępnij wynik',gyroOff:'Żyroskop: wył',gyroOn:'Żyroskop: wł',
   pk:'PROLOG',pt:'Lumen. Obudź się. Stacja spada.',pb:['Serce Równowagi stacji Aspheris pękło. Załoga zniknęła.','Drift — chaotyczna anomalia z rozbitego Serca — rozrywa sektory i pożera fragmenty równowagi.','Jesteś Lumen, ostatnią działającą sferą energii. Zbierz fragmenty Serca w trzech strefach, zanim Drift pochłonie wszystko.'],
   m:['Laguna chłodzenia wciąż świeci. Zbierz 7 fragmentów Serca.','Drift rozgrzał rdzeń do czerwoności. Zbierz 7 fragmentów, zanim lawa je pochłonie.','Ogród hydroponiczny zdziczał i zatruł powietrze. Ostatnie 7 fragmentów — potem Serce.'],
   ev:['„Lumen, jeśli to słyszysz…”','Drift się zbliża.','Rośliny otwierają ci drogę…'],got:'Fragment odzyskany.',
   wh:'Serce bije. Aspheris żyje.',wb:'Lumen złożył Serce Równowagi. Drift cofa się w ciemność — na razie.'},
- en:{hint:'Drag with your finger',tap:'Tap to continue',start:'Start',next:'Next',go:'Fly!',frag:'Fragments',zone:'ZONE',again:'Play again',time:'Time',gyroOff:'Gyro: off',gyroOn:'Gyro: on',
+ en:{hint:'Drag with your finger',tap:'Tap to continue',start:'Start',next:'Next',go:'Fly!',frag:'Fragments',zone:'ZONE',again:'Play again',time:'Time',shareScore:'Share your score',gyroOff:'Gyro: off',gyroOn:'Gyro: on',
   pk:'PROLOGUE',pt:'Lumen. Wake up. The station is falling.',pb:['The Heart of Balance of station Aspheris has cracked. The crew is gone.','The Drift — a chaotic anomaly born from the broken Heart — tears the sectors apart and devours the fragments.','You are Lumen, the last working energy sphere. Collect the Heart fragments in three zones before the Drift consumes everything.'],
   m:['The cooling lagoon still glows. Collect 7 Heart fragments.','The Drift has heated the core red-hot. Collect 7 fragments before the lava takes them.','The hydroponic garden has gone wild and toxic. The last 7 fragments — then the Heart.'],
   ev:['“Lumen, if you can hear this…”','The Drift is approaching.','The plants open a path for you…'],got:'Fragment recovered.',
   wh:'The Heart beats. Aspheris lives.',wb:'Lumen has rebuilt the Heart of Balance. The Drift retreats into the dark — for now.'},
- no:{hint:'Dra med fingeren',tap:'Trykk for å fortsette',start:'Start',next:'Videre',go:'Fly!',frag:'Fragmenter',zone:'SONE',again:'Spill igjen',time:'Tid',gyroOff:'Gyro: av',gyroOn:'Gyro: på',
+ no:{hint:'Dra med fingeren',tap:'Trykk for å fortsette',start:'Start',next:'Videre',go:'Fly!',frag:'Fragmenter',zone:'SONE',again:'Spill igjen',time:'Tid',shareScore:'Del poengsummen',gyroOff:'Gyro: av',gyroOn:'Gyro: på',
   pk:'PROLOG',pt:'Lumen. Våkn opp. Stasjonen faller.',pb:['Balansens hjerte på stasjonen Aspheris har sprukket. Mannskapet er borte.','Driften — en kaotisk anomali fra det knuste hjertet — river sektorene i stykker og sluker fragmentene.','Du er Lumen, den siste fungerende energisfæren. Samle hjertefragmentene i tre soner før Driften sluker alt.'],
   m:['Kjølelagunen lyser fortsatt. Samle 7 hjertefragmenter.','Driften har varmet kjernen rødglødende. Samle 7 fragmenter før lavaen tar dem.','Den hydroponiske hagen er blitt vill og giftig. De siste 7 fragmentene — så hjertet.'],
   ev:['«Lumen, hvis du hører dette…»','Driften nærmer seg.','Plantene åpner veien for deg…'],got:'Fragment gjenopprettet.',
   wh:'Hjertet slår. Aspheris lever.',wb:'Lumen har satt sammen Balansens hjerte. Driften trekker seg tilbake i mørket — for nå.'}};
 let LANG=(()=>{try{return 'pl'}catch(e){return 'pl'}})(),paused=false;
 const $=id=>document.getElementById(id),L=()=>TX[LANG];
-function applyLang(){const t=L();document.documentElement.lang=LANG==='no'?'nb':LANG;$('hint').textContent=t.hint;$('splashHint').textContent=t.tap;$('go').textContent=t.start;$('again').textContent=t.again;$('wh').textContent=t.wh;
+function applyLang(){const t=L();document.documentElement.lang=LANG==='no'?'nb':LANG;$('hint').textContent=t.hint;$('splashHint').textContent=t.tap;$('go').textContent=t.start;$('again').textContent=t.again;$('scoreShare').textContent=t.shareScore;$('wh').textContent=t.wh;
   $('hud').childNodes[1].nodeValue=t.frag+': ';$('tiltBtn').textContent=tilt.on?t.gyroOn:t.gyroOff;
   document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));}
 document.querySelectorAll('#langs button').forEach(b=>b.onclick=()=>{LANG=b.dataset.l;try{localStorage.setItem('zs_lang',LANG)}catch(e){}applyLang();});
@@ -268,7 +268,7 @@ function pickup(c){
   shake=0.25;bloom.strength=1.8;
   if(score>=7){total++;
     if(zone<ZONES.length-1)setTimeout(startBH,350);
-    else setTimeout(()=>{document.getElementById('wend').textContent=L().wb;document.getElementById('wt').textContent=L().time+': '+((Date.now()-t0)/1000).toFixed(1)+' s';document.getElementById('win').style.display='flex';},600);}
+    else setTimeout(()=>{document.getElementById('wend').textContent=L().wb;document.getElementById('wscore').textContent=String(total*7);document.getElementById('wt').textContent=L().time+': '+((Date.now()-t0)/1000).toFixed(1)+' s';document.getElementById('win').style.display='flex';},600);}
 }
 let lt=performance.now();
 function animate(){
@@ -495,9 +495,11 @@ function hsOff(){if(hsG)hsG.visible=false;sphere.visible=true;if(rbPass)rbPass.e
 function endBH(){bh.on=false;hsOff();bhPass.enabled=false;bhG.visible=false;appear=1;fil.scale.set(1,1,1);sphere.material.opacity=1;sphere.children[1].material.opacity=0.25;sphere.children[0].scale.setScalar(1);
   stretchGrid(0);camera.fov=56;camera.updateProjectionMatrix();bloom.strength=BLOOM_BASE;if(bhLow){bhLow=false;const k=bk();bloom.setSize(innerWidth/k|0,innerHeight/k|0);}mission(zone);}
 </script>
-<style>#qrbox{position:fixed;right:18px;bottom:18px;z-index:30;background:rgba(10,2,30,.82);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px;text-align:center;font:700 12px/1.3 system-ui,sans-serif;color:#fff;box-shadow:0 0 24px rgba(255,80,220,.35)}#qrbox img{display:block;width:132px;height:132px;border-radius:8px;margin:0 auto 6px}#qrbox a{color:#ffd6f6;font-weight:400;font-size:11px}@media (max-width:899px),(pointer:coarse){#qrbox{display:none}}</style>
+<style>#qrbox{position:fixed;right:18px;bottom:18px;z-index:30;background:rgba(10,2,30,.82);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px;text-align:center;font:700 12px/1.3 system-ui,sans-serif;color:#fff;box-shadow:0 0 24px rgba(255,80,220,.35)}#qrbox img{display:block;width:132px;height:132px;border-radius:8px;margin:0 auto 6px}#qrbox a{color:#ffd6f6;font-weight:400;font-size:11px}@media (max-width:899px),(pointer:coarse){#qrbox{display:none}}#wscore{font-size:44px;font-weight:900;margin:4px 0;text-shadow:0 2px 8px #000}#win #scoreShare{animation:none;margin-top:10px;padding:12px 22px;font-size:16px;background:rgba(255,255,255,.18);color:#fff;box-shadow:none;border:2px solid rgba(255,255,255,.55)}</style>
 <div id="qrbox"><img src="/aspheris/qr.png" alt="QR: stop60.no/aspheris" width="132" height="132">Zeskanuj i graj na telefonie<br><a href="/aspheris/prywatnosc/">Prywatność</a> · <a href="/">Stop60</a></div>
 <script>(function(){var o=document.getElementById('overlay'),q=document.getElementById('qrbox');setInterval(function(){q.style.visibility=(o&&getComputedStyle(o).display!=='none')?'visible':'hidden'},500)})();</script>
+<script src="/assets/score-share.js"></script>
+<script>S60ScoreShare.bind(document.getElementById('scoreShare'),{game:'aspheris',links:document.getElementById('scoreLinks'),lang:function(){return document.documentElement.lang},gameName:function(){return 'Aspheris'},score:function(){return document.getElementById('wscore').textContent||'0'}});</script>
 <script src="https://stop60.no/assets/wisdom.js" defer></script>
 <script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({before:document.getElementById("go")})});</script>
 </body>
