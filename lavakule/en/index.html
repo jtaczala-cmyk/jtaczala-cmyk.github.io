@@ -49,6 +49,7 @@
   <p class="best"><span data-t="best"></span>: <b id="bestVal">0</b></p>
   <p class="howto" data-t="howShort"></p>
   <button id="startBtn" class="big" data-t="start"></button>
+  <button type="button" id="tiltOpt" class="tiltopt" data-t="tiltOff" aria-pressed="false"></button>
   <div class="row"><button id="dailyBtn" data-t="daily"></button><button id="shopBtn" data-t="shop"></button><button id="missBtn" data-t="missions"></button></div>
   <div id="shop" class="panel" hidden><p class="small"><span data-t="bank"></span>: <b id="bankVal">0</b> 🪙</p><div id="shopList"></div></div>
   <div id="miss" class="panel" hidden><ul id="missList"></ul></div>
@@ -60,7 +61,7 @@
   <div class="top"><div><small data-t="score"></small><b id="hScore">0</b></div><div><small data-t="dist"></small><b id="hDist">0</b></div><div><small data-t="coins"></small><b id="hCoins">0</b></div><div><b id="hp" class="hp">●●●</b></div></div>
   <div id="heat"><small data-t="heat"></small><i><span id="heatBar"></span></i></div>
   <div class="pus" id="pus"></div>
-  <div class="tools"><button id="calBtn" data-t="calib"></button><button id="pauseBtn" aria-label="Pause">❚❚</button></div>
+  <div class="tools"><button type="button" id="tiltHud" class="tiltopt" data-t="tiltOff" aria-pressed="false"></button><button type="button" id="padToggle" hidden aria-pressed="false">◀▶</button><button id="calBtn" data-t="calib"></button><button id="pauseBtn" aria-label="Pause">❚❚</button></div>
   <div class="pad"><button data-b="btnS:-1" aria-label="left">◀</button><button data-b="btnG:-1" aria-label="slower">▼</button><button data-b="btnG:1" aria-label="faster">▲</button><button data-b="btnS:1" aria-label="right">▶</button></div>
 </div>
 <section id="pauseBox" class="card" hidden><h2>❚❚</h2><button id="resumeBtn" class="big">▶</button></section>

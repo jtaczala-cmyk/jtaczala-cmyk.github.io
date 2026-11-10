@@ -6,12 +6,13 @@ const LANG = document.documentElement.dataset.lang || 'no';
 const T = {
   no: { title:'Lavakule', tag:'Rull glasskula over lavaen. Ikke stopp – lavaen stiger!', start:'Start / Tillat tilt', startKb:'Start', calib:'Kalibrer', again:'Spill igjen', menu:'Meny',
     best:'Rekord', score:'Poeng', dist:'Distanse', coins:'Mynter', over:'Spillet er over', newbest:'Ny rekord!',
-    howShort:'Dra fingeren: sidelengs styrer, oppover gir fart.',
+    howShort:'Vipp telefonen: venstre og høyre styrer, fremover gir fart.',
     howTilt:'Vipp telefonen: venstre/høyre styrer, fremover gir fart, bakover bremser. Svinger du for fort, ryker du av banen.',
     howKb:'PC: piltaster / WASD. Mobil uten tilt: dra fingeren eller bruk knappene.',
     shareScore:'Del poengsummen',
     pu:'3 liv · sjekkpunkt hver 300 m · samle krafter: 🧲 magnet, 🪨 steinskall, 🫧 skjold, 🐢 sakte film, ✖2 doble mynter, 🎈 sveving, 🔹 minikule, ✚ reparasjon',
     flash:'Advarsel: spillet har korte lysglimt og risting av skjermen.', noTilt:'Tilt ikke tilgjengelig – bruk dra/knapper.',
+    tiltOn:'Tilt: på', tiltOff:'Tilt: av', padButtons:'Knapper',
     denied:'Tilt ble ikke tillatt – bruk dra/knapper.', fell:'Du falt av banen', burnt:'Lavaen tok deg', shattered:'Kula knuste',
     magnet:'MAGNET', shell:'STEINSKALL', crack:'Sprekk!', heat:'Lava', calibrated:'Kalibrert', test:'TEST', lic:'Lisenser', local:'Rekord, mynter og skins lagres bare på denne enheten.',
     cp:'Sjekkpunkt', repair:'Reparert', life:'Mistet et liv', healed:'Sprekken grodde', shield:'SKJOLD', slow:'SAKTE FILM', x2:'DOBLE MYNTER', hover:'SVEVING', mini:'MINIKULE', boost:'TURBO',
@@ -22,12 +23,13 @@ const T = {
     s0:'Klassisk', s1:'Rubin', s2:'Smaragd', s3:'Gull', s4:'Obsidian', s5:'Regnbue' },
   pl: { title:'Lawowa kulka', tag:'Tocz szklaną kulkę nad lawą. Nie zatrzymuj się – lawa rośnie!', start:'Start / Zezwól na przechył', startKb:'Start', calib:'Kalibruj', again:'Zagraj ponownie', menu:'Menu',
     best:'Rekord', score:'Wynik', dist:'Dystans', coins:'Monety', over:'Koniec gry', newbest:'Nowy rekord!',
-    howShort:'Przeciągnij palcem: na boki skręt, w górę szybciej.',
+    howShort:'Przechylaj telefon: lewo i prawo skręca, do przodu przyspiesza.',
     howTilt:'Przechylaj telefon: lewo/prawo – skręt, do przodu – szybciej, do tyłu – hamowanie. Za szybko w zakręt = wypadasz z toru.',
     howKb:'PC: strzałki / WASD. Telefon bez przechyłu: przeciągaj palcem albo użyj przycisków.',
     shareScore:'Udostępnij wynik',
     pu:'3 życia · punkt kontrolny co 300 m · ulepszenia: 🧲 magnes, 🪨 skorupa, 🫧 tarcza, 🐢 spowolnienie, ✖2 podwójne monety, 🎈 lewitacja, 🔹 mini kulka, ✚ naprawa',
     flash:'Uwaga: w grze występują krótkie błyski i drgania ekranu.', noTilt:'Przechył niedostępny – użyj przeciągania/przycisków.',
+    tiltOn:'Przechył: włącz', tiltOff:'Przechył: wyłącz', padButtons:'Przyciski',
     denied:'Brak zgody na przechył – użyj przeciągania/przycisków.', fell:'Spadłeś z toru', burnt:'Lawa cię dopadła', shattered:'Kulka pękła',
     magnet:'MAGNES', shell:'SKORUPA', crack:'Pęknięcie!', heat:'Lawa', calibrated:'Skalibrowano', test:'TEST', lic:'Licencje', local:'Rekord, monety i skórki zapisują się tylko na tym urządzeniu.',
     cp:'Punkt kontrolny', repair:'Naprawiono', life:'Stracone życie', healed:'Pęknięcie zagojone', shield:'TARCZA', slow:'SPOWOLNIENIE', x2:'PODWÓJNE MONETY', hover:'LEWITACJA', mini:'MINI KULKA', boost:'TURBO',
@@ -38,12 +40,13 @@ const T = {
     s0:'Klasyczna', s1:'Rubin', s2:'Szmaragd', s3:'Złota', s4:'Obsydian', s5:'Tęcza' },
   en: { title:'Lava Marble', tag:'Roll a glass marble over the lava. Don\u2019t stop – the lava is rising!', start:'Start / Allow tilt', startKb:'Start', calib:'Calibrate', again:'Play again', menu:'Menu',
     best:'Best', score:'Score', dist:'Distance', coins:'Coins', over:'Game over', newbest:'New best!',
-    howShort:'Drag your finger: sideways steers, upward speeds up.',
+    howShort:'Tilt the phone: left and right steers, forward speeds up.',
     howTilt:'Tilt the phone: left/right steers, forward speeds up, back slows down. Take a corner too fast and you fly off.',
     howKb:'Desktop: arrow keys / WASD. Phone without tilt: drag your finger or use the buttons.',
     shareScore:'Share your score',
     pu:'3 lives · checkpoint every 300 m · power-ups: 🧲 magnet, 🪨 stone shell, 🫧 shield, 🐢 slow-mo, ✖2 double coins, 🎈 hover, 🔹 mini marble, ✚ repair',
     flash:'Warning: this game contains brief flashes and screen shake.', noTilt:'Tilt unavailable – use drag/buttons.',
+    tiltOn:'Tilt: on', tiltOff:'Tilt: off', padButtons:'Buttons',
     denied:'Tilt not allowed – use drag/buttons.', fell:'You fell off the track', burnt:'The lava got you', shattered:'The marble shattered',
     magnet:'MAGNET', shell:'STONE SHELL', crack:'Crack!', heat:'Lava', calibrated:'Calibrated', test:'TEST', lic:'Licences', local:'Best score, coins and skins are stored on this device only.',
     cp:'Checkpoint', repair:'Repaired', life:'Life lost', healed:'Crack healed', shield:'SHIELD', slow:'SLOW-MO', x2:'DOUBLE COINS', hover:'HOVER', mini:'MINI MARBLE', boost:'BOOST',
@@ -466,23 +469,139 @@ function renderMissions() { $('missList').innerHTML = ACH.map(([k]) => `<li clas
 
 /* ---------- input ---------- */
 const inp = { steer: 0, gas: 0, tilt: false, b0: null, g0: null, beta: 0, gamma: 0, kbS: 0, kbG: 0, touchS: 0, touchG: 0, btnS: 0, btnG: 0 };
-const DEAD = 2.5, FULL = 30;   // slightly lower tilt sensitivity
-function axis(v) { const a = Math.abs(v); if (a < DEAD) return 0; return Math.sign(v) * Math.min(1, Math.pow((a - DEAD) / (FULL - DEAD), 1.15)); }
+const DEAD = 2, FULL = 18;   // a normal wrist tilt from a reading angle reaches full steer
+const FINGER = 0.12;         // smaller drags leave tilt in charge
+function axis(v) {
+  if (!Number.isFinite(v)) return 0;
+  const a = Math.abs(v);
+  if (a < DEAD) return 0;
+  const t = Math.min(1, (a - DEAD) / (FULL - DEAD));
+  return Math.sign(v) * Math.pow(t, 1.08);
+}
+/* window.orientation matches across phones. screen.orientation.angle was swapped on early iOS, so it is only the fallback. -90 becomes 270. */
 function orientAngle() {
+  const wo = window.orientation;
+  if (typeof wo === 'number' && wo === wo) return wo;
   const so = screen.orientation;
   if (so && typeof so.angle === 'number') return so.angle;
-  return window.orientation || 0;
+  return 0;
 }
-function rawTilt() { const a = ((orientAngle() % 360) + 360) % 360, b = inp.beta, g = inp.gamma;
-  if (a === 90) return { s: b, p: g };  if (a === 270) return { s: -b, p: -g }; if (a === 180) return { s: -g, p: -b }; return { s: g, p: b }; }
-let calRaw = null;
+function rawTilt() {
+  const a = ((orientAngle() % 360) + 360) % 360, b = inp.beta, g = inp.gamma;
+  // s grows when the right edge of the screen goes down. p grows when the top edge goes down (faster).
+  if (a === 90) return { s: b, p: g };
+  if (a === 270) return { s: -b, p: -g };
+  if (a === 180) return { s: -g, p: b };
+  return { s: g, p: -b };
+}
+let calRaw = null, haveSample = false, lastOT = 0, wantSettle = false, settleTimer = 0;
 function calibrate() { calRaw = rawTilt(); }
-window.addEventListener('deviceorientation', e => { if (e.beta == null) return; inp.beta = e.beta; inp.gamma = e.gamma; if (!inp.tilt) { inp.tilt = true; calibrate(); document.body.classList.add('tilt'); } });
-screen.orientation && screen.orientation.addEventListener('change', () => setTimeout(calibrate, 300));
-async function askTilt() {
-  const D = window.DeviceOrientationEvent;
-  if (!D) { toast(T.noTilt); return; }
-  if (typeof D.requestPermission === 'function') { try { const r = await D.requestPermission(); if (r !== 'granted') toast(T.denied); } catch (e) { toast(T.denied); } }
+function armSettle() {
+  if (!haveSample) { wantSettle = true; return; }
+  wantSettle = false;
+  if (state === 'play' || state === 'pause') calibrate();
+  clearTimeout(settleTimer);
+  settleTimer = setTimeout(() => { if (haveSample && (state === 'play' || state === 'pause')) calibrate(); }, 240);
+}
+function onTurn() { setTimeout(armSettle, 280); }
+if (screen.orientation && screen.orientation.addEventListener) screen.orientation.addEventListener('change', onTurn);
+addEventListener('orientationchange', onTurn);
+let orientBound = false, fallTimer = 0, permState = 'pending', permFlight = null, tiltUser = true, uiOn = null;
+function listenOrient() {
+  if (orientBound) window.removeEventListener('deviceorientation', onOrient);
+  window.addEventListener('deviceorientation', onOrient);
+  orientBound = true;
+}
+function onOrient(e) {
+  if (!e || e.beta == null || e.gamma == null || !Number.isFinite(e.beta) || !Number.isFinite(e.gamma)) return;
+  const now = performance.now();
+  const dt = lastOT ? Math.min(0.1, (now - lastOT) / 1000) : 0;
+  lastOT = now;
+  if (!haveSample || dt <= 0) { inp.beta = e.beta; inp.gamma = e.gamma; }
+  else {
+    const k = 1 - Math.exp(-dt * 18);
+    inp.beta += (e.beta - inp.beta) * k;
+    inp.gamma += (e.gamma - inp.gamma) * k;
+  }
+  const first = !haveSample;
+  haveSample = true;
+  if (!inp.tilt) {
+    inp.tilt = true;
+    clearTimeout(fallTimer);
+    const t = $('toast');
+    if (t && t.textContent === T.noTilt) t.classList.remove('show');
+  }
+  if (wantSettle) armSettle();
+  else if (first && !calRaw) calibrate();
+  updateTiltUi();
+}
+function permAPI() {
+  const D = window.DeviceOrientationEvent, M = window.DeviceMotionEvent;
+  return { o: !!(D && typeof D.requestPermission === 'function'), m: !!(M && typeof M.requestPermission === 'function'), D, M };
+}
+/* iOS only keeps the user gesture for requestPermission if it is the first call in the tap, before any await. Asked once per page. */
+function requestTiltPermissionNow() {
+  if (permState === 'granted' || permState === 'denied') return Promise.resolve(permState);
+  if (permFlight) return permFlight;
+  const api = permAPI();
+  if (!api.o && !api.m) { permState = 'granted'; listenOrient(); return Promise.resolve(permState); }
+  let oP = Promise.resolve('granted'), mP = Promise.resolve('granted');
+  try { if (api.o) oP = api.D.requestPermission(); } catch (err) { oP = Promise.resolve('denied'); }
+  try { if (api.m) mP = api.M.requestPermission(); } catch (err) { mP = Promise.resolve('denied'); }
+  const settle = p => Promise.resolve(p).then(v => v, () => 'denied');
+  permFlight = Promise.all([settle(oP), settle(mP)]).then(([o, m]) => {
+    permState = (o === 'granted' || (!api.o && m === 'granted')) ? 'granted' : 'denied';
+    if (permState === 'granted') listenOrient();
+    return permState;
+  });
+  return permFlight;
+}
+function tiltLive() { return !!(tiltUser && inp.tilt && haveSample && permState !== 'denied'); }
+function updateTiltUi() {
+  const on = tiltLive();
+  if (on === uiOn) return;
+  uiOn = on;
+  document.body.classList.toggle('tilt', on);
+  if (!on) document.body.classList.remove('show-pad');
+  const label = on ? T.tiltOn : T.tiltOff;
+  for (const id of ['tiltOpt', 'tiltHud']) {
+    const el = $(id); if (!el) continue;
+    el.textContent = label;
+    el.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+  const padBtn = $('padToggle');
+  if (padBtn) {
+    padBtn.hidden = !on;
+    padBtn.setAttribute('aria-label', T.padButtons);
+    if (!on) padBtn.setAttribute('aria-pressed', 'false');
+  }
+}
+function onTiltToggle(ev) {
+  ev.preventDefault(); ev.stopPropagation();
+  if (tiltLive()) tiltUser = false;
+  else if (!tiltUser) { tiltUser = true; if (haveSample) calibrate(); }
+  else if (permState === 'denied') toast(T.denied);
+  else if (permState !== 'pending') toast(T.noTilt);
+  uiOn = null; updateTiltUi();
+}
+function onPadToggle(ev) {
+  ev.preventDefault(); ev.stopPropagation();
+  if (!tiltLive()) return;
+  document.body.classList.toggle('show-pad');
+  const b = $('padToggle');
+  if (b) b.setAttribute('aria-pressed', document.body.classList.contains('show-pad') ? 'true' : 'false');
+}
+function armFallback() {
+  clearTimeout(fallTimer);
+  if (inp.tilt && haveSample) { updateTiltUi(); return; }
+  fallTimer = setTimeout(() => {
+    fallTimer = 0;
+    if (inp.tilt && haveSample) { updateTiltUi(); return; }
+    inp.tilt = false;
+    document.body.classList.remove('tilt');
+    uiOn = null; updateTiltUi();
+    toast(T.noTilt);
+  }, 1000);
 }
 const keys = {};
 addEventListener('keydown', e => {
@@ -517,6 +636,19 @@ function endDrag(e) { if (!e || e.pointerId === dragId) releaseDrag(); }
 canvas.addEventListener('pointerup', endDrag);
 canvas.addEventListener('pointercancel', endDrag);
 canvas.addEventListener('lostpointercapture', e => { if (e.pointerId === dragId) releaseDrag(); });
+function releaseContacts(e) {
+  if (e && e.type && e.type.indexOf('pointer') === 0) { endDrag(e); return; }
+  if (e && e.touches && e.touches.length) return;
+  releaseDrag();
+  if (!heldBtns.length) return;
+  heldBtns.splice(0, heldBtns.length);
+  document.querySelectorAll('.pad button').forEach(b => { b.classList.remove('on'); b._pid = null; });
+  syncBtns();
+}
+addEventListener('pointerup', releaseContacts, true);
+addEventListener('pointercancel', releaseContacts, true);
+addEventListener('touchend', releaseContacts, true);
+addEventListener('touchcancel', releaseContacts, true);
 const eatGesture = e => {
   if (e.target && e.target.closest && e.target.closest('.card, a, input, textarea, select')) return;
   if (e.cancelable) e.preventDefault();
@@ -560,16 +692,25 @@ function releaseInput() {
 }
 function readInput(dt) {
   let s = 0, g = 0;
-  if (inp.tilt && calRaw && state === 'play') { const r = rawTilt(); s = axis(r.s - calRaw.s); g = axis(-(r.p - calRaw.p)); }
+  if (tiltLive() && calRaw && state === 'play') { const r = rawTilt(); s = axis(r.s - calRaw.s); g = axis(r.p - calRaw.p); }
   const kS = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0), kG = (keys.ArrowUp || keys.KeyW ? 1 : 0) - (keys.ArrowDown || keys.KeyS ? 1 : 0);
-  const os = kS || inp.touchS || inp.btnS, og = kG || inp.touchG || inp.btnG;
-  if (os) s = os; if (og) g = og;
-  const a = 1 - Math.exp(-dt * 14); smS += (s - smS) * a; smG += (g - smG) * a;
+  const finger = dragId != null;
+  if (kS) s = kS;
+  if (kG) g = kG;
+  if (finger && Math.abs(inp.touchS) > FINGER) s = inp.touchS;
+  if (finger && Math.abs(inp.touchG) > FINGER) g = inp.touchG;
+  if (heldBtns.length && inp.btnS) s = inp.btnS;
+  if (heldBtns.length && inp.btnG) g = inp.btnG;
+  const a = 1 - Math.exp(-dt * 12); smS += (s - smS) * a; smG += (g - smG) * a;
   inp.steer = smS; inp.gas = smG;
 }
 addEventListener('blur', releaseInput);
-function doCalib() { if (inp.tilt) { calibrate(); toast(T.calibrated); sfx.calib(); } }
+function doCalib() { if (inp.tilt && haveSample) { calibrate(); toast(T.calibrated); sfx.calib(); } }
 $('calBtn').onclick = doCalib;
+for (const id of ['tiltOpt', 'tiltHud']) { const el = $(id); if (el) el.addEventListener('click', onTiltToggle); }
+{ const el = $('padToggle'); if (el) el.addEventListener('click', onPadToggle); }
+if (!permAPI().o && !permAPI().m) { permState = 'granted'; listenOrient(); }
+updateTiltUi();
 
 /* ---------- game state ---------- */
 let state = 'menu', S = {}, daily = false;
@@ -594,13 +735,38 @@ function applyBiome(b) { S.biome = b; }
 function tintFog(k) { const f = scene.fog.color; f.r += (land.fog[0] - f.r) * k; f.g += (land.fog[1] - f.g) * k; f.b += (land.fog[2] - f.b) * k; }
 function toast(msg, ms = 1600) { const t = $('toast'); t.textContent = msg; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), ms); }
 function show(id, on) { $(id).hidden = !on; }
-async function start(fromTap, isDaily = daily) {
-  window.StopWisdom && StopWisdom.hide(); audioInit(); if (fromTap) await askTilt();
-  daily = isDaily; reset(); state = 'play'; show('menu', false); show('over', false); show('hud', true); show('pauseBox', false);
+function launch(isDaily, permP) {
+  const perm = requestTiltPermissionNow();
+  window.StopWisdom && StopWisdom.hide(); audioInit();
+  if (typeof isDaily === 'boolean') daily = isDaily;
+  releaseInput();
+  reset(); state = 'play'; show('menu', false); show('over', false); show('hud', true); show('pauseBox', false);
   runs++; SV('lavakule_runs_v1', runs);
-  setTimeout(calibrate, 150); gcT0 = Date.now(); gc(daily ? 'game-start-daily' : 'game-start');
+  armSettle(); gcT0 = Date.now(); gc(daily ? 'game-start-daily' : 'game-start');
+  Promise.resolve(permP || perm).then(result => {
+    if (result === 'granted') listenOrient();
+    if (state !== 'play' && state !== 'pause') return;
+    if (result === 'denied') {
+      clearTimeout(fallTimer);
+      inp.tilt = false; document.body.classList.remove('tilt'); uiOn = null; updateTiltUi();
+      if (!launch.toldDeny) { launch.toldDeny = 1; toast(T.denied); }
+      return;
+    }
+    armFallback();
+  });
 }
-function pause(on) { if (on) releaseInput(); state = on ? 'pause' : 'play'; show('pauseBox', on); if (!on) { last = performance.now(); calibrate(); } }
+function bindRun(btn, mode) {
+  if (!btn) return;
+  const go = ev => {
+    const permP = requestTiltPermissionNow();
+    if (ev.type === 'click' && btn._touchGo && performance.now() - btn._touchGo < 900) return;
+    if (ev.type === 'touchend') { btn._touchGo = performance.now(); if (ev.cancelable) ev.preventDefault(); }
+    launch(mode === 'keep' ? daily : mode, permP);
+  };
+  btn.addEventListener('touchend', go, { passive: false });
+  btn.addEventListener('click', go);
+}
+function pause(on) { if (on) releaseInput(); state = on ? 'pause' : 'play'; show('pauseBox', on); if (!on) { last = performance.now(); armSettle(); } }
 function gameOver(reason) {
   if (state !== 'play') return; state = 'over'; releaseInput();
   const sc = score(); const nb = sc > best; if (nb) { best = sc; localStorage.setItem(BEST_KEY, best); }
@@ -612,9 +778,9 @@ function gameOver(reason) {
   gc('game-finish'); gcTime();
 }
 const score = () => Math.floor(S.s) + S.pts;
-$('startBtn').onclick = () => start(true, false);
-$('dailyBtn').onclick = () => start(true, true);
-$('againBtn').onclick = () => start(true);
+bindRun($('startBtn'), false);
+bindRun($('dailyBtn'), true);
+bindRun($('againBtn'), 'keep');
 $('menuBtn').onclick = () => { show('over', false); show('menu', true); state = 'menu'; renderMissions(); };
 $('pauseBtn').onclick = () => pause(true); $('resumeBtn').onclick = () => pause(false);
 $('shopBtn').onclick = () => { const o = $('shop').hidden; $('shop').hidden = !o; $('miss').hidden = true; renderShop(); };

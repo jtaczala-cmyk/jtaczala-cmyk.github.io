@@ -27,11 +27,15 @@ button.big{display:block;width:100%;background:linear-gradient(180deg,#ffe08a,#f
 #heat i{flex:1;height:8px;border-radius:5px;background:rgba(0,0,0,.5);overflow:hidden;border:1px solid rgba(255,150,60,.4)}#heat span{display:block;height:100%;background:linear-gradient(90deg,#ffcf40,#ff3b10);transform-origin:left;transform:scaleX(0)}
 #heat.hot span{animation:pulse .4s infinite alternate}@keyframes pulse{to{opacity:.55}}
 .pus{position:fixed;top:calc(140px + var(--sat));left:0;right:0;text-align:center;z-index:8;pointer-events:none;font:600 16px var(--disp)}.pus span{margin:0 6px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:8px}
-.tools{position:fixed;bottom:calc(86px + var(--sab));right:calc(12px + var(--sar));z-index:9;display:flex;gap:8px;touch-action:none}
+.tools{position:fixed;bottom:calc(86px + var(--sab));right:calc(12px + var(--sar));z-index:9;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;touch-action:none;max-width:calc(100vw - 20px - var(--sar) - var(--sal))}
 .tools button{background:rgba(28,18,12,.82);font-size:15px;padding:10px 12px;min-height:44px;touch-action:none}
 .pad{position:fixed;bottom:calc(10px + var(--sab));left:calc(10px + var(--sal));right:calc(10px + var(--sar));z-index:9;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;touch-action:none}
 .pad button{height:64px;width:100%;font-size:26px;background:rgba(28,18,12,.82);color:#fff;border:2px solid rgba(255,236,210,.7);padding:0;touch-action:none}.pad button.on{background:#e07a1f;color:#1a0c04}
-body.tilt .pad{opacity:.92}
+body.tilt:not(.show-pad) .pad{opacity:0;visibility:hidden;pointer-events:none}
+body.tilt.show-pad .pad{opacity:.96}
+body.tilt:not(.show-pad) .tools{bottom:calc(12px + var(--sab))}
+button.tiltopt{font-size:13px;line-height:1.15;letter-spacing:.02em;padding:8px 10px;min-height:40px}
+#padToggle{min-width:46px;padding:8px 10px;font-size:18px}
 #toast{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%) scale(.9);font:600 26px var(--disp);color:#fff;text-shadow:0 0 12px #ff6a10,0 2px 4px #000;opacity:0;transition:.25s;z-index:12;pointer-events:none;text-transform:uppercase;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}.stats small{display:block;font:700 11px var(--disp);color:#f0d8c0;text-transform:uppercase}.stats b{font:700 20px var(--disp);color:#fff}
