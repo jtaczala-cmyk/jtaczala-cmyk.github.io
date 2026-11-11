@@ -20,6 +20,8 @@ LANGNAME = {"no": {"no": "norsk", "en": "engelsk", "pl": "polsk"},
 T = {
  "no": dict(
   tagline="laget med lidenskap",
+  motto=("Du har nådd enden av internett. Bortenfor meg er det bare verdensrommet.",
+         "Ikke let etter noe mer – bli her og finn noe for deg."),
   title="Stop60 – gratis spill uten reklame i nettleseren",
   desc="Gratis spill uten reklame, rett i nettleseren: brettspill, logikk, action og læring. Laget med lidenskap – uten konto og uten app. På norsk, engelsk og polsk.",
   navlang="Språk", nav_games="Spill", nav_about="Om", menu="Hovedmeny",
@@ -39,6 +41,8 @@ T = {
   priv_links="Personvern i spillene:", contact="Kontakt:", count="{n} spill"),
  "en": dict(
   tagline="made with passion",
+  motto=("You've just reached the end of the internet. Beyond me, there's only space.",
+         "Don't look any further – stay and find something for you."),
   title="Stop60 – free browser games, no ads",
   desc="Free browser games, no ads: small board, logic, action and learning games you start right in the browser. No account and no app. In Norwegian, English and Polish.",
   navlang="Language", nav_games="Games", nav_about="About", menu="Main menu",
@@ -58,6 +62,8 @@ T = {
   priv_links="Privacy in the games:", contact="Contact:", count="{n} games"),
  "pl": dict(
   tagline="stworzone z pasji",
+  motto=("Właśnie dotarłeś do kresu internetu. Poza mną jest tylko kosmos.",
+         "Nie szukaj niczego więcej, zostań i znajdź coś dla siebie."),
   title="Stop60 – darmowe gry bez reklam w przeglądarce",
   desc="Darmowe gry bez reklam, od razu w przeglądarce: planszowe, logiczne, zręcznościowe i do nauki. Robione z pasji – bez konta i bez aplikacji. Po norwesku, angielsku i polsku.",
   navlang="Język", nav_games="Gry", nav_about="O nas", menu="Menu główne",
@@ -248,7 +254,7 @@ def head_common(l, t, rel, title, desc, canonical=True):
 <link rel="apple-touch-icon" href="{rel}assets/apple-touch-icon.png?v=3"/>
 <link rel="preload" href="{rel}fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <link rel="stylesheet" href="{rel}fonts/fonts.css"/>
-<link rel="stylesheet" href="{rel}assets/home.css?v=4"/>
+<link rel="stylesheet" href="{rel}assets/home.css?v=5"/>
 '''
 
 def header(l, t, rel, langlinks=True):
@@ -260,10 +266,14 @@ def header(l, t, rel, langlinks=True):
 
 def footer(t):
     priv = " · ".join(f'<a href="{u}">{e(n)}</a>' for n, u in PRIV[t["_l"]])
+    hub = {"no": ("Rolige spill samlet:", "Hjernetrim", "/hjernetrim/"),
+           "en": ("Calm games in one place:", "Brain games", "/en/brain-games/"),
+           "pl": ("Spokojne gry w jednym miejscu:", "Gry logiczne", "/pl/gry-logiczne/")}[t["_l"]]
     return f'''<footer><div class="wrap">
 <h2>{e(t["privacy_h"])}</h2>
 <p>{e(t["privacy"])}</p>
 <p>{e(t["priv_links"])} {priv}</p>
+<p>{e(hub[0])} <a href="{hub[2]}">{e(hub[1])}</a></p>
 <div class="row"><span>© 2026 Stop60</span><span>{e(t["contact"])} <a class="em" href="#" data-u="kontakt" data-d="stop60.no" rel="nofollow">kontakt&#64;stop60.no</a></span></div>
 </div></footer>'''
 
@@ -310,6 +320,7 @@ def page(l):
 <a class="skip" href="#spill">↓</a>
 {header(l, t, rel)}
 <main>
+<div class="motto"><p>{e(t["motto"][0])}</p><p>{e(t["motto"][1])}</p></div>
 <section class="hero"><div class="wrap">
 {hero_art(t, rel)}
 <div class="in"><div>
@@ -383,6 +394,8 @@ def sitemap():
     for slug in ("aximore", "stjernestorm"):
         paths, day = game(slug, "2026-11-09")
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
+    hubs = [("nb", "hjernetrim/"), ("pl", "pl/gry-logiczne/"), ("en", "en/brain-games/"), ("x-default", "hjernetrim/")]
+    parts.append(block(["hjernetrim/", "pl/gry-logiczne/", "en/brain-games/"], hubs, "2026-11-11"))
     body = "".join(parts)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'
 
