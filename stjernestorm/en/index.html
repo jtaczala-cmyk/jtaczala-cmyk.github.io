@@ -93,10 +93,10 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
 <nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
 
 <div id="hud" hidden>
-  <div class="v"><small data-t="score"></small><b id="hScore">0</b></div>
-  <div class="v"><small data-t="wave"></small><b id="hWave">1</b></div>
-  <div class="v"><small data-t="hp"></small><div id="hHp"></div></div>
-  <div class="v"><small data-t="coins"></small><b id="hCoins" style="color:var(--gold)">0</b></div>
+  <div class="v"><small data-t="score">Score</small><b id="hScore">0</b></div>
+  <div class="v"><small data-t="wave">Stage</small><b id="hWave">1</b></div>
+  <div class="v"><small data-t="hp">HP</small><div id="hHp"></div></div>
+  <div class="v"><small data-t="coins">Coins</small><b id="hCoins" style="color:var(--gold)">0</b></div>
   <div class="sp"></div>
   <button id="muteBtn" aria-label="Sound">🔊</button>
   <button id="pauseBtn" aria-label="Pause">⏸</button>
@@ -105,45 +105,46 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
 <section id="menu" class="card">
   <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
   <div class="brand">STOP60</div>
-  <h1 data-t="name"></h1>
-  <p class="tag" data-t="tag"></p>
-  <p class="stat"><span data-t="best"></span>: <b class="bestV">0</b> · 🪙 <b class="coinV">0</b></p>
-  <button id="playBtn" class="big" data-t="play"></button>
-  <div class="row"><button id="menuShop" data-t="shop"></button><button class="shareB" data-t="share"></button></div>
+  <h1 data-t="name">Star Storm</h1>
+  <p class="tag" data-t="tag">Steer your ship with a finger, blast through stage after stage with no breaks!</p>
+  <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Star Storm is a free space shooter in your browser, with no ads. Steer the ship with a finger while it fires on its own, grab orbs and coins, upgrade in the workshop and face a boss every fifth stage. Open the page and play on stop60.no.</p>
+  <p class="stat"><span data-t="best">Best</span>: <b class="bestV">0</b> · 🪙 <b class="coinV">0</b></p>
+  <button id="playBtn" class="big" data-t="play">Play</button>
+  <div class="row"><button id="menuShop" data-t="shop">🛠 Workshop</button><button class="shareB" data-t="share">🔗 Share</button></div>
   <div id="sxMenu"></div>
   <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
-  <ul class="how"><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li></ul>
-  <p class="love" data-t="love"></p>
-  <p class="small"><span data-t="local"></span> · <a href="/">stop60.no</a></p>
+  <ul class="how"><li data-t="how1">👆 Drag anywhere – the ship follows your finger</li><li data-t="how2">🔫 Auto-fire · grab orbs and coins</li><li data-t="how3">👾 Every 5th stage brings a boss – no breaks</li></ul>
+  <p class="love" data-t="love">Made with passion</p>
+  <p class="small"><span data-t="local">Progress is saved on this device only</span> · <a href="/">stop60.no</a></p>
 </section>
 
 <section id="shop" class="card" hidden>
-  <h2 id="shopTitle" data-t="shop"></h2>
+  <h2 id="shopTitle" data-t="shop">🛠 Workshop</h2>
   <p class="coins">🪙 <span class="coinV">0</span></p>
   <div id="ups"></div>
-  <button id="shopGo" class="big" data-t="next"></button>
-  <div class="row"><button id="shopBack" data-t="menu"></button></div>
+  <button id="shopGo" class="big" data-t="next">▶ Next wave</button>
+  <div class="row"><button id="shopBack" data-t="menu">Menu</button></div>
 </section>
 
 <section id="pause" class="card" hidden>
-  <h2 data-t="paused"></h2>
-  <button id="resumeBtn" class="big" data-t="resume"></button>
+  <h2 data-t="paused">Paused</h2>
+  <button id="resumeBtn" class="big" data-t="resume">Resume</button>
   <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
-  <div class="row"><button id="quitBtn" data-t="menu"></button></div>
+  <div class="row"><button id="quitBtn" data-t="menu">Menu</button></div>
 </section>
 
 <section id="over" class="card" hidden>
   <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
-  <h2 data-t="over"></h2>
-  <p class="stat"><span data-t="score"></span>: <b id="oScore">0</b></p>
-  <p class="stat"><span data-t="best"></span>: <b class="bestV">0</b></p>
-  <p class="stat"><span data-t="wave"></span>: <b id="oWave">1</b> · 🪙 +<b id="oCoins">0</b></p>
-  <p id="oNew" class="love" hidden data-t="newbest"></p>
-  <button id="retryBtn" class="big" data-t="retry"></button>
-  <div class="row"><button id="overShop" data-t="shop"></button><button id="scoreShare" type="button" data-t="shareScore"></button><button id="overMenu" data-t="menu"></button></div>
+  <h2 data-t="over">Ship lost!</h2>
+  <p class="stat"><span data-t="score">Score</span>: <b id="oScore">0</b></p>
+  <p class="stat"><span data-t="best">Best</span>: <b class="bestV">0</b></p>
+  <p class="stat"><span data-t="wave">Stage</span>: <b id="oWave">1</b> · 🪙 +<b id="oCoins">0</b></p>
+  <p id="oNew" class="love" hidden data-t="newbest">New best!</p>
+  <button id="retryBtn" class="big" data-t="retry">Retry</button>
+  <div class="row"><button id="overShop" data-t="shop">🛠 Workshop</button><button id="scoreShare" type="button" data-t="shareScore">Share your score</button><button id="overMenu" data-t="menu">Menu</button></div>
   <div id="scoreLinks"></div>
   <div id="sxOver"></div>
-  <p class="love" id="overLove" data-t="love"></p>
+  <p class="love" id="overLove" data-t="love">Made with passion</p>
   <p class="small"><a href="/">stop60.no</a></p>
 </section>
 <div id="toast"></div>

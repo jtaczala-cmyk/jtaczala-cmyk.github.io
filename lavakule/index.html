@@ -44,37 +44,38 @@
 <nav class="langs"><a href="/lavakule/" class="cur" aria-label="Norsk">🇳🇴</a><a href="/lavakule/pl/" class="" aria-label="Polski">🇵🇱</a><a href="/lavakule/en/" class="" aria-label="English">🇬🇧</a></nav>
 <section id="menu" class="card">
   <div class="brand">STOP60</div>
-  <h1 data-t="title"></h1>
-  <p class="tag" data-t="tag"></p>
-  <p class="best"><span data-t="best"></span>: <b id="bestVal">0</b></p>
-  <p class="howto" data-t="howShort"></p>
-  <button id="startBtn" class="big" data-t="start"></button>
-  <button type="button" id="tiltOpt" class="tiltopt" data-t="tiltOff" aria-pressed="false"></button>
-  <div class="row"><button id="dailyBtn" data-t="daily"></button><button id="shopBtn" data-t="shop"></button><button id="missBtn" data-t="missions"></button></div>
-  <div id="shop" class="panel" hidden><p class="small"><span data-t="bank"></span>: <b id="bankVal">0</b> 🪙</p><div id="shopList"></div></div>
+  <h1 data-t="title">Lavakule</h1>
+  <p class="tag" data-t="tag">Rull glasskula over lavaen. Ikke stopp – lavaen stiger!</p>
+  <p class="best"><span data-t="best">Rekord</span>: <b id="bestVal">0</b></p>
+  <p class="howto" data-t="howShort">Vipp telefonen: venstre og høyre styrer, fremover gir fart.</p>
+  <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Lavakule er et gratis spill uten reklame i nettleseren. Vipp telefonen og styr en glødende glasskule langs en smal bane over lava. Unngå hindringer, samle mynter og kom så langt du kan – uten konto og uten app, rett på stop60.no.</p>
+  <button id="startBtn" class="big" data-t="start">Start / Tillat tilt</button>
+  <button type="button" id="tiltOpt" class="tiltopt" data-t="tiltOff" aria-pressed="false">Tilt: av</button>
+  <div class="row"><button id="dailyBtn" data-t="daily">Dagens løp</button><button id="shopBtn" data-t="shop">Butikk</button><button id="missBtn" data-t="missions">Oppdrag</button></div>
+  <div id="shop" class="panel" hidden><p class="small"><span data-t="bank">Mynter i banken</span>: <b id="bankVal">0</b> 🪙</p><div id="shopList"></div></div>
   <div id="miss" class="panel" hidden><ul id="missList"></ul></div>
-  <ul class="how"><li data-t="howTilt"></li><li data-t="howKb"></li><li data-t="pu"></li></ul>
-  <p class="warn">⚠ <span data-t="flash"></span></p>
-  <p class="small"><span data-t="local"></span> · <a href="/lavakule/personvern/">Personvern</a> · <a href="/lavakule/lisenser.html" data-t="lic"></a> · <a href="/">stop60.no</a></p>
+  <ul class="how"><li data-t="howTilt">Vipp telefonen: venstre/høyre styrer, fremover gir fart, bakover bremser. Svinger du for fort, ryker du av banen.</li><li data-t="howKb">PC: piltaster / WASD. Mobil uten tilt: dra fingeren eller bruk knappene.</li><li data-t="pu">3 liv · sjekkpunkt hver 300 m · samle krafter: 🧲 magnet, 🪨 steinskall, 🫧 skjold, 🐢 sakte film, ✖2 doble mynter, 🎈 sveving, 🔹 minikule, ✚ reparasjon</li></ul>
+  <p class="warn">⚠ <span data-t="flash">Advarsel: spillet har korte lysglimt og risting av skjermen.</span></p>
+  <p class="small"><span data-t="local">Rekord, mynter og skins lagres bare på denne enheten.</span> · <a href="/lavakule/personvern/">Personvern</a> · <a href="/lavakule/lisenser.html" data-t="lic">Lisenser</a> · <a href="/">stop60.no</a></p>
 </section>
 <div id="hud" hidden>
-  <div class="top"><div><small data-t="score"></small><b id="hScore">0</b></div><div><small data-t="dist"></small><b id="hDist">0</b></div><div><small data-t="coins"></small><b id="hCoins">0</b></div><div><b id="hp" class="hp">●●●</b></div></div>
-  <div id="heat"><small data-t="heat"></small><i><span id="heatBar"></span></i></div>
+  <div class="top"><div><small data-t="score">Poeng</small><b id="hScore">0</b></div><div><small data-t="dist">Distanse</small><b id="hDist">0</b></div><div><small data-t="coins">Mynter</small><b id="hCoins">0</b></div><div><b id="hp" class="hp">●●●</b></div></div>
+  <div id="heat"><small data-t="heat">Lava</small><i><span id="heatBar"></span></i></div>
   <div class="pus" id="pus"></div>
-  <div class="tools"><button type="button" id="tiltHud" class="tiltopt" data-t="tiltOff" aria-pressed="false"></button><button type="button" id="padToggle" hidden aria-pressed="false">◀▶</button><button id="calBtn" data-t="calib"></button><button id="pauseBtn" aria-label="Pause">❚❚</button></div>
+  <div class="tools"><button type="button" id="tiltHud" class="tiltopt" data-t="tiltOff" aria-pressed="false">Tilt: av</button><button type="button" id="padToggle" hidden aria-pressed="false">◀▶</button><button id="calBtn" data-t="calib">Kalibrer</button><button id="pauseBtn" aria-label="Pause">❚❚</button></div>
   <div class="pad"><button data-b="btnS:-1" aria-label="left">◀</button><button data-b="btnG:-1" aria-label="slower">▼</button><button data-b="btnG:1" aria-label="faster">▲</button><button data-b="btnS:1" aria-label="right">▶</button></div>
 </div>
 <section id="pauseBox" class="card" hidden><h2>❚❚</h2><button id="resumeBtn" class="big">▶</button></section>
 <section id="over" class="card" hidden>
-  <h2 data-t="over"></h2><p id="ovReason" class="tag"></p>
-  <p id="newBest" class="nb" data-t="newbest" hidden></p>
-  <p class="bigscore"><small data-t="score"></small><b id="ovScore"></b></p>
-  <div class="stats"><div><small data-t="dist"></small><b id="ovDist"></b></div><div><small data-t="coins"></small><b id="ovCoins"></b></div><div><small data-t="best"></small><b id="ovBest"></b></div></div>
+  <h2 data-t="over">Spillet er over</h2><p id="ovReason" class="tag"></p>
+  <p id="newBest" class="nb" data-t="newbest" hidden>Ny rekord!</p>
+  <p class="bigscore"><small data-t="score">Poeng</small><b id="ovScore"></b></p>
+  <div class="stats"><div><small data-t="dist">Distanse</small><b id="ovDist"></b></div><div><small data-t="coins">Mynter</small><b id="ovCoins"></b></div><div><small data-t="best">Rekord</small><b id="ovBest"></b></div></div>
   <p id="ovExtra" class="small"></p>
-  <button id="againBtn" class="big" data-t="again"></button>
-  <button id="scoreShare" type="button" data-t="shareScore"></button>
+  <button id="againBtn" class="big" data-t="again">Spill igjen</button>
+  <button id="scoreShare" type="button" data-t="shareScore">Del poengsummen</button>
   <div id="scoreLinks"></div>
-  <p><button id="menuBtn" data-t="menu"></button></p>
+  <p><button id="menuBtn" data-t="menu">Meny</button></p>
 </section>
 <div id="pops"></div>
 <div id="toast"></div>

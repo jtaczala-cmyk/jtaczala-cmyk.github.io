@@ -177,7 +177,7 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
   <button id="pauseBtn" class="ib" aria-label="Pause"></button>
   <div class="hc"><small id="hWorld"></small><b id="hLevel">1</b></div>
   <div class="pills">
-    <div class="pill" id="pMoves"><small data-t="moves"></small><b id="hMoves">0</b></div>
+    <div class="pill" id="pMoves"><small data-t="moves">Trekk</small><b id="hMoves">0</b></div>
     <div class="pill gold" id="pTarget"><small>★★★</small><b id="hTarget">3</b></div>
     <div class="pill gold" id="hKeys" hidden><span id="hKeyI"></span><b id="hKeyN">0</b></div>
   </div>
@@ -194,7 +194,8 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
   <div class="mtop">
     <div class="logo60"><span class="oct">STOP</span>STOP60</div>
     <h1 class="title">AXIMORE</h1>
-    <p class="tag" data-t="tag"></p>
+    <p class="tag" data-t="tag">Et logisk irrgangsspill. Axi sklir helt til den treffer en vegg – tenk deg om før du drar!</p>
+  <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Aximore er et gratis logikkspill uten reklame. Dra med fingeren, så sklir Axi til den treffer en vegg. Finn veien til portalen gjennom sju verdener med ringer, brytere, nøkler og piler. Angre når du vil og jakt på tre stjerner – på stop60.no.</p>
   </div>
   <div class="mbot">
     <button id="playBtn" class="big"><span id="playIco"></span><span id="playTxt"></span></button>
@@ -203,8 +204,8 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <div class="row"><button id="levelsBtn"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="settingsBtn" aria-label="Settings" style="flex:none"><span class="ico" data-i="gear"></span></button><button id="shareBtn" type="button"><span class="ico" data-i="share"></span><span data-t="share2"></span></button></div>
     <div id="sxMenu"></div>
     <nav class="langs flags mflags"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
-    <p class="love" id="loveP" data-t="love"></p>
-    <p class="small"><span data-t="local"></span> · <a href="/">stop60.no</a></p>
+    <p class="love" id="loveP" data-t="love">Laget med lidenskap</p>
+    <p class="small"><span data-t="local">Fremgang lagres bare på denne enheten</span> · <a href="/">stop60.no</a></p>
   </div>
 </section>
 
@@ -226,7 +227,7 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <div class="set"><span data-t="music"></span><button class="tg" id="tgMusic" aria-label="Music"></button></div>
     <div class="set"><span data-t="vib"></span><button class="tg" id="tgVib" aria-label="Vibration"></button></div>
     <div class="set" style="border:0"><span data-t="language"></span><nav class="langs flags"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav></div>
-    <div class="row"><button id="setBack" class="big" data-t="back"></button></div>
+    <div class="row"><button id="setBack" class="big" data-t="back">Tilbake</button></div>
   </div>
 </section>
 
@@ -234,18 +235,18 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
   <div class="panel">
     <h2 data-t="pause"></h2><p class="tag" id="pauseInfo"></p>
     <div class="row"><button id="resumeBtn" class="big"><span class="ico" data-i="play"></span><span data-t="resume"></span></button></div>
-    <div class="row"><button id="pRestart"><span class="ico" data-i="restart"></span><span data-t="restart"></span></button><button id="pLevels"><span class="ico" data-i="grid"></span><span data-t="levels"></span></button></div>
-    <div class="row"><button id="pSettings"><span class="ico" data-i="gear"></span><span data-t="settings"></span></button><button id="pMenu"><span class="ico" data-i="home"></span><span data-t="menu"></span></button></div>
+    <div class="row"><button id="pRestart"><span class="ico" data-i="restart"></span><span data-t="restart"></span></button><button id="pLevels"><span class="ico" data-i="grid"></span><span data-t="levels">Nivåer</span></button></div>
+    <div class="row"><button id="pSettings"><span class="ico" data-i="gear"></span><span data-t="settings"></span></button><button id="pMenu"><span class="ico" data-i="home"></span><span data-t="menu">Meny</span></button></div>
   </div>
 </section>
 
 <section id="done" class="screen modal">
   <div class="panel">
-    <h2 data-t="cleared"></h2>
+    <h2 data-t="cleared">Nivå fullført!</h2>
     <div class="stars" id="doneStars"><span></span><span></span><span></span></div>
     <p class="tag" id="doneInfo"></p>
-    <div class="row"><button id="nextBtn" class="big"><span data-t="next"></span><span class="ico" data-i="play"></span></button></div>
-    <div class="row"><button id="replayBtn"><span class="ico" data-i="restart"></span><span data-t="replay"></span></button><button id="doneLevels"><span class="ico" data-i="grid"></span><span data-t="levels"></span></button></div>
+    <div class="row"><button id="nextBtn" class="big"><span data-t="next">Neste nivå</span><span class="ico" data-i="play"></span></button></div>
+    <div class="row"><button id="replayBtn"><span class="ico" data-i="restart"></span><span data-t="replay">Spill igjen</span></button><button id="doneLevels"><span class="ico" data-i="grid"></span><span data-t="levels">Nivåer</span></button></div>
     <div class="row"><button id="doneShare" type="button"><span data-t="shareScore"></span></button></div>
     <div id="doneLinks"></div>
   </div>
@@ -262,22 +263,22 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <div class="row"><button id="wdLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="wdShare" type="button"><span data-t="shareScore"></span></button></div>
     <div id="wdLinks"></div>
     <div id="sxWd"></div>
-    <p class="love" id="wdLove" data-t="love"></p>
+    <p class="love" id="wdLove" data-t="love">Laget med lidenskap</p>
   </div>
 </section>
 
 <section id="end" class="screen modal">
   <div class="panel">
     <div class="logo60" style="justify-content:center"><span class="oct">STOP</span>STOP60</div>
-    <h2 data-t="endTitle" style="margin-top:8px"></h2>
-    <p class="tag" data-t="endText"></p>
+    <h2 data-t="endTitle" style="margin-top:8px">Du klarte alle nivåene!</h2>
+    <p class="tag" data-t="endText">Axi er fri. Kan du ta tre stjerner overalt?</p>
     <p class="prog" style="font-size:1.4rem;margin:12px 0"><span class="ico" data-i="star"></span><b id="endStars">0</b> / <span id="endMax">0</span></p>
     <div class="row"><button id="endShare" class="big" type="button"><span data-t="shareScore"></span></button></div>
     <div id="endLinks"></div>
-    <div class="row"><button id="endLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="endMenu"><span class="ico" data-i="home"></span><span data-t="menu"></span></button></div>
+    <div class="row"><button id="endLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="endMenu"><span class="ico" data-i="home"></span><span data-t="menu">Meny</span></button></div>
     <div id="sxEnd"></div>
     <div class="stop">STOP</div>
-    <p class="love" id="endLove" data-t="love"></p>
+    <p class="love" id="endLove" data-t="love">Laget med lidenskap</p>
     <p class="small"><a href="/">stop60.no</a></p>
   </div>
 </section>
