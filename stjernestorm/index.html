@@ -93,10 +93,10 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
 <nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
 
 <div id="hud" hidden>
-  <div class="v"><small data-t="score"></small><b id="hScore">0</b></div>
-  <div class="v"><small data-t="wave"></small><b id="hWave">1</b></div>
-  <div class="v"><small data-t="hp"></small><div id="hHp"></div></div>
-  <div class="v"><small data-t="coins"></small><b id="hCoins" style="color:var(--gold)">0</b></div>
+  <div class="v"><small data-t="score">Poeng</small><b id="hScore">0</b></div>
+  <div class="v"><small data-t="wave">Etapp</small><b id="hWave">1</b></div>
+  <div class="v"><small data-t="hp">Liv</small><div id="hHp"></div></div>
+  <div class="v"><small data-t="coins">Mynter</small><b id="hCoins" style="color:var(--gold)">0</b></div>
   <div class="sp"></div>
   <button id="muteBtn" aria-label="Sound">🔊</button>
   <button id="pauseBtn" aria-label="Pause">⏸</button>
@@ -105,45 +105,46 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
 <section id="menu" class="card">
   <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
   <div class="brand">STOP60</div>
-  <h1 data-t="name"></h1>
-  <p class="tag" data-t="tag"></p>
-  <p class="stat"><span data-t="best"></span>: <b class="bestV">0</b> · 🪙 <b class="coinV">0</b></p>
-  <button id="playBtn" class="big" data-t="play"></button>
-  <div class="row"><button id="menuShop" data-t="shop"></button><button class="shareB" data-t="share"></button></div>
+  <h1 data-t="name">Stjernestorm</h1>
+  <p class="tag" data-t="tag">Styr skipet med fingeren, skyt deg gjennom etappe etter etappe uten pause!</p>
+  <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Stjernestorm er et gratis romspill uten reklame i nettleseren. Styr skipet med fingeren mens det skyter selv, samle kuler og mynter, oppgrader i verkstedet og møt en sjef hver femte etappe. Åpne siden og spill på stop60.no.</p>
+  <p class="stat"><span data-t="best">Rekord</span>: <b class="bestV">0</b> · 🪙 <b class="coinV">0</b></p>
+  <button id="playBtn" class="big" data-t="play">Spill</button>
+  <div class="row"><button id="menuShop" data-t="shop">🛠 Verksted</button><button class="shareB" data-t="share">🔗 Del</button></div>
   <div id="sxMenu"></div>
   <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
-  <ul class="how"><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li></ul>
-  <p class="love" data-t="love"></p>
-  <p class="small"><span data-t="local"></span> · <a href="/">stop60.no</a></p>
+  <ul class="how"><li data-t="how1">👆 Dra hvor som helst – skipet følger fingeren</li><li data-t="how2">🔫 Skipet skyter selv · samle kuler og mynter</li><li data-t="how3">👾 Hver 5. etapp kommer en sjef – uten pauser</li></ul>
+  <p class="love" data-t="love">Laget med lidenskap</p>
+  <p class="small"><span data-t="local">Fremgang lagres bare på denne enheten</span> · <a href="/">stop60.no</a></p>
 </section>
 
 <section id="shop" class="card" hidden>
-  <h2 id="shopTitle" data-t="shop"></h2>
+  <h2 id="shopTitle" data-t="shop">🛠 Verksted</h2>
   <p class="coins">🪙 <span class="coinV">0</span></p>
   <div id="ups"></div>
-  <button id="shopGo" class="big" data-t="next"></button>
-  <div class="row"><button id="shopBack" data-t="menu"></button></div>
+  <button id="shopGo" class="big" data-t="next">▶ Neste bølge</button>
+  <div class="row"><button id="shopBack" data-t="menu">Meny</button></div>
 </section>
 
 <section id="pause" class="card" hidden>
-  <h2 data-t="paused"></h2>
-  <button id="resumeBtn" class="big" data-t="resume"></button>
+  <h2 data-t="paused">Pause</h2>
+  <button id="resumeBtn" class="big" data-t="resume">Fortsett</button>
   <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
-  <div class="row"><button id="quitBtn" data-t="menu"></button></div>
+  <div class="row"><button id="quitBtn" data-t="menu">Meny</button></div>
 </section>
 
 <section id="over" class="card" hidden>
   <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
-  <h2 data-t="over"></h2>
-  <p class="stat"><span data-t="score"></span>: <b id="oScore">0</b></p>
-  <p class="stat"><span data-t="best"></span>: <b class="bestV">0</b></p>
-  <p class="stat"><span data-t="wave"></span>: <b id="oWave">1</b> · 🪙 +<b id="oCoins">0</b></p>
-  <p id="oNew" class="love" hidden data-t="newbest"></p>
-  <button id="retryBtn" class="big" data-t="retry"></button>
-  <div class="row"><button id="overShop" data-t="shop"></button><button id="scoreShare" type="button" data-t="shareScore"></button><button id="overMenu" data-t="menu"></button></div>
+  <h2 data-t="over">Skipet er tapt!</h2>
+  <p class="stat"><span data-t="score">Poeng</span>: <b id="oScore">0</b></p>
+  <p class="stat"><span data-t="best">Rekord</span>: <b class="bestV">0</b></p>
+  <p class="stat"><span data-t="wave">Etapp</span>: <b id="oWave">1</b> · 🪙 +<b id="oCoins">0</b></p>
+  <p id="oNew" class="love" hidden data-t="newbest">Ny rekord!</p>
+  <button id="retryBtn" class="big" data-t="retry">Prøv igjen</button>
+  <div class="row"><button id="overShop" data-t="shop">🛠 Verksted</button><button id="scoreShare" type="button" data-t="shareScore">Del poengsummen</button><button id="overMenu" data-t="menu">Meny</button></div>
   <div id="scoreLinks"></div>
   <div id="sxOver"></div>
-  <p class="love" id="overLove" data-t="love"></p>
+  <p class="love" id="overLove" data-t="love">Laget med lidenskap</p>
   <p class="small"><a href="/">stop60.no</a></p>
 </section>
 <div id="toast"></div>
