@@ -767,16 +767,68 @@ function bindRun(btn, mode) {
   btn.addEventListener('click', go);
 }
 function pause(on) { if (on) releaseInput(); state = on ? 'pause' : 'play'; show('pauseBox', on); if (!on) { last = performance.now(); armSettle(); } }
+function bumpDailyStreak() {
+  const key = 'lavakule_daily_streak_v1';
+  const today = todayKey();
+  let st = {};
+  try { st = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { st = {}; }
+  if (st.last === today) return st;
+  const y = new Date(); y.setDate(y.getDate() - 1);
+  const yk = y.getFullYear() * 10000 + (y.getMonth() + 1) * 100 + y.getDate();
+  const cur = st.last === yk ? (st.cur || 0) + 1 : 1;
+  st = { last: today, cur: cur, best: Math.max(st.best || 0, cur) };
+  try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {}
+  return st;
+}
+function emojiBar(n, ch) {
+  n = Math.max(0, n | 0);
+  if (n <= 0) return '⬛';
+  if (n <= 10) return ch.repeat(n);
+  return ch.repeat(10) + '×' + n;
+}
+function paintOverGrid(sc, streakCur) {
+  const grid = $('overGrid');
+  if (!grid) return;
+  const title = daily ? (T.title + ' – ' + T.daily) : T.title;
+  const path = LANG === 'en' ? 'stop60.no/lavakule/en' : LANG === 'pl' ? 'stop60.no/lavakule/pl' : 'stop60.no/lavakule';
+  const lines = [title, emojiBar(S && S.cps, '🔥'), sc + ' · ' + Math.floor((S && S.s) || 0) + ' m'];
+  if (daily && streakCur) lines.push('🔥 ' + streakCur);
+  lines.push(path);
+  grid.textContent = lines.join('\n');
+  grid.hidden = false;
+}
 function gameOver(reason) {
   if (state !== 'play') return; state = 'over'; releaseInput();
   const sc = score(); const nb = sc > best; if (nb) { best = sc; localStorage.setItem(BEST_KEY, best); }
   bank += S.coins; SV('lavakule_bank_v1', bank);
-  let dTxt = ''; if (daily) { const k = 'lavakule_daily_' + todayKey(), db = Math.max(sc, +(localStorage.getItem(k) || 0)); localStorage.setItem(k, db); dTxt = T.dailyBest + ': ' + db; }
+  let dTxt = '';
+  let streakCur = 0;
+  if (daily) {
+    const k = 'lavakule_daily_' + todayKey(), db = Math.max(sc, +(localStorage.getItem(k) || 0));
+    localStorage.setItem(k, db);
+    dTxt = T.dailyBest + ': ' + db;
+    const st = bumpDailyStreak();
+    streakCur = (st && st.cur) || 0;
+    if (streakCur) dTxt += ' · 🔥 ' + streakCur;
+  }
   $('ovReason').textContent = T[reason]; $('ovScore').textContent = sc; $('ovDist').textContent = Math.floor(S.s) + ' m'; $('ovCoins').textContent = S.coins;
   $('ovBest').textContent = best; $('newBest').hidden = !nb; $('bestVal').textContent = best; $('ovExtra').textContent = (dTxt ? dTxt + ' · ' : '') + T.bank + ': ' + bank + ' 🪙';
+  paintOverGrid(sc, streakCur);
   setTimeout(() => { show('over', true); show('hud', false); }, 1100);
   gc('game-finish'); gcTime();
 }
+
+(function bindOverGrid() {
+  const grid = $('overGrid'), btn = $('scoreShare');
+  if (!grid || !btn || grid.dataset.bound) return;
+  grid.dataset.bound = '1';
+  grid.setAttribute('role', 'button');
+  grid.tabIndex = 0;
+  const go = () => btn.click();
+  grid.addEventListener('click', go);
+  grid.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); } });
+})();
+
 const score = () => Math.floor(S.s) + S.pts;
 bindRun($('startBtn'), false);
 bindRun($('dailyBtn'), true);

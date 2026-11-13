@@ -17,6 +17,7 @@ h1{font-size:46px;color:#ffe7b0;text-shadow:0 2px 0 #6a3410}
 button{font:700 17px var(--disp);letter-spacing:.03em;color:#fff8ee;background:#3a2a22;border:2px solid rgba(255,236,210,.35);border-radius:14px;padding:12px 16px;min-height:48px;cursor:pointer;touch-action:manipulation}
 button.big{display:block;width:100%;background:linear-gradient(180deg,#ffe08a,#ff9f1c);color:#3a2208;border:0;font-size:22px;padding:16px 22px;margin:8px 0;box-shadow:0 4px 0 #a85a10;text-transform:uppercase}
 #scoreShare{display:block;width:100%;background:#2f6b4f;border-color:#d7ffe8;color:#fff}
+#overGrid{display:block;margin:8px auto 10px;padding:10px 12px;max-width:16em;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.22);border-radius:12px;font:600 18px/1.4 ui-monospace,Menlo,monospace;white-space:pre-wrap;text-align:center;letter-spacing:.04em;cursor:pointer;color:#fff8ee}#overGrid[hidden]{display:none}
 .bigscore{margin:4px 0 8px}.bigscore small{display:block;font:700 12px var(--disp);letter-spacing:.16em;text-transform:uppercase;color:#ffd9a8}.bigscore b{font:800 64px/1 var(--disp);color:#ffe08a;text-shadow:0 3px 0 #6a3410}
 .how{text-align:left;font-size:13.5px;color:#d6d3d1;padding-left:18px;margin:14px 0 8px}.how li{margin:4px 0}
 .warn{font-size:12.5px;color:#fcd34d;margin:8px 0}.small{font-size:12px;color:var(--mut)}.small a{color:var(--teal)}
