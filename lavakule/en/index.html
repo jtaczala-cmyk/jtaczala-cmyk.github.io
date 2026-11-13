@@ -73,15 +73,16 @@
   <div class="stats"><div><small data-t="dist">Distance</small><b id="ovDist"></b></div><div><small data-t="coins">Coins</small><b id="ovCoins"></b></div><div><small data-t="best">Best</small><b id="ovBest"></b></div></div>
   <p id="ovExtra" class="small"></p>
   <button id="againBtn" class="big" data-t="again">Play again</button>
+  <pre id="overGrid" hidden></pre>
   <button id="scoreShare" type="button" data-t="shareScore">Share your score</button>
   <div id="scoreLinks"></div>
   <p><button id="menuBtn" data-t="menu">Menu</button></p>
 </section>
 <div id="pops"></div>
 <div id="toast"></div>
-<script src="/assets/score-share.js"></script>
-<script type="module" src="/lavakule/game.js?v=3"></script>
-<script>S60ScoreShare.bind(document.getElementById("scoreShare"),{game:"lavakule",links:document.getElementById("scoreLinks"),lang:function(){return document.documentElement.dataset.lang||"en"},gameName:function(){var h=document.querySelector("h1");return (h&&h.textContent)||"Lava Marble"},score:function(){return document.getElementById("ovScore").textContent||"0"}});</script>
+<script src="/assets/score-share.js?v=2"></script>
+<script type="module" src="/lavakule/game.js?v=4"></script>
+<script>S60ScoreShare.bind(document.getElementById("scoreShare"),{game:"lavakule",links:document.getElementById("scoreLinks"),lang:function(){return document.documentElement.dataset.lang||"en"},gameName:function(){var h=document.querySelector("h1");return (h&&h.textContent)||"Lava Marble"},score:function(){return document.getElementById("ovScore").textContent||"0"},text:function(){var g=document.getElementById("overGrid");return (g&&g.textContent)||""}});</script>
 <script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
 <script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"en",after:document.getElementById("startBtn")})});</script>
 </body>

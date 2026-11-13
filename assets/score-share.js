@@ -85,13 +85,15 @@
     fb.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
     fb.target = "_blank"; fb.rel = "noopener"; fb.textContent = ui.fb;
     var wa = document.createElement("a");
-    wa.href = "https://wa.me/?text=" + encodeURIComponent(text + " " + url);
+    var waText = (text && url && text.indexOf("stop60.no") >= 0) ? text : (text + (url ? " " + url : ""));
+    wa.href = "https://wa.me/?text=" + encodeURIComponent(waText);
     wa.target = "_blank"; wa.rel = "noopener"; wa.textContent = ui.wa;
     var cp = document.createElement("button");
     cp.type = "button"; cp.textContent = ui.copy;
+    var copyBody = (text && url && text.indexOf("stop60.no") >= 0) ? text : (text + (url ? "\n" + url : ""));
     cp.onclick = function (e) {
       e.preventDefault(); e.stopPropagation();
-      copyText(text + "\n" + url).then(function () { toast(ui.copied); });
+      copyText(copyBody).then(function () { toast(ui.copied); });
     };
     [fb, wa, cp].forEach(function (el) {
       el.addEventListener("pointerdown", function (e) { e.stopPropagation(); });
@@ -105,7 +107,9 @@
     var sc = typeof opts.score === "function" ? opts.score() : opts.score;
     var url = opts.url ? (typeof opts.url === "function" ? opts.url() : opts.url) : cleanURL(opts.game, l);
     url = String(url).split("#")[0].split("?")[0];
-    return { l: l, name: name, text: sentence({ lang: l, score: sc, gameName: name }), url: url };
+    var custom = opts.text ? (typeof opts.text === "function" ? opts.text() : opts.text) : "";
+    custom = String(custom || "").replace(/^\s+|\s+$/g, "");
+    return { l: l, name: name, text: custom || sentence({ lang: l, score: sc, gameName: name }), url: url };
   }
   function bind(button, opts) {
     if (!button || !opts) return;
@@ -115,8 +119,11 @@
       e.stopPropagation();
       var p = payload(opts);
       track(opts.game);
+      var shareObj = (p.text && p.text.indexOf("stop60.no") >= 0)
+        ? { title: p.name, text: p.text }
+        : { title: p.name, text: p.text, url: p.url };
       if (navigator.share && isMobile()) {
-        navigator.share({ title: p.name, text: p.text, url: p.url }).catch(function (err) {
+        navigator.share(shareObj).catch(function (err) {
           if (!err || err.name !== "AbortError") showLinks(opts.links, p.text, p.url, p.l);
         });
         return;
