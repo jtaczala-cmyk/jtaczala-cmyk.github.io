@@ -85,6 +85,52 @@ T = {
 
 # One entry per game. url/img/name may be per language. new_until: 'New' badge shown until this date.
 GAMES = [
+# Photo-card games first so 'New' sorting keeps this live homepage order.
+ dict(id="aximore", cats=["logic"], genre=["Puzzle"], new_until="2027-03-31", langs=["no", "en", "pl"],
+      url={"no": "/aximore/", "en": "/aximore/en/", "pl": "/aximore/pl/"},
+      og={"no": "/aximore/og.jpg", "en": "/aximore/og.jpg", "pl": "/aximore/og.jpg"},
+      photo="/aximore/card.jpg?v=1", qr="/aximore/qr.png",
+      photo_alt={"no": "Aximore: Axi på et brett med ring, nøkkel og portal",
+                 "en": "Aximore: Axi on a board with a ring, key and portal",
+                 "pl": "Aximore: Axi na planszy z pierścieniem, kluczem i portalem"},
+      qr_label={"no": "Skann og spill på mobilen", "en": "Scan to play on your phone", "pl": "Zeskanuj i graj na telefonie"},
+      name={"no": "Aximore", "en": "Aximore", "pl": "Aximore"},
+      sub={"no": "Logisk irrgang", "en": "Logic maze", "pl": "Logiczna łamigłówka"},
+      desc={"no": "Dra med fingeren – Axi sklir helt til den treffer en vegg. Finn veien til portalen gjennom sju verdener med ringer, brytere, nøkler og piler. Angre når du vil og jakt på tre stjerner.",
+            "en": "Drag your finger – Axi slides until it hits a wall. Find the way to the portal through seven worlds of rings, switches, keys and arrows. Undo any time and chase three stars.",
+            "pl": "Przeciągnij palcem – Axi sunie, aż uderzy w ścianę. Znajdź drogę do portalu przez siedem światów z pierścieniami, przełącznikami, kluczami i strzałkami. Cofaj ruchy i zdobywaj trzy gwiazdki."},
+      versions=[("no", "Aximore", "/aximore/"), ("en", "Aximore", "/aximore/en/"), ("pl", "Aximore", "/aximore/pl/")],
+      modes={"no": "Én spiller · mange nivåer", "en": "Single player · many levels", "pl": "Jeden gracz · wiele poziomów"}),
+ dict(id="stjernestorm", cats=["action"], new_until="2027-03-31", langs=["no", "en", "pl"],
+      url={"no": "/stjernestorm/", "en": "/stjernestorm/en/", "pl": "/stjernestorm/pl/"},
+      og={"no": "/stjernestorm/og.jpg", "en": "/stjernestorm/og.jpg", "pl": "/stjernestorm/og.jpg"},
+      photo="/stjernestorm/card.jpg?v=1", qr="/stjernestorm/qr.png",
+      photo_alt={"no": "Stjernestorm: romskip som skyter mot røde fiender",
+                 "en": "Star Storm: a ship firing at red enemies",
+                 "pl": "Gwiezdna burza: statek strzelający do czerwonych wrogów"},
+      qr_label={"no": "Skann og spill på mobilen", "en": "Scan to play on your phone", "pl": "Zeskanuj i graj na telefonie"},
+      name={"no": "Stjernestorm", "en": "Star Storm", "pl": "Gwiezdna burza"},
+      sub={"no": "Romskyting", "en": "Space shooter", "pl": "Kosmiczna strzelanka"},
+      desc={"no": "Styr romskipet med fingeren mens det skyter selv. Kjemp deg gjennom etappe etter etappe uten pause, samle kuler og mynter, oppgrader i verkstedet og møt en sjef hver femte etappe.",
+            "en": "Steer your ship with a finger while it fires on its own. Blast through stage after stage with no breaks, grab orbs and coins, upgrade in the workshop and face a boss every fifth stage.",
+            "pl": "Steruj statkiem palcem – strzela sam. Przebijaj się przez kolejne etapy bez przerw, zbieraj kule i monety, ulepszaj statek w warsztacie i co piąty etap zmierz się z bossem."},
+      versions=[("no", "Stjernestorm", "/stjernestorm/"), ("en", "Star Storm", "/stjernestorm/en/"), ("pl", "Gwiezdna burza", "/stjernestorm/pl/")],
+      modes={"no": "Én spiller · toppliste på nett", "en": "Single player · online leaderboard", "pl": "Jeden gracz · ranking online"}),
+ dict(id="aspheris", cats=["action"], new_until="2027-03-31", langs=["no", "en", "pl"],
+      url={"no": "/aspheris/", "en": "/aspheris/en/", "pl": "/aspheris/pl/"},
+      og={"no": "/aspheris/og-no.jpg", "en": "/aspheris/og-en.jpg", "pl": "/aspheris/og-pl.jpg"},
+      photo="/aspheris/card.jpg?v=1", qr="/aspheris/qr.png",
+      photo_alt={"no": "Aspheris: glødende energikule",
+                 "en": "Aspheris: glowing energy orb",
+                 "pl": "Aspheris: świecąca kula energii"},
+      qr_label={"no": "Skann og spill på mobilen", "en": "Scan to play on your phone", "pl": "Zeskanuj i graj na telefonie"},
+      name={"no": "Aspheris", "en": "Aspheris", "pl": "Aspheris"},
+      sub={"no": "Gjennom kosmos", "en": "Through the cosmos", "pl": "Przez kosmos"},
+      desc={"no": "Vipp mobilen og styr en glødende energikule gjennom fargerike kosmiske verdener. Samle hjertefragmenter, unngå Driften og fly gjennom portalen i det sorte hullet – med en historie å følge.",
+            "en": "Tilt your phone to steer a glowing energy orb through colourful cosmic worlds. Collect Heart fragments, escape the Drift and fly through the black-hole portal – with a story to follow.",
+            "pl": "Przechylaj telefon i prowadź świecącą kulę energii przez kolorowe kosmiczne światy. Zbieraj fragmenty Serca, uciekaj przed Driftem i przeleć przez portal czarnej dziury – z fabułą w tle."},
+      versions=[("no", "Aspheris", "/aspheris/"), ("en", "Aspheris", "/aspheris/en/"), ("pl", "Aspheris", "/aspheris/pl/")],
+      modes={"no": "Én spiller · styr med vipping eller finger", "en": "Single player · tilt or finger to steer", "pl": "Jeden gracz · sterowanie przechyłem lub palcem"}),
  dict(id="lavakule", cats=["action"], new_until="2027-03-31", langs=["no", "en", "pl"],
       url={"no": "/lavakule/", "en": "/lavakule/en/", "pl": "/lavakule/pl/"},
       og={"no": "/lavakule/og-no.jpg", "en": "/lavakule/og-en.jpg", "pl": "/lavakule/og-pl.jpg"},
@@ -181,9 +227,9 @@ GAMES = [
 GAMES_ALL = GAMES
 GAMES = [g for g in GAMES_ALL if not g.get("hidden")]
 # Privacy pages linked in the footer, in the page's language (2026-10-11: all games, not only STRØM/Hefau)
-PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/personvern/"), ("Redning", "/redning/personvern/"), ("Lavakule", "/lavakule/personvern/")],
-        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/en/privacy/"), ("Redning", "/redning/en/privacy/"), ("Lava Marble", "/lavakule/en/privacy/")],
-        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/"), ("Ufobang", "/ufobang/prywatnosc/"), ("Redning", "/redning/prywatnosc/"), ("Lawowa kulka", "/lavakule/prywatnosc/")]}
+PRIV = {"no": [("STRØM", "/strom/personvern/"), ("Hefau", "/hefau/personvern/"), ("Ren logikk", "/logikk/personvern/"), ("Sneaky Bugs (engelsk)", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/personvern/"), ("Redning", "/redning/personvern/"), ("Lavakule", "/lavakule/personvern/"), ("Aspheris", "/aspheris/personvern/")],
+        "en": [("POWER", "/power/privacy/"), ("Hefau", "/hefau/en/privacy/"), ("Pure Logic", "/logikk/en/privacy/"), ("Sneaky Bugs", "/robaki/en/privacy/"), ("Ufobang", "/ufobang/en/privacy/"), ("Redning", "/redning/en/privacy/"), ("Lava Marble", "/lavakule/en/privacy/"), ("Aspheris", "/aspheris/en/privacy/")],
+        "pl": [("PRĄD", "/prad/prywatnosc/"), ("Hefau", "/hefau/prywatnosc/"), ("Czysta logika", "/logikk/prywatnosc/"), ("Sneaky Bugs", "/robaki/prywatnosc/"), ("Ufobang", "/ufobang/prywatnosc/"), ("Redning", "/redning/prywatnosc/"), ("Lawowa kulka", "/lavakule/prywatnosc/"), ("Aspheris", "/aspheris/prywatnosc/")]}
 
 FLAG = {
  "no": '<svg class="flag" viewBox="0 0 22 16" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#ba0c2f"/><path d="M0,8H22M8,0V16" stroke="#fff" stroke-width="4"/><path d="M0,8H22M8,0V16" stroke="#00205b" stroke-width="2"/></svg>',
@@ -199,6 +245,10 @@ def lockup(t, rel, cls):
     return (f'<span class="lockup {cls}"><img src="{rel}assets/logo-round.svg" alt="" width="40" height="40"/>'
             f'<span class="wm"><b>STOP60</b><i lang="{HREFLANG[t["_l"]]}">{e(t["tagline"])}</i></span></span>')
 
+def hl(href):
+    """Robaki has no Norwegian page; live home pages always mark /robaki/en/ with hreflang=en."""
+    return ' hreflang="en"' if "/robaki/" in href and href.rstrip("/").endswith("/en") else ""
+
 def card(g, l, t, rel):
     cats = " ".join(g["cats"])
     nm, url = g["name"][l], g["url"][l]
@@ -207,18 +257,25 @@ def card(g, l, t, rel):
     catlbl = " · ".join(t["cats"][c] for c in g["cats"])
     vs = sorted(g["versions"], key=lambda v: (v[0] != l, v[0] != "en"))
     prim = vs[0]
-    btns = (f'<a class="p" href="{prim[2]}" lang="{HREFLANG[prim[0]]}" data-goatcounter-click="home2-{g["id"]}-{prim[0]}">'
+    btns = (f'<a class="p" href="{prim[2]}"{hl(prim[2])} lang="{HREFLANG[prim[0]]}" data-goatcounter-click="home2-{g["id"]}-{prim[0]}">'
             f'{e(t["play"])} →<span class="lc">{FLAG[prim[0]]}{CODE[prim[0]]}</span></a>')
     same_name = not g.get("brand_versions")
     for v in vs[1:]:
         label = "" if same_name else f'{e(v[1])} '
-        btns += (f'<a class="o" href="{v[2]}" lang="{HREFLANG[v[0]]}" title="{e(v[1])} · {e(LANGNAME[l][v[0]])}" data-goatcounter-click="home2-{g["id"]}-{v[0]}">'
+        btns += (f'<a class="o" href="{v[2]}"{hl(v[2])} lang="{HREFLANG[v[0]]}" title="{e(v[1])} · {e(LANGNAME[l][v[0]])}" data-goatcounter-click="home2-{g["id"]}-{v[0]}">'
                  f'{label}<span class="lc">{FLAG[v[0]]}{CODE[v[0]]}</span></a>')
     warn = f'<p class="warn">{e(g["warn"][l])}</p>' if "warn" in g else ""
+    if g.get("photo"):
+        im = (f'<a class="im" href="{url}"{hl(url)} tabindex="-1" aria-hidden="true" style="position:relative">'
+              f'<img src="{g["photo"]}" alt="{e(g["photo_alt"][l])}" width="800" height="420" loading="lazy"/>'
+              f'<span class="qr" style="position:absolute;right:8px;bottom:8px;background:#fff;border-radius:8px;padding:4px;width:86px;text-align:center;font:700 9px/1.2 system-ui,sans-serif;color:#12002a">'
+              f'<img src="{g["qr"]}" alt="" width="78" height="78" style="width:78px;height:78px;display:block"/>{e(g["qr_label"][l])}</span></a>')
+    else:
+        im = f'<a class="im" href="{url}"{hl(url)} tabindex="-1" aria-hidden="true">{art.card_svg(g["id"], rel, VEST[l])}</a>'
     return (f'<li class="card" data-cat="{cats}" style="--acc:{art.ACCENT[g["id"]]}">'
-            f'<a class="im" href="{url}" tabindex="-1" aria-hidden="true">{art.card_svg(g["id"], rel, VEST[l])}</a>'
+            f'{im}'
             f'<div class="badges">{badges}</div>'
-            f'<div class="body"><p class="cat">{e(catlbl)}</p><h3><a href="{url}">{e(nm)}</a><span class="sub">{e(g["sub"][l])}</span></h3>'
+            f'<div class="body"><p class="cat">{e(catlbl)}</p><h3><a href="{url}"{hl(url)}>{e(nm)}</a><span class="sub">{e(g["sub"][l])}</span></h3>'
             f'<p class="d">{e(g["desc"][l])}</p>{warn}'
             f'<p class="meta"><b>{e(t["langs"])}:</b> {e(langs)}<span class="mo"><br/><b>{e(t["modes"])}:</b> {e(g["modes"][l])}</span></p>'
             f'<div class="play">{btns}</div></div></li>')
@@ -229,7 +286,7 @@ def jsonld(l, t):
         items.append({"@type": "ListItem", "position": i, "item": {
             "@type": "VideoGame", "name": g["name"][l], "url": BASE.rstrip("/") + g["url"][l],
             "description": g["desc"][l], "inLanguage": [HREFLANG[x] for x in g["langs"]],
-            "image": BASE.rstrip("/") + g["og"][l], "genre": [T["en"]["cats"][c] for c in g["cats"]],
+            "image": BASE.rstrip("/") + g["og"][l], "genre": g.get("genre") or [T["en"]["cats"][c] for c in g["cats"]],
             "gamePlatform": "Web browser", "operatingSystem": "Any", "applicationCategory": "GameApplication",
             "isAccessibleForFree": "warn" not in g, "publisher": {"@id": BASE + "#org"}}})
         if "warn" not in g: items[-1]["item"]["offers"] = {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}
@@ -254,7 +311,7 @@ def head_common(l, t, rel, title, desc, canonical=True):
 <link rel="apple-touch-icon" href="{rel}assets/apple-touch-icon.png?v=3"/>
 <link rel="preload" href="{rel}fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <link rel="stylesheet" href="{rel}fonts/fonts.css"/>
-<link rel="stylesheet" href="{rel}assets/home.css?v=5"/>
+<link rel="stylesheet" href="{rel}assets/home.css?v=8"/>
 '''
 
 def header(l, t, rel, langlinks=True):
@@ -280,6 +337,48 @@ def footer(t):
 def hero_art(t, rel):
     return (f'<div class="hero-art">{art.hero_svg(rel, VEST[t["_l"]])}'
             f'<div class="hero-logo">{lockup(t, rel, "lg")}</div></div>')
+
+
+def today_strip(l):
+    """Homepage 'game of the day' bar. Keep markup in sync with the live pages."""
+    if l == "en":
+        return '''<section class="today" aria-label="Today's games">
+  <div class="wrap">
+    <p class="today-k">Game of the day</p>
+    <p class="today-lead">One shared Pure Logic puzzle every day. When you finish, copy your emoji result and send it without spoiling the answer.</p>
+    <div class="today-row today-row-flag">
+      <a class="today-a today-flag" href="/logikk/en/?daily=1" data-goatcounter-click="home-today-logikk-en"><strong>Pure Logic</strong><span>Daily puzzle</span></a>
+      <a class="today-a alt" href="/lavakule/en/?daily=1" data-goatcounter-click="home-today-lavakule-en"><strong>Lava Marble</strong><span>Daily run</span></a>
+    </div>
+    <p class="today-more"><a href="/en/free-browser-games/">More free browser games, no ads</a> · <a href="/en/brain-games/">Brain games</a></p>
+  </div>
+</section>
+'''
+    if l == "pl":
+        return '''<section class="today" aria-label="Dzisiejsze gry">
+  <div class="wrap">
+    <p class="today-k">Gra dnia</p>
+    <p class="today-lead">Jedna wspólna plansza w Czystej logice codziennie. Po skończeniu kopiujesz wynik w emoji i wysyłasz go, nie zdradzając rozwiązania.</p>
+    <div class="today-row today-row-flag">
+      <a class="today-a today-flag" href="/logikk/pl/?daily=1" data-goatcounter-click="home-today-logikk-pl"><strong>Czysta logika</strong><span>Plansza dnia</span></a>
+      <a class="today-a alt" href="/lavakule/pl/?daily=1" data-goatcounter-click="home-today-lavakule-pl"><strong>Lawowa kulka</strong><span>Bieg dnia</span></a>
+    </div>
+    <p class="today-more"><a href="/pl/gry-za-darmo/">Więcej darmowych gier bez reklam</a> · <a href="/pl/gry-logiczne/">Gry logiczne</a></p>
+  </div>
+</section>
+'''
+    return '''<section class="today" aria-label="Dagens spill">
+  <div class="wrap">
+    <p class="today-k">Dagens spill</p>
+    <p class="today-lead">Én felles oppgave i Ren logikk hver dag. Når du er ferdig, kopierer du resultatet som emoji og sender det uten å røpe løsningen.</p>
+    <div class="today-row today-row-flag">
+      <a class="today-a today-flag" href="/logikk/?daily=1" data-goatcounter-click="home-today-logikk"><strong>Ren logikk</strong><span>Dagens brett</span></a>
+      <a class="today-a alt" href="/lavakule/?daily=1" data-goatcounter-click="home-today-lavakule"><strong>Lavakule</strong><span>Dagens løp</span></a>
+    </div>
+    <p class="today-more"><a href="/gratis-spill/">Flere gratis spill uten reklame</a> · <a href="/hjernetrim/">Hjernetrim</a></p>
+  </div>
+</section>
+'''
 
 def page(l):
     t = dict(T[l], _l=l); rel = "" if l == "no" else "../"
@@ -314,13 +413,15 @@ def page(l):
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
 <script defer src="{rel}assets/contact.js?v=2"></script>
 <script defer src="{rel}assets/filter.js?v=1"></script>
+<style>.card .im .qr{{display:none}}@media (min-width:900px) and (pointer:fine){{.card .im .qr{{display:block}}}}</style>
 </head>
 <body>
 {art.defs_svg()}
 <a class="skip" href="#spill">↓</a>
 {header(l, t, rel)}
 <main>
-<div class="motto"><p>{e(t["motto"][0])}</p><p>{e(t["motto"][1])}</p></div>
+<div class="motto"><p>{html.escape(t["motto"][0], quote=False)}</p><p>{html.escape(t["motto"][1], quote=False)}</p></div>
+{today_strip(l)}
 <section class="hero"><div class="wrap">
 {hero_art(t, rel)}
 <div class="in"><div>
@@ -353,7 +454,7 @@ NF = {"no": ("Fant ikke siden", "Siden finnes ikke (lenger). Kanskje du leter et
 def page404():
     t = dict(T["no"], _l="no")
     blocks = "".join(f'<div class="box" lang="{HREFLANG[l]}"><h3>{FLAG[l]} {e(NF[l][0])}</h3><p>{e(NF[l][1])}</p><p class="play"><a class="p" href="/{PATH[l]}">{e(NF[l][2])} →</a></p></div>' for l in LANGS)
-    links = "".join(f'<li><a href="{g["url"]["no"]}">{e(g["name"]["no"])}</a></li>' for g in GAMES)
+    links = "".join(f'<li><a href="{g["url"]["no"]}"{hl(g["url"]["no"])}>{e(g["name"]["no"])}</a></li>' for g in GAMES)
     return f'''<!DOCTYPE html>
 <!-- Copyright (c) 2026 Stop60. Generated by src/build.py. Absolute paths: served for any missing URL. -->
 <html lang="nb">
@@ -383,8 +484,8 @@ def sitemap():
     def game(slug, day):
         return [("nb", f"{slug}/"), ("pl", f"{slug}/pl/"), ("en", f"{slug}/en/"), ("x-default", f"{slug}/")], day
     parts = [block(["", "en/", "pl/"], home, "2026-11-09")]
-    for slug, day in (("hefau", "2026-10-26"), ("logikk", "2026-10-26"), ("ufobang", "2026-11-09"),
-                      ("redning", "2026-11-08"), ("aspheris", "2026-11-09"), ("lavakule", "2026-11-09")):
+    for slug, day in (("hefau", "2026-11-12"), ("logikk", "2026-11-12"), ("ufobang", "2026-11-12"),
+                      ("redning", "2026-11-12"), ("aspheris", "2026-11-12"), ("lavakule", "2026-11-12")):
         paths, day = game(slug, day)
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
     power = [("nb", "strom/"), ("pl", "prad/"), ("en", "power/"), ("x-default", "strom/")]
@@ -392,10 +493,12 @@ def sitemap():
     robaki = [("pl", "robaki/"), ("en", "robaki/en/"), ("x-default", "robaki/")]
     parts.append(block(["robaki/", "robaki/en/"], robaki, "2026-11-09"))
     for slug in ("aximore", "stjernestorm"):
-        paths, day = game(slug, "2026-11-09")
+        paths, day = game(slug, "2026-11-12")
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
     hubs = [("nb", "hjernetrim/"), ("pl", "pl/gry-logiczne/"), ("en", "en/brain-games/"), ("x-default", "hjernetrim/")]
     parts.append(block(["hjernetrim/", "pl/gry-logiczne/", "en/brain-games/"], hubs, "2026-11-11"))
+    free = [("nb", "gratis-spill/"), ("en", "en/free-browser-games/"), ("pl", "pl/gry-za-darmo/"), ("x-default", "gratis-spill/")]
+    parts.append(block(["gratis-spill/", "en/free-browser-games/", "pl/gry-za-darmo/"], free, "2026-11-13"))
     body = "".join(parts)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'
 

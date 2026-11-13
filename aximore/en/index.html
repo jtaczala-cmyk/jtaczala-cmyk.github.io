@@ -79,7 +79,7 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
 #sxWd .s6s,#sxEnd .s6s{margin-top:14px}
 @keyframes drop{from{opacity:0;transform:translateY(-30px)}}
 @keyframes rise{from{opacity:0;transform:translateY(40px)}}
-@keyframes pulse{50%{transform:scale(1.035)}}
+@keyframes pulse{50%{filter:brightness(1.08);box-shadow:0 6px 0 #9c6a12,0 18px 42px rgba(232,179,60,.7),inset 0 2px 0 rgba(255,255,255,.6)}}
 #playBtn{animation:pulse 2.2s ease-in-out infinite}
 /* headers */
 .bar{width:min(100%,560px);display:flex;align-items:center;gap:12px;margin-bottom:14px}
@@ -166,6 +166,20 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
 #jworld small{display:block;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:#bcd2ff;font-size:.8rem}
 #jworld b{display:block;font-size:2.6rem;font-weight:900;color:#fff;text-shadow:0 0 24px rgba(160,200,255,.9),0 0 50px var(--acc)}
 @media (prefers-reduced-motion:reduce){#jworld.on{animation-duration:1.1s}}
+
+/* 2026-11-13: keep the 3D board visible, a stable Start button, and the tip off the portal in landscape */
+#menu .seo-lead{display:none}
+@media (min-height:820px) and (min-width:700px){
+  #menu .seo-lead{display:block;margin:12px auto 4px;padding:10px 14px;max-width:36rem;background:rgba(20,6,10,.66);border-radius:14px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+}
+#playBtn:active,#playBtn:focus-visible{animation:none;filter:none}
+@media (prefers-reduced-motion:reduce){#playBtn,.mtop,.mbot{animation:none!important}}
+@media (max-width:800px), (pointer:coarse){#menu .s6s-qr{display:none}}
+@media (orientation:landscape){
+  #menu .seo-lead{display:none}
+  #menu .title{font-size:clamp(1.8rem,8vw,2.8rem)}
+  #tip,#tip.on{top:calc(10px + env(safe-area-inset-top));bottom:auto;left:12px;right:auto;transform:none;width:min(38vw,300px);max-width:calc(100vw - 24px);text-align:left}
+}
 </style>
 </head>
 <body>
@@ -1001,8 +1015,8 @@ var SX = window.S60Social ? S60Social.create({
   toast: toast, sfx: function(){ SFX.ui(); }
 }) : {block: function(){ return document.createElement("div"); }, relabel: function(){}, fortune: function(){}, result: function(){}};
 P.playT = P.playT || 0; setInterval(function(){ if (playing && !document.hidden){ P.playT += 5; if (P.playT % 60 === 0) save(); } }, 5000);
-function sxResult(quiet){ var l = sxLevel(), s = totalStars(); if (l > 0) SX.result({score: l * 1000 + s, ko: s, wave: l, secs: P.playT}, quiet); }
-$("sxMenu").appendChild(SX.block()); $("sxWd").appendChild(SX.block()); $("sxEnd").appendChild(SX.block()); sxResult(true);
+function sxResult(quiet){ var l = sxLevel(), s = totalStars(); $("sxMenu").hidden = l < 1; if (l > 0) SX.result({score: l * 1000 + s, ko: s, wave: l, secs: P.playT}, quiet); }
+$("sxMenu").hidden = true; $("sxMenu").appendChild(SX.block()); $("sxWd").appendChild(SX.block()); $("sxEnd").appendChild(SX.block()); sxResult(true);
 })();
 </script>
 <script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
