@@ -148,10 +148,12 @@ border-bottom:1px solid rgba(45,212,191,.35)}
 .today-k{font:500 12px/1 'Oswald',sans-serif;letter-spacing:.35em;text-transform:uppercase;color:var(--teal,#2dd4bf);margin:0 0 6px}
 .today-lead{margin:0 0 12px;max-width:36rem;color:#d6d3d1;font:500 15px/1.45 'IBM Plex Sans',system-ui,sans-serif}
 .today-row{display:grid;gap:10px;grid-template-columns:1fr}
-@media(min-width:420px){.today-row{grid-template-columns:1fr 1fr}}
+@media(min-width:420px){.today-row,.today-row-flag{grid-template-columns:1.35fr .9fr}}
 .today-a{display:flex;flex-direction:column;justify-content:center;min-height:56px;padding:12px 16px;border-radius:14px;background:#2dd4bf;color:#12110f;text-decoration:none;border:1px solid #2dd4bf}
+.today-flag{min-height:72px;padding:14px 18px}
 .today-a.alt{background:transparent;color:#f5f1e8;border-color:rgba(245,241,232,.45)}
 .today-a strong{font:600 18px/1.15 'Oswald',sans-serif;letter-spacing:.03em}
+.today-flag strong{font-size:22px}
 .today-a span{margin-top:3px;font:600 13px/1.2 'IBM Plex Sans',system-ui,sans-serif;opacity:.9}
 .today-a:active{transform:scale(.98)}
 @media(max-width:700px){
