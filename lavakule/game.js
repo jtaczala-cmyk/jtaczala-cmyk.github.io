@@ -797,6 +797,7 @@ function paintOverGrid(sc, streakCur) {
   grid.textContent = lines.join('\n');
   grid.hidden = false;
 }
+let overShowT = 0;
 function gameOver(reason) {
   if (state !== 'play') return; state = 'over'; releaseInput();
   const sc = score(); const nb = sc > best; if (nb) { best = sc; localStorage.setItem(BEST_KEY, best); }
@@ -814,7 +815,9 @@ function gameOver(reason) {
   $('ovReason').textContent = T[reason]; $('ovScore').textContent = sc; $('ovDist').textContent = Math.floor(S.s) + ' m'; $('ovCoins').textContent = S.coins;
   $('ovBest').textContent = best; $('newBest').hidden = !nb; $('bestVal').textContent = best; $('ovExtra').textContent = (dTxt ? dTxt + ' · ' : '') + T.bank + ': ' + bank + ' 🪙';
   paintOverGrid(sc, streakCur);
-  setTimeout(() => { show('over', true); show('hud', false); }, 1100);
+  clearTimeout(overShowT);
+  const revealOver = () => { if (state !== 'over') return; show('over', true); show('hud', false); };
+  overShowT = setTimeout(revealOver, 200);
   gc('game-finish'); gcTime();
 }
 
@@ -833,6 +836,16 @@ const score = () => Math.floor(S.s) + S.pts;
 bindRun($('startBtn'), false);
 bindRun($('dailyBtn'), true);
 bindRun($('againBtn'), 'keep');
+document.addEventListener('keydown', ev => {
+  if (state !== 'over' || ev.repeat) return;
+  const el = ev.target, id = el && el.id, tag = (el && el.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || id === 'overGrid' || id === 'scoreShare') return;
+  if (ev.key !== 'Enter') return;
+  ev.preventDefault();
+  const ov = $('over');
+  if (ov && ov.hidden) { clearTimeout(overShowT); show('over', true); show('hud', false); return; }
+  const btn = $('againBtn'); if (btn) btn.click();
+});
 $('menuBtn').onclick = () => { show('over', false); show('menu', true); state = 'menu'; renderMissions(); };
 $('pauseBtn').onclick = () => pause(true); $('resumeBtn').onclick = () => pause(false);
 $('shopBtn').onclick = () => { const o = $('shop').hidden; $('shop').hidden = !o; $('miss').hidden = true; renderShop(); };
