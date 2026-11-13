@@ -8,7 +8,7 @@ Palettes taken from the live games' CSS:
 © 2026 Stop60"""
 import math, random
 
-ACCENT = {"lavakule": "#fb923c", "redning": "#2dd4bf", "ufobang": "#4ade80", "hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
+ACCENT = {"aximore": "#E8B33C", "stjernestorm": "#f59e0b", "aspheris": "#c084fc", "lavakule": "#fb923c", "redning": "#2dd4bf", "ufobang": "#4ade80", "hefau": "#f2c14e", "strom": "#f5c542", "robaki": "#8cff3a", "logikk": "#2dd4bf", "angielski": "#5ad4ff"}
 
 def f(v): return f"{v:.1f}".rstrip("0").rstrip(".")
 
