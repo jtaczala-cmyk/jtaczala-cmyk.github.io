@@ -986,4 +986,10 @@ addEventListener('resize', resize);
 if (window.visualViewport) visualViewport.addEventListener('resize', resize);
 addEventListener('scroll', () => { if (scrollX || scrollY) scrollTo(0, 0); }, { passive: true });
 resize(); reset(); state = 'menu'; renderMissions();
+try {
+  if (/(?:[?&]daily=1(?:&|$))|(?:#daily(?:\b|$))/.test((location.search || '') + (location.hash || ''))) {
+    var db = $('dailyBtn');
+    if (db) setTimeout(function () { db.click(); }, 0);
+  }
+} catch (e) {}
 requestAnimationFrame(frame);
