@@ -81,7 +81,7 @@
 <div id="pops"></div>
 <div id="toast"></div>
 <script src="/assets/score-share.js?v=2"></script>
-<script type="module" src="/lavakule/game.js?v=4"></script>
+<script type="module" src="/lavakule/game.js?v=5"></script>
 <script>S60ScoreShare.bind(document.getElementById("scoreShare"),{game:"lavakule",links:document.getElementById("scoreLinks"),lang:function(){return document.documentElement.dataset.lang||"en"},gameName:function(){var h=document.querySelector("h1");return (h&&h.textContent)||"Lava Marble"},score:function(){return document.getElementById("ovScore").textContent||"0"},text:function(){var g=document.getElementById("overGrid");return (g&&g.textContent)||""}});</script>
 <script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
 <script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"en",after:document.getElementById("startBtn")})});</script>
