@@ -49,7 +49,7 @@
   <p class="best"><span data-t="best">Best</span>: <b id="bestVal">0</b></p>
   <p class="howto" data-t="howShort">Tilt the phone: left and right steers, forward speeds up.</p>
   <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Lava Marble is a free browser game with no ads. Tilt your phone and steer a glowing glass marble along a narrow track over lava. Dodge obstacles, collect coins and go as far as you can – no account, no app, right here on stop60.no.</p>
-  <button id="startBtn" class="big" data-t="start">Start / Allow tilt</button>
+  <button id="startBtn" class="big" data-t="start">Start</button>
   <button type="button" id="tiltOpt" class="tiltopt" data-t="tiltOff" aria-pressed="false">Tilt: off</button>
   <div class="row"><button id="dailyBtn" data-t="daily">Daily run</button><button id="shopBtn" data-t="shop">Shop</button><button id="missBtn" data-t="missions">Missions</button></div>
   <div id="shop" class="panel" hidden><p class="small"><span data-t="bank">Coins in bank</span>: <b id="bankVal">0</b> 🪙</p><div id="shopList"></div></div>
@@ -80,9 +80,9 @@
 <div id="pops"></div>
 <div id="toast"></div>
 <script src="/assets/score-share.js"></script>
-<script type="module" src="/lavakule/game.js?v=2"></script>
+<script type="module" src="/lavakule/game.js?v=3"></script>
 <script>S60ScoreShare.bind(document.getElementById("scoreShare"),{game:"lavakule",links:document.getElementById("scoreLinks"),lang:function(){return document.documentElement.dataset.lang||"en"},gameName:function(){var h=document.querySelector("h1");return (h&&h.textContent)||"Lava Marble"},score:function(){return document.getElementById("ovScore").textContent||"0"}});</script>
-<script src="https://stop60.no/assets/wisdom.js" defer></script>
-<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"en",before:document.getElementById("startBtn")})});</script>
+<script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"en",after:document.getElementById("startBtn")})});</script>
 </body>
 </html>

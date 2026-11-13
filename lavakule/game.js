@@ -4,7 +4,7 @@ import { createLand } from './land.js';
 
 const LANG = document.documentElement.dataset.lang || 'no';
 const T = {
-  no: { title:'Lavakule', tag:'Rull glasskula over lavaen. Ikke stopp – lavaen stiger!', start:'Start / Tillat tilt', startKb:'Start', calib:'Kalibrer', again:'Spill igjen', menu:'Meny',
+  no: { title:'Lavakule', tag:'Rull glasskula over lavaen. Ikke stopp – lavaen stiger!', start:'Start', startKb:'Start', calib:'Kalibrer', again:'Spill igjen', menu:'Meny',
     best:'Rekord', score:'Poeng', dist:'Distanse', coins:'Mynter', over:'Spillet er over', newbest:'Ny rekord!',
     howShort:'Vipp telefonen: venstre og høyre styrer, fremover gir fart.',
     howTilt:'Vipp telefonen: venstre/høyre styrer, fremover gir fart, bakover bremser. Svinger du for fort, ryker du av banen.',
@@ -21,7 +21,7 @@ const T = {
     t1:'Vipp til siden for å styre', t2:'Vipp fremover for fart – hopp trenger fart', t3:'Kjør gjennom portene: sjekkpunkt. Du har 3 liv',
     a_c50:'Samle 50 mynter i ett løp', a_d1000:'Kom 1000 m', a_nh:'1000 m uten treff', a_cb5:'Kombo ×5', a_nm10:'10 nesten-treff i ett løp', a_cp5:'5 sjekkpunkt i ett løp', a_d3000:'Kom 3000 m', a_pu6:'6 krafter i ett løp', achDone:'Oppdrag fullført! +100',
     s0:'Klassisk', s1:'Rubin', s2:'Smaragd', s3:'Gull', s4:'Obsidian', s5:'Regnbue' },
-  pl: { title:'Lawowa kulka', tag:'Tocz szklaną kulkę nad lawą. Nie zatrzymuj się – lawa rośnie!', start:'Start / Zezwól na przechył', startKb:'Start', calib:'Kalibruj', again:'Zagraj ponownie', menu:'Menu',
+  pl: { title:'Lawowa kulka', tag:'Tocz szklaną kulkę nad lawą. Nie zatrzymuj się – lawa rośnie!', start:'Start', startKb:'Start', calib:'Kalibruj', again:'Zagraj ponownie', menu:'Menu',
     best:'Rekord', score:'Wynik', dist:'Dystans', coins:'Monety', over:'Koniec gry', newbest:'Nowy rekord!',
     howShort:'Przechylaj telefon: lewo i prawo skręca, do przodu przyspiesza.',
     howTilt:'Przechylaj telefon: lewo/prawo – skręt, do przodu – szybciej, do tyłu – hamowanie. Za szybko w zakręt = wypadasz z toru.',
@@ -38,7 +38,7 @@ const T = {
     t1:'Przechyl na boki, by skręcać', t2:'Przechyl do przodu – skoki wymagają prędkości', t3:'Przejedź przez bramy = punkt kontrolny. Masz 3 życia',
     a_c50:'Zbierz 50 monet w jednym biegu', a_d1000:'Dojedź 1000 m', a_nh:'1000 m bez uderzenia', a_cb5:'Kombo ×5', a_nm10:'10 razy „o włos” w biegu', a_cp5:'5 punktów kontrolnych w biegu', a_d3000:'Dojedź 3000 m', a_pu6:'6 ulepszeń w biegu', achDone:'Misja wykonana! +100',
     s0:'Klasyczna', s1:'Rubin', s2:'Szmaragd', s3:'Złota', s4:'Obsydian', s5:'Tęcza' },
-  en: { title:'Lava Marble', tag:'Roll a glass marble over the lava. Don\u2019t stop – the lava is rising!', start:'Start / Allow tilt', startKb:'Start', calib:'Calibrate', again:'Play again', menu:'Menu',
+  en: { title:'Lava Marble', tag:'Roll a glass marble over the lava. Don\u2019t stop – the lava is rising!', start:'Start', startKb:'Start', calib:'Calibrate', again:'Play again', menu:'Menu',
     best:'Best', score:'Score', dist:'Distance', coins:'Coins', over:'Game over', newbest:'New best!',
     howShort:'Tilt the phone: left and right steers, forward speeds up.',
     howTilt:'Tilt the phone: left/right steers, forward speeds up, back slows down. Take a corner too fast and you fly off.',

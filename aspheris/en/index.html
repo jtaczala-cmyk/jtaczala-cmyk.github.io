@@ -501,7 +501,7 @@ function endBH(){bh.on=false;hsOff();bhPass.enabled=false;bhG.visible=false;appe
 <script>(function(){var o=document.getElementById('overlay'),q=document.getElementById('qrbox');setInterval(function(){q.style.visibility=(o&&getComputedStyle(o).display!=='none')?'visible':'hidden'},500)})();</script>
 <script src="/assets/score-share.js"></script>
 <script>S60ScoreShare.bind(document.getElementById('scoreShare'),{game:'aspheris',links:document.getElementById('scoreLinks'),lang:function(){return document.documentElement.lang},gameName:function(){return 'Aspheris'},score:function(){return document.getElementById('wscore').textContent||'0'}});</script>
-<script src="https://stop60.no/assets/wisdom.js" defer></script>
-<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({before:document.getElementById("go")})});</script>
+<script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({after:document.getElementById("go")})});</script>
 </body>
 </html>

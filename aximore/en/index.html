@@ -826,7 +826,7 @@ function applyLang(){
   refreshMenu(); if (playing) { hud(); setTip(); }
   if (screen === "worlds") renderWorlds(); if (screen === "levels") renderLevels(wsel);
   if (typeof SX !== "undefined"){ SX.relabel(); SX.fortune(screen === "end" ? $("endLove") : screen === "wdone" ? $("wdLove") : $("loveP"), true); }
-  else if (window.StopWisdom) try { StopWisdom.show({lang: lang, before: $("loveP"), force: true}); } catch(e){}
+  else if (window.StopWisdom) try { StopWisdom.show({lang: lang, after: $("loveP"), force: true}); } catch(e){}
 }
 function refreshMenu(){ var f = Math.min(firstOpen(), LEVELS.length - 1); $("playTxt").textContent = P.stars.some(Boolean) ? t("cont") : t("play");
   $("playSub").textContent = fmt("continueAt", {w: worldOf(f) + 1, l: f + 1}); $("progStars").textContent = totalStars(); $("progMax").textContent = LEVELS.length * 3; }
@@ -906,7 +906,7 @@ document.addEventListener("visibilitychange", function(){ if (AC){ if (document.
 
 /* ---------- boot ---------- */
 applyLang(); showcase(); requestAnimationFrame(frame);
-addEventListener("load", function(){ if (window.StopWisdom) try { StopWisdom.show({lang: lang, before: $("loveP")}); } catch(e){} });
+addEventListener("load", function(){ if (window.StopWisdom) try { StopWisdom.show({lang: lang, after: $("loveP")}); } catch(e){} });
 window.__aximore = {AX: AX, WSTART: WSTART, LEVELS: LEVELS, load: load, solveFrom: solveFrom, get st(){ return st; }, get li(){ return li; }, get anim(){ return busy() || introT < .9; }, get winT(){ return winT; }, get state(){ return state; }, get screen(){ return screen; },
   fps: function(){ var s = 0; fpsA.forEach(function(d){ s += d; }); return fpsA.length / s; }, info: function(){ return R.info.render; }};
 /* ---------- light-speed jump between levels ---------- */
@@ -1005,7 +1005,7 @@ function sxResult(quiet){ var l = sxLevel(), s = totalStars(); if (l > 0) SX.res
 $("sxMenu").appendChild(SX.block()); $("sxWd").appendChild(SX.block()); $("sxEnd").appendChild(SX.block()); sxResult(true);
 })();
 </script>
-<script src="https://stop60.no/assets/wisdom.js" defer></script>
+<script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
 </body>
 </html>

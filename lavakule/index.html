@@ -49,7 +49,7 @@
   <p class="best"><span data-t="best">Rekord</span>: <b id="bestVal">0</b></p>
   <p class="howto" data-t="howShort">Vipp telefonen: venstre og høyre styrer, fremover gir fart.</p>
   <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Lavakule er et gratis spill uten reklame i nettleseren. Vipp telefonen og styr en glødende glasskule langs en smal bane over lava. Unngå hindringer, samle mynter og kom så langt du kan – uten konto og uten app, rett på stop60.no.</p>
-  <button id="startBtn" class="big" data-t="start">Start / Tillat tilt</button>
+  <button id="startBtn" class="big" data-t="start">Start</button>
   <button type="button" id="tiltOpt" class="tiltopt" data-t="tiltOff" aria-pressed="false">Tilt: av</button>
   <div class="row"><button id="dailyBtn" data-t="daily">Dagens løp</button><button id="shopBtn" data-t="shop">Butikk</button><button id="missBtn" data-t="missions">Oppdrag</button></div>
   <div id="shop" class="panel" hidden><p class="small"><span data-t="bank">Mynter i banken</span>: <b id="bankVal">0</b> 🪙</p><div id="shopList"></div></div>
@@ -80,9 +80,9 @@
 <div id="pops"></div>
 <div id="toast"></div>
 <script src="/assets/score-share.js"></script>
-<script type="module" src="/lavakule/game.js?v=2"></script>
+<script type="module" src="/lavakule/game.js?v=3"></script>
 <script>S60ScoreShare.bind(document.getElementById("scoreShare"),{game:"lavakule",links:document.getElementById("scoreLinks"),lang:function(){return document.documentElement.dataset.lang||"no"},gameName:function(){var h=document.querySelector("h1");return (h&&h.textContent)||"Lavakule"},score:function(){return document.getElementById("ovScore").textContent||"0"}});</script>
-<script src="https://stop60.no/assets/wisdom.js" defer></script>
-<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"no",before:document.getElementById("startBtn")})});</script>
+<script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"no",after:document.getElementById("startBtn")})});</script>
 </body>
 </html>
