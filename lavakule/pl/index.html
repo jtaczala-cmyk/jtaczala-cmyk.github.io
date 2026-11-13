@@ -49,7 +49,7 @@
   <p class="best"><span data-t="best">Rekord</span>: <b id="bestVal">0</b></p>
   <p class="howto" data-t="howShort">Przechylaj telefon: lewo i prawo skręca, do przodu przyspiesza.</p>
   <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Lawowa kulka to darmowa gra bez reklam w przeglądarce. Przechylaj telefon i prowadź świecącą szklaną kulkę wąskim torem nad lawą. Omijaj przeszkody, zbieraj monety i zajedź jak najdalej – bez konta i bez aplikacji, od razu na stop60.no.</p>
-  <button id="startBtn" class="big" data-t="start">Start / Zezwól na przechył</button>
+  <button id="startBtn" class="big" data-t="start">Start</button>
   <button type="button" id="tiltOpt" class="tiltopt" data-t="tiltOff" aria-pressed="false">Przechył: wyłącz</button>
   <div class="row"><button id="dailyBtn" data-t="daily">Bieg dnia</button><button id="shopBtn" data-t="shop">Sklep</button><button id="missBtn" data-t="missions">Misje</button></div>
   <div id="shop" class="panel" hidden><p class="small"><span data-t="bank">Monety w banku</span>: <b id="bankVal">0</b> 🪙</p><div id="shopList"></div></div>
@@ -80,9 +80,9 @@
 <div id="pops"></div>
 <div id="toast"></div>
 <script src="/assets/score-share.js"></script>
-<script type="module" src="/lavakule/game.js?v=2"></script>
+<script type="module" src="/lavakule/game.js?v=3"></script>
 <script>S60ScoreShare.bind(document.getElementById("scoreShare"),{game:"lavakule",links:document.getElementById("scoreLinks"),lang:function(){return document.documentElement.dataset.lang||"pl"},gameName:function(){var h=document.querySelector("h1");return (h&&h.textContent)||"Lawowa kulka"},score:function(){return document.getElementById("ovScore").textContent||"0"}});</script>
-<script src="https://stop60.no/assets/wisdom.js" defer></script>
-<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"pl",before:document.getElementById("startBtn")})});</script>
+<script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"pl",after:document.getElementById("startBtn")})});</script>
 </body>
 </html>

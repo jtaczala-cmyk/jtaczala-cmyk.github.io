@@ -137,7 +137,7 @@ function create(cfg){
       if (!quiet && pref.on && pref.nick && !nickErr(pref.nick) && r.score > 0){ var row = {name: pref.nick, score: r.score, ko: r.ko, wave: r.wave, secs: r.secs, tok: r.tok, t: Date.now()}; sent = r;
         post(row).then(function(x){ if (x.st === 'queued') queue(row); else if (x.st !== 'sent') sent = null; }); } },
     hasResult: function(){ return !!result; },
-    fortune: function(before, force){ if (!window.StopWisdom || !before) return; try { StopWisdom.show({lang: cfg.lang(), before: before, force: !!force}); } catch(e){} }
+    fortune: function(before, force){ if (!window.StopWisdom || !before) return; try { StopWisdom.show({lang: cfg.lang(), after: before, force: !!force}); } catch(e){} }
   };
 }
 window.S60Social = {create: create, qrSVG: qrSVG};

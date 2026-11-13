@@ -1,6 +1,6 @@
 /* stop60 daily wisdom - dependency-free. Usage:
    <script src="https://stop60.no/assets/wisdom.js"></script>
-   StopWisdom.show({lang:'no'})  // optional: date:'YYYY-MM-DD', parent:el, before:el (inline, in-flow before el), force:true
+   StopWisdom.show({lang:'no'})  // optional: date:'YYYY-MM-DD', parent:el, before:el or after:el (placed after the anchor so Start/Play stays first), force:true
    StopWisdom.pick(lang, date) -> {text, origin, label}
 */
 (function(){
@@ -35,7 +35,7 @@ function show(o){
   var el=document.createElement("aside"); el.className="s60w"; el.setAttribute("role","note"); el.setAttribute("aria-label",w.label);
   el.innerHTML="<h4>"+esc(w.label)+"</h4><p>"+Q[w.lang][0]+esc(w.text)+Q[w.lang][1]+"</p>"+(w.origin?"<small>\u2014 "+esc(w.origin)+"</small>":"")+"<button type='button' class='s60w-x' aria-label='"+CLOSE[w.lang]+"'>\u00D7</button>";
   el.querySelector(".s60w-x").onclick=function(e){e.stopPropagation();el.remove();try{localStorage.setItem(K,w.date);}catch(_){}};
-  if(o.before&&o.before.parentNode){el.className+=" s60w-in";o.before.parentNode.insertBefore(el,o.before);}else(o.parent||document.body).appendChild(el); return el;
+  var anchor=o.after||o.before;if(anchor&&anchor.parentNode){el.className+=" s60w-in";anchor.parentNode.insertBefore(el,anchor.nextSibling);}else(o.parent||document.body).appendChild(el); return el;
 }
 function hide(){var e=document.querySelector(".s60w");if(e)e.remove();last=null;}
 window.StopWisdom={pick:pick,show:show,hide:hide,count:DATA.sayings.length};
