@@ -821,7 +821,7 @@ function updHero(dt){
     if (wt < .7 && Math.random() < .9){ var w1 = cellWorld(st.x, st.y); emit(w1.x, .3 + wt, w1.z, (Math.random() - .5) * 2, 2, (Math.random() - .5) * 2, .8, .15, "#7ff0d6"); }
     if (wt < .45 && winT >= .45){ SFX.portalIn(); var w2 = cellWorld(st.x, st.y); burst(w2.x, .6, w2.z, 60, ["#FFD36B", "#3FC7A8", "#ff7a8a", "#ffffff", "#A66CFF"], 4, 4, 1.4, .2, 5); burst(w2.x, .3, w2.z, 30, "#7ff0d6", 2, 3, 1, .25); }
     if (li === LEVELS.length - 1){ if (wt < 1.05 && winT >= 1.05) winScreen(); }
-    else if (wt < .62 && winT >= .62) startJump(); }
+    else if (wt < .62 && winT >= .62) winScreen(); }
   else { hero.rotation.y = camMode === "menu" ? tNow * .2 : 0; hero.scale.setScalar(1); }
 }
 function frame(ts){
@@ -891,8 +891,8 @@ $("playBtn").onclick = function(){ audio(); SFX.ui(); load(Math.min(firstOpen(),
 $("undoBtn").onclick = undo; $("restartBtn").onclick = restart; $("hintBtn").onclick = doHint;
 function next(){ var n = li + 1; if (WSTART.indexOf(n) > 0 && screen === "done"){ var w = worldOf(li); $("wdInfo").textContent = t("world") + " " + (w + 1) + " · " + t("wnames")[w]; $("wdStars").textContent = worldStars(w); $("wdMax").textContent = (wEnd(w) - WSTART[w]) * 3;
     $("wdNext").textContent = fmt("wdNext", {w: (w + 2) + " · " + t("wnames")[w + 1]}); paintWdGrid(); show("wdone"); sxResult(false); SX.fortune($("wdLove")); SFX.win(); var v = cellWorld(0, 0); burst(0, 1, 0, 80, ["#FFD36B", "#3FC7A8", "#ff7a8a", "#fff", "#A66CFF"], 5, 5, 1.6, .22, 5); return; }
-  load(Math.min(n, LEVELS.length - 1)); }
-$("nextBtn").onclick = next; $("wdBtn").onclick = function(){ load(li + 1); };
+  show(null); startJump(); }
+$("nextBtn").onclick = next; $("wdBtn").onclick = function(){ show(null); startJump(); };
 $("replayBtn").onclick = function(){ load(li); };
 $("doneLevels").onclick = function(){ wsel = worldOf(li); renderLevels(wsel); SFX.ui(); show("levels"); };
 $("wdLevels").onclick = openWorlds; $("endLevels").onclick = openWorlds; $("endMenu").onclick = menu;
