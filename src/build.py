@@ -350,7 +350,7 @@ def today_strip(l):
       <a class="today-a today-flag" href="/logikk/en/?daily=1" data-goatcounter-click="home-today-logikk-en"><strong>Pure Logic</strong><span>Daily puzzle</span></a>
       <a class="today-a alt" href="/lavakule/en/?daily=1" data-goatcounter-click="home-today-lavakule-en"><strong>Lava Marble</strong><span>Daily run</span></a>
     </div>
-    <p class="today-more"><a href="/en/free-browser-games/">More free browser games, no ads</a> · <a href="/en/brain-games/">Brain games</a></p>
+    <p class="today-more"><a href="/en/daily-logic-puzzle/">Daily logic puzzle</a> · <a href="/en/quick-games/">Quick games</a> · <a href="/en/free-browser-games/">More free browser games, no ads</a> · <a href="/en/brain-games/">Brain games</a></p>
   </div>
 </section>
 '''
@@ -363,7 +363,7 @@ def today_strip(l):
       <a class="today-a today-flag" href="/logikk/pl/?daily=1" data-goatcounter-click="home-today-logikk-pl"><strong>Czysta logika</strong><span>Plansza dnia</span></a>
       <a class="today-a alt" href="/lavakule/pl/?daily=1" data-goatcounter-click="home-today-lavakule-pl"><strong>Lawowa kulka</strong><span>Bieg dnia</span></a>
     </div>
-    <p class="today-more"><a href="/pl/gry-za-darmo/">Więcej darmowych gier bez reklam</a> · <a href="/pl/gry-logiczne/">Gry logiczne</a></p>
+    <p class="today-more"><a href="/pl/codzienna-lamiglowka/">Codzienna łamigłówka</a> · <a href="/pl/szybkie-gry/">Szybkie gry</a> · <a href="/pl/gry-za-darmo/">Więcej darmowych gier bez reklam</a> · <a href="/pl/gry-logiczne/">Gry logiczne</a></p>
   </div>
 </section>
 '''
@@ -375,7 +375,7 @@ def today_strip(l):
       <a class="today-a today-flag" href="/logikk/?daily=1" data-goatcounter-click="home-today-logikk"><strong>Ren logikk</strong><span>Dagens brett</span></a>
       <a class="today-a alt" href="/lavakule/?daily=1" data-goatcounter-click="home-today-lavakule"><strong>Lavakule</strong><span>Dagens løp</span></a>
     </div>
-    <p class="today-more"><a href="/gratis-spill/">Flere gratis spill uten reklame</a> · <a href="/hjernetrim/">Hjernetrim</a></p>
+    <p class="today-more"><a href="/daglig-hjernetrim/">Daglig hjernetrim</a> · <a href="/korte-spill/">Korte spill</a> · <a href="/gratis-spill/">Flere gratis spill uten reklame</a> · <a href="/hjernetrim/">Hjernetrim</a></p>
   </div>
 </section>
 '''
@@ -483,22 +483,26 @@ def sitemap():
     home = [("nb", ""), ("en", "en/"), ("pl", "pl/"), ("x-default", "")]
     def game(slug, day):
         return [("nb", f"{slug}/"), ("pl", f"{slug}/pl/"), ("en", f"{slug}/en/"), ("x-default", f"{slug}/")], day
-    parts = [block(["", "en/", "pl/"], home, "2026-11-09")]
-    for slug, day in (("hefau", "2026-11-12"), ("logikk", "2026-11-12"), ("ufobang", "2026-11-12"),
-                      ("redning", "2026-11-12"), ("aspheris", "2026-11-12"), ("lavakule", "2026-11-12")):
+    parts = [block(["", "en/", "pl/"], home, "2026-11-14")]
+    for slug, day in (("hefau", "2026-11-13"), ("logikk", "2026-11-13"), ("ufobang", "2026-11-13"),
+                      ("redning", "2026-11-12"), ("aspheris", "2026-11-12"), ("lavakule", "2026-11-13")):
         paths, day = game(slug, day)
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
     power = [("nb", "strom/"), ("pl", "prad/"), ("en", "power/"), ("x-default", "strom/")]
     parts.append(block(["strom/", "power/", "prad/"], power, "2026-10-26"))
     robaki = [("pl", "robaki/"), ("en", "robaki/en/"), ("x-default", "robaki/")]
-    parts.append(block(["robaki/", "robaki/en/"], robaki, "2026-11-09"))
+    parts.append(block(["robaki/", "robaki/en/"], robaki, "2026-11-13"))
     for slug in ("aximore", "stjernestorm"):
         paths, day = game(slug, "2026-11-12")
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
     hubs = [("nb", "hjernetrim/"), ("pl", "pl/gry-logiczne/"), ("en", "en/brain-games/"), ("x-default", "hjernetrim/")]
-    parts.append(block(["hjernetrim/", "pl/gry-logiczne/", "en/brain-games/"], hubs, "2026-11-11"))
+    parts.append(block(["hjernetrim/", "pl/gry-logiczne/", "en/brain-games/"], hubs, "2026-11-14"))
     free = [("nb", "gratis-spill/"), ("en", "en/free-browser-games/"), ("pl", "pl/gry-za-darmo/"), ("x-default", "gratis-spill/")]
-    parts.append(block(["gratis-spill/", "en/free-browser-games/", "pl/gry-za-darmo/"], free, "2026-11-13"))
+    parts.append(block(["gratis-spill/", "en/free-browser-games/", "pl/gry-za-darmo/"], free, "2026-11-14"))
+    daily = [("nb", "daglig-hjernetrim/"), ("en", "en/daily-logic-puzzle/"), ("pl", "pl/codzienna-lamiglowka/"), ("x-default", "daglig-hjernetrim/")]
+    parts.append(block(["daglig-hjernetrim/", "en/daily-logic-puzzle/", "pl/codzienna-lamiglowka/"], daily, "2026-11-14"))
+    quick = [("nb", "korte-spill/"), ("en", "en/quick-games/"), ("pl", "pl/szybkie-gry/"), ("x-default", "korte-spill/")]
+    parts.append(block(["korte-spill/", "en/quick-games/", "pl/szybkie-gry/"], quick, "2026-11-14"))
     body = "".join(parts)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n{body}</urlset>\n'
 
