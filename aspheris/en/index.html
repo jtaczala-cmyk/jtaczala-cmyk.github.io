@@ -61,7 +61,7 @@
   #toast.long{font-size:20px;max-width:86vw;text-align:center}
   #tiltBtn{position:absolute;top:14px;right:14px;z-index:10;padding:10px 14px;font-size:14px;font-weight:800;border-radius:999px;border:2px solid rgba(255,255,255,.6);background:linear-gradient(90deg,rgba(0,220,255,.55),rgba(60,120,255,.55));color:#fff;display:none;box-shadow:0 0 14px rgba(0,220,255,.6)}
   #toast{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:40px;font-weight:900;color:#fff;text-shadow:0 0 12px #ff4fd8,0 0 30px #ffe600,0 3px 0 #7a0a6a;z-index:15;pointer-events:none;opacity:0;transition:opacity .3s,transform .3s}
-  #win{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:20;background:radial-gradient(circle,rgba(255,80,200,.75),rgba(40,0,90,.92));text-align:center;font-weight:700}
+  #win{position:absolute;inset:0;display:none;align-items:center;justify-content:safe center;flex-direction:column;z-index:20;overflow-x:hidden;overflow-y:auto;box-sizing:border-box;padding:8px 10px;background:radial-gradient(circle,rgba(255,80,200,.75),rgba(40,0,90,.92));text-align:center;font-weight:700}
   #splash{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 42%,#14063a 0%,#040018 62%);transition:opacity .55s ease;-webkit-tap-highlight-color:transparent;cursor:pointer}
   #splash.out{opacity:0;pointer-events:none}
   #splashOrb{position:relative;width:min(72vw,46vh,380px);aspect-ratio:1;-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 71%);mask-image:radial-gradient(circle,#000 58%,transparent 71%)}
@@ -70,6 +70,8 @@
   #splashOrb.playing video{opacity:1}
   #splash h1{margin:6px 0 0;font-size:46px;font-weight:900;letter-spacing:3px;background:linear-gradient(90deg,#3ff5ff,#b98cff,#ff7ae6,#3ff5ff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(120,160,255,.85));animation:sh 4s linear infinite}
   #splashHint{margin-top:14px;font-size:13px;letter-spacing:2px;opacity:.55;font-weight:700}
+  #overGrid{display:block;margin:8px auto 10px;padding:10px 12px;max-width:min(16em,100%);min-width:0;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.22);border-radius:12px;font:600 18px/1.4 ui-monospace,Menlo,monospace;white-space:pre-wrap;text-align:center;letter-spacing:.04em;cursor:pointer;color:#fff8ee;-webkit-user-select:text;user-select:text}
+  #overGrid[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -77,7 +79,7 @@
 <button id="tiltBtn">Gyro: off</button>
 <div id="toast"></div>
 <div id="story"><h2 id="sk"></h2><h1 id="st"></h1><div id="sb"></div><button id="sn">Next</button></div>
-<div id="win"><h1 id="wh">The Heart beats. Aspheris lives.</h1><p id="wend" style="max-width:320px;line-height:1.5"></p><p id="wscore">0</p><p id="wt"></p><button id="again" onclick="location.reload()">Play again</button><button id="scoreShare" type="button"></button><div id="scoreLinks"></div></div>
+<div id="win"><h1 id="wh">The Heart beats. Aspheris lives.</h1><p id="wend" style="max-width:320px;line-height:1.5"></p><p id="wscore">0</p><p id="wt"></p><button id="again" onclick="location.reload()">Play again</button><pre id="overGrid" role="button" tabindex="0" hidden></pre><button id="scoreShare" type="button"></button><div id="scoreLinks"></div></div>
 <div id="overlay">
   <div class="orb" style="width:90px;height:90px;left:8%;top:12%;background:radial-gradient(#fff,#3ff5ff 40%,transparent 70%)"></div>
   <div class="orb" style="width:60px;height:60px;right:10%;top:22%;background:radial-gradient(#fff,#ffe600 40%,transparent 70%);animation-delay:-2s"></div>
@@ -114,18 +116,21 @@ const TX={
   m:['Laguna chłodzenia wciąż świeci. Zbierz 7 fragmentów Serca.','Drift rozgrzał rdzeń do czerwoności. Zbierz 7 fragmentów, zanim lawa je pochłonie.','Ogród hydroponiczny zdziczał i zatruł powietrze. Ostatnie 7 fragmentów — potem Serce.'],
   ev:['„Lumen, jeśli to słyszysz…”','Drift się zbliża.','Rośliny otwierają ci drogę…'],got:'Fragment odzyskany.',
   wh:'Serce bije. Aspheris żyje.',wb:'Lumen złożył Serce Równowagi. Drift cofa się w ciemność — na razie.'},
- en:{hint:'Drag with your finger',tap:'Tap to continue',start:'Start',next:'Next',go:'Fly!',frag:'Fragments',zone:'ZONE',again:'Play again',time:'Time',shareScore:'Share your score',gyroOff:'Gyro: off',gyroOn:'Gyro: on',
+ en:{hint:'Drag with your finger',tap:'Tap to continue',start:'Start',next:'Next',go:'Fly!',frag:'Fragments',zone:'ZONE',again:'Play again',time:'Time',shareScore:'Share result',gyroOff:'Gyro: off',gyroOn:'Gyro: on',
   pk:'PROLOGUE',pt:'Lumen. Wake up. The station is falling.',pb:['The Heart of Balance of station Aspheris has cracked. The crew is gone.','The Drift — a chaotic anomaly born from the broken Heart — tears the sectors apart and devours the fragments.','You are Lumen, the last working energy sphere. Collect the Heart fragments in three zones before the Drift consumes everything.'],
   m:['The cooling lagoon still glows. Collect 7 Heart fragments.','The Drift has heated the core red-hot. Collect 7 fragments before the lava takes them.','The hydroponic garden has gone wild and toxic. The last 7 fragments — then the Heart.'],
   ev:['“Lumen, if you can hear this…”','The Drift is approaching.','The plants open a path for you…'],got:'Fragment recovered.',
   wh:'The Heart beats. Aspheris lives.',wb:'Lumen has rebuilt the Heart of Balance. The Drift retreats into the dark — for now.'},
- no:{hint:'Dra med fingeren',tap:'Trykk for å fortsette',start:'Start',next:'Videre',go:'Fly!',frag:'Fragmenter',zone:'SONE',again:'Spill igjen',time:'Tid',shareScore:'Del poengsummen',gyroOff:'Gyro: av',gyroOn:'Gyro: på',
+ no:{hint:'Dra med fingeren',tap:'Trykk for å fortsette',start:'Start',next:'Videre',go:'Fly!',frag:'Fragmenter',zone:'SONE',again:'Spill igjen',time:'Tid',shareScore:'Del resultatet',gyroOff:'Gyro: av',gyroOn:'Gyro: på',
   pk:'PROLOG',pt:'Lumen. Våkn opp. Stasjonen faller.',pb:['Balansens hjerte på stasjonen Aspheris har sprukket. Mannskapet er borte.','Driften — en kaotisk anomali fra det knuste hjertet — river sektorene i stykker og sluker fragmentene.','Du er Lumen, den siste fungerende energisfæren. Samle hjertefragmentene i tre soner før Driften sluker alt.'],
   m:['Kjølelagunen lyser fortsatt. Samle 7 hjertefragmenter.','Driften har varmet kjernen rødglødende. Samle 7 fragmenter før lavaen tar dem.','Den hydroponiske hagen er blitt vill og giftig. De siste 7 fragmentene — så hjertet.'],
   ev:['«Lumen, hvis du hører dette…»','Driften nærmer seg.','Plantene åpner veien for deg…'],got:'Fragment gjenopprettet.',
   wh:'Hjertet slår. Aspheris lever.',wb:'Lumen har satt sammen Balansens hjerte. Driften trekker seg tilbake i mørket — for nå.'}};
 let LANG=(()=>{try{return 'en'}catch(e){return 'en'}})(),paused=false;
 const $=id=>document.getElementById(id),L=()=>TX[LANG];
+function emojiBar(n,ch){n=Math.max(0,n|0);if(n<=0)return '⬛';if(n<=10)return ch.repeat(n);return ch.repeat(10)+'\u200b×'+n;}
+function paintWinGrid(sc,secs){var grid=$('overGrid');if(!grid)return;grid.textContent=['Aspheris',emojiBar(total,'💛'),sc+' · '+secs+' s','stop60.no/aspheris'].join('\n');grid.hidden=false;}
+(function(){var grid=$('overGrid'),btn=$('scoreShare');if(!grid||!btn)return;grid.setAttribute('role','button');grid.tabIndex=0;var go=function(){btn.click();};grid.addEventListener('click',go);grid.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();go();}});})();
 function applyLang(){const t=L();document.documentElement.lang=LANG==='no'?'nb':LANG;$('hint').textContent=t.hint;$('splashHint').textContent=t.tap;$('go').textContent=t.start;$('again').textContent=t.again;$('scoreShare').textContent=t.shareScore;$('wh').textContent=t.wh;
   $('hud').childNodes[1].nodeValue=t.frag+': ';$('tiltBtn').textContent=tilt.on?t.gyroOn:t.gyroOff;
   document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));}
@@ -269,7 +274,7 @@ function pickup(c){
   shake=0.25;bloom.strength=1.8;
   if(score>=7){total++;
     if(zone<ZONES.length-1)setTimeout(startBH,350);
-    else setTimeout(()=>{document.getElementById('wend').textContent=L().wb;document.getElementById('wscore').textContent=String(total*7);document.getElementById('wt').textContent=L().time+': '+((Date.now()-t0)/1000).toFixed(1)+' s';document.getElementById('win').style.display='flex';},600);}
+    else setTimeout(()=>{var sc=String(total*7),secs=((Date.now()-t0)/1000).toFixed(1);document.getElementById('wend').textContent=L().wb;document.getElementById('wscore').textContent=sc;document.getElementById('wt').textContent=L().time+': '+secs+' s';paintWinGrid(sc,secs);document.getElementById('win').style.display='flex';},600);}
 }
 let lt=performance.now();
 function animate(){
@@ -500,7 +505,7 @@ function endBH(){bh.on=false;hsOff();bhPass.enabled=false;bhG.visible=false;appe
 <div id="qrbox"><img src="/aspheris/qr.png" alt="QR: stop60.no/aspheris" width="132" height="132">Scan to play on your phone<br><a href="/aspheris/en/privacy/">Privacy</a> · <a href="/">Stop60</a></div>
 <script>(function(){var o=document.getElementById('overlay'),q=document.getElementById('qrbox');setInterval(function(){q.style.visibility=(o&&getComputedStyle(o).display!=='none')?'visible':'hidden'},500)})();</script>
 <script src="/assets/score-share.js"></script>
-<script>S60ScoreShare.bind(document.getElementById('scoreShare'),{game:'aspheris',links:document.getElementById('scoreLinks'),lang:function(){return document.documentElement.lang},gameName:function(){return 'Aspheris'},score:function(){return document.getElementById('wscore').textContent||'0'}});</script>
+<script>S60ScoreShare.bind(document.getElementById('scoreShare'),{game:'aspheris',links:document.getElementById('scoreLinks'),lang:function(){return document.documentElement.lang},gameName:function(){return 'Aspheris'},score:function(){return document.getElementById('wscore').textContent||'0'},text:function(){ var g = $("overGrid"); return (g && g.textContent) || ""; }});</script>
 <script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
 <script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({after:document.getElementById("go")})});</script>
 </body>

@@ -86,6 +86,8 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
 #hud b{text-shadow:0 0 10px rgba(246,238,220,.35);font-variant-numeric:tabular-nums}
 #hHp i.on{background:linear-gradient(180deg,#FF6B6B,#D7262E)}
 #pauseBtn{border:1px solid rgba(232,179,60,.3)}
+#overGrid{display:block;margin:8px auto 10px;padding:10px 12px;max-width:min(16em,100%);min-width:0;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.22);border-radius:12px;font:600 18px/1.4 ui-monospace,Menlo,monospace;white-space:pre-wrap;text-align:center;letter-spacing:.04em;cursor:pointer;color:#fff8ee;-webkit-user-select:text;user-select:text}
+#overGrid[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -141,7 +143,8 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
   <p class="stat"><span data-t="wave">Stage</span>: <b id="oWave">1</b> · 🪙 +<b id="oCoins">0</b></p>
   <p id="oNew" class="love" hidden data-t="newbest">New best!</p>
   <button id="retryBtn" class="big" data-t="retry">Retry</button>
-  <div class="row"><button id="overShop" data-t="shop">🛠 Workshop</button><button id="scoreShare" type="button" data-t="shareScore">Share your score</button><button id="overMenu" data-t="menu">Menu</button></div>
+  <pre id="overGrid" role="button" tabindex="0" hidden></pre>
+  <div class="row"><button id="overShop" data-t="shop">🛠 Workshop</button><button id="scoreShare" type="button" data-t="shareScore">Share result</button><button id="overMenu" data-t="menu">Menu</button></div>
   <div id="scoreLinks"></div>
   <div id="sxOver"></div>
   <p class="love" id="overLove" data-t="love">Made with passion</p>
@@ -155,7 +158,7 @@ button.big{background:linear-gradient(180deg,#FFD978,#E8B33C 55%,#C98A1E);box-sh
 <script>
 "use strict";
 var T = {
- no:{name:"Stjernestorm",tag:"Styr skipet med fingeren, skyt deg gjennom etappe etter etappe uten pause!",play:"Spill",shop:"🛠 Verksted",share:"🔗 Del",shareScore:"Del poengsummen",how1:"👆 Dra hvor som helst – skipet følger fingeren",how2:"🔫 Skipet skyter selv · samle kuler og mynter",how3:"👾 Hver 5. etapp kommer en sjef – uten pauser",local:"Fremgang lagres bare på denne enheten",love:"Laget med lidenskap",score:"Poeng",wave:"Etapp",stage:"ETAPP",hp:"Liv",coins:"Mynter",best:"Rekord",next:"▶ Neste bølge",start:"▶ Spill",menu:"Meny",paused:"Pause",resume:"Fortsett",over:"Skipet er tapt!",retry:"Prøv igjen",newbest:"Ny rekord!",cleared:"Bølge {w} klar!",boss:"SJEF!",pup:"KRAFT OPP!",pdown:"Kraft −1",pw:"Kraft",snd:"Lyd",vib:"Vibrasjon",copied:"Lenke kopiert",max:"MAKS",
+ no:{name:"Stjernestorm",tag:"Styr skipet med fingeren, skyt deg gjennom etappe etter etappe uten pause!",play:"Spill",shop:"🛠 Verksted",share:"🔗 Del",shareScore:"Del resultatet",how1:"👆 Dra hvor som helst – skipet følger fingeren",how2:"🔫 Skipet skyter selv · samle kuler og mynter",how3:"👾 Hver 5. etapp kommer en sjef – uten pauser",local:"Fremgang lagres bare på denne enheten",love:"Laget med lidenskap",score:"Poeng",wave:"Etapp",stage:"ETAPP",hp:"Liv",coins:"Mynter",best:"Rekord",next:"▶ Neste bølge",start:"▶ Spill",menu:"Meny",paused:"Pause",resume:"Fortsett",over:"Skipet er tapt!",retry:"Prøv igjen",newbest:"Ny rekord!",cleared:"Bølge {w} klar!",boss:"SJEF!",pup:"KRAFT OPP!",pdown:"Kraft −1",pw:"Kraft",snd:"Lyd",vib:"Vibrasjon",copied:"Lenke kopiert",max:"MAKS",
   u:{dmg:["Skadekraft","Sterkere skudd"],rate:["Skuddtakt","Raskere skyting"],hp:["Skrog","+1 maks liv"],mag:["Magnet","Større rekkevidde for mynter"],wpn:["Startvåpen","Begynn med bedre våpen"]},
   pu:{w:"Våpen opp!",s:"Skjold!",m:"Magnet!",b:"Bombe!"},
   title:"Stjernestorm – romskyting | gratis spill uten reklame",shareText:"Jeg fikk {s} poeng i Stjernestorm! Klarer du mer?"},
@@ -163,7 +166,7 @@ var T = {
   u:{dmg:["Siła ognia","Mocniejsze strzały"],rate:["Szybkostrzelność","Szybsze strzelanie"],hp:["Pancerz","+1 maks. życie"],mag:["Magnes","Większy zasięg zbierania monet"],wpn:["Broń startowa","Zaczynaj z lepszą bronią"]},
   pu:{w:"Broń w górę!",s:"Tarcza!",m:"Magnes!",b:"Bomba!"},
   title:"Gwiezdna burza – kosmiczna strzelanka | darmowa gra bez reklam",shareText:"Zdobyłem {s} punktów w Gwiezdnej burzy! Pobijesz?"},
- en:{name:"Star Storm",tag:"Steer your ship with a finger, blast through stage after stage with no breaks!",play:"Play",shop:"🛠 Workshop",share:"🔗 Share",shareScore:"Share your score",how1:"👆 Drag anywhere – the ship follows your finger",how2:"🔫 Auto-fire · grab orbs and coins",how3:"👾 Every 5th stage brings a boss – no breaks",local:"Progress is saved on this device only",love:"Made with passion",score:"Score",wave:"Stage",stage:"STAGE",hp:"HP",coins:"Coins",best:"Best",next:"▶ Next wave",start:"▶ Play",menu:"Menu",paused:"Paused",resume:"Resume",over:"Ship lost!",retry:"Retry",newbest:"New best!",cleared:"Wave {w} cleared!",boss:"BOSS!",pup:"POWER UP!",pdown:"Power −1",pw:"Power",snd:"Sound",vib:"Vibration",copied:"Link copied",max:"MAX",
+ en:{name:"Star Storm",tag:"Steer your ship with a finger, blast through stage after stage with no breaks!",play:"Play",shop:"🛠 Workshop",share:"🔗 Share",shareScore:"Share result",how1:"👆 Drag anywhere – the ship follows your finger",how2:"🔫 Auto-fire · grab orbs and coins",how3:"👾 Every 5th stage brings a boss – no breaks",local:"Progress is saved on this device only",love:"Made with passion",score:"Score",wave:"Stage",stage:"STAGE",hp:"HP",coins:"Coins",best:"Best",next:"▶ Next wave",start:"▶ Play",menu:"Menu",paused:"Paused",resume:"Resume",over:"Ship lost!",retry:"Retry",newbest:"New best!",cleared:"Wave {w} cleared!",boss:"BOSS!",pup:"POWER UP!",pdown:"Power −1",pw:"Power",snd:"Sound",vib:"Vibration",copied:"Link copied",max:"MAX",
   u:{dmg:["Damage","Stronger shots"],rate:["Fire rate","Faster shooting"],hp:["Hull","+1 max HP"],mag:["Magnet","Wider coin pickup"],wpn:["Starting weapon","Start with a better gun"]},
   pu:{w:"Weapon up!",s:"Shield!",m:"Magnet!",b:"Bomb!"},
   title:"Star Storm – space shooter | free browser game, no ads",shareText:"I scored {s} in Star Storm! Can you beat it?"}
@@ -489,10 +492,25 @@ function finishRun(dead){
   save();
   try { window.goatcounter && goatcounter.count && goatcounter.count({path: "stjernestorm-over", title: "stjernestorm over w" + wave, event: true}); } catch(e){}
 }
+function emojiBar(n, ch){
+  n = Math.max(0, n | 0);
+  if (n <= 0) return "⬛";
+  if (n <= 10) return ch.repeat(n);
+  return ch.repeat(10) + "\u200b×" + n;
+}
+function paintOverGrid(){
+  var grid = $("overGrid");
+  if (!grid) return;
+  var w = parseInt($("oWave").textContent, 10);
+  if (isNaN(w)) w = 0;
+  grid.textContent = [t("name"), emojiBar(w, "⭐"), String($("oScore").textContent || "0"), "stop60.no/stjernestorm"].join("\n");
+  grid.hidden = false;
+}
 function gameOver(){
   $("oNew").hidden = true; finishRun(true);
   if (!DEBUG) SX.result({score: score, ko: 0, wave: wave, secs: Math.round((Date.now() - runT0) / 1000)});
   $("oScore").textContent = score; $("oWave").textContent = wave; $("oCoins").textContent = runCoins;
+  paintOverGrid();
   setTimeout(function(){ setMode("over"); }, 1100);
   mode = "dying";
 }
@@ -503,7 +521,16 @@ function share(){
   try { window.goatcounter && goatcounter.count && goatcounter.count({path: "stjernestorm-share", title: "stjernestorm share", event: true}); } catch(e){}
 }
 document.querySelectorAll(".shareB").forEach(function(b){ b.onclick = share; });
-if (window.S60ScoreShare) S60ScoreShare.bind($("scoreShare"), { game: "stjernestorm", links: $("scoreLinks"), lang: function(){ return lang; }, gameName: function(){ return t("name"); }, score: function(){ return $("oScore").textContent || 0; } });
+if (window.S60ScoreShare) S60ScoreShare.bind($("scoreShare"), { game: "stjernestorm", links: $("scoreLinks"), lang: function(){ return lang; }, gameName: function(){ return t("name"); }, score: function(){ return $("oScore").textContent || 0; }, text: function(){ var g = $("overGrid"); return (g && g.textContent) || ""; } });
+(function(){
+  var grid = $("overGrid"), btn = $("scoreShare");
+  if (!grid || !btn) return;
+  grid.setAttribute("role", "button");
+  grid.tabIndex = 0;
+  var go = function(){ btn.click(); };
+  grid.addEventListener("click", go);
+  grid.addEventListener("keydown", function(ev){ if (ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); go(); } });
+})();
 /* ---------- QR, share score, online top 10 (shared /assets/s60-social.js) ---------- */
 T.no.sxShare = "Jeg fikk {s} poeng og nådde etappe {w} i Stjernestorm – klarer du å slå meg?"; T.pl.sxShare = "Zdobyłem {s} punktów i doleciałem do etapu {w} w Gwiezdnej burzy – pobijesz mnie?"; T.en.sxShare = "I got {s} points and reached stage {w} in Star Storm – can you beat me?";
 T.no.sxRow = "{s} p · etappe {w}"; T.pl.sxRow = "{s} pkt · etap {w}"; T.en.sxRow = "{s} pts · stage {w}";
