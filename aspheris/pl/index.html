@@ -79,7 +79,7 @@
 <button id="tiltBtn">Żyroskop: wył</button>
 <div id="toast"></div>
 <div id="story"><h2 id="sk"></h2><h1 id="st"></h1><div id="sb"></div><button id="sn">Dalej</button></div>
-<div id="win"><h1 id="wh">Serce bije. Aspheris żyje.</h1><p id="wend" style="max-width:320px;line-height:1.5"></p><p id="wscore">0</p><p id="wt"></p><button id="again" onclick="location.reload()">Jeszcze raz</button><pre id="overGrid" role="button" tabindex="0" hidden></pre><button id="scoreShare" type="button"></button><div id="scoreLinks"></div></div>
+<div id="win"><h1 id="wh">Serce bije. Aspheris żyje.</h1><p id="wend" style="max-width:320px;line-height:1.5"></p><p id="wscore">0</p><p id="wt"></p><button id="again" onclick="playAgain()">Jeszcze raz</button><pre id="overGrid" role="button" tabindex="0" hidden></pre><button id="scoreShare" type="button"></button><div id="scoreLinks"></div></div>
 <div id="overlay">
   <div class="orb" style="width:90px;height:90px;left:8%;top:12%;background:radial-gradient(#fff,#3ff5ff 40%,transparent 70%)"></div>
   <div class="orb" style="width:60px;height:60px;right:10%;top:22%;background:radial-gradient(#fff,#ffe600 40%,transparent 70%);animation-delay:-2s"></div>
@@ -500,6 +500,44 @@ function updateBH(now,dt){const e=(now-bh.t0)/1000,U=bhPass.uniforms,A=ZONES[bh.
 function hsOff(){if(hsG)hsG.visible=false;sphere.visible=true;if(rbPass)rbPass.enabled=false;bh.shk=0;}
 function endBH(){bh.on=false;hsOff();bhPass.enabled=false;bhG.visible=false;appear=1;fil.scale.set(1,1,1);sphere.material.opacity=1;sphere.children[1].material.opacity=0.25;sphere.children[0].scale.setScalar(1);
   stretchGrid(0);camera.fov=56;camera.updateProjectionMatrix();bloom.strength=BLOOM_BASE;if(bhLow){bhLow=false;const k=bk();bloom.setSize(innerWidth/k|0,innerHeight/k|0);}mission(zone);}
+// Replay in the same session. Reuses the scene, renderer and animate loop — do not call init() again.
+function playAgain(){
+  if(!sphere)return;
+  $('win').style.display='none';
+  $('overlay').style.display='none';
+  try{bhSilence();}catch(e){}
+  try{hsHush();}catch(e){}
+  bh={on:false};
+  if(bhPass)bhPass.enabled=false;
+  if(bhG)bhG.visible=false;
+  hsOff();
+  appear=1;
+  fil.scale.set(1,1,1);
+  sphere.visible=true;
+  sphere.material.opacity=1;
+  sphere.material.visible=true;
+  sphere.children[0].visible=true;sphere.children[0].scale.setScalar(1);
+  sphere.children[1].visible=true;sphere.children[1].material.opacity=0.25;
+  sphere.position.set(0,0.9,0);
+  stretchGrid(0);
+  camera.fov=56;camera.updateProjectionMatrix();
+  camera.position.set(0,4.2,10);
+  camera.lookAt(0,0.6,0);
+  bloom.strength=BLOOM_BASE;
+  if(bhLow){bhLow=false;const k=bk();bloom.setSize(innerWidth/k|0,innerHeight/k|0);}
+  [sky,floorMesh,gridH,ring,parts,spark].forEach(o=>{if(o)o.visible=true;});
+  trail.forEach(s=>{s.visible=q.lvl<3;s.position.copy(sphere.position);});
+  if(shell)shell.material.opacity=0;
+  shake=0;tx=0;tz=0;total=0;score=0;sc.textContent='0';
+  paused=false;
+  t0=Date.now();
+  try{const A=window._ac;if(A&&A.resume)A.resume();}catch(e){}
+  // setZone(0) respawns the zone the same way init() does, and opens the zone card.
+  // Replay skips that card so the flight starts on this click. Later zones still brief via endBH() -> mission().
+  setZone(0);
+  $('story').style.display='none';
+  paused=false;
+}
 </script>
 <style>#qrbox{position:fixed;right:18px;bottom:18px;z-index:30;background:rgba(10,2,30,.82);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px;text-align:center;font:700 12px/1.3 system-ui,sans-serif;color:#fff;box-shadow:0 0 24px rgba(255,80,220,.35)}#qrbox img{display:block;width:132px;height:132px;border-radius:8px;margin:0 auto 6px}#qrbox a{color:#ffd6f6;font-weight:400;font-size:11px}@media (max-width:899px),(pointer:coarse){#qrbox{display:none}}#wscore{font-size:44px;font-weight:900;margin:4px 0;text-shadow:0 2px 8px #000}#win #scoreShare{animation:none;margin-top:10px;padding:12px 22px;font-size:16px;background:rgba(255,255,255,.18);color:#fff;box-shadow:none;border:2px solid rgba(255,255,255,.55)}</style>
 <div id="qrbox"><img src="/aspheris/qr.png" alt="QR: stop60.no/aspheris" width="132" height="132">Zeskanuj i graj na telefonie<br><a href="/aspheris/prywatnosc/">Prywatność</a> · <a href="/">Stop60</a></div>
