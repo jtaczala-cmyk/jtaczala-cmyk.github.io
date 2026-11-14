@@ -511,7 +511,7 @@ function gameOver(){
   if (!DEBUG) SX.result({score: score, ko: 0, wave: wave, secs: Math.round((Date.now() - runT0) / 1000)});
   $("oScore").textContent = score; $("oWave").textContent = wave; $("oCoins").textContent = runCoins;
   paintOverGrid();
-  setTimeout(function(){ setMode("over"); }, 1100);
+  setTimeout(function(){ setMode("over"); }, 200);
   mode = "dying";
 }
 function share(){
