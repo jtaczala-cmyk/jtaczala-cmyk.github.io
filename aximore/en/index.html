@@ -146,6 +146,9 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
 .stars span.off{opacity:.6;transform:scale(.85)}
 @keyframes starIn{0%{opacity:0;transform:translateY(-140px) scale(2.4) rotate(-90deg)}70%{transform:scale(.9)}100%{opacity:1;transform:none}}
 #doneInfo{margin-bottom:6px}
+#doneGrid,#wdGrid,#endGrid{display:block;margin:8px auto 10px;padding:10px 12px;max-width:min(20em,100%);min-width:0;background:rgba(10,3,6,.45);border:1px solid rgba(255,211,107,.4);border-radius:12px;font:600 16px/1.4 ui-monospace,Menlo,monospace;white-space:pre-wrap;text-align:center;letter-spacing:.03em;cursor:pointer;color:#fff8ee;-webkit-user-select:text;user-select:text}
+#doneGrid[hidden],#wdGrid[hidden],#endGrid[hidden]{display:none}
+#doneGrid:focus-visible,#wdGrid:focus-visible,#endGrid:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 .hl{color:var(--gold2);font-weight:800}
 #toast{position:fixed;left:50%;top:calc(90px + env(safe-area-inset-top));transform:translate(-50%,-10px);opacity:0;z-index:40;background:rgba(246,238,220,.96);color:#2A0F14;padding:9px 18px;border-radius:20px;font-weight:800;transition:.3s cubic-bezier(.3,1.5,.5,1);pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
@@ -261,6 +264,7 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <p class="tag" id="doneInfo"></p>
     <div class="row"><button id="nextBtn" class="big"><span data-t="next">Next level</span><span class="ico" data-i="play"></span></button></div>
     <div class="row"><button id="replayBtn"><span class="ico" data-i="restart"></span><span data-t="replay">Play again</span></button><button id="doneLevels"><span class="ico" data-i="grid"></span><span data-t="levels">Levels</span></button></div>
+    <pre id="doneGrid" role="button" tabindex="0" hidden></pre>
     <div class="row"><button id="doneShare" type="button"><span data-t="shareScore"></span></button></div>
     <div id="doneLinks"></div>
   </div>
@@ -274,6 +278,7 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <p class="prog" style="font-size:1.4rem;margin:12px 0"><span class="ico" data-i="star"></span><b id="wdStars">0</b> / <span id="wdMax">0</span></p>
     <p class="tag hl" id="wdNext"></p>
     <div class="row"><button id="wdBtn" class="big"><span data-t="nextWorld"></span><span class="ico" data-i="play"></span></button></div>
+    <pre id="wdGrid" role="button" tabindex="0" hidden></pre>
     <div class="row"><button id="wdLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="wdShare" type="button"><span data-t="shareScore"></span></button></div>
     <div id="wdLinks"></div>
     <div id="sxWd"></div>
@@ -287,6 +292,7 @@ h2{font-size:1.8rem;font-weight:900;color:var(--gold2);text-shadow:0 2px 0 rgba(
     <h2 data-t="endTitle" style="margin-top:8px">You beat every level!</h2>
     <p class="tag" data-t="endText">Axi is free. Can you get three stars everywhere?</p>
     <p class="prog" style="font-size:1.4rem;margin:12px 0"><span class="ico" data-i="star"></span><b id="endStars">0</b> / <span id="endMax">0</span></p>
+    <pre id="endGrid" role="button" tabindex="0" hidden></pre>
     <div class="row"><button id="endShare" class="big" type="button"><span data-t="shareScore"></span></button></div>
     <div id="endLinks"></div>
     <div class="row"><button id="endLevels"><span class="ico" data-i="grid"></span><span data-t="worlds"></span></button><button id="endMenu"><span class="ico" data-i="home"></span><span data-t="menu">Menu</span></button></div>
@@ -377,9 +383,9 @@ var T = {
 };
 var WSTART = [0,18,35,52,69,86,103];
 var T2 = {
- no:{worlds:"Verdener",share2:"Del",shareScore:"Del poengsummen",settings:"Innstillinger",sound:"Lyd",music:"Musikk",vib:"Vibrasjon",language:"Språk",pause:"Pause",resume:"Fortsett",restart:"Start på nytt",undo:"Angre",hintsLeft:"Tips: {n} igjen i dag",noHints:"Ingen flere tips i dag – kom tilbake i morgen",hintShow:"Tips: dra dit pilen peker",goal3:"★★★ på maks. {n} trekk",worldDone:"Verden fullført!",nextWorld:"Neste verden",wdNext:"Ny verden låst opp: {w}",levelsN:"{n} nivåer",locked:"Låst",continueAt:"Verden {w} · Nivå {l}",doneInfo2:"{m} trekk · ★★★ på maks. {o}",perfect:"Perfekt! Færrest mulige trekk.",pauseInfo:"Nivå {l} · {m} trekk",lvl:"Nivå"},
+ no:{worlds:"Verdener",share2:"Del",shareScore:"Del resultatet",settings:"Innstillinger",sound:"Lyd",music:"Musikk",vib:"Vibrasjon",language:"Språk",pause:"Pause",resume:"Fortsett",restart:"Start på nytt",undo:"Angre",hintsLeft:"Tips: {n} igjen i dag",noHints:"Ingen flere tips i dag – kom tilbake i morgen",hintShow:"Tips: dra dit pilen peker",goal3:"★★★ på maks. {n} trekk",worldDone:"Verden fullført!",nextWorld:"Neste verden",wdNext:"Ny verden låst opp: {w}",levelsN:"{n} nivåer",locked:"Låst",continueAt:"Verden {w} · Nivå {l}",doneInfo2:"{m} trekk · ★★★ på maks. {o}",perfect:"Perfekt! Færrest mulige trekk.",pauseInfo:"Nivå {l} · {m} trekk",lvl:"Nivå"},
  pl:{worlds:"Światy",share2:"Udostępnij",shareScore:"Udostępnij wynik",settings:"Ustawienia",sound:"Dźwięk",music:"Muzyka",vib:"Wibracje",language:"Język",pause:"Pauza",resume:"Wznów",restart:"Od nowa",undo:"Cofnij",hintsLeft:"Podpowiedzi na dziś: {n}",noHints:"Brak podpowiedzi na dziś – wróć jutro",hintShow:"Podpowiedź: przeciągnij palcem tam, gdzie wskazuje strzałka",goal3:"★★★ za maks. {n} ruchów",worldDone:"Świat ukończony!",nextWorld:"Następny świat",wdNext:"Odblokowano nowy świat: {w}",levelsN:"Poziomów: {n}",locked:"Zablokowane",continueAt:"Świat {w} · Poziom {l}",doneInfo2:"Ruchy: {m} · ★★★ za maks. {o}",perfect:"Idealnie! Najmniej możliwych ruchów.",pauseInfo:"Poziom {l} · ruchy: {m}",lvl:"Poziom"},
- en:{worlds:"Worlds",share2:"Share",shareScore:"Share your score",settings:"Settings",sound:"Sound",music:"Music",vib:"Vibration",language:"Language",pause:"Paused",resume:"Resume",restart:"Restart",undo:"Undo",hintsLeft:"Hints: {n} left today",noHints:"No more hints today – come back tomorrow",hintShow:"Hint: drag where the arrow points",goal3:"★★★ in {n} moves or fewer",worldDone:"World complete!",nextWorld:"Next world",wdNext:"New world unlocked: {w}",levelsN:"{n} levels",locked:"Locked",continueAt:"World {w} · Level {l}",doneInfo2:"{m} moves · ★★★ in {o} or fewer",perfect:"Perfect! Fewest possible moves.",pauseInfo:"Level {l} · {m} moves",lvl:"Level"}
+ en:{worlds:"Worlds",share2:"Share",shareScore:"Share result",settings:"Settings",sound:"Sound",music:"Music",vib:"Vibration",language:"Language",pause:"Paused",resume:"Resume",restart:"Restart",undo:"Undo",hintsLeft:"Hints: {n} left today",noHints:"No more hints today – come back tomorrow",hintShow:"Hint: drag where the arrow points",goal3:"★★★ in {n} moves or fewer",worldDone:"World complete!",nextWorld:"Next world",wdNext:"New world unlocked: {w}",levelsN:"{n} levels",locked:"Locked",continueAt:"World {w} · Level {l}",doneInfo2:"{m} moves · ★★★ in {o} or fewer",perfect:"Perfect! Fewest possible moves.",pauseInfo:"Level {l} · {m} moves",lvl:"Level"}
 };
 for (var lk in T2) for (var kk in T2[lk]) T[lk][kk] = T2[lk][kk];
 var IC = {
@@ -735,9 +741,9 @@ function win(){
 }
 function winScreen(){
   playing = false; state = "cleared";
-  if (li === LEVELS.length - 1){ $("endStars").textContent = totalStars(); $("endMax").textContent = LEVELS.length * 3; show("end"); sxResult(false); SX.fortune($("endLove")); return; }
+  if (li === LEVELS.length - 1){ $("endStars").textContent = totalStars(); $("endMax").textContent = LEVELS.length * 3; paintEndGrid(); show("end"); sxResult(false); SX.fortune($("endLove")); return; }
   var s = win.s, o = LEVELS[li].opt; $("doneInfo").innerHTML = fmt("doneInfo2", {m: "<b class=hl>" + moves + "</b>", o: o}) + (moves <= o ? "<br>" + t("perfect") : "");
-  var sp = $("doneStars").children; for (var k = 0; k < 3; k++) sp[k].className = ""; show("done");
+  var sp = $("doneStars").children; for (var k = 0; k < 3; k++) sp[k].className = ""; paintDoneGrid(); show("done");
   for (var k2 = 0; k2 < 3; k2++) (function(k){ setTimeout(function(){ sp[k].className = k < s ? "on" : "off"; if (k < s){ SFX.star(k); buzz(18); var v = cellWorld(st.x, st.y, .6); burst(v.x, .6, v.z, 14, ["#FFD36B", "#fff"], 2.5, 2, .8, .15, 2); } }, 380 + k * 330); })(k2);
 }
 function undo(){ if (!playing || screen !== null || busy() || !hist.length) return; var h = hist.pop(); st = h.s; moves = h.m; disp = sync(); Hh.x = st.x; Hh.y = st.y; Hh.sqV = 3; clearHint(); SFX.undo(); buzz(6); hud(); var w = cellWorld(st.x, st.y); burst(w.x, .3, w.z, 10, "#ffffff", 1.2, .8, .4, .12); }
@@ -884,12 +890,40 @@ $("levelsBtn").onclick = function(){ audio(); openWorlds(); };
 $("playBtn").onclick = function(){ audio(); SFX.ui(); load(Math.min(firstOpen(), LEVELS.length - 1)); };
 $("undoBtn").onclick = undo; $("restartBtn").onclick = restart; $("hintBtn").onclick = doHint;
 function next(){ var n = li + 1; if (WSTART.indexOf(n) > 0 && screen === "done"){ var w = worldOf(li); $("wdInfo").textContent = t("world") + " " + (w + 1) + " · " + t("wnames")[w]; $("wdStars").textContent = worldStars(w); $("wdMax").textContent = (wEnd(w) - WSTART[w]) * 3;
-    $("wdNext").textContent = fmt("wdNext", {w: (w + 2) + " · " + t("wnames")[w + 1]}); show("wdone"); sxResult(false); SX.fortune($("wdLove")); SFX.win(); var v = cellWorld(0, 0); burst(0, 1, 0, 80, ["#FFD36B", "#3FC7A8", "#ff7a8a", "#fff", "#A66CFF"], 5, 5, 1.6, .22, 5); return; }
+    $("wdNext").textContent = fmt("wdNext", {w: (w + 2) + " · " + t("wnames")[w + 1]}); paintWdGrid(); show("wdone"); sxResult(false); SX.fortune($("wdLove")); SFX.win(); var v = cellWorld(0, 0); burst(0, 1, 0, 80, ["#FFD36B", "#3FC7A8", "#ff7a8a", "#fff", "#A66CFF"], 5, 5, 1.6, .22, 5); return; }
   load(Math.min(n, LEVELS.length - 1)); }
 $("nextBtn").onclick = next; $("wdBtn").onclick = function(){ load(li + 1); };
 $("replayBtn").onclick = function(){ load(li); };
 $("doneLevels").onclick = function(){ wsel = worldOf(li); renderLevels(wsel); SFX.ui(); show("levels"); };
 $("wdLevels").onclick = openWorlds; $("endLevels").onclick = openWorlds; $("endMenu").onclick = menu;
+function emojiBar(n, ch){
+  n = Math.max(0, n | 0);
+  if (n <= 0) return "⬛";
+  if (n <= 10) return ch.repeat(n);
+  return ch.repeat(10) + "\u200b×" + n;
+}
+function levelStarRow(n){
+  n = Math.max(0, Math.min(3, n | 0));
+  return "★".repeat(n) + "☆".repeat(3 - n);
+}
+function paintGrid(id, lines){
+  var grid = $(id);
+  if (!grid) return;
+  grid.textContent = lines.join("\n");
+  grid.hidden = false;
+}
+function paintDoneGrid(){
+  var s = win.s || 0, o = LEVELS[li].opt;
+  paintGrid("doneGrid", ["Aximore", t("lvl") + " " + (li + 1), levelStarRow(s), fmt("doneInfo2", {m: moves, o: o}), "stop60.no/aximore"]);
+}
+function paintWdGrid(){
+  var w = worldOf(li);
+  paintGrid("wdGrid", ["Aximore", t("world") + " " + (w + 1) + " · " + t("wnames")[w], emojiBar(worldStars(w), "★"), "stop60.no/aximore"]);
+}
+function paintEndGrid(){
+  var got = $("endStars").textContent || String(totalStars()), mx = $("endMax").textContent || String(LEVELS.length * 3);
+  paintGrid("endGrid", ["Aximore", emojiBar(totalStars(), "★"), got + " / " + mx, "stop60.no/aximore"]);
+}
 function share(){
   var u = location.origin + location.pathname, ti = document.title;
   if (navigator.share){ navigator.share({title: ti, url: u}).catch(function(){}); }
@@ -897,7 +931,15 @@ function share(){
   try { window.goatcounter && goatcounter.count && goatcounter.count({path: "aximore-share", title: "aximore share", event: true}); } catch(e){}
 }
 $("shareBtn").onclick = share;
-["done", "wd", "end"].forEach(function(id){ var b = $(id === "end" ? "endShare" : id + "Share"); if (b && window.S60ScoreShare) S60ScoreShare.bind(b, { game: "aximore", links: $(id + "Links"), lang: function(){ return lang; }, gameName: function(){ return "Aximore"; }, score: function(){ return totalStars(); } }); });
+["done", "wd", "end"].forEach(function(id){
+  var b = $(id === "end" ? "endShare" : id + "Share"), grid = $(id + "Grid");
+  if (b && window.S60ScoreShare) S60ScoreShare.bind(b, { game: "aximore", links: $(id + "Links"), lang: function(){ return lang; }, gameName: function(){ return "Aximore"; }, score: function(){ return totalStars(); }, text: function(){ return (grid && grid.textContent) || ""; } });
+  if (!grid || !b) return;
+  grid.setAttribute("role", "button"); grid.tabIndex = 0;
+  var go = function(){ b.click(); };
+  grid.addEventListener("click", go);
+  grid.addEventListener("keydown", function(ev){ if (ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); ev.stopPropagation(); go(); } });
+});
 
 /* ---------- input: swipe anywhere + keyboard ---------- */
 var sw = null;
@@ -998,6 +1040,12 @@ function jumpPost(){ if (JP.on){ cam.fov = JP.fov; cam.updateProjectionMatrix();
   $("tgRm").onclick = function(){ P.rm = !reduced(); save(); up(); SFX.ui(); }; })();
 Object.defineProperty(window.__aximore, "jump", {get: function(){ return {on: JP.on, t: JP.t, dur: JP.dur, world: JP.world, n: JP.n}; }});
 window.__aximore.P = P;
+window.__aximore.emojiBar = emojiBar;
+window.__aximore.paintDoneGrid = paintDoneGrid;
+window.__aximore.paintWdGrid = paintWdGrid;
+window.__aximore.paintEndGrid = paintEndGrid;
+window.__aximore.winScreen = winScreen;
+window.__aximore.prepareClear = function(stars, moveCount){ win.s = stars; if (moveCount != null) moves = moveCount; };
 
 /* iOS audio unlock: create/resume + silent buffer on first gesture, resume on return */
 (function(){ var u = function(){ audio(); }; ["touchstart", "touchend", "pointerdown", "click", "keydown"].forEach(function(e){ addEventListener(e, u, {capture: true, passive: true}); });
