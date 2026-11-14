@@ -31,6 +31,9 @@ T = {
   k_games="Spillene", h_games="Velg et spill", filt="Filtrer etter kategori", all="Alle",
   cats={"board": "Brettspill", "logic": "Logikk", "action": "Action", "learning": "Læring"},
   new="Ny", langs="Språk", play="Spill", modes="Spillemåter",
+  intro=["Stop60 er en liten samling gratis spill som du spiller rett i nettleseren, på norsk, engelsk og polsk. Spillene starter på sekunder, fungerer på mobil både på høykant og liggende, og trenger verken konto, nedlasting eller reklame.",
+         "Begynn med dagens oppgave i Ren logikk – samme brett for alle, så du kan sammenligne emoji-resultatet med venner. Eller ta en rask runde Ufobang, styr Lavakule over lavaen, spill brettspillet Hefau mot datamaskinen eller en venn, eller knus robaki i Sneaky Bugs på ett minutt. Nye spill og forbedringer kommer ofte, så det lønner seg å komme tilbake."],
+  other_h="Stop60 på andre språk:", other={"en": "Stop60 in English – free browser games", "pl": "Stop60 po polsku – darmowe gry w przeglądarce"},
   k_about="Om Stop60", h_about="Laget med lidenskap, gratis for alle",
   about=[("Gratis for alle", "Alle spillene er helt gratis. Ingen reklame, ingen kjøp i spillet og ingen konto."),
          ("Rett i nettleseren", "Åpne lenken og spill – på mobil, nettbrett eller PC. Vil du ha spillet som app, velg «Legg til på Hjem-skjerm»."),
@@ -43,8 +46,8 @@ T = {
   tagline="made with passion",
   motto=("You've just reached the end of the internet. Beyond me, there's only space.",
          "Don't look any further – stay and find something for you."),
-  title="Stop60 – free browser games, no ads",
-  desc="Free browser games, no ads: small board, logic, action and learning games you start right in the browser. No account and no app. In Norwegian, English and Polish.",
+  title="Free browser games with no ads or sign-up – Stop60 in English",
+  desc="Play free browser games in English on your phone or computer: the daily Pure Logic puzzle, Sneaky Bugs, Ufobang, the Hefau board game and more. No ads, no account, nothing to install.",
   navlang="Language", nav_games="Games", nav_about="About", menu="Main menu",
   h1="Free games, right in your browser",
   lead="Small games made with passion – free for everyone, on phone and computer.",
@@ -52,6 +55,9 @@ T = {
   k_games="The games", h_games="Pick a game", filt="Filter by category", all="All",
   cats={"board": "Board", "logic": "Logic", "action": "Action", "learning": "Learning"},
   new="New", langs="Languages", play="Play", modes="Modes",
+  intro=["Stop60 is a small collection of free games you play straight in your browser, in English, Norwegian and Polish. Every game starts in seconds, works on a phone held upright or sideways, and needs no account, no download and no ads.",
+         "Start with today’s Pure Logic puzzle – the same board for everyone, so you can compare emoji results with friends. Or try a quick round of Ufobang, steer the Lava Marble over the lava, play the Hefau board game against the computer or a friend, or squash bugs for one minute in Sneaky Bugs. New games and updates arrive often, so it is worth coming back."],
+  other_h="Stop60 in other languages:", other={"no": "Stop60 på norsk – gratis spill i nettleseren", "pl": "Stop60 po polsku – darmowe gry w przeglądarce"},
   k_about="About Stop60", h_about="Made with passion, free for everyone",
   about=[("Free for everyone", "Every game is completely free. No ads, no in-game purchases and no account."),
          ("Right in your browser", "Open the link and play – on a phone, tablet or computer. Want it as an app? Choose “Add to Home Screen”."),
@@ -64,8 +70,8 @@ T = {
   tagline="stworzone z pasji",
   motto=("Właśnie dotarłeś do kresu internetu. Poza mną jest tylko kosmos.",
          "Nie szukaj niczego więcej, zostań i znajdź coś dla siebie."),
-  title="Stop60 – darmowe gry bez reklam w przeglądarce",
-  desc="Darmowe gry bez reklam, od razu w przeglądarce: planszowe, logiczne, zręcznościowe i do nauki. Robione z pasji – bez konta i bez aplikacji. Po norwesku, angielsku i polsku.",
+  title="Darmowe gry online bez reklam i logowania – Stop60 po polsku",
+  desc="Darmowe gry po polsku na telefon i komputer: codzienna Czysta logika, Robaki, Ufobang, planszowe Hefau i inne. Bez reklam, bez konta i bez instalacji – grasz od razu w przeglądarce.",
   navlang="Język", nav_games="Gry", nav_about="O nas", menu="Menu główne",
   h1="Darmowe gry prosto w przeglądarce",
   lead="Małe gry robione z pasji – darmowe dla wszystkich, na telefonie i komputerze.",
@@ -73,6 +79,9 @@ T = {
   k_games="Gry", h_games="Wybierz grę", filt="Filtruj według kategorii", all="Wszystkie",
   cats={"board": "Planszowe", "logic": "Logiczne", "action": "Akcja", "learning": "Nauka"},
   new="Nowość", langs="Języki", play="Graj", modes="Tryby",
+  intro=["Stop60 to mała kolekcja darmowych gier, w które grasz od razu w przeglądarce – po polsku, angielsku i norwesku. Każda gra startuje w kilka sekund, działa na telefonie w pionie i w poziomie i nie wymaga konta, pobierania ani oglądania reklam.",
+         "Zacznij od dzisiejszej planszy w Czystej logice – ta sama dla wszystkich, więc możesz porównać wynik w emoji ze znajomymi. Albo zagraj szybką rundę w Ufobang, poprowadź Lawową kulkę nad lawą, zagraj w planszowe Hefau z komputerem lub z kimś obok, albo przez minutę rozjeżdżaj czarne robaki w Robakach. Nowe gry i poprawki pojawiają się często, więc warto tu wracać."],
+  other_h="Stop60 w innych językach:", other={"no": "Stop60 på norsk – gratis spill i nettleseren", "en": "Stop60 in English – free browser games"},
   k_about="O Stop60", h_about="Robione z pasji, darmowe dla wszystkich",
   about=[("Za darmo dla wszystkich", "Wszystkie gry są całkowicie darmowe. Bez reklam, bez zakupów w grze i bez konta."),
          ("Prosto w przeglądarce", "Otwórz link i graj – na telefonie, tablecie lub komputerze. Chcesz mieć grę jak aplikację? Wybierz „Dodaj do ekranu początkowego”."),
@@ -326,11 +335,13 @@ def footer(t):
     hub = {"no": ("Rolige spill samlet:", "Hjernetrim", "/hjernetrim/"),
            "en": ("Calm games in one place:", "Brain games", "/en/brain-games/"),
            "pl": ("Spokojne gry w jednym miejscu:", "Gry logiczne", "/pl/gry-logiczne/")}[t["_l"]]
+    other = f'<p>{e(t["other_h"])} ' + " · ".join(f'<a href="/{PATH[x]}" hreflang="{HREFLANG[x]}" lang="{HREFLANG[x]}">{e(n)}</a>' for x, n in t["other"].items()) + "</p>"
     return f'''<footer><div class="wrap">
 <h2>{e(t["privacy_h"])}</h2>
 <p>{e(t["privacy"])}</p>
 <p>{e(t["priv_links"])} {priv}</p>
 <p>{e(hub[0])} <a href="{hub[2]}">{e(hub[1])}</a></p>
+{other}
 <div class="row"><span>© 2026 Stop60</span><span>{e(t["contact"])} <a class="em" href="#" data-u="kontakt" data-d="stop60.no" rel="nofollow">kontakt&#64;stop60.no</a></span></div>
 </div></footer>'''
 
@@ -389,6 +400,8 @@ def page(l):
     cards = "".join(card(g, l, t, rel) for g in games)
     trust = "".join(f"<li>{e(x)}</li>" for x in t["trust"])
     about = "".join(f'<div class="box"><h3>{e(h)}</h3><p>{e(p)}</p></div>' for h, p in t["about"])
+    intro = "".join(f'<p class="lead">{e(p)}</p>' for p in t["intro"])
+    other = f'<p class="note">{e(t["other_h"])} ' + " · ".join(f'<a href="/{PATH[x]}" hreflang="{HREFLANG[x]}" lang="{HREFLANG[x]}">{e(n)}</a>' for x, n in t["other"].items()) + "</p>"
     return f'''<!DOCTYPE html>
 <!-- Copyright (c) 2026 Stop60. All rights reserved. See LICENSE. Generated by src/build.py – do not edit by hand. -->
 <html lang="{HREFLANG[l]}">
@@ -438,7 +451,9 @@ def page(l):
 <section class="s about" id="om"><div class="wrap">
 <p class="k">{e(t["k_about"])}</p>
 <h2>{e(t["h_about"])}</h2>
+{intro}
 <div class="cols">{about}</div>
+{other}
 <p class="note">{e(t["hms"])}</p>
 </div></section>
 </main>
@@ -484,14 +499,14 @@ def sitemap():
     def game(slug, day):
         return [("nb", f"{slug}/"), ("pl", f"{slug}/pl/"), ("en", f"{slug}/en/"), ("x-default", f"{slug}/")], day
     parts = [block(["", "en/", "pl/"], home, "2026-11-14")]
-    for slug, day in (("hefau", "2026-11-13"), ("logikk", "2026-11-13"), ("ufobang", "2026-11-13"),
+    for slug, day in (("hefau", "2026-11-14"), ("logikk", "2026-11-13"), ("ufobang", "2026-11-14"),
                       ("redning", "2026-11-12"), ("aspheris", "2026-11-12"), ("lavakule", "2026-11-13")):
         paths, day = game(slug, day)
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
     power = [("nb", "strom/"), ("pl", "prad/"), ("en", "power/"), ("x-default", "strom/")]
     parts.append(block(["strom/", "power/", "prad/"], power, "2026-10-26"))
     robaki = [("pl", "robaki/"), ("en", "robaki/en/"), ("x-default", "robaki/")]
-    parts.append(block(["robaki/", "robaki/en/"], robaki, "2026-11-13"))
+    parts.append(block(["robaki/", "robaki/en/"], robaki, "2026-11-14"))
     for slug in ("aximore", "stjernestorm"):
         paths, day = game(slug, "2026-11-12")
         parts.append(block([f"{slug}/", f"{slug}/pl/", f"{slug}/en/"], paths, day))
