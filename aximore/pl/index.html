@@ -683,6 +683,7 @@ function load(i){
   li = i; var L = AX.parse(LEVELS[i].rows); st = AX.init(L); moves = 0; hist = []; anim = null; queue = null; winT = 0; dead = null; clearHint();
   disp = sync(); setTheme(worldOf(i)); camMode = "game"; buildBoard(L, worldOf(i)); introT = 0; Hh.x = st.x; Hh.y = st.y; Hh.lift = 4; Hh.vy = 0; Hh.gone = 0; Hh.red = 0; heroMesh.material.emissive.copy(C("#E89A1C"));
   fitCam(); playing = true; state = "play"; show(null); hud(); P.last = i; save(); audio();
+  if (!load.gc) try { if (window.goatcounter && goatcounter.count){ goatcounter.count({path: "aximore-start", title: "aximore start", event: true}); load.gc = 1; } } catch(e){}
   $("iWorld").textContent = t("world") + " " + (worldOf(i) + 1) + " · " + t("wnames")[worldOf(i)]; $("iLevel").textContent = t("lvl") + " " + (i + 1);
   $("iTarget").innerHTML = IC.star + " " + fmt("goal3", {n: LEVELS[i].opt}); if (!JP.on) $("intro").classList.add("on"); clearTimeout(load.t); load.t = setTimeout(function(){ $("intro").classList.remove("on"); }, 1900);
   tutorial = i === 0 && !P.stars[0]; setTip(); if (tutorial) setTimeout(function(){ if (tutorial && li === 0 && !moves && state === "play") showHint(solveFrom(st)); }, 1400);

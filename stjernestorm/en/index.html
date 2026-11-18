@@ -363,6 +363,7 @@ function newRun(){
   if (DEBUG && QS.get("pow") !== null) player.pow = clamp(+QS.get("pow") || 0, 0, POW_MAX);
   if (DEBUG && QS.get("wave") !== null) wave = Math.max(0, (+QS.get("wave") || 1) - 1);
   setMode("play"); startWave();
+  if (!DEBUG) try { window.goatcounter && goatcounter.count && goatcounter.count({path: "stjernestorm-start", title: "stjernestorm start", event: true}); } catch(e){}
 }
 /* stages flow into each other: no clear screen, no pause, no shop mid-run */
 var stageTint = 0;
