@@ -16,6 +16,8 @@ LIVE = "https://stop60.no/counters.json"
 SKIP_PREFIX = ("home", "landing", "follow", "portfolio", "diag")
 
 PLAY = re.compile(r"(^|-)start(-[a-z0-9]+)?$")
+# Games whose start event was added on 2026-11-18 (also matched by PLAY; listed explicitly so they are never dropped).
+PLAY_EXTRA = {"stjernestorm-start", "aspheris-start", "aximore-start"}
 DAILY = re.compile(r"-start-daily$")
 SHARE = re.compile(r"-share(-[a-z0-9]+)?$|-challenge-")
 
@@ -75,7 +77,7 @@ def build():
     for (day, path), n in ev.items():
         if path.startswith(SKIP_PREFIX):
             continue
-        if PLAY.search(path) and "demo" not in path:
+        if (PLAY.search(path) or path in PLAY_EXTRA) and "demo" not in path:
             plays += n
         if SHARE.search(path):
             shares += n
