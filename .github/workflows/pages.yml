@@ -6,6 +6,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Refresh counters.json (counter strip on / and /daily/) from GoatCounter every ~30 min.
+    - cron: '7,37 * * * *'
 permissions:
   contents: read
   pages: write
@@ -26,6 +29,10 @@ jobs:
           mkdir _site
           tar --exclude=./.git --exclude=./.github --exclude=./src --exclude=./_site --exclude=./README.md -cf - . | tar -xf - -C _site
           ls -la _site
+      - name: Build counters.json from GoatCounter (token stays in Actions)
+        env:
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
+        run: python3 .github/scripts/counters.py _site/counters.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
