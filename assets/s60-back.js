@@ -1,7 +1,8 @@
 /* Stop60 "All games" control: a small corner button during play and a big button on end screens.
    Include: <script src="/assets/s60-back.js" data-game="redning" data-pos="bl" data-end="after:#oAgain" defer></script>
    data-pos: tl | tr | bl | br (corner), data-dx / data-dy: extra offset in px, data-compact="1": icon only,
-   data-end: end-screen anchors separated by "|": "after:SEL", "before:SEL" or "in:SEL" (append). */
+   data-end: end-screen anchors separated by "|": "after:SEL", "before:SEL" or "in:SEL" (append).
+   End screens ("after:"/"before:" anchors) also get a small "Follow Stop60" row (Facebook / X, new tab); data-follow="0" turns it off. */
 (function () {
   'use strict';
   if (window.__s60back) return; window.__s60back = 1;
@@ -12,6 +13,9 @@
   var ends = (ds.end || '').split('|').map(function (x) { return x.trim(); }).filter(Boolean);
   var TXT = { no: 'Alle spill', en: 'All games', pl: 'Wszystkie gry' };
   var HOME = { no: '/', en: '/en/', pl: '/pl/' };
+  var follow = ds.follow !== '0';
+  var FB = 'https://www.facebook.com/profile.php?id=61595192884017', XURL = 'https://x.com/stop60_games';
+  var FTXT = { no: 'Følg Stop60 – nytt spill hver dag', en: 'Follow Stop60 – a new challenge every day', pl: 'Obserwuj Stop60 – nowe wyzwanie codziennie' };
   function lang() {
     var l = (document.documentElement.getAttribute('data-lang') || document.documentElement.lang || '').toLowerCase();
     if (/^pl/.test(l)) return 'pl';
@@ -35,6 +39,10 @@
     'border-radius:12px;background:#fff;color:#111;border:2px solid #111;font:700 16px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;' +
     'box-shadow:0 2px 0 rgba(0,0,0,.25);-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer;position:relative;z-index:2}' +
     '.s60B:active{transform:translateY(1px)}' +
+    '.s60F{display:flex!important;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 8px;box-sizing:border-box;width:100%;max-width:340px;margin:6px auto 4px!important;padding:0;' +
+    'font:600 13px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:inherit;position:relative;z-index:2;text-align:center}' +
+    '.s60F span{flex:1 0 100%;opacity:.9}.s60F a{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:6px 14px;border-radius:18px;' +
+    'background:#1877f2;color:#fff;text-decoration:none;font-weight:700;-webkit-tap-highlight-color:transparent;touch-action:manipulation}.s60F a.x{background:#111;border:1px solid rgba(255,255,255,.6)}' +
     '@media print{.s60b{display:none}}';
   function off(v, side) { return 'calc(env(safe-area-inset-' + side + ', 0px) + ' + (8 + v) + 'px)'; }
   function go(ev) {
@@ -73,8 +81,27 @@
     a.href = HOME[l]; a.setAttribute('aria-label', t + ' – stop60.no'); a.title = t;
     a.innerHTML = ICON + '<span>' + t + '</span>';
   }
-  var corner, bigs = [];
-  function relabel() { if (corner) fill(corner); bigs.forEach(fill); }
+  function fillF(r) {
+    var l = lang();
+    r.innerHTML = '<span>' + FTXT[l] + '</span><a href="' + FB + '" target="_blank" rel="noopener" data-n="fb">Facebook</a><a class="x" href="' + XURL + '" target="_blank" rel="noopener" data-n="x">X</a>';
+    var as = r.getElementsByTagName('a');
+    for (var i = 0; i < as.length; i++) (function (a) {
+      var stop = function (e) { e.stopPropagation(); };
+      ['pointerdown', 'pointerup', 'mousedown', 'touchend'].forEach(function (t) { a.addEventListener(t, stop); });
+      a.addEventListener('touchstart', stop, { passive: true });
+      a.addEventListener('click', function (e) {
+        e.stopPropagation();
+        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: 'follow-' + a.getAttribute('data-n') + '-end-' + game, title: 'Follow Stop60', event: true }); } catch (x) {}
+      });
+    })(as[i]);
+  }
+  function makeF() {
+    var r = document.createElement('div');
+    r.className = 's60F'; r.setAttribute('translate', 'no'); r.setAttribute('data-s60follow', '1');
+    fillF(r); return r;
+  }
+  var corner, bigs = [], rows = [];
+  function relabel() { if (corner) fill(corner); bigs.forEach(fill); rows.forEach(fillF); }
   function injectEnds() {
     ends.forEach(function (spec) {
       var m = /^(after|before|in):(.+)$/.exec(spec), how = m ? m[1] : 'in', sel = m ? m[2] : spec;
@@ -87,9 +114,11 @@
         else if (how === 'before') el.parentNode.insertBefore(b, el);
         else el.appendChild(b);
         el.__s60b = b; bigs.push(b);
+        if (follow && how !== 'in') { var r = makeF(); b.parentNode.insertBefore(r, b.nextSibling); rows.push(r); }
       }
     });
     bigs = bigs.filter(function (b) { return b.isConnected; });
+    rows = rows.filter(function (r) { return r.isConnected; });
   }
   function init() {
     if (!document.body || document.getElementById('s60back')) return;
