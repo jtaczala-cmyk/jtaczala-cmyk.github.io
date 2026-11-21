@@ -4,8 +4,8 @@
  "start_url": "/pepperkaketarn/",
  "scope": "/pepperkaketarn/",
  "display": "standalone",
- "background_color": "#2A1626",
- "theme_color": "#2A1626",
+ "background_color": "#F7E6D3",
+ "theme_color": "#F7E6D3",
  "icons": [
   {
    "src": "icon-192.png",
