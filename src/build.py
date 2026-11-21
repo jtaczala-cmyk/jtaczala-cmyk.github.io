@@ -426,6 +426,7 @@ def page(l):
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="{rel}count.js"></script>
 <script defer src="{rel}assets/contact.js?v=2"></script>
 <script defer src="{rel}assets/filter.js?v=1"></script>
+<script defer src="/assets/s60-facts.js?v=2"></script>
 <style>.card .im .qr{{display:none}}@media (min-width:900px) and (pointer:fine){{.card .im .qr{{display:block}}}}</style>
 </head>
 <body>
