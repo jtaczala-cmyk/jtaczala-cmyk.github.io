@@ -88,7 +88,7 @@
   <h1>Aspheris</h1>
   <p id="hint" style="opacity:.85">Drag with your finger</p>
   <p class="seo-lead" style="margin:12px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Aspheris is a free browser game with no ads. Tilt your phone or drag with a finger to steer Lumen, a glowing energy orb, through colourful cosmic worlds. Collect Heart fragments, escape the Drift and fly through the portal – on stop60.no.</p>
-  <button id="go">Start</button>
+  <button id="go">START</button>
   <div id="langs"><button data-l="pl">PL</button><button data-l="en">EN</button><button data-l="no">NO</button></div>
 </div>
 <div id="splash" aria-label="Aspheris">
@@ -111,17 +111,17 @@ window.goatcounter={path:location.pathname.replace(/index\.html$/,'')};
 const sc=document.getElementById('sc');
 // Story (GDD: Lumen vs Drift). PL default, EN/NO from GDD dialogues.
 const TX={
- pl:{hint:'Przeciągaj palcem',tap:'Dotknij, aby kontynuować',start:'Start',next:'Dalej',go:'Leć!',frag:'Fragmenty',zone:'STREFA',again:'Jeszcze raz',time:'Czas',shareScore:'Udostępnij wynik',gyroOff:'Żyroskop: wył',gyroOn:'Żyroskop: wł',
+ pl:{hint:'Przeciągaj palcem',tap:'Dotknij, aby kontynuować',start:'START',next:'Dalej',go:'Leć!',frag:'Fragmenty',zone:'STREFA',again:'Jeszcze raz',time:'Czas',shareScore:'Udostępnij wynik',gyroOff:'Żyroskop: wył.',gyroOn:'Żyroskop: wł.',
   pk:'PROLOG',pt:'Lumen. Obudź się. Stacja spada.',pb:['Serce Równowagi stacji Aspheris pękło. Załoga zniknęła.','Drift — chaotyczna anomalia z rozbitego Serca — rozrywa sektory i pożera fragmenty równowagi.','Jesteś Lumen, ostatnią działającą sferą energii. Zbierz fragmenty Serca w trzech strefach, zanim Drift pochłonie wszystko.'],
   m:['Laguna chłodzenia wciąż świeci. Zbierz 7 fragmentów Serca.','Drift rozgrzał rdzeń do czerwoności. Zbierz 7 fragmentów, zanim lawa je pochłonie.','Ogród hydroponiczny zdziczał i zatruł powietrze. Ostatnie 7 fragmentów — potem Serce.'],
   ev:['„Lumen, jeśli to słyszysz…”','Drift się zbliża.','Rośliny otwierają ci drogę…'],got:'Fragment odzyskany.',
   wh:'Serce bije. Aspheris żyje.',wb:'Lumen złożył Serce Równowagi. Drift cofa się w ciemność — na razie.'},
- en:{hint:'Drag with your finger',tap:'Tap to continue',start:'Start',next:'Next',go:'Fly!',frag:'Fragments',zone:'ZONE',again:'Play again',time:'Time',shareScore:'Share result',gyroOff:'Gyro: off',gyroOn:'Gyro: on',
+ en:{hint:'Drag with your finger',tap:'Tap to continue',start:'START',next:'Next',go:'Fly!',frag:'Fragments',zone:'ZONE',again:'Play again',time:'Time',shareScore:'Share result',gyroOff:'Gyro: off',gyroOn:'Gyro: on',
   pk:'PROLOGUE',pt:'Lumen. Wake up. The station is falling.',pb:['The Heart of Balance of station Aspheris has cracked. The crew is gone.','The Drift — a chaotic anomaly born from the broken Heart — tears the sectors apart and devours the fragments.','You are Lumen, the last working energy sphere. Collect the Heart fragments in three zones before the Drift consumes everything.'],
   m:['The cooling lagoon still glows. Collect 7 Heart fragments.','The Drift has heated the core red-hot. Collect 7 fragments before the lava takes them.','The hydroponic garden has gone wild and toxic. The last 7 fragments — then the Heart.'],
   ev:['“Lumen, if you can hear this…”','The Drift is approaching.','The plants open a path for you…'],got:'Fragment recovered.',
   wh:'The Heart beats. Aspheris lives.',wb:'Lumen has rebuilt the Heart of Balance. The Drift retreats into the dark — for now.'},
- no:{hint:'Dra med fingeren',tap:'Trykk for å fortsette',start:'Start',next:'Videre',go:'Fly!',frag:'Fragmenter',zone:'SONE',again:'Spill igjen',time:'Tid',shareScore:'Del resultatet',gyroOff:'Gyro: av',gyroOn:'Gyro: på',
+ no:{hint:'Dra med fingeren',tap:'Trykk for å fortsette',start:'START',next:'Videre',go:'Fly!',frag:'Fragmenter',zone:'SONE',again:'Spill igjen',time:'Tid',shareScore:'Del resultatet',gyroOff:'Gyro: av',gyroOn:'Gyro: på',
   pk:'PROLOG',pt:'Lumen. Våkn opp. Stasjonen faller.',pb:['Balansens hjerte på stasjonen Aspheris har sprukket. Mannskapet er borte.','Driften — en kaotisk anomali fra det knuste hjertet — river sektorene i stykker og sluker fragmentene.','Du er Lumen, den siste fungerende energisfæren. Samle hjertefragmentene i tre soner før Driften sluker alt.'],
   m:['Kjølelagunen lyser fortsatt. Samle 7 hjertefragmenter.','Driften har varmet kjernen rødglødende. Samle 7 fragmenter før lavaen tar dem.','Den hydroponiske hagen er blitt vill og giftig. De siste 7 fragmentene — så hjertet.'],
   ev:['«Lumen, hvis du hører dette…»','Driften nærmer seg.','Plantene åpner veien for deg…'],got:'Fragment gjenopprettet.',
