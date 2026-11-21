@@ -5,7 +5,7 @@
   "use strict";
   var TXT = {
     no: "Jeg fikk {n} poeng i {g} – klarer du mer? stop60.no",
-    pl: "Zdobyłem {n} punktów w {g} – pobijesz mnie? stop60.no",
+    pl: "Mam {n} punktów w {g} – pobijesz mój wynik? stop60.no",
     en: "I scored {n} points in {g} – can you beat me? stop60.no"
   };
   var UI = {
