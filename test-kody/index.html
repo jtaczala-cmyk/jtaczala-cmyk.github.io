@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="nb" data-lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>STOP60 – Kode (test)</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<style>
+:root{--bg:#2A1626;--gold:#F2C14E;--cream:#FFF4E6}
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;background:radial-gradient(120% 70% at 50% 0%,#4a2a40,#2A1626 65%);color:var(--cream);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:calc(18px + env(safe-area-inset-top)) 16px 30px}
+.w{max-width:440px;margin:0 auto;text-align:center}
+.langs{display:flex;gap:6px;justify-content:flex-end}.langs button{font-size:1.25rem;background:none;border:1px solid transparent;border-radius:10px;padding:3px 7px;opacity:.55;cursor:pointer}.langs button.cur{opacity:1;border-color:var(--gold)}
+.test{display:inline-block;margin:6px 0 10px;background:#E23B3B;color:#fff;font-weight:800;font-size:.8rem;padding:5px 10px;border-radius:999px;letter-spacing:.06em}
+h1{font-size:1.9rem;color:var(--gold);margin:6px 0 4px}
+.lead{margin:0 0 12px;color:#F3E6DA}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,214,170,.3);border-radius:20px;padding:14px 14px 16px;margin:12px 0}
+button{font:inherit;color:var(--cream);background:linear-gradient(180deg,rgba(110,58,86,.95),rgba(60,28,50,.95));border:1px solid rgba(255,214,170,.35);border-radius:12px;padding:10px 16px;cursor:pointer}
+.games{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.g{display:block;border-radius:16px;overflow:hidden;background:#3B2133;border:1px solid rgba(255,214,170,.3);color:#fff;text-decoration:none}
+.g img{display:block;width:100%;aspect-ratio:40/21;object-fit:cover}.g b{display:block;padding:8px 6px 2px}.g span{display:block;font-size:.82rem;color:#E9D6DE;padding:0 6px 10px}
+.small{font-size:.85rem;color:#D9C3C8;margin-top:10px}
+a{color:var(--gold)}
+</style>
+<script src="/assets/s60-kody.js?v=1"></script>
+</head>
+<body>
+<div class="w">
+  <nav class="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
+  <img src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
+  <div><span class="test">TEST</span></div>
+  <h1 data-t="h">Dagens kode</h1>
+  <p class="lead" data-t="lead">Skriv inn koden fra Stop60 og få et ekstra liv og gullhatt til katten Magic.</p>
+  <div class="card" id="kodyBox"></div>
+  <div class="card">
+    <p data-t="try" style="font-weight:700;margin-bottom:8px">Prøv belønningen her</p>
+    <div class="games">
+      <a class="g" data-href="/test-kody/nostekurv/" href="/test-kody/nostekurv/"><img src="/nostekurv/card.jpg" alt=""><b>Nøstekurv</b><span data-t="nk">Magic slipper nøster</span></a>
+      <a class="g" data-href="/test-kody/pepperkaketarn/" href="/test-kody/pepperkaketarn/"><img src="/pepperkaketarn/card.jpg" alt=""><b>Pepperkaketårn</b><span data-t="pk">Bygg et tårn av pepperkaker</span></a>
+    </div>
+    <p class="small" data-t="note">Ekstra liv brukes i fritt spill. Runder med ekstra liv sendes ikke til topplisten.</p>
+  </div>
+  <p class="small"><a href="/test-kody/forside/" data-t="home">Slik kan det se ut på forsiden</a> · <a href="/">stop60.no</a></p>
+</div>
+<script>
+var T = {
+  no: {h: "Dagens kode", lead: "Skriv inn koden fra Stop60 og få et ekstra liv og gullhatt til katten Magic.", try: "Prøv belønningen her", nk: "Magic slipper nøster", pk: "Bygg et tårn av pepperkaker", note: "Ekstra liv brukes i fritt spill. Runder med ekstra liv sendes ikke til topplisten.", home: "Slik kan det se ut på forsiden"},
+  pl: {h: "Kod dnia", lead: "Wpisz kod od Stop60 i odbierz dodatkowe życie oraz złoty kapelusz dla kota Magica.", try: "Wypróbuj nagrodę tutaj", nk: "Magic zrzuca kłębki", pk: "Zbuduj wieżę z pierników", note: "Dodatkowe życie działa w grze swobodnej. Gry z dodatkowym życiem nie trafiają do rankingu.", home: "Tak to może wyglądać na stronie głównej"},
+  en: {h: "Code of the day", lead: "Enter the code from Stop60 to get an extra life and a gold hat for Magic the cat.", try: "Try the reward here", nk: "Magic drops yarn balls", pk: "Build a gingerbread tower", note: "Extra lives work in free play. Extra-life runs are not sent to the leaderboard.", home: "How it could look on the homepage"}
+};
+var QS = new URLSearchParams(location.search), lang = T[QS.get("lang")] ? QS.get("lang") : ((navigator.language || "").slice(0, 2) === "pl" ? "pl" : (navigator.language || "").slice(0, 2) === "en" ? "en" : "no");
+var KB = S60Kody.mount(document.getElementById("kodyBox"), {lang: function(){ return lang; }, open: true});
+function apply(){
+  document.documentElement.lang = lang === "no" ? "nb" : lang; document.documentElement.dataset.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(function(e){ e.textContent = T[lang][e.dataset.t]; });
+  document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
+  document.querySelectorAll("a.g").forEach(function(a){ a.href = a.dataset.href + (lang === "no" ? "" : lang + "/"); });
+  KB.relabel();
+}
+document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = b.dataset.l; apply(); }; });
+apply();
+</script>
+</body>
+</html>

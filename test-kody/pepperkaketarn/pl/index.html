@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Darmowa gra świąteczna bez reklam w przeglądarce: zbuduj z babcią i kotem Magic wieżę z pierników. Stuknij, żeby upuścić piernik – trafiaj idealnie po lukier i bonus. Wieża dnia: 40 pięter, taka sama dla wszystkich.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stop60">
+<meta property="og:title" content="Pepperkaketårn – babcine pierniki | darmowa gra świąteczna bez reklam">
+<meta property="og:description" content="Darmowa gra świąteczna bez reklam w przeglądarce: zbuduj z babcią i kotem Magic wieżę z pierników. Stuknij, żeby upuścić piernik – trafiaj idealnie po lukier i bonus. Wieża dnia: 40 pięter, taka sama dla wszystkich.">
+<meta property="og:url" content="https://stop60.no/pepperkaketarn/pl/">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:image" content="https://stop60.no/pepperkaketarn/og-pl.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pepperkaketårn: babcia, kot Magic i wysoka wieża z uśmiechniętych pierników">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pepperkaketårn – babcine pierniki | darmowa gra świąteczna bez reklam">
+<meta name="twitter:description" content="Darmowa gra świąteczna bez reklam w przeglądarce: zbuduj z babcią i kotem Magic wieżę z pierników. Stuknij, żeby upuścić piernik – trafiaj idealnie po lukier i bonus. Wieża dnia: 40 pięter, taka sama dla wszystkich.">
+<meta name="twitter:image" content="https://stop60.no/pepperkaketarn/og-pl.jpg?v=1">
+<meta name="theme-color" content="#2A1626">
+<title>Pepperkaketårn – babcine pierniki | darmowa gra świąteczna bez reklam</title>
+<link rel="icon" href="/pepperkaketarn/favicon.ico?v=1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/pepperkaketarn/icon-32.png?v=1"><link rel="apple-touch-icon" href="/pepperkaketarn/apple-touch-icon.png?v=1"><link rel="manifest" href="/pepperkaketarn/manifest.webmanifest">
+<style>
+:root{--bg:#2A1626;--bg2:#3B2133;--gold:#F2C14E;--red:#E23B3B;--rose:#FF9FB2;--green:#7FD49A;--cream:#FFF4E6;--muted:#D9C3C8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--cream);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:none}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+button{font:inherit;color:var(--cream);background:linear-gradient(180deg,rgba(110,58,86,.95),rgba(60,28,50,.95));border:1px solid rgba(255,214,170,.35);border-radius:12px;padding:10px 16px;cursor:pointer;transition:transform .08s;box-shadow:0 2px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12)}
+button:active{transform:scale(.95)}
+button.big{background:linear-gradient(180deg,#FFE08A,#F2C14E 55%,#D39A22);color:#2A1606;border:0;font-weight:800;font-size:1.15rem;padding:14px 30px;box-shadow:0 0 0 2px rgba(255,236,180,.25),0 8px 28px rgba(242,193,78,.45),inset 0 1px 0 rgba(255,255,255,.6);animation:pulse 2.2s ease-in-out infinite}
+button.big.done{animation:none;background:linear-gradient(180deg,#C9F2D3,#7FD49A 60%,#4FA86E);color:#10301C;font-size:1rem}
+button.alt{font-weight:800;font-size:1.02rem;padding:12px 26px;background:linear-gradient(180deg,#FFB7C5,#E8728C 60%,#B9445F);color:#3A0C18;border:0}
+@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(255,236,180,.18),0 8px 36px rgba(242,193,78,.7),inset 0 1px 0 rgba(255,255,255,.6)}}
+.langs{position:fixed;top:calc(8px + env(safe-area-inset-top));right:10px;z-index:30;display:flex;gap:4px}
+.langs[hidden]{display:none}
+.langs button{padding:4px 7px;font-size:1.25rem;background:rgba(42,22,38,.6);border-color:transparent;opacity:.55;box-shadow:none}
+.langs button.cur{opacity:1;border-color:var(--gold)}
+.card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;width:min(92vw,420px);max-height:90vh;max-height:90dvh;overflow:auto;text-align:center;border-radius:22px;padding:20px 18px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(92,44,72,.9),rgba(38,18,34,.95));border:1px solid rgba(255,214,170,.4);box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 0 40px rgba(255,159,178,.16),0 24px 70px rgba(0,0,0,.7)}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 60% at 50% 0%,rgba(255,200,150,.14),transparent 60%)}
+.card[hidden],#hud[hidden]{display:none}
+.logo{width:64px;height:64px;display:block;margin:0 auto 4px}
+.brand{font-weight:900;letter-spacing:.25em;color:var(--red);font-size:.85rem}
+h1{font-size:2.4rem;margin:2px 0;background:linear-gradient(180deg,#FFFFFF,#FFE2C2 50%,#F2A97F);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(255,190,150,.5));letter-spacing:.02em}
+.sub{color:var(--gold);font-weight:700;font-size:1rem;margin-bottom:6px}
+h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
+.tag{color:var(--muted);margin-bottom:10px;line-height:1.35}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.how{list-style:none;color:var(--muted);font-size:.86rem;line-height:1.5;margin-top:10px}
+.small{font-size:.78rem;color:var(--muted);margin-top:10px}
+.small a{color:var(--muted)}
+.love{color:var(--gold);font-style:italic;margin:6px 0}
+.gran{color:var(--cream);background:rgba(0,0,0,.25);border:1px solid rgba(242,193,78,.3);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:.92rem;line-height:1.35}
+.stat{font-size:1.08rem;margin:4px 0}.stat b{color:var(--gold)}
+.cd{font-size:.9rem;color:var(--muted);margin:6px 0;font-variant-numeric:tabular-nums}
+.streak{font-weight:800;color:#FFB37A;margin:6px 0}
+#hud{position:fixed;left:0;right:0;top:0;z-index:10;padding:calc(6px + env(safe-area-inset-top)) 8px 0;pointer-events:none;display:flex;gap:6px;align-items:flex-start}
+#hud div.v{display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,rgba(60,26,48,.78),rgba(36,16,30,.55));border:1px solid rgba(255,214,170,.22);border-radius:10px;padding:3px 9px 4px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 4px 14px rgba(0,0,0,.35);min-width:50px}
+#hud small{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+#hud b{font-size:1.15rem;font-variant-numeric:tabular-nums;text-shadow:0 0 10px rgba(246,241,230,.35)}
+#hud b.warn{color:#FF7A7A;animation:blink .5s steps(2) infinite}
+#hCombo{color:#FFB37A}
+@keyframes blink{50%{opacity:.45}}
+#hud .sp{flex:1}
+#muteBtn,#pauseBtn{pointer-events:auto;padding:6px 10px;font-size:1.1rem;background:rgba(42,22,38,.6);border:1px solid rgba(255,214,170,.3)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:40;background:var(--cream);color:#3A1630;padding:8px 16px;border-radius:20px;font-weight:700;transition:.25s;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.s60w{text-align:left}
+#overGrid{display:block;margin:8px auto 10px;padding:10px 12px;max-width:min(17em,100%);min-width:0;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.22);border-radius:12px;font:600 17px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;text-align:center;letter-spacing:.02em;cursor:pointer;color:#fff8ee;-webkit-user-select:text;user-select:text}
+#overGrid[hidden]{display:none}
+#calGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:10px 0}
+#calGrid div{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:800;font-size:1rem;background:linear-gradient(180deg,#8C2A3A,#5E1A28);border:1px solid rgba(255,214,170,.35);color:#FFE7C2;box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+#calGrid div.open{background:linear-gradient(180deg,#2F6B47,#1D4A30);font-size:1.35rem}
+#calGrid div.today{outline:2px solid var(--gold);animation:pulse 2.2s ease-in-out infinite}
+#calGrid div.miss{opacity:.45}
+#calBtn[hidden],#oCal[hidden],#oStreak[hidden],#oCd[hidden],#mStreak[hidden],#mCd[hidden],#sxOverD[hidden],#sxOver[hidden],#oBestRow[hidden]{display:none}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
+
+<div id="hud" hidden>
+  <div class="v"><small data-t="score">Punkty</small><b id="hScore">0</b></div>
+  <div class="v"><small data-t="floors">Piętra</small><b id="hTh">0</b></div>
+  <div class="v"><small data-t="combo">Kombo</small><b id="hCombo">–</b></div>
+  <div class="sp"></div>
+  <button id="muteBtn" aria-label="Sound">🔊</button>
+  <button id="pauseBtn" aria-label="Pause">⏸</button>
+</div>
+
+<section id="menu" class="card">
+  <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
+  <div class="brand">STOP60</div>
+  <h1 data-t="name">Pepperkaketårn</h1>
+  <p class="sub" data-t="sub">Babcine pierniki</p>
+  <p class="tag" data-t="tag">Babcia piecze, Magic pilnuje. Stuknij, żeby upuścić piernik na wieżę – trafisz idealnie, dostaniesz lukier i bonus!</p>
+  <p class="seo-lead" style="margin:10px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Pepperkaketårn to darmowa gra świąteczna bez reklam w przeglądarce. Jednym palcem upuszczasz pierniki z blachy babci i budujesz jak najwyższą wieżę. Wieża dnia jest taka sama dla wszystkich, a wynikiem możesz podzielić się ze znajomymi. Graj na telefonie lub komputerze na stop60.no.</p>
+  <p id="mStreak" class="streak" hidden></p>
+  <button id="playBtn" class="big" data-t="play">Wieża dnia</button>
+  <p id="mCd" class="cd" hidden></p>
+  <div class="row"><button id="freeBtn" class="alt" data-t="free">Wieża bez końca</button></div>
+  <p class="stat"><span data-t="best">Rekord</span>: <b class="bestV">0</b></p>
+  <div class="row"><button id="topDayBtn" type="button" data-t="topDay">🏆 Top 10 dnia</button></div>
+  <div class="row"><button class="shareB" data-t="share">🔗 Udostępnij</button></div>
+  <div id="sxMenu"></div>
+  <div id="kodyBox"></div>
+  <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
+  <ul class="how"><li data-t="how1">👆 Stuknij w dowolnym miejscu, żeby upuścić piernik</li><li data-t="how2">🍪 To, co wystaje, odpada – trafiaj idealnie po lukier i bonus</li><li data-t="how3">📅 Wieża dnia: 40 pięter, taka sama dla wszystkich – liczy się pierwsza próba · 🛸 W wieży bez końca UFO bawi się ciastem</li></ul>
+  <p class="love" data-t="love">Stworzone z pasji</p>
+  <p class="small"><span data-t="local">Rekord zapisuje się tylko na tym urządzeniu</span> · <a href="/pepperkaketarn/prywatnosc/" data-t="privacy">Prywatność</a> · <a href="/">stop60.no</a></p>
+</section>
+
+<section id="pause" class="card" hidden>
+  <h2 data-t="paused">Pauza</h2>
+  <button id="resumeBtn" class="big" data-t="resume">Graj dalej</button>
+  <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
+  <div class="row"><button id="quitBtn" data-t="menu">Menu</button></div>
+</section>
+
+<section id="over" class="card" hidden>
+  <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
+  <h2 id="overTitle"></h2>
+  <p class="stat"><span data-t="score">Punkty</span>: <b id="oScore">0</b></p>
+  <p class="stat" id="oBestRow"><span data-t="best">Rekord</span>: <b class="bestV">0</b></p>
+  <p class="stat"><span data-t="floors">Piętra</span>: <b id="oBig">0</b> · <span data-t="perfects">Idealne</span>: <b id="oMerges">0</b></p>
+  <p id="oNew" class="love" hidden data-t="newbest">Nowy rekord!</p>
+  <p id="oStreak" class="streak" hidden></p>
+  <p id="oGran" class="gran"></p>
+  <button id="retryBtn" class="big"></button>
+  <p id="oCd" class="cd" hidden></p>
+  <pre id="overGrid" role="button" tabindex="0" hidden></pre>
+  <div class="row"><button id="scoreShare" type="button" data-t="shareScore">Udostępnij wynik</button><button id="overMenu" data-t="menu">Menu</button></div>
+  <div id="scoreLinks"></div>
+  <p id="oKody" class="small" hidden></p><div id="sxOver"></div><div id="sxOverD" hidden></div>
+  <p class="love" id="overLove" data-t="love">Stworzone z pasji</p>
+  <p class="small"><a href="/pepperkaketarn/prywatnosc/" data-t="privacy">Prywatność</a> · <a href="/">stop60.no</a></p>
+</section>
+<div id="toast"></div>
+
+<script src="/assets/vendor/qrcode/qrcode.min.js"></script>
+<script src="/assets/s60-social.js?v=2"></script>
+<script src="/assets/score-share.js"></script>
+<script src="/assets/s60-kody.js?v=1"></script>
+<script>
+"use strict";
+/* Pepperkaketårn – © 2026 Stop60. All rights reserved. One-tap gingerbread stacking: Grandma bakes, Magic the cat keeps watch. */
+var T = {"no": {"name": "Pepperkaketårn", "sub": "Mormors pepperkaker", "tag": "Mormor baker, Magic passer på. Trykk for å slippe hver pepperkake på tårnet – treffer du perfekt, får du glasur og bonus!", "play": "Dagens tårn", "free": "Uendelig tårn", "dailyDone": "✓ Dagens tårn: {s} poeng", "nextIn": "Nytt tårn om {t}", "streak": "🔥 Serie: {n}", "topDay": "🏆 Dagens topp 10", "share": "🔗 Del", "shareScore": "Del resultatet", "how1": "👆 Trykk hvor som helst for å slippe pepperkaken", "how2": "🍪 Det som stikker utenfor, brekker av – treff perfekt for glasur og bonus", "how3": "📅 Dagens tårn: 40 etasjer, likt for alle – første forsøk teller · 🛸 I uendelig tårn tuller UFO-en med deigen", "local": "Rekorden lagres bare på denne enheten", "love": "Laget med lidenskap", "privacy": "Personvern", "score": "Poeng", "best": "Rekord", "floors": "Etasjer", "combo": "Kombo", "menu": "Meny", "paused": "Pause", "resume": "Fortsett", "retry": "Spill igjen", "newbest": "Ny rekord!", "overMiss": "Pepperkaken bommet!", "overDone": "Dagens tårn er ferdig!", "overMissD": "Dagens tårn ramlet", "perfects": "Perfekte", "goDaily": "40 etasjer – lykke til!", "goFree": "Hvor høyt kommer du?", "perfect": "Perfekt!", "icing": "Glasur! Pepperkaken vokser", "ufo": "UFO-en tuller med deigen!", "ufoBye": "UFO-en fløy videre", "last5": "5 etasjer igjen!", "snd": "Lyd", "vib": "Vibrasjon", "copied": "Lenke kopiert", "dayName": "dagens tårn", "freeName": "uendelig", "streakW": "Serie", "gran": ["Mormor: «For et tårn! Nå tar vi en pepperkake hver.»", "Mormor: «Smulene får Magic.»", "Mormor: «En gang til? Jeg har mer deig.»", "Mormor: «Den UFO-en vil visst også ha pepperkaker.»"], "title": "Pepperkaketårn – mormors pepperkaker | gratis julespill uten reklame", "shareText": "Bli med og bygg pepperkaketårn med mormor og Magic!", "sxShare": "Jeg fikk {s} poeng i Pepperkaketårn – klarer du mer?", "sxRow": "{s} p · {f} et.", "sxRowD": "{s} p"}, "pl": {"name": "Pepperkaketårn", "sub": "Babcine pierniki", "tag": "Babcia piecze, Magic pilnuje. Stuknij, żeby upuścić piernik na wieżę – trafisz idealnie, dostaniesz lukier i bonus!", "play": "Wieża dnia", "free": "Wieża bez końca", "dailyDone": "✓ Wieża dnia: {s} pkt", "nextIn": "Nowa wieża za {t}", "streak": "🔥 Seria: {n}", "topDay": "🏆 Top 10 dnia", "share": "🔗 Udostępnij", "shareScore": "Udostępnij wynik", "how1": "👆 Stuknij w dowolnym miejscu, żeby upuścić piernik", "how2": "🍪 To, co wystaje, odpada – trafiaj idealnie po lukier i bonus", "how3": "📅 Wieża dnia: 40 pięter, taka sama dla wszystkich – liczy się pierwsza próba · 🛸 W wieży bez końca UFO bawi się ciastem", "local": "Rekord zapisuje się tylko na tym urządzeniu", "love": "Stworzone z pasji", "privacy": "Prywatność", "score": "Punkty", "best": "Rekord", "floors": "Piętra", "combo": "Kombo", "menu": "Menu", "paused": "Pauza", "resume": "Graj dalej", "retry": "Zagraj jeszcze raz", "newbest": "Nowy rekord!", "overMiss": "Piernik spadł obok!", "overDone": "Wieża dnia gotowa!", "overMissD": "Wieża dnia się przewróciła", "perfects": "Idealne", "goDaily": "40 pięter – powodzenia!", "goFree": "Jak wysoko zajdziesz?", "perfect": "Idealnie!", "icing": "Lukier! Piernik rośnie", "ufo": "UFO bawi się ciastem!", "ufoBye": "UFO odleciało", "last5": "Jeszcze 5 pięter!", "snd": "Dźwięk", "vib": "Wibracje", "copied": "Link skopiowany", "dayName": "wieża dnia", "freeName": "bez końca", "streakW": "Seria", "gran": ["Babcia: „Co za wieża! Teraz każdy dostaje piernika.”", "Babcia: „Okruszki są dla Magic.”", "Babcia: „Jeszcze raz? Mam więcej ciasta.”", "Babcia: „To UFO też chyba lubi pierniki.”"], "title": "Pepperkaketårn – babcine pierniki | darmowa gra świąteczna bez reklam", "shareText": "Zbuduj z babcią i Magic wieżę z pierników!", "sxShare": "Mam {s} pkt w Pepperkaketårn – dasz radę więcej?", "sxRow": "{s} pkt · {f} p.", "sxRowD": "{s} pkt"}, "en": {"name": "Pepperkaketårn", "sub": "Grandma's Gingerbread", "tag": "Grandma bakes, Magic keeps watch. Tap to drop each gingerbread onto the tower – land it perfectly for icing and a bonus!", "play": "Today's tower", "free": "Endless tower", "dailyDone": "✓ Today's tower: {s} pts", "nextIn": "New tower in {t}", "streak": "🔥 Streak: {n}", "topDay": "🏆 Today's top 10", "share": "🔗 Share", "shareScore": "Share result", "how1": "👆 Tap anywhere to drop the gingerbread", "how2": "🍪 Whatever sticks out breaks off – land it perfectly for icing and a bonus", "how3": "📅 Today's tower: 40 floors, the same for everyone – first attempt counts · 🛸 In the endless tower the UFO plays with the dough", "local": "Your best score is stored only on this device", "love": "Made with passion", "privacy": "Privacy", "score": "Score", "best": "Best", "floors": "Floors", "combo": "Combo", "menu": "Menu", "paused": "Paused", "resume": "Resume", "retry": "Play again", "newbest": "New best!", "overMiss": "The gingerbread missed!", "overDone": "Today's tower is done!", "overMissD": "Today's tower toppled", "perfects": "Perfect", "goDaily": "40 floors – good luck!", "goFree": "How high can you go?", "perfect": "Perfect!", "icing": "Icing! The gingerbread grows", "ufo": "The UFO is playing with the dough!", "ufoBye": "The UFO flew off", "last5": "5 floors to go!", "snd": "Sound", "vib": "Vibration", "copied": "Link copied", "dayName": "today's tower", "freeName": "endless", "streakW": "Streak", "gran": ["Grandma: “What a tower! Now everyone gets a gingerbread.”", "Grandma: “The crumbs are for Magic.”", "Grandma: “One more go? I have more dough.”", "Grandma: “That UFO wants gingerbread too, it seems.”"], "title": "Pepperkaketårn – Grandma's Gingerbread | free Christmas game, no ads", "shareText": "Come and build a gingerbread tower with grandma and Magic!", "sxShare": "I scored {s} in Pepperkaketårn – can you beat it?", "sxRow": "{s} pts · {f} fl.", "sxRowD": "{s} pts"}};
+var PRIV = {no: "/pepperkaketarn/personvern/", pl: "/pepperkaketarn/prywatnosc/", en: "/pepperkaketarn/en/privacy/"};
+var PAGE_URL = "https://stop60.no/pepperkaketarn/pl/";
+var $ = function(id){ return document.getElementById(id); };
+var SAVE = "pepperkaketarn.v1", P;
+try { P = JSON.parse(localStorage.getItem(SAVE)) || {}; } catch(e){ P = {}; }
+P.best = P.best || 0; P.bestTop = P.bestTop || 0; P.games = P.games || 0; P.streak = P.streak || 0; P.lastDay = P.lastDay || 0; P.bestFl = P.bestFl || 0; P.lang = "pl";
+function save(){ try { localStorage.setItem(SAVE, JSON.stringify(P)); } catch(e){} }
+var QS = new URLSearchParams(location.search), DEBUG = QS.get("debug") === "1";
+var lang = T[P.lang] ? P.lang : "no";
+
+/* ---------- calendar day (local date), season ---------- */
+function today(){
+  var d = new Date();
+  if (DEBUG && /^\d{4}-\d\d-\d\d$/.test(QS.get("date") || "")){ var p = QS.get("date").split("-"); d = new Date(+p[0], +p[1] - 1, +p[2], d.getHours(), d.getMinutes(), d.getSeconds()); }
+  return d;
+}
+function dayNum(d){ d = d || today(); return Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 9, 31))/864e5); }
+function isXmas(d){ var m = d.getMonth(), day = d.getDate(); return (m === 10 && day >= 15) || (m === 11 && day <= 26); }
+var XMAS = QS.get("xmas") === "1" ? true : QS.get("xmas") === "0" ? false : isXmas(today());
+
+function t(k){ var o = T[lang]; if (!XMAS && o[k + "N"] !== undefined) return o[k + "N"]; return o[k]; }
+function applyLang(){
+  document.documentElement.lang = lang === "no" ? "nb" : lang; document.documentElement.dataset.lang = lang; document.title = t("title");
+  document.querySelectorAll("[data-t]").forEach(function(e){ e.textContent = t(e.dataset.t); });
+  document.querySelectorAll("a[data-t=privacy]").forEach(function(a){ a.href = PRIV[lang]; });
+  document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
+  if (typeof KB !== "undefined" && KB) KB.relabel(); refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
+  if (typeof SX !== "undefined"){ SX.relabel(); SXD.relabel(); if (!$("menu").hidden) SX.fortune($("playBtn"), true); else if (!$("over").hidden) SX.fortune($("overLove"), true); }
+}
+document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = P.lang = b.dataset.l; save(); applyLang(); }; });
+function refreshStats(){ document.querySelectorAll(".bestV").forEach(function(e){ e.textContent = fmtN(P.best); }); }
+function toast(s){ var e = $("toast"); e.textContent = s; e.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(function(){ e.classList.remove("show"); }, 1700); }
+function fmtN(n){ n = Math.round(n || 0); return n >= 1000 ? String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : String(n); }
+
+/* ---------- audio + haptics ---------- */
+var AC = null, master = null, sfxBus = null, musBus = null, comp = null, mute = !!P.mute, novib = !!P.novib, unlocked = false;
+try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch(e){}
+function audio(){
+  if (!AC){ try {
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    comp = AC.createDynamicsCompressor(); comp.threshold.value = -14; comp.knee.value = 10; comp.ratio.value = 12; comp.attack.value = .003; comp.release.value = .2;
+    master = AC.createGain(); master.gain.value = mute ? 0 : .8; master.connect(comp); comp.connect(AC.destination);
+    sfxBus = AC.createGain(); sfxBus.gain.value = .7; sfxBus.connect(master);
+    musBus = AC.createGain(); musBus.gain.value = .16; musBus.connect(master);
+  } catch(e){ AC = null; return; } }
+  if (AC.state !== "running"){ try { AC.resume(); } catch(e){} }
+  if (!unlocked){ try { var sb = AC.createBufferSource(); sb.buffer = AC.createBuffer(1, 1, 22050); sb.connect(AC.destination); sb.start(0); unlocked = true; } catch(e){} }
+  startMusic();
+}
+["touchstart", "touchend", "pointerdown", "mousedown", "keydown"].forEach(function(ev){ addEventListener(ev, audio, {capture: true, passive: true}); });
+document.addEventListener("visibilitychange", function(){
+  if (document.hidden && mode === "play") setMode("pause");
+  if (!AC) return; if (document.hidden){ try { AC.suspend(); } catch(e){} } else { try { AC.resume(); } catch(e){} }
+});
+addEventListener("pageshow", function(){ if (AC) try { AC.resume(); } catch(e){} });
+function setMute(m){ mute = P.mute = m; save(); refreshToggles(); if (master) master.gain.setTargetAtTime(mute ? 0 : .8, AC.currentTime, .03); }
+var lastTone = {};
+function tone(f, d, type, vol, slide, key, delay, bus){
+  if (mute || !AC || AC.state !== "running") return; var now = AC.currentTime + (delay || 0);
+  if (key){ if (lastTone[key] && now - lastTone[key] < .05) return; lastTone[key] = now; }
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = type || "sine"; o.frequency.setValueAtTime(f, now); if (slide) o.frequency.exponentialRampToValueAtTime(slide, now + d);
+  g.gain.setValueAtTime(.0001, now); g.gain.linearRampToValueAtTime(vol || .15, now + .006); g.gain.exponentialRampToValueAtTime(.0001, now + d);
+  o.connect(g); g.connect(bus || sfxBus); o.start(now); o.stop(now + d + .03);
+}
+var noiseBuf = null;
+function noise(d, vol, fc, type, delay, sweep){
+  if (mute || !AC || AC.state !== "running") return;
+  if (!noiseBuf){ noiseBuf = AC.createBuffer(1, AC.sampleRate, AC.sampleRate); var a = noiseBuf.getChannelData(0); for (var i = 0; i < a.length; i++) a[i] = Math.random()*2-1; }
+  var s = AC.createBufferSource(), g = AC.createGain(), f = AC.createBiquadFilter(), now = AC.currentTime + (delay || 0);
+  s.buffer = noiseBuf; f.type = type || "lowpass"; f.frequency.setValueAtTime(fc || 1200, now); if (sweep) f.frequency.exponentialRampToValueAtTime(sweep, now + d);
+  g.gain.setValueAtTime(.0001, now); g.gain.linearRampToValueAtTime(vol || .3, now + .01); g.gain.exponentialRampToValueAtTime(.0001, now + d);
+  s.connect(f); f.connect(g); g.connect(sfxBus); s.start(now, Math.random()*.5); s.stop(now + d + .02);
+}
+var SFX = {
+  thud: function(w){ noise(.14, .22, 420, "lowpass", 0, 160); tone(150 + w, .12, "sine", .12, 90, "thud"); },
+  crack: function(){ noise(.09, .2, 2600, "bandpass", 0, 1400); noise(.18, .12, 900, "bandpass", .05, 300); tone(300, .08, "square", .025, 180); },
+  perfect: function(c){ var b = 523*Math.pow(1.0595, Math.min(c, 12)*2); tone(b, .22, "triangle", .1, 0, "perf"); tone(b*1.5, .25, "sine", .06, 0, null, .06); tone(b*2, .3, "sine", .04, 0, null, .12); },
+  grow: function(){ [784, 988, 1175, 1568].forEach(function(f, i){ tone(f, .28, "triangle", .08, 0, null, i*.06); tone(f*2, .18, "sine", .03, 0, null, i*.06); }); },
+  miss: function(){ tone(440, .5, "triangle", .08, 110); noise(.4, .12, 900, "lowpass", .1, 200); },
+  meow: function(){ tone(620, .22, "triangle", .07, 880); tone(880, .2, "sine", .04, 560, null, .12); },
+  ufo: function(){ tone(420, .6, "square", .03, 900); tone(600, .5, "sine", .04, 300, null, .3); },
+  bell: function(){ tone(1568, .5, "sine", .07); tone(2349, .35, "sine", .035, 0, null, .02); tone(3136, .2, "sine", .02); },
+  warn: function(){ tone(660, .12, "triangle", .05, 0, "warn"); tone(880, .12, "triangle", .04, 0, null, .12); },
+  end: function(){ [784, 659, 523, 392].forEach(function(f, i){ tone(f, .3, "triangle", .09, 0, null, i*.14); }); },
+  done: function(){ [523, 659, 784, 1047, 1319, 1568].forEach(function(f, i){ tone(f, .3, "triangle", .09, 0, null, i*.09); tone(f*2, .2, "sine", .03, 0, null, i*.09); }); }
+};
+/* gentle music-box waltz (3/4) */
+var musT = 0, musStep = 0, musTimer = null;
+var CH = [[65, 69, 72], [70, 74, 77], [60, 64, 67, 70], [65, 69, 72], [62, 65, 69], [67, 70, 74], [60, 64, 67], [65, 69, 72]];
+var MEL = [72, 0, 74, 76, 0, 77, 74, 0, 72, 70, 0, 69, 72, 0, 74, 76, 0, 72, 70, 0, 67, 65, 0, 0];
+function mtof(n){ return 440*Math.pow(2, (n - 69)/12); }
+function startMusic(){
+  if (musTimer || !AC) return; musT = AC.currentTime + .1;
+  musTimer = setInterval(function(){
+    if (!AC || AC.state !== "running") return;
+    if (musT < AC.currentTime) musT = AC.currentTime + .05;
+    while (musT < AC.currentTime + .3){
+      var spb = .26, bar = Math.floor(musStep/3) % 8, st = musStep % 3, ch = CH[bar], dl = musT - AC.currentTime, quiet = mode === "play" ? 1 : .6;
+      if (!mute){
+        if (st === 0) tone(mtof(ch[0] - 12), .8, "sine", .12*quiet, 0, null, dl, musBus);
+        else { tone(mtof(ch[1]), .3, "sine", .04*quiet, 0, null, dl, musBus); tone(mtof(ch[2]), .3, "sine", .035*quiet, 0, null, dl, musBus); }
+        var m = MEL[musStep % 24]; if (m){ tone(mtof(m + 12), .55, "sine", .07*quiet, 0, null, dl, musBus); tone(mtof(m + 24), .25, "triangle", .012*quiet, 0, null, dl, musBus); }
+      }
+      musT += spb; musStep++;
+    }
+  }, 70);
+}
+function vib(p){ if (!novib && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(p); } catch(e){} }
+function refreshToggles(){
+  document.querySelectorAll(".sndB").forEach(function(b){ b.textContent = (mute ? "🔇 " : "🔊 ") + t("snd"); }); var hm = $("muteBtn"); if (hm) hm.textContent = mute ? "🔇" : "🔊";
+  document.querySelectorAll(".vibB").forEach(function(b){ b.textContent = (novib ? "📴 " : "📳 ") + t("vib"); });
+}
+document.querySelectorAll(".sndB").forEach(function(b){ b.onclick = function(){ audio(); setMute(!mute); SFX.bell(); }; });
+$("muteBtn").onclick = function(ev){ ev.stopPropagation(); audio(); setMute(!mute); };
+document.querySelectorAll(".vibB").forEach(function(b){ b.onclick = function(){ novib = P.novib = !novib; save(); refreshToggles(); vib(40); }; });
+
+/* ---------- world constants + seeded randomness ---------- */
+var BW = 100, LH = 6.5, BASEW = 50, PERF = 2.0, GROW = 4, DAILY_N = 40;
+var SQ = {g: "🟩", y: "🟨", o: "🟧", r: "🟥", n: "⬛"};
+function mulberry32(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t2 = Math.imul(a ^ a >>> 15, 1 | a); t2 = t2 + Math.imul(t2 ^ t2 >>> 7, 61 | t2) ^ t2; return ((t2 ^ t2 >>> 14) >>> 0)/4294967296; }; }
+function hashStr(s){ var h = 2166136261; for (var i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+/* daily: one speed + start side + icing style per floor, identical for everyone */
+function dailyPlan(day){
+  var r = mulberry32(hashStr("pepperkaketarn:" + day)), out = [];
+  for (var i = 0; i < DAILY_N; i++){ var a = r(), b = r(), c = r(); out.push({v: +(30 + i*1.2 + a*8).toFixed(2), side: b < .5 ? -1 : 1, deco: Math.floor(c*5)}); }
+  return out;
+}
+function freeLayer(i){ var r = Math.random; return {v: Math.min(115, 28 + i*1.1 + r()*7), side: r() < .5 ? -1 : 1, deco: Math.floor(r()*5)}; }
+
+/* ---------- canvas + layout ---------- */
+var cv = $("c"), ctx = cv.getContext("2d"), DPR = 1, W = 390, H = 844, S = 3.2, X0 = 0, baseY = 700, CNT = 130, HUDH = 56;
+var gX = 60, gY = 700, gS = .8, mX = 330, mY = 700, mS = 1.4;
+function clamp(v, a, b){ return v < a ? a : v > b ? b : v; }
+function rnd(a, b){ return a + Math.random()*(b-a); }
+var BG = null, flakes = [];
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+  var hud = $("hud"); HUDH = 58 + (hud ? Math.max(0, parseFloat(getComputedStyle(hud).paddingTop) - 6) : 0);
+  var pw = Math.min(W - 8, 480); S = pw/120; X0 = (W - pw)/2 + 10*S;
+  CNT = clamp(H*.17, 100, 160); baseY = H - CNT;
+  gS = clamp(CNT/170, .62, 1); gX = 6 + 52*gS; gY = baseY - 30*gS;
+  mS = clamp(CNT/80, 1.2, 2.1); mX = Math.min(W - 10 - 30*mS, X0 + 96*S); mY = baseY - 19*mS;
+  mkBG();
+  flakes = []; for (var i = 0; i < 26; i++) flakes.push({x: Math.random(), y: Math.random(), z: rnd(.5, 1.2), p: Math.random()*6.28});
+}
+/* drawing helpers (same style as the Stop60 cameo cast) */
+function circ(c, x, y, r, f){ c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fillStyle = f; c.fill(); }
+function ell(c, x, y, rx, ry, f, rot){ c.beginPath(); c.ellipse(x, y, rx, ry, rot || 0, 0, 6.2832); c.fillStyle = f; c.fill(); }
+function line(c, pts, col, w){ c.beginPath(); c.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) c.lineTo(pts[i], pts[i + 1]); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.lineJoin = "round"; c.stroke(); }
+function smile(c, x, y, r, col, w, open){
+  if (open){ c.beginPath(); c.arc(x, y, r, .1*Math.PI, .9*Math.PI); c.closePath(); c.fillStyle = "#5a1e1e"; c.fill(); c.save(); c.clip(); circ(c, x, y + r*.95, r*.55, "#ff8a95"); c.restore(); }
+  c.beginPath(); c.arc(x, y, r, .12*Math.PI, .88*Math.PI); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.stroke();
+}
+function dotEye(c, x, y, r){ circ(c, x, y, r, "#2a1a1a"); circ(c, x - r*.35, y - r*.35, r*.38, "#fff"); }
+function flake(c, x, y, r, col){ c.save(); c.translate(x, y); c.strokeStyle = col; c.lineWidth = Math.max(1, r*.28); c.lineCap = "round"; for (var i = 0; i < 3; i++){ c.rotate(Math.PI/3); c.beginPath(); c.moveTo(-r, 0); c.lineTo(r, 0); c.stroke(); } c.restore(); }
+
+/* ---------- one gingerbread slab (screen px) ---------- */
+var DECO = ["#FFFFFF", "#FF8FA3", "#9FE3B4", "#FFE08A", "#A8D8FF"];
+function drawSlab(c, x, y, w, h, deco, glow, faceOn){
+  if (w <= 0.5) return;
+  var r = Math.min(h*.35, w*.3);
+  c.fillStyle = "#7A3F17"; c.beginPath(); c.roundRect(x, y + 1.5, w, h, r); c.fill();
+  var g = c.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, "#D98A45"); g.addColorStop(.55, "#B8682C"); g.addColorStop(1, "#8F4C1D");
+  c.fillStyle = g; c.beginPath(); c.roundRect(x, y, w, h - 1, r); c.fill();
+  // icing zigzag
+  var ic = glow ? "#FFFFFF" : "rgba(255,250,240,.92)", zz = Math.max(4, h*.55), n = Math.max(1, Math.floor((w - 4)/zz));
+  c.beginPath(); var sx = x + (w - n*zz)/2;
+  for (var i = 0; i <= n; i++){ var px = sx + i*zz, py = y + h*(i % 2 ? .5 : .24); if (i) c.lineTo(px, py); else c.moveTo(px, py); }
+  c.strokeStyle = ic; c.lineWidth = Math.max(1.2, h*.13); c.lineCap = "round"; c.lineJoin = "round"; c.stroke();
+  // candy dots
+  var col = DECO[deco % DECO.length], k = Math.floor(w/(h*2.2));
+  for (i = 0; i < k; i++){ var cx = x + (i + .5)*w/k; if (faceOn && Math.abs(cx - (x + w/2)) < h*1.6) continue; circ(c, cx, y + h*.74, Math.max(1, h*.1), col); }
+  if (faceOn && w > h*3.2){ var fx0 = x + w/2, fy = y + h*.55; dotEye(c, fx0 - h*.36, fy - h*.08, Math.max(1, h*.09)); dotEye(c, fx0 + h*.36, fy - h*.08, Math.max(1, h*.09)); smile(c, fx0, fy, h*.2, "#FFF6EA", Math.max(1, h*.07)); }
+  if (glow){ c.save(); c.globalAlpha = glow; c.shadowColor = "#FFF2B0"; c.shadowBlur = 18; c.strokeStyle = "rgba(255,245,200,.9)"; c.lineWidth = 2; c.beginPath(); c.roundRect(x, y, w, h - 1, r); c.stroke(); c.restore(); }
+}
+
+/* ---------- kitchen background (cached) ---------- */
+function mkBG(){
+  BG = document.createElement("canvas"); BG.width = cv.width; BG.height = cv.height;
+  var c = BG.getContext("2d"); c.scale(DPR, DPR);
+  var g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#2B1830"); g.addColorStop(.6, "#3E2233"); g.addColorStop(1, "#4A2A2E"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.fillStyle = "rgba(255,210,170,.045)"; for (var y = 10; y < H; y += 26) for (var x = (y/26 % 2)*13; x < W; x += 26){ c.beginPath(); c.arc(x, y, 1.8, 0, 6.28); c.fill(); }
+  // window with night sky, upper right
+  var ww = Math.min(130, W*.3), wh = Math.min(120, H*.15), wx = W - ww - 18, wy = HUDH + 40;
+  var sk = c.createLinearGradient(0, wy, 0, wy + wh); sk.addColorStop(0, "#0C1636"); sk.addColorStop(1, "#2B3D78"); c.fillStyle = sk; c.fillRect(wx, wy, ww, wh);
+  c.fillStyle = "#fff"; for (var i = 0; i < 16; i++) c.fillRect(wx + ((i*53) % ww), wy + ((i*37) % (wh*.6)), 1.5, 1.5);
+  circ(c, wx + ww*.25, wy + wh*.25, 9, "#FFF3C4"); circ(c, wx + ww*.25 + 4, wy + wh*.25 - 3, 8, "#0F1A3A");
+  c.fillStyle = "#EAF2FF"; c.beginPath(); c.moveTo(wx, wy + wh); c.quadraticCurveTo(wx + ww*.3, wy + wh*.8, wx + ww*.55, wy + wh*.9); c.quadraticCurveTo(wx + ww*.8, wy + wh*.78, wx + ww, wy + wh*.88); c.lineTo(wx + ww, wy + wh); c.fill();
+  c.strokeStyle = "#7A4A2E"; c.lineWidth = 6; c.strokeRect(wx, wy, ww, wh); c.lineWidth = 3; c.beginPath(); c.moveTo(wx + ww/2, wy); c.lineTo(wx + ww/2, wy + wh); c.moveTo(wx, wy + wh/2); c.lineTo(wx + ww, wy + wh/2); c.stroke();
+  // shelf with jars on the left
+  var sy = HUDH + 70; c.fillStyle = "#6B3E22"; c.fillRect(10, sy, Math.min(120, W*.3), 6);
+  [["#E8D7B0", 18], ["#C9E6F2", 44], ["#F2C1CB", 70]].forEach(function(j){ c.fillStyle = j[0]; c.beginPath(); c.roundRect(j[1], sy - 26, 20, 26, 4); c.fill(); c.fillStyle = "#B8324A"; c.fillRect(j[1] - 1, sy - 29, 22, 5); });
+}
+/* ---------- Grandma with her baking tray ---------- */
+function drawGrandma(x, y, s, tm){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  // armchair
+  ctx.fillStyle = "#6B2E45"; ctx.beginPath(); ctx.roundRect(-58, -70, 116, 130, 26); ctx.fill();
+  ctx.fillStyle = "#83385A"; ctx.beginPath(); ctx.roundRect(-70, -10, 30, 70, 14); ctx.fill(); ctx.beginPath(); ctx.roundRect(40, -10, 30, 70, 14); ctx.fill();
+  ctx.fillStyle = "#4A1F30"; ctx.fillRect(-50, 58, 8, 14); ctx.fillRect(42, 58, 8, 14);
+  // body: sweater
+  var sw = XMAS ? "#C8283A" : "#3D7A8C";
+  ctx.fillStyle = sw; ctx.beginPath(); ctx.moveTo(-34, 50); ctx.quadraticCurveTo(-40, -8, 0, -14); ctx.quadraticCurveTo(40, -8, 34, 50); ctx.closePath(); ctx.fill();
+  if (XMAS){ ctx.fillStyle = "#fff"; for (var i = -3; i <= 3; i++){ ctx.beginPath(); ctx.moveTo(i*9 - 4, 8); ctx.lineTo(i*9, 3); ctx.lineTo(i*9 + 4, 8); ctx.fill(); }
+    ell(ctx, 0, 24, 8, 8, "#A0693C"); circ(ctx, 0, 27, 2.5, "#FF2E3E"); line(ctx, [-4, 17, -8, 10], "#E8C79A", 2); line(ctx, [4, 17, 8, 10], "#E8C79A", 2); }
+  else { ctx.fillStyle = "rgba(255,255,255,.5)"; ctx.fillRect(-30, 8, 60, 4); ctx.fillRect(-32, 30, 64, 4); }
+  // skirt + feet
+  ctx.fillStyle = "#3A2A4A"; ctx.beginPath(); ctx.roundRect(-34, 42, 68, 22, 8); ctx.fill();
+  ell(ctx, -14, 70, 11, 6, "#2A1A1A"); ell(ctx, 14, 70, 11, 6, "#2A1A1A");
+  // head
+  circ(ctx, 0, -36, 22, "#F6CDB0");
+  ctx.fillStyle = "#E9E6F0"; ctx.beginPath(); ctx.arc(0, -42, 23, Math.PI*1.02, Math.PI*1.98); ctx.fill();
+  circ(ctx, 0, -64, 11, "#E9E6F0"); circ(ctx, -20, -40, 7, "#E9E6F0"); circ(ctx, 20, -40, 7, "#E9E6F0");
+  // glasses + face
+  ctx.strokeStyle = "#6A4A3A"; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(-8, -34, 6, 0, 6.283); ctx.stroke(); ctx.beginPath(); ctx.arc(8, -34, 6, 0, 6.283); ctx.stroke(); line(ctx, [-2, -34, 2, -34], "#6A4A3A", 1.6);
+  var blink = (tm % 4.2) < .12;
+  if (blink){ line(ctx, [-11, -34, -5, -34], "#3a2a2a", 1.6); line(ctx, [5, -34, 11, -34], "#3a2a2a", 1.6); } else { dotEye(ctx, -8, -34, 2); dotEye(ctx, 8, -34, 2); }
+  circ(ctx, -14, -26, 4, "rgba(255,120,140,.45)"); circ(ctx, 14, -26, 4, "rgba(255,120,140,.45)");
+  smile(ctx, 0, -27, 5, "#7a2a2a", 1.6, false);
+  // arms holding the baking tray (lifts when a new gingerbread comes out)
+  var lift = (typeof granLift !== "undefined" ? granLift : 0)*8;
+  ctx.fillStyle = sw; ell(ctx, -22, 10 - lift*.4, 9, 16, sw, .9); ell(ctx, 22, 10 - lift*.4, 9, 16, sw, -.9);
+  ctx.fillStyle = "#9AA0AE"; ctx.beginPath(); ctx.roundRect(-38, 12 - lift, 76, 7, 2); ctx.fill(); ctx.fillStyle = "#C9CED8"; ctx.fillRect(-36, 12 - lift, 72, 2);
+  for (var q = 0; q < 3; q++){ ell(ctx, -22 + q*22, 9 - lift, 8, 4, "#B8682C"); line(ctx, [-27 + q*22, 8 - lift, -24 + q*22, 6 - lift, -21 + q*22, 8 - lift, -18 + q*22, 6 - lift], "#FFF6EA", 1.1); }
+  ell(ctx, -38, 15 - lift, 6, 7, XMAS ? "#D62B3A" : "#3D7A8C"); ell(ctx, 38, 15 - lift, 6, 7, XMAS ? "#D62B3A" : "#3D7A8C");
+  ctx.restore();
+}
+
+/* ---------- Magic the cat (brown tabby, green eyes) ---------- */
+function drawMagic(x, y, s, look, paw, hop){
+  ctx.save(); ctx.translate(x, y - (hop || 0)); ctx.scale(s, s);
+  var fur = "#9A6A3E", dark = "#5E3C1E", light = "#D7B48A";
+  // tail
+  var tw = Math.sin(performance.now()/300)*6;
+  line(ctx, [14, 8, 26, 0, 28 + tw, -16], fur, 6); line(ctx, [27 + tw*.8, -8, 28 + tw, -16], dark, 6);
+  // body
+  ell(ctx, 0, 6, 18, 13, fur);
+  line(ctx, [-6, -4, -4, 4], dark, 2.4); line(ctx, [2, -5, 3, 4], dark, 2.4); line(ctx, [9, -3, 9, 5], dark, 2.4);
+  ell(ctx, -2, 12, 9, 6, light);
+  // paws
+  ell(ctx, -10, 18, 5, 3.5, light); ell(ctx, 8, 18, 5, 3.5, light);
+  // paw reaching down when dropping
+  if (paw > 0){ line(ctx, [-12, 4, -14 + look*4, 4 + paw*14], fur, 6); circ(ctx, -14 + look*4, 4 + paw*14, 3.6, light); }
+  // head
+  ctx.save(); ctx.translate(-14, -8);
+  ctx.fillStyle = fur; ctx.beginPath(); ctx.moveTo(-11, -4); ctx.lineTo(-9, -17); ctx.lineTo(-2, -9); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(11, -4); ctx.lineTo(9, -17); ctx.lineTo(2, -9); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#F2A0A8"; ctx.beginPath(); ctx.moveTo(-8.5, -7); ctx.lineTo(-8, -13); ctx.lineTo(-4.5, -9); ctx.fill(); ctx.beginPath(); ctx.moveTo(8.5, -7); ctx.lineTo(8, -13); ctx.lineTo(4.5, -9); ctx.fill();
+  ell(ctx, 0, 0, 12, 10.5, fur);
+  line(ctx, [-3, -9, -2, -5], dark, 1.6); line(ctx, [0, -10, 0, -5], dark, 1.6); line(ctx, [3, -9, 2, -5], dark, 1.6);
+  ell(ctx, 0, 4, 6.5, 4.5, light);
+  var ex = look*1.5;
+  ell(ctx, -4.6, -1, 2.6, 3, "#5FBF4A"); ell(ctx, 4.6, -1, 2.6, 3, "#5FBF4A");
+  ell(ctx, -4.6 + ex, -1, 1, 2.4, "#1a1a1a"); ell(ctx, 4.6 + ex, -1, 1, 2.4, "#1a1a1a");
+  circ(ctx, -5.2 + ex, -2.2, .7, "#fff"); circ(ctx, 4 + ex, -2.2, .7, "#fff");
+  ctx.fillStyle = "#E87A8A"; ctx.beginPath(); ctx.moveTo(-1.6, 2.4); ctx.lineTo(1.6, 2.4); ctx.lineTo(0, 4); ctx.fill();
+  line(ctx, [0, 4, -2, 5.6], "#5a2a2a", .9); line(ctx, [0, 4, 2, 5.6], "#5a2a2a", .9);
+  line(ctx, [-6, 3, -15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [-6, 4.5, -15, 5], "rgba(255,255,255,.7)", .7);
+  line(ctx, [6, 3, 15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [6, 4.5, 15, 5], "rgba(255,255,255,.7)", .7);
+  if (window.S60Kody && S60Kody.hatOn()){ S60Kody.drawHat(ctx, 0, -8.5, 23); } else if (XMAS){ // Santa hat
+    ctx.fillStyle = "#D62B3A"; ctx.beginPath(); ctx.moveTo(-10, -8); ctx.quadraticCurveTo(-2, -26, 12, -22); ctx.lineTo(9, -7); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(-11, -10, 22, 5, 2.5); ctx.fill(); circ(ctx, 13, -22, 3.2, "#fff");
+  }
+  ctx.restore(); ctx.restore();
+}
+
+/* ---------- kitchen counter (foreground) ---------- */
+function drawCounter(){
+  var y = baseY;
+  ctx.fillStyle = "#E9DCC8"; ctx.fillRect(0, y - 2, W, 10); ctx.fillStyle = "#CDBBA3"; ctx.fillRect(0, y + 8, W, 3);
+  var g = ctx.createLinearGradient(0, y + 11, 0, H); g.addColorStop(0, "#7A4A2E"); g.addColorStop(1, "#4A2A1E"); ctx.fillStyle = g; ctx.fillRect(0, y + 11, W, H - y);
+  ctx.strokeStyle = "rgba(0,0,0,.25)"; ctx.lineWidth = 2; var dw = Math.max(90, W/4);
+  for (var x = dw; x < W; x += dw){ ctx.beginPath(); ctx.moveTo(x, y + 18); ctx.lineTo(x, H); ctx.stroke(); }
+  for (x = dw/2; x < W; x += dw) circ(ctx, x, y + 34, 3.5, "#D9B07A");
+  if (XMAS){ ctx.strokeStyle = "#2F8F4E"; ctx.lineWidth = 4; ctx.beginPath(); for (x = 0; x <= W; x += 6) ctx.lineTo(x, y + 14 + Math.sin(x/18)*4); ctx.stroke();
+    for (x = 12; x < W; x += 30) circ(ctx, x, y + 15 + Math.sin(x/18)*4, 2.6, ["#FFE066", "#FF6B6B", "#6BD1FF"][Math.floor(x/30) % 3]); }
+}
+function drawUfo(x, y, s, tm){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ell(ctx, 0, -6, 12, 10, "rgba(160,230,255,.85)"); circ(ctx, -3, -9, 3, "rgba(255,255,255,.7)");
+  ell(ctx, 0, 0, 28, 8, "#9AA6C0"); ell(ctx, 0, -2, 26, 5, "#C9D2E6");
+  for (var i = 0; i < 5; i++) circ(ctx, -18 + i*9, 2, 2.2, ((i + Math.floor(tm*6)) % 2) ? "#FFE066" : "#FF6B9A");
+  circ(ctx, 0, -8, 4, "#7FE07F"); dotEye(ctx, -1.4, -8.6, .9); dotEye(ctx, 1.4, -8.6, .9);
+  ctx.restore();
+}
+
+/* ---------- game state ---------- */
+var mode = "menu", playMode = "daily", layers = [], base = {x: 25, w: BASEW}, slab = null, plan = null;
+var score = 0, floors = 0, perfects = 0, combo = 0, maxCombo = 0, missAt = -1, winPlaced = [], winPerf = [];
+var finished = false, endWhy = "", tNow = 0, runT0 = 0, ufo = null, debris = [], parts = [], texts = [], banner = null;
+var cam = 0, shake = 0, hop = 0, granLift = 0, magicLook = 0, heart = 0, newBest = false;
+function topLayer(){ return layers.length ? layers[layers.length - 1] : base; }
+function topH(){ return floors*LH; }
+function spec(i){ return playMode === "daily" ? plan[i] : freeLayer(i); }
+function newRun(m){ kodyUsed = false; kodyAsked = false;
+  playMode = m === "daily" ? "daily" : "free";
+  plan = playMode === "daily" ? dailyPlan(dayNum()) : null;
+  layers = []; slab = null; score = 0; floors = 0; perfects = 0; combo = 0; maxCombo = 0; missAt = -1;
+  winPlaced = [0, 0, 0, 0, 0, 0, 0, 0]; winPerf = [0, 0, 0, 0, 0, 0, 0, 0];
+  finished = false; endWhy = ""; tNow = 0; runT0 = Date.now(); ufo = null; debris = []; parts = []; texts = []; banner = null; cam = 0; shake = 0; hop = 0; heart = 0; newBest = false;
+  spawn();
+}
+function xmax(w){ return 108 - w; }
+function spawn(){
+  if (playMode === "daily" && floors >= DAILY_N){ slab = null; return; }
+  var sp = spec(floors), w = topLayer().w;
+  slab = {w: w, px: sp.side < 0 ? -8 : xmax(w), x: 0, dir: sp.side < 0 ? 1 : -1, v: sp.v, deco: sp.deco, t: 0};
+  slab.x = slab.px; granLift = 1;
+}
+function wobbling(){ return !!(ufo && ufo.ph === "beam"); }
+function moveSlab(dt){
+  if (!slab) return; var s = slab; s.t += dt;
+  s.px += s.dir*s.v*dt;
+  var mx = xmax(s.w);
+  if (s.px < -8){ s.px = -8 + (-8 - s.px); s.dir = 1; } else if (s.px > mx){ s.px = mx - (s.px - mx); s.dir = -1; }
+  s.x = s.px + (wobbling() ? Math.sin(s.t*5.2)*7 : 0);
+}
+function canDrop(){ return mode === "play" && !finished && !!slab; }
+function say(s, d){ banner = {s: s, t: d || 1.6}; }
+function addPts(p, x, h){ score += p; texts.push({s: "+" + p, x: x, h: h, l: 1}); }
+function crumbs(x, h, n, col){ for (var i = 0; i < n; i++) parts.push({x: x + rnd(-2, 2), h: h + rnd(0, LH), vx: rnd(-18, 18), vh: rnd(0, 26), l: rnd(.5, 1), c: col || (Math.random() < .3 ? "#FFF6EA" : "#B8682C"), r: rnd(1.4, 3)}); }
+function sparkle(x, w, h){ for (var i = 0; i < 14; i++) parts.push({x: x + Math.random()*w, h: h + LH, vx: rnd(-10, 10), vh: rnd(10, 40), l: rnd(.4, .9), c: ["#FFF2B0", "#FFFFFF", "#FF9FB2"][i % 3], r: rnd(1.2, 2.4), star: 1}); }
+function drop(){
+  if (!canDrop()) return false;
+  var s = slab, tp = topLayer(), x = s.x, w = s.w, h = topH(), off = x - tp.x, perf = false, win = Math.floor(floors/5);
+  if (Math.abs(off) <= PERF){
+    perf = true; x = tp.x; combo++; perfects++; maxCombo = Math.max(maxCombo, combo);
+    var pts = 10 + 25 + 5*Math.min(combo - 1, 10); addPts(pts, x + w/2, h + LH);
+    if (combo % 3 === 0 && w < BASEW){ var nw = Math.min(BASEW, w + GROW); x -= (nw - w)/2; w = nw; say(t("icing"), 1.2); SFX.grow(); } else SFX.perfect(combo);
+    sparkle(x, w, h); heart = 1.2; hop = 1; vib(18);
+    if (combo >= 2) texts.push({s: t("perfect") + " ×" + combo, x: x + w/2, h: h + LH*2.4, l: 1.1, big: 1});
+  } else {
+    var l = Math.max(x, tp.x), r = Math.min(x + w, tp.x + tp.w);
+    if (r - l <= 0.3){
+      debris.push({x: x, w: w, h: h + LH*1.6, vx: off < 0 ? -14 : 14, vh: 0, rot: 0, vr: off < 0 ? -2.4 : 2.4, deco: s.deco});
+      combo = 0; missAt = floors; slab = null; shake = 1; SFX.miss(); crumbs(off < 0 ? tp.x : tp.x + tp.w, h, 10);
+      endRun("miss"); return true;
+    }
+    var px0 = x < l ? x : r, pw = x < l ? l - x : x + w - r;
+    debris.push({x: px0, w: pw, h: h, vx: x < l ? -10 : 10, vh: 8, rot: 0, vr: x < l ? -3 : 3, deco: s.deco});
+    crumbs(x < l ? l : r, h, 7); x = l; w = r - l; combo = 0; addPts(10, x + w/2, h + LH); SFX.crack(); SFX.thud(w); vib(10);
+  }
+  layers.push({x: x, w: w, deco: s.deco, perf: perf, land: 1, glow: perf ? 1 : 0});
+  floors++; if (win < 8){ winPlaced[win]++; if (perf) winPerf[win]++; }
+  magicLook = 0;
+  if (playMode === "daily"){
+    saveDailyProgress();
+    if (floors >= DAILY_N){ slab = null; for (var k = 0; k < 4; k++) sparkle(x, w, h); endRun("done"); return true; }
+    if (floors === DAILY_N - 5) say(t("last5"), 1.4);
+  } else ufoCheck();
+  spawn(); return true;
+}
+/* ---------- UFO (endless): wobbles the dough for 3 floors ---------- */
+function ufoCheck(){
+  if (ufo){ if (floors >= ufo.until && ufo.ph !== "out"){ ufo.ph = "out"; ufo.t = 0; toast(t("ufoBye")); } return; }
+  if (floors >= 12 && (floors - 12) % 15 === 0) ufoNow();
+}
+function ufoNow(){
+  if (ufo || playMode !== "free" || mode !== "play" || finished) return false;
+  var dir = Math.random() < .5 ? -1 : 1; ufo = {x: dir < 0 ? 125 : -25, dh: 40, ph: "in", t: 0, dir: dir, until: floors + 3}; SFX.ufo(); toast(t("ufo")); return true;
+}
+function ufoTick(dt){
+  if (!ufo) return; var u = ufo; u.t += dt;
+  var tx = slab ? slab.x + slab.w/2 : 50;
+  if (u.ph === "in"){ u.x += (tx - u.x)*Math.min(1, dt*2.5); u.dh += (24 - u.dh)*Math.min(1, dt*2); if (u.t > 1.1) u.ph = "beam"; }
+  else if (u.ph === "beam"){ u.x += (tx - u.x)*Math.min(1, dt*4); }
+  else { u.x += u.dir*70*dt; u.dh += 30*dt; if (u.x < -40 || u.x > 140 || u.t > 3) ufo = null; }
+}
+function simulate(dt){ if (mode === "kody") return; tNow += dt; moveSlab(dt); ufoTick(dt); }
+
+/* ---------- daily result, streak ---------- */
+function curStreak(){ var d = dayNum(); return (P.lastDay === d || P.lastDay === d - 1) ? P.streak : 0; }
+function rowArr(){
+  var out = [];
+  for (var k = 0; k < 8; k++){
+    if (winPlaced[k] >= 5) out.push(winPerf[k] >= 4 ? "g" : winPerf[k] >= 2 ? "y" : "o");
+    else if (missAt >= 0 && Math.floor(missAt/5) === k) out.push("r");
+    else out.push("n");
+  }
+  return out;
+}
+function rowStr(r){ return (r || []).map(function(v){ return SQ[v] || SQ.n; }).join(""); }
+function saveDailyProgress(){
+  if (playMode !== "daily" || finished) return;
+  P.daily = {day: dayNum(), score: score, perf: perfects, floors: floors, combo: maxCombo, row: rowArr(), why: "partial"}; save();
+}
+addEventListener("pagehide", function(){ if (mode === "play" || mode === "pause") saveDailyProgress(); });
+function finishDaily(){
+  var d = dayNum();
+  if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; }
+  P.daily = {day: d, score: score, perf: perfects, floors: floors, combo: maxCombo, row: rowArr(), why: endWhy};
+  save();
+}
+function dailyDoneToday(){ return !!(P.daily && P.daily.day === dayNum()); }
+/* abandoned daily (reload mid-run) still counts – first attempt counts */
+(function(){ if (P.daily && P.daily.why === "partial"){ var d = P.daily.day; if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; } P.daily.why = "quit"; save(); } })();
+
+function endRun(why){
+  if (finished) return; if (kodyOffer(why)) return; finished = true; endWhy = why;
+  var isNew = false;
+  if (playMode === "daily") finishDaily();
+  else { if (score > P.best){ P.best = score; isNew = score > 0; } P.bestFl = Math.max(P.bestFl, floors); }
+  newBest = isNew; P.games++; save();
+  if (why === "done") SFX.done(); else SFX.end();
+  vib(why === "done" ? [30, 50, 30] : [80, 60, 120]);
+  var secs = Math.round((Date.now() - runT0)/1000);
+  if (!DEBUG){
+    if (playMode === "daily"){ if (score >= 10) SXD.result({score: score, ko: perfects, wave: dayNum(), secs: secs}); }
+    else if (score >= 10 && !kodyUsed) SX.result({score: score, ko: perfects, wave: floors, secs: secs});
+    try { window.goatcounter && goatcounter.count && goatcounter.count({path: "pepperkaketarn-over", title: "pepperkaketarn over " + playMode + " " + why, event: true}); } catch(e){}
+    if (playMode === "daily") try { window.goatcounter && goatcounter.count && goatcounter.count({path: "pepperkaketarn-daily-finish", title: "pepperkaketarn daily finish", event: true}); } catch(e){}
+  }
+  if (why === "done") try { window.S60Cameo && S60Cameo.sleigh && S60Cameo.sleigh(); } catch(e){}
+  setTimeout(function(){ if (finished && mode === "play") setMode("over"); }, why === "done" ? 1600 : 1300);
+}
+function shareText(){
+  if (lastShown === "daily" && P.daily){
+    var dd = P.daily, st = curStreak(), done = dd.floors >= DAILY_N;
+    return t("name") + " #" + dd.day + " 🍪 " + fmtN(dd.score) + "\n" + rowStr(dd.row) + (done ? "🌟" : "") + "\n" + t("floors") + " " + dd.floors + "/" + DAILY_N + " · " + t("perfects") + " " + dd.perf + (st > 0 ? " · " + t("streakW") + " " + st + "🔥" : "") + "\nstop60.no";
+  }
+  return t("name") + " · " + t("freeName") + " 🍪 " + fmtN(score) + "\n" + t("floors") + " " + floors + " · " + t("perfects") + " " + perfects + "\nstop60.no";
+}
+var lastShown = "daily";
+function paintOver(){
+  var daily = lastShown === "daily" && P.daily, d = daily ? P.daily : {score: score, perf: perfects, floors: floors, why: endWhy};
+  $("overTitle").textContent = daily ? (d.why === "done" ? t("overDone") : t("overMissD")) + " #" + P.daily.day : t("overMiss");
+  $("oScore").textContent = fmtN(d.score); $("oMerges").textContent = d.perf; $("oBig").textContent = daily ? d.floors + "/" + DAILY_N : d.floors;
+  $("oBestRow").hidden = !!daily; $("oNew").hidden = daily || !newBest;
+  var st = curStreak(); $("oStreak").hidden = !daily || !st; $("oStreak").textContent = t("streak").replace("{n}", st);
+  var gr = t("gran"); $("oGran").textContent = gr[(d.score/5 + d.floors) % gr.length];
+  $("retryBtn").textContent = daily ? t("free") : t("retry");
+  $("oCd").hidden = !daily; $("overGrid").hidden = false; $("overGrid").textContent = shareText();
+  $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
+  refreshStats(); tickCd();
+}
+function showSavedDaily(){ lastShown = "daily"; newBest = false; setMode("over"); }
+
+/* ---------- menu, modes ---------- */
+function refreshMenu(){
+  var done = dailyDoneToday(), pb = $("playBtn");
+  pb.textContent = done ? t("dailyDone").replace("{s}", fmtN(P.daily.score)) : t("play"); pb.classList.toggle("done", done);
+  $("mCd").hidden = !done;
+  var s = curStreak(); $("mStreak").hidden = !s; $("mStreak").textContent = t("streak").replace("{n}", s);
+  tickCd();
+}
+function cdStr(){ var n = new Date(), m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1), s = Math.max(0, Math.floor((m - n)/1000)), h = Math.floor(s/3600), mi = Math.floor(s/60) % 60, se = s % 60; return h + ":" + String(mi).padStart(2, "0") + ":" + String(se).padStart(2, "0"); }
+function tickCd(){ var s = t("nextIn").replace("{t}", cdStr()); if (!$("mCd").hidden) $("mCd").textContent = s; if (!$("oCd").hidden) $("oCd").textContent = s;
+  if (mode === "menu" && P.daily && dailyDoneToday() === false && $("playBtn").classList.contains("done")) refreshMenu(); }
+setInterval(tickCd, 1000);
+function setMode(m){
+  mode = m;
+  $("menu").hidden = m !== "menu"; $("pause").hidden = m !== "pause"; $("over").hidden = m !== "over";
+  $("hud").hidden = !(m === "play" || m === "pause"); $("langs").hidden = !(m === "menu");
+  if (m === "menu"){ refreshMenu(); SX.fortune($("playBtn")); }
+  if (m === "over"){ paintOver(); SX.fortune($("overLove")); }
+}
+function start(m){
+  audio();
+  if (m === "daily" && dailyDoneToday()){ showSavedDaily(); return; }
+  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8);
+  if (playMode === "daily"){ SXD.start(); saveDailyProgress(); } else SX.start();
+  if (!DEBUG) try { window.goatcounter && goatcounter.count && goatcounter.count({path: "pepperkaketarn-start", title: "pepperkaketarn start " + playMode, event: true}); } catch(e){}
+}
+$("playBtn").onclick = function(){ start("daily"); };
+$("freeBtn").onclick = function(){ start("free"); };
+$("retryBtn").onclick = function(){ start("free"); };
+$("overMenu").onclick = function(){ setMode("menu"); };
+$("pauseBtn").onclick = function(ev){ ev.stopPropagation(); if (mode === "play") setMode("pause"); };
+$("resumeBtn").onclick = function(){ setMode("play"); };
+$("quitBtn").onclick = function(){ if (!finished){ if (playMode === "daily"){ finished = true; endWhy = "quit"; finishDaily(); lastShown = "daily"; setMode("over"); return; } } setMode("menu"); };
+$("topDayBtn").onclick = function(){ SXD.board(); };
+document.querySelectorAll(".shareB").forEach(function(b){ b.onclick = function(){
+  var d = {title: t("name"), text: t("shareText"), url: PAGE_URL};
+  if (navigator.share) navigator.share(d).catch(function(){}); else if (navigator.clipboard) navigator.clipboard.writeText(PAGE_URL).then(function(){ toast(t("copied")); });
+  try { window.goatcounter && goatcounter.count && goatcounter.count({path: "pepperkaketarn-share", title: "pepperkaketarn share", event: true}); } catch(e){}
+}; });
+if (window.S60ScoreShare) S60ScoreShare.bind($("scoreShare"), { game: "pepperkaketarn", links: $("scoreLinks"), lang: function(){ return lang; }, gameName: function(){ return t("name"); }, score: function(){ return $("oScore").textContent || 0; }, text: function(){ var g = $("overGrid"); return (g && g.textContent) || ""; } });
+$("overGrid").onclick = function(){ $("scoreShare").click(); };
+
+/* ---------- leaderboards: endless + daily tower ---------- */
+function mkSX(game, daily){
+  return window.S60Social ? S60Social.create({
+    game: game, url: PAGE_URL, lang: function(){ return lang; }, gameName: function(){ return t("name") + (daily ? " · " + t("dayName") + " #" + dayNum() : ""); },
+    shareText: function(r){ return t("sxShare").replace("{s}", fmtN(r ? r.score : (daily ? (P.daily && P.daily.score) || 0 : P.best))); },
+    fmt: function(r){ return daily ? t("sxRowD").replace("{s}", fmtN(r.score)) : t("sxRow").replace("{s}", fmtN(r.score)).replace("{f}", r.wave || 0); },
+    rpc: {start: "pepperkaketarn_start", submit: "pepperkaketarn_submit"},
+    args: function(r, tok){ return {p_name: r.name, p_score: r.score, p_ko: r.ko, p_wave: r.wave, p_secs: r.secs | 0, p_token: tok || null, p_daily: daily}; },
+    filter: daily ? function(){ return "&wave=eq." + dayNum(); } : null,
+    toast: toast
+  }) : {block: function(){ return document.createElement("div"); }, relabel: function(){}, fortune: function(){}, result: function(){}, start: function(){}, board: function(){}};
+}
+var SX = mkSX("pepperkaketarn", false), SXD = mkSX("pepperkaketarn-dag", true);
+
+/* ---------- Kode / Kod / Code (test): extra life in free play + Magic's gold hat ---------- */
+var kodyUsed = false, kodyAsked = false;
+function kodyOffer(why){
+  if (playMode !== "free" || why === "done" || why === "quit" || kodyUsed || kodyAsked || !window.S60Kody || S60Kody.lives() <= 0) return false;
+  kodyAsked = true; mode = "kody";
+  S60Kody.offerLife({lang: function(){ return lang; }, game: "pepperkaketarn",
+    onYes: function(){ kodyUsed = true; mode = "play"; kodyRevive(); },
+    onNo: function(){ mode = "play"; endRun(why); }});
+  return true;
+}
+function kodyRevive(){
+  missAt = -1; combo = 0; shake = 0; hop = 1; heart = 1.2; spawn(); say(S60Kody.t(lang).rev, 1.8);
+}
+var KB = window.S60Kody ? S60Kody.mount($("kodyBox"), {lang: function(){ return lang; }, game: "pepperkaketarn"}) : null;
+$("sxMenu").appendChild(SX.block()); $("sxOver").appendChild(SX.block()); $("sxOverD").appendChild(SXD.block());
+
+/* ---------- HUD ---------- */
+var hudCache = {};
+function setTxt(id, v){ v = String(v); if (hudCache[id] !== v){ hudCache[id] = v; $(id).textContent = v; } }
+function updHud(force){
+  if (force) hudCache = {};
+  setTxt("hScore", fmtN(score));
+  setTxt("hTh", playMode === "daily" ? floors + "/" + DAILY_N : String(floors));
+  setTxt("hCombo", combo > 1 ? "×" + combo : "–");
+}
+
+/* ---------- render ---------- */
+function sx(x){ return X0 + x*S; } function sy(h){ return baseY - (h - cam)*S; }
+function render(){
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(BG, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  var tm = performance.now()/1000;
+  if (XMAS){ ctx.fillStyle = "rgba(255,255,255,.5)"; for (var f = 0; f < flakes.length; f++){ var fl = flakes[f]; var fy = ((fl.y + tm*.02*fl.z) % 1)*H, fxp = fl.x*W + Math.sin(tm*.6 + fl.p)*10; flake(ctx, fxp, fy, 2.2*fl.z, "rgba(255,255,255,.28)"); } }
+  ctx.save(); if (shake > 0) ctx.translate(Math.sin(tm*60)*shake*5, 0);
+  // tray
+  var ty = sy(0); if (ty < H + 20){ ctx.fillStyle = "#8A90A0"; ctx.beginPath(); ctx.roundRect(sx(base.x - 6), ty, (base.w + 12)*S, 1.6*S, 3); ctx.fill(); ctx.fillStyle = "#C9CED8"; ctx.fillRect(sx(base.x - 5), ty, (base.w + 10)*S, .5*S); }
+  // tower
+  var lh = LH*S;
+  for (var i = 0; i < layers.length; i++){ var L = layers[i], y = sy((i + 1)*LH + L.land*LH*1.6); if (y > H + 10 || y + lh < HUDH - 40) continue;
+    drawSlab(ctx, sx(L.x), y, L.w*S, lh, L.deco, L.glow, i % 4 === 1); }
+  // moving slab + its shadow guide
+  if (slab && mode !== "over"){
+    var hy = sy(topH() + LH*2.6);
+    ctx.setLineDash([3, 5]); ctx.strokeStyle = "rgba(255,230,170,.35)"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(sx(slab.x), hy + lh); ctx.lineTo(sx(slab.x), sy(topH())); ctx.moveTo(sx(slab.x + slab.w), hy + lh); ctx.lineTo(sx(slab.x + slab.w), sy(topH())); ctx.stroke(); ctx.setLineDash([]);
+    if (wobbling()){ var ux = sx(ufo.x), uy = sy(topH() + LH*1.6 + ufo.dh), bg2 = ctx.createLinearGradient(0, uy, 0, hy + lh); bg2.addColorStop(0, "rgba(150,255,180,.55)"); bg2.addColorStop(1, "rgba(150,255,180,.12)"); ctx.fillStyle = bg2; ctx.beginPath(); ctx.moveTo(ux - 8, uy); ctx.lineTo(ux + 8, uy); ctx.lineTo(sx(slab.x + slab.w) + 4, hy + lh); ctx.lineTo(sx(slab.x) - 4, hy + lh); ctx.fill(); }
+    drawSlab(ctx, sx(slab.x), hy, slab.w*S, lh, slab.deco, 0, floors % 4 === 0);
+  }
+  // falling pieces
+  for (i = 0; i < debris.length; i++){ var d = debris[i]; ctx.save(); ctx.translate(sx(d.x + d.w/2), sy(d.h + LH) + lh/2); ctx.rotate(d.rot); drawSlab(ctx, -d.w*S/2, -lh/2, d.w*S, lh, d.deco, 0, false); ctx.restore(); }
+  // crumbs + sparkles
+  for (i = 0; i < parts.length; i++){ var p = parts[i]; ctx.globalAlpha = Math.min(1, p.l*2); if (p.star) flake(ctx, sx(p.x), sy(p.h), p.r*1.6, p.c); else circ(ctx, sx(p.x), sy(p.h), p.r, p.c); } ctx.globalAlpha = 1;
+  ctx.restore();
+  // UFO
+  if (ufo){ var us = clamp(S*.4, .9, 1.7); drawUfo(sx(ufo.x), sy(topH() + LH*1.6 + ufo.dh), us, tm); }
+  // foreground: counter, grandma, Magic
+  drawGrandma(gX, gY, gS, tm);
+  drawCounter();
+  var look = slab ? clamp((slab.x + slab.w/2 - 80)/40, -1, 1) : 0;
+  drawMagic(mX, mY, mS, look, 0, Math.max(0, Math.sin(hop*Math.PI))*14*mS*.6);
+  if (heart > 0){ ctx.globalAlpha = Math.min(1, heart); ctx.font = Math.round(16*mS/1.4) + "px system-ui, 'Apple Color Emoji', sans-serif"; ctx.textAlign = "center"; ctx.fillText("❤️", mX - 14*mS, mY - 34*mS - (1.2 - heart)*20); ctx.globalAlpha = 1; }
+  // texts
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  for (i = 0; i < texts.length; i++){ var tx = texts[i]; ctx.font = "800 " + Math.round(clamp(S*(tx.big ? 5.2 : 4.4), 14, tx.big ? 26 : 22)) + "px system-ui, sans-serif"; ctx.globalAlpha = Math.min(1, tx.l*2); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(40,10,30,.8)"; var X = clamp(sx(tx.x), 60, W - 60); ctx.strokeText(tx.s, X, sy(tx.h)); ctx.fillStyle = tx.big ? "#FFFFFF" : "#FFE9A8"; ctx.fillText(tx.s, X, sy(tx.h)); } ctx.globalAlpha = 1;
+  if (banner && mode === "play"){ ctx.font = "800 " + Math.round(clamp(W*.05, 16, 26)) + "px system-ui, sans-serif"; var by = HUDH + 70; ctx.globalAlpha = Math.min(1, banner.t*2);
+    var tw = ctx.measureText(banner.s).width + 28; ctx.fillStyle = "rgba(42,22,38,.82)"; ctx.beginPath(); ctx.roundRect(W/2 - tw/2, by - 20, tw, 40, 20); ctx.fill(); ctx.fillStyle = "#FFE9A8"; ctx.fillText(banner.s, W/2, by); ctx.globalAlpha = 1; }
+}
+function fx(dt){
+  for (var i = parts.length - 1; i >= 0; i--){ var p = parts[i]; p.l -= dt; if (p.l <= 0){ parts.splice(i, 1); continue; } p.x += p.vx*dt; p.h += p.vh*dt; p.vh -= 90*dt; }
+  for (i = debris.length - 1; i >= 0; i--){ var d = debris[i]; d.x += d.vx*dt; d.h += d.vh*dt; d.vh -= 160*dt; d.rot += d.vr*dt; if (sy(d.h) > H + 80) debris.splice(i, 1); }
+  for (i = texts.length - 1; i >= 0; i--){ var tx = texts[i]; tx.l -= dt; tx.h += 6*dt; if (tx.l <= 0) texts.splice(i, 1); }
+  for (i = Math.max(0, layers.length - 4); i < layers.length; i++){ var L = layers[i]; if (L.land > 0) L.land = Math.max(0, L.land - dt*12); if (L.glow > 0) L.glow = Math.max(0, L.glow - dt*1.2); }
+  if (banner){ banner.t -= dt; if (banner.t <= 0) banner = null; }
+  var vu = (baseY - HUDH - 30)/S, ct = Math.max(0, topH() + LH*3.6 - vu*.62);
+  cam += (ct - cam)*Math.min(1, dt*4);
+  shake = Math.max(0, shake - dt*2.5); hop = Math.max(0, hop - dt*2.2); heart = Math.max(0, heart - dt); granLift = Math.max(0, granLift - dt*2);
+}
+
+/* ---------- input: one tap anywhere drops ---------- */
+cv.addEventListener("pointerdown", function(ev){ if (mode !== "play" || finished) return; ev.preventDefault(); drop(); });
+addEventListener("keydown", function(ev){
+  if (mode === "play"){
+    if (ev.key === " " || ev.key === "Enter" || ev.key === "ArrowDown"){ drop(); ev.preventDefault(); }
+    else if (ev.key === "p" || ev.key === "P" || ev.key === "Escape") setMode("pause");
+  } else if (mode === "pause" && (ev.key === "p" || ev.key === "P" || ev.key === "Escape")) setMode("play");
+});
+
+/* ---------- loop ---------- */
+var last = performance.now();
+function frame(now){
+  var dt = Math.min(.05, (now - last)/1000); last = now;
+  if (mode === "play" && !finished) simulate(dt);
+  if (mode !== "pause") fx(dt);
+  updHud(); render(); requestAnimationFrame(frame);
+}
+if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){ r = Math.min(r, w/2, h/2); this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
+addEventListener("resize", resize);
+resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
+
+/* ---------- test hooks ---------- */
+window.__pk = {
+  get mode(){ return mode; }, get playMode(){ return playMode; }, get score(){ return score; }, get floors(){ return floors; }, get perfects(){ return perfects; }, get combo(){ return combo; },
+  get finished(){ return finished; }, get why(){ return endWhy; }, get ufo(){ return ufo ? ufo.ph : null; }, get xmas(){ return XMAS; }, get maxCombo(){ return maxCombo; },
+  get slab(){ return slab ? {x: slab.x, w: slab.w, v: slab.v, dir: slab.dir} : null; }, get top(){ var tp = topLayer(); return {x: tp.x, w: tp.w}; },
+  day: dayNum, plan: dailyPlan, grid: function(){ return $("overGrid").textContent; }, share: function(){ return shareText(); }, newRun: function(m){ start(m); }, P: function(){ return JSON.parse(JSON.stringify(P)); },
+  drop: function(){ return drop(); }, step: function(sec){ var n = Math.round(sec*60); for (var i = 0; i < n && !finished; i++) simulate(1/60); fx(sec); return finished; },
+  place: function(off){ if (!slab) return false; var tp = topLayer(); slab.px = tp.x + off; slab.x = slab.px; return drop(); },
+  ufoNow: function(){ return ufoNow(); }, end: function(w){ endRun(w || "miss"); }, saved: function(){ return P.daily; }
+};
+</script>
+<script src="https://stop60.no/assets/wisdom.js?v=2" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:document.documentElement.dataset.lang||"no",after:document.getElementById("playBtn")})});</script>
+<script src="/assets/s60-back.js?v=2" data-game="pepperkaketarn" data-pos="tl" data-dy="52" data-compact="1" data-end="after:#retryBtn|in:#pause" defer></script>
+<script src="/assets/s60-cameo.js?v=1" data-game="pepperkaketarn" data-play="mode==='play'" data-sound="!mute" data-top="60" defer></script>
+</body>
+</html>
