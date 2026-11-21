@@ -43,7 +43,7 @@ var CSS = '.s6s{display:flex;gap:12px;align-items:center;justify-content:center;
  '.s6s-t{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:10000;background:rgba(20,8,26,.92);color:#fff;padding:10px 16px;border-radius:14px;font:600 .9rem system-ui,sans-serif;opacity:0;transition:opacity .25s;pointer-events:none;max-width:88vw;text-align:center}.s6s-t.on{opacity:1}';
 
 function create(cfg){
-  // cfg: game, url, lang(), gameName(), shareText(result|null), fmt(row)->string, rpc {start?, submit}, args(result,token)->object, sfx?()
+  // cfg: game, url, lang(), gameName(), shareText(result|null), fmt(row)->string, rpc {start?, submit}, args(result,token)->object, sfx?(), filter?()->'&col=eq.x' (extra board filter)
   var PK = cfg.game + '.lb.v1', QK = cfg.game + '.lbq.v1';
   var pref = lsJ(PK, {nick: '', on: false}); pref.nick = cleanNick(pref.nick); pref.on = !!pref.on;
   var result = null, token = null, sent = null, blocks = [];
@@ -88,7 +88,7 @@ function create(cfg){
     box.querySelector('.s6s-cp').onclick = copy; modal.hidden = false; }
   /* leaderboard */
   function top10(rows){ var seen = {}, out = []; rows.forEach(function(r){ var k = String(r.name).toLowerCase(); if (seen[k]) return; seen[k] = 1; out.push(r); }); return out.slice(0, 10); }
-  function list(){ return sb('scores?select=name,score,ko,wave&game=eq.' + cfg.game + '&order=score.desc,created_at.asc&limit=300').then(function(r){ return top10(r || []); }); }
+  function list(){ return sb('scores?select=name,score,ko,wave&game=eq.' + cfg.game + (cfg.filter ? String(cfg.filter() || '') : '') + '&order=score.desc,created_at.asc&limit=300').then(function(r){ return top10(r || []); }); }
   function msg(k, o, err){ var m = box.querySelector('.s6s-msg'); if (!m) return; m.textContent = k ? t(k, o) : ''; m.classList.toggle('err', !!err); }
   function board(keep){
     mode = 'board'; var lastMsg = keep && box.querySelector('.s6s-msg') ? [box.querySelector('.s6s-msg').textContent, box.querySelector('.s6s-msg').className] : null;
