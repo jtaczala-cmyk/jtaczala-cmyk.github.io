@@ -75,7 +75,7 @@ function mount(el, o){
     var t = L(o.lang), msg = mk ? t[mk] : "", cls = mc;
     box.innerHTML = (open ? '<p class="s6k-t">' + t.title + '</p><form class="s6k-f"><input maxlength="16" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="' + t.btn.replace(/^\S+\s/, "") + '" placeholder="' + t.ph + '"><button type="submit">' + t.ok + '</button></form><p class="s6k-m ' + (cls || "") + '">' + (msg || "") + '</p>' : '<button type="button" class="s6k-b">' + t.btn + '</button>') +
       ((S.lives || S.hat) ? '<div class="s6k-i">' + (S.lives ? '<span>❤️ ' + t.lives + ': <b>' + S.lives + '</b></span>' : "") + (S.hat ? '<span>🎩 ' + t.hatL + ' <button type="button" class="s6k-hb">' + (S.hatOn ? t.on : t.off) + '</button></span>' : "") + '</div>' : "") +
-      (open ? '<p class="s6k-h">' + (S.lives && o.game ? t.freeOnly + " " : "") + t.hint + '</p>' : "");
+      (open && (o.hint !== false || (S.lives && o.game)) ? '<p class="s6k-h">' + (S.lives && o.game ? t.freeOnly + " " : "") + (o.hint !== false ? t.hint : "") + '</p>' : "");
     var b = box.querySelector(".s6k-b"); if (b) b.onclick = function(){ open = true; paint(); var i = box.querySelector("input"); i && i.focus(); };
     var hb = box.querySelector(".s6k-hb"); if (hb) hb.onclick = function(){ setHatOn(!S.hatOn); };
     var f = box.querySelector("form"); if (f) f.onsubmit = function(ev){ ev.preventDefault(); var v = f.querySelector("input").value; redeem(v).then(function(r){ mk = r.key; mc = r.ok ? "ok" : "er"; paint(); if (!r.ok){ var i = box.querySelector("input"); if (i){ i.value = v; } } }); };
