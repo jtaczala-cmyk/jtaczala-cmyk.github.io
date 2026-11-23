@@ -113,7 +113,7 @@ GAMES = [
  dict(id="stjernestorm", cats=["action"], new_until="2027-03-31", langs=["no", "en", "pl"],
       url={"no": "/stjernestorm/", "en": "/stjernestorm/en/", "pl": "/stjernestorm/pl/"},
       og={"no": "/stjernestorm/og.jpg", "en": "/stjernestorm/og.jpg", "pl": "/stjernestorm/og.jpg"},
-      photo="/stjernestorm/card.jpg?v=2", qr="/stjernestorm/qr.png",
+      photo="/stjernestorm/card.jpg?v=3", qr="/stjernestorm/qr.png",
       photo_alt={"no": "Stjernestorm: romskipet skyter en lysstrøm mot røde fiender, mynter og kraftkuler svever rundt",
                  "en": "Star Storm: your ship firing a stream of bolts at red enemies, with coins and power orbs floating around",
                  "pl": "Gwiezdna burza: statek strzela strumieniem pocisków do czerwonych wrogów, wokół monety i kule mocy"},
