@@ -59,3 +59,5 @@ button:active{transform:translateY(2px) scale(.98)}
 .hp{color:#ffd0d8!important;-webkit-text-fill-color:#ffd0d8;text-shadow:0 1px 2px #000}
 .nb{color:#ffe08a}
 .pad button.on{background:#ffb703;color:#3a2208}
+
+.how-top{margin:6px 0 8px;padding:0;list-style:none;text-align:left;display:grid;gap:4px;font-size:.85rem;font-weight:600;line-height:1.3}.how-top li{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:5px 9px}.seo-lead{font-size:.76rem!important;opacity:.8;margin:6px 0 2px!important;line-height:1.4!important}
