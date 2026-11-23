@@ -49,7 +49,7 @@ def events_by_day(start, end):
     while True:
         q = {"start": start.isoformat(), "end": end.isoformat(), "limit": 100}
         if exclude:
-            q["exclude_paths"] = exclude
+            q["exclude_paths"] = ",".join(str(i) for i in exclude)  # short CSV; repeated keys made the URL too long
         r = api("/stats/hits", q)
         hits = r.get("hits") or []
         for h in hits:
