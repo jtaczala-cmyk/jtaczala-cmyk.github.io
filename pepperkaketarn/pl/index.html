@@ -16,14 +16,14 @@
 <meta property="og:description" content="Darmowa gra świąteczna bez reklam: zbuduj wieżę z pierników razem z babcią i kotem Magic. Stuknij, żeby upuścić piernik – za idealne trafienie dostaniesz lukier i bonus. Graj bez końca albo spróbuj wieży dnia, takiej samej dla wszystkich.">
 <meta property="og:url" content="https://stop60.no/pepperkaketarn/pl/">
 <meta property="og:locale" content="pl_PL">
-<meta property="og:image" content="https://stop60.no/pepperkaketarn/og-pl.jpg?v=1">
+<meta property="og:image" content="https://stop60.no/pepperkaketarn/og-pl.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Babcine pierniki: babcia, kot Magic i wysoka wieża z uśmiechniętych pierników">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Babcine pierniki (Pepperkaketårn) – darmowa gra świąteczna bez reklam">
 <meta name="twitter:description" content="Darmowa gra świąteczna bez reklam: zbuduj wieżę z pierników razem z babcią i kotem Magic. Stuknij, żeby upuścić piernik – za idealne trafienie dostaniesz lukier i bonus. Graj bez końca albo spróbuj wieży dnia, takiej samej dla wszystkich.">
-<meta name="twitter:image" content="https://stop60.no/pepperkaketarn/og-pl.jpg?v=1">
+<meta name="twitter:image" content="https://stop60.no/pepperkaketarn/og-pl.jpg?v=2">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Pepperkaketårn", "alternateName": "Babcine pierniki", "url": "https://stop60.no/pepperkaketarn/pl/", "description": "Darmowa gra świąteczna bez reklam: zbuduj wieżę z pierników razem z babcią i kotem Magic. Stuknij, żeby upuścić piernik – za idealne trafienie dostaniesz lukier i bonus. Graj bez końca albo spróbuj wieży dnia, takiej samej dla wszystkich.", "inLanguage": "pl", "genre": ["Arcade", "Casual"], "gamePlatform": "Web browser", "applicationCategory": "Game", "operatingSystem": "Any", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "author": {"@type": "Person", "name": "Jacek Taczala"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "image": "https://stop60.no/pepperkaketarn/og-pl.jpg"}</script>
 <meta name="theme-color" content="#F7E6D3">
 <title>Babcine pierniki (Pepperkaketårn) – darmowa gra świąteczna bez reklam</title>
@@ -97,6 +97,7 @@ h2{font-size:1.55rem;line-height:1.15;color:var(--brown);margin:2px 0 2px}
 @media (max-width:600px){.card .s6s-qr{display:none}}
 .card .s60B{border-color:var(--ink)!important;color:var(--ink)!important}
 @media (max-height:700px){h1{font-size:2rem}button.big{margin-top:12px;padding:15px}.tag{margin-top:8px}.how{margin-top:12px}}
+.how-top{margin:6px 0 8px;padding:0;list-style:none;text-align:left;display:grid;gap:4px;font-size:.85rem;font-weight:600;line-height:1.3}.how-top li{background:rgba(120,60,20,.1);border:1px solid rgba(120,60,20,.25);border-radius:10px;padding:5px 9px}
 </style>
 </head>
 <body>
@@ -117,6 +118,7 @@ h2{font-size:1.55rem;line-height:1.15;color:var(--brown);margin:2px 0 2px}
   <h1 data-t="name">Pepperkaketårn</h1>
   <p class="sub" data-t="sub">Babcine pierniki</p>
   <p class="tag" data-t="tag">Babcia piecze, Magic pilnuje. Upuszczaj pierniki i zbuduj jak najwyższą wieżę!</p>
+  <ul class="how how-top" id="howList"><li data-t="how1">👆 Stuknij, gdy piernik jest nad wieżą</li><li data-t="how2">✂️ To, co wystaje poza wieżę, odpada</li><li data-t="how3">✨ Trafisz idealnie – dostaniesz lukier i bonus</li></ul>
   <button id="playBtn" class="big" data-t="start">START</button>
   <p class="best"><span data-t="best">Rekord</span>: <b class="bestV">0</b><span id="mStreak" hidden></span></p>
   <div class="pills">
@@ -125,7 +127,6 @@ h2{font-size:1.55rem;line-height:1.15;color:var(--brown);margin:2px 0 2px}
   </div>
   <p id="mDaily" class="cd" data-t="dailyInfo">Wieża dnia: 40 pięter, ta sama dla wszystkich</p>
   <div id="kodyBox"></div><style id="s6k-light">#kodyBox .s6k-f input{background:#fff;color:#3A1A10;border-color:#D9A441}#kodyBox .s6k-m.ok{color:#2E7D46}#kodyBox .s6k-m.er{color:#B23A3A}</style>
-  <ul class="how" id="howList"><li data-t="how1">👆 Stuknij, gdy piernik jest nad wieżą</li><li data-t="how2">✂️ To, co wystaje poza wieżę, odpada</li><li data-t="how3">✨ Trafisz idealnie – dostaniesz lukier i bonus</li></ul>
   <div class="icons"><button class="sndB ico" type="button"></button><button class="vibB ico" type="button"></button><button class="shareB ico" type="button" aria-label="Poleć grę" title="Poleć grę">🔗</button></div>
   <details class="about"><summary data-t="about">O grze</summary>
     <p class="seo-lead">Babcine pierniki (Pepperkaketårn) to darmowa gra świąteczna bez reklam, w którą grasz prosto w przeglądarce. Jednym palcem zrzucasz pierniki z babcinej blachy i budujesz jak najwyższą wieżę. Wieża dnia jest taka sama dla wszystkich, a wynikiem możesz pochwalić się znajomym. Graj na telefonie lub komputerze na stop60.no.</p>
