@@ -16,14 +16,14 @@
 <meta property="og:description" content="Darmowa gra logiczna bez reklam w przeglądarce: kot Magic upuszcza kłębki do koszyka babci. Dwie takie same rzeczy łączą się w większą – od naparstka do świątecznego swetra. Koszyk dnia: 40 rzutów, taki sam dla wszystkich.">
 <meta property="og:url" content="https://stop60.no/nostekurv/pl/">
 <meta property="og:locale" content="pl_PL">
-<meta property="og:image" content="https://stop60.no/nostekurv/og-pl.jpg?v=1">
+<meta property="og:image" content="https://stop60.no/nostekurv/og-pl.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Nøstekurv: kot Magic i babcia z koszykiem pełnym uśmiechniętych kłębków">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nøstekurv – babcine kłębki | darmowa gra logiczna bez reklam">
 <meta name="twitter:description" content="Darmowa gra logiczna bez reklam w przeglądarce: kot Magic upuszcza kłębki do koszyka babci. Dwie takie same rzeczy łączą się w większą – od naparstka do świątecznego swetra. Koszyk dnia: 40 rzutów, taki sam dla wszystkich.">
-<meta name="twitter:image" content="https://stop60.no/nostekurv/og-pl.jpg?v=1">
+<meta name="twitter:image" content="https://stop60.no/nostekurv/og-pl.jpg?v=2">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Nøstekurv", "alternateName": "Babcine kłębki", "url": "https://stop60.no/nostekurv/pl/", "description": "Darmowa gra logiczna bez reklam w przeglądarce: kot Magic upuszcza kłębki do koszyka babci. Dwie takie same rzeczy łączą się w większą – od naparstka do świątecznego swetra. Koszyk dnia: 40 rzutów, taki sam dla wszystkich.", "inLanguage": "pl", "genre": ["Puzzle", "Casual"], "gamePlatform": "Web browser", "applicationCategory": "Game", "operatingSystem": "Any", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "author": {"@type": "Person", "name": "Jacek Taczala"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "image": "https://stop60.no/nostekurv/og-pl.jpg"}</script>
 <meta name="theme-color" content="#2A1626">
 <title>Nøstekurv – babcine kłębki | darmowa gra logiczna bez reklam</title>
@@ -81,6 +81,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
 #calGrid div.today{outline:2px solid var(--gold);animation:pulse 2.2s ease-in-out infinite}
 #calGrid div.miss{opacity:.45}
 #calBtn[hidden],#oCal[hidden],#oStreak[hidden],#oCd[hidden],#mStreak[hidden],#mCd[hidden],#sxOverD[hidden],#sxOver[hidden],#oBestRow[hidden]{display:none}
+.how-top{margin:6px 0 8px;padding:0;list-style:none;text-align:left;display:grid;gap:4px;font-size:.85rem;font-weight:600;line-height:1.3}.how-top li{background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:5px 9px}.seo-lead{font-size:.76rem!important;opacity:.8;margin:6px 0 2px!important;line-height:1.4!important}
 </style>
 </head>
 <body>
@@ -104,6 +105,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <p class="tag" data-t="tag">Magic strąca kłębki do koszyka babci. Dwie takie same rzeczy łączą się w większą – aż do świątecznego swetra!</p>
   <p class="seo-lead" style="margin:10px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Nøstekurv to darmowa gra logiczna bez reklam w przeglądarce. Celuj jednym kciukiem, pozwól Magic upuścić kłębek i łącz takie same rzeczy w czapkę, szalik, rękawiczki i świąteczny sweter. Koszyk dnia jest taki sam dla wszystkich, a wynikiem możesz podzielić się ze znajomymi. Graj na telefonie lub komputerze na stop60.no.</p>
   <p id="mStreak" class="streak" hidden></p>
+  <ul class="how how-top"><li data-t="how1">👆 Przesuń palcem, by wycelować – puść, a Magic upuści kłębek</li><li data-t="how2">🧶 Dwie takie same łączą się w większą: naparstek → guzik → kłębek → czapka → szalik → rękawiczki → sweter</li><li data-t="how3">📅 Koszyk dnia: 40 rzutów, taki sam dla wszystkich – liczy się pierwsze podejście · 🛸 W grze swobodnej UFO pożycza małe kłębki</li></ul>
   <button id="playBtn" class="big" data-t="play">START</button>
   <p id="mCd" class="cd" hidden></p>
   <div class="row"><button id="freeBtn" class="alt" data-t="free">Gra swobodna</button></div>
@@ -113,7 +115,6 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <div id="sxMenu"></div>
   <div id="kodyBox"></div>
   <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
-  <ul class="how"><li data-t="how1">👆 Przesuń palcem, by wycelować – puść, a Magic upuści kłębek</li><li data-t="how2">🧶 Dwie takie same łączą się w większą: naparstek → guzik → kłębek → czapka → szalik → rękawiczki → sweter</li><li data-t="how3">📅 Koszyk dnia: 40 rzutów, taki sam dla wszystkich – liczy się pierwsze podejście · 🛸 W grze swobodnej UFO pożycza małe kłębki</li></ul>
   <p class="love" data-t="love">Stworzone z pasji</p>
   <p class="small"><span data-t="local">Rekord zapisuje się tylko na tym urządzeniu</span> · <a href="/nostekurv/prywatnosc/" data-t="privacy">Prywatność</a> · <a href="/">stop60.no</a></p>
 </section>
