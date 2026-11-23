@@ -124,6 +124,7 @@ h2{font-size:1.55rem;line-height:1.15;color:var(--brown);margin:2px 0 2px}
     <button id="topDayBtn" class="pill" type="button" data-t="board">🏆 Toppliste</button>
   </div>
   <p id="mDaily" class="cd" data-t="dailyInfo">Dagens tårn: 40 etasjer, likt for alle</p>
+  <div id="kodyBox"></div><style id="s6k-light">#kodyBox .s6k-f input{background:#fff;color:#3A1A10;border-color:#D9A441}#kodyBox .s6k-m.ok{color:#2E7D46}#kodyBox .s6k-m.er{color:#B23A3A}</style>
   <ul class="how" id="howList"><li data-t="how1">👆 Trykk når pepperkaken er over tårnet</li><li data-t="how2">✂️ Det som stikker utenfor, brekker av</li><li data-t="how3">✨ Treffer du midt på, får du glasur og bonus</li></ul>
   <div class="icons"><button class="sndB ico" type="button"></button><button class="vibB ico" type="button"></button><button class="shareB ico" type="button" aria-label="Del spillet" title="Del spillet">🔗</button></div>
   <details class="about"><summary data-t="about">Om spillet</summary>
@@ -160,7 +161,7 @@ h2{font-size:1.55rem;line-height:1.15;color:var(--brown);margin:2px 0 2px}
   <pre id="overGrid" role="button" tabindex="0" hidden></pre>
   <p id="oCd" class="cd" hidden></p>
   <p id="oGran" class="gran"></p>
-  <div id="sxOver"></div><div id="sxOverD" hidden></div>
+  <p id="oKody" class="small" hidden></p><div id="sxOver"></div><div id="sxOverD" hidden></div>
   <p class="foot"><span class="love" id="overLove" data-t="love">Laget med lidenskap</span> · <a href="/pepperkaketarn/personvern/" data-t="privacy">Personvern</a> · <a href="/">stop60.no</a></p>
 </section>
 <div id="toast"></div>
@@ -168,6 +169,7 @@ h2{font-size:1.55rem;line-height:1.15;color:var(--brown);margin:2px 0 2px}
 <script src="/assets/vendor/qrcode/qrcode.min.js"></script>
 <script src="/assets/s60-social.js?v=2"></script>
 <script src="/assets/score-share.js"></script>
+<script src="/assets/s60-kody.js?v=2"></script>
 <script>
 "use strict";
 /* Pepperkaketårn – © 2026 Stop60. All rights reserved. One-tap gingerbread stacking: Grandma bakes, Magic the cat keeps watch. */
@@ -203,7 +205,7 @@ function applyLang(){
   document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
   $("muteBtn").setAttribute("aria-label", t("snd")); $("pauseBtn").setAttribute("aria-label", t("paused"));
   document.querySelectorAll(".shareB").forEach(function(b){ b.setAttribute("aria-label", t("share")); b.title = t("share"); });
-  refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
+  if (typeof KB !== "undefined" && KB) KB.relabel(); refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
   if (typeof SX !== "undefined"){ SX.relabel(); SXD.relabel(); if (!$("menu").hidden) SX.fortune($("howList"), true); else if (!$("over").hidden) SX.fortune($("oGran"), true); }
 }
 document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = P.lang = b.dataset.l; save(); applyLang(); }; });
@@ -438,7 +440,7 @@ function drawMagic(x, y, s, look, paw, hop){
   line(ctx, [0, 4, -2, 5.6], "#5a2a2a", .9); line(ctx, [0, 4, 2, 5.6], "#5a2a2a", .9);
   line(ctx, [-6, 3, -15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [-6, 4.5, -15, 5], "rgba(255,255,255,.7)", .7);
   line(ctx, [6, 3, 15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [6, 4.5, 15, 5], "rgba(255,255,255,.7)", .7);
-  if (XMAS){ // Santa hat
+  if (window.S60Kody && S60Kody.hatOn()){ S60Kody.drawHat(ctx, 0, -8.5, 23); } else if (XMAS){ // Santa hat
     ctx.fillStyle = "#D62B3A"; ctx.beginPath(); ctx.moveTo(-10, -8); ctx.quadraticCurveTo(-2, -26, 12, -22); ctx.lineTo(9, -7); ctx.closePath(); ctx.fill();
     ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(-11, -10, 22, 5, 2.5); ctx.fill(); circ(ctx, 13, -22, 3.2, "#fff");
   }
@@ -473,7 +475,7 @@ var flash = 0, cam = 0, shake = 0, hop = 0, granLift = 0, magicLook = 0, heart =
 function topLayer(){ return layers.length ? layers[layers.length - 1] : base; }
 function topH(){ return floors*LH; }
 function spec(i){ return playMode === "daily" ? plan[i] : freeLayer(i); }
-function newRun(m){
+function newRun(m){ kodyUsed = false; kodyAsked = false;
   playMode = m === "daily" ? "daily" : "free";
   plan = playMode === "daily" ? dailyPlan(dayNum()) : null;
   layers = []; slab = null; score = 0; floors = 0; perfects = 0; combo = 0; maxCombo = 0; missAt = -1;
@@ -548,7 +550,7 @@ function ufoTick(dt){
   else if (u.ph === "beam"){ u.x += (tx - u.x)*Math.min(1, dt*4); }
   else { u.x += u.dir*70*dt; u.dh += 30*dt; if (u.x < -40 || u.x > 140 || u.t > 3) ufo = null; }
 }
-function simulate(dt){ tNow += dt; moveSlab(dt); ufoTick(dt); }
+function simulate(dt){ if (mode === "kody") return; tNow += dt; moveSlab(dt); ufoTick(dt); }
 
 /* ---------- daily result, streak ---------- */
 function curStreak(){ var d = dayNum(); return (P.lastDay === d || P.lastDay === d - 1) ? P.streak : 0; }
@@ -578,7 +580,7 @@ function dailyDoneToday(){ return !!(P.daily && P.daily.day === dayNum()); }
 (function(){ if (P.daily && P.daily.why === "partial"){ var d = P.daily.day; if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; } P.daily.why = "quit"; save(); } })();
 
 function endRun(why){
-  if (finished) return; finished = true; endWhy = why;
+  if (finished) return; if (kodyOffer(why)) return; finished = true; endWhy = why;
   var isNew = false;
   if (playMode === "daily") finishDaily();
   else { if (score > P.best){ P.best = score; isNew = score > 0; } P.bestFl = Math.max(P.bestFl, floors); }
@@ -588,7 +590,7 @@ function endRun(why){
   var secs = Math.round((Date.now() - runT0)/1000);
   if (!DEBUG){
     if (playMode === "daily"){ if (score >= 10) SXD.result({score: score, ko: perfects, wave: dayNum(), secs: secs}); }
-    else if (score >= 10) SX.result({score: score, ko: perfects, wave: floors, secs: secs});
+    else if (score >= 10 && !kodyUsed) SX.result({score: score, ko: perfects, wave: floors, secs: secs});
     try { window.goatcounter && goatcounter.count && goatcounter.count({path: "pepperkaketarn-over", title: "pepperkaketarn over " + playMode + " " + why, event: true}); } catch(e){}
     if (playMode === "daily") try { window.goatcounter && goatcounter.count && goatcounter.count({path: "pepperkaketarn-daily-finish", title: "pepperkaketarn daily finish", event: true}); } catch(e){}
   }
@@ -613,7 +615,7 @@ function paintOver(){
   var gr = t("gran"); $("oGran").textContent = gr[(d.score/5 + d.floors) % gr.length];
   $("retryBtn").textContent = daily ? "▶ " + t("free").replace(/^\S+\s/, "") : "↻ " + t("retry");
   $("oCd").hidden = !daily; $("overGrid").hidden = false; $("overGrid").textContent = shareText();
-  $("sxOver").hidden = !!daily; $("sxOverD").hidden = !daily;
+  $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
   refreshStats(); tickCd();
 }
 function showSavedDaily(){ lastShown = "daily"; newBest = false; setMode("over"); }
@@ -674,6 +676,21 @@ function mkSX(game, daily){
   }) : {block: function(){ return document.createElement("div"); }, relabel: function(){}, fortune: function(){}, result: function(){}, start: function(){}, board: function(){}};
 }
 var SX = mkSX("pepperkaketarn", false), SXD = mkSX("pepperkaketarn-dag", true);
+
+/* ---------- Kode / Kod / Code: extra life in free play + Magic's gold hat ---------- */
+var kodyUsed = false, kodyAsked = false;
+function kodyOffer(why){
+  if (playMode !== "free" || why === "done" || why === "quit" || kodyUsed || kodyAsked || !window.S60Kody || S60Kody.lives() <= 0) return false;
+  kodyAsked = true; mode = "kody";
+  S60Kody.offerLife({lang: function(){ return lang; }, game: "pepperkaketarn",
+    onYes: function(){ kodyUsed = true; mode = "play"; kodyRevive(); },
+    onNo: function(){ mode = "play"; endRun(why); }});
+  return true;
+}
+function kodyRevive(){
+  missAt = -1; combo = 0; shake = 0; hop = 1; heart = 1.2; spawn(); say(S60Kody.t(lang).rev, 1.8);
+}
+var KB = window.S60Kody ? S60Kody.mount($("kodyBox"), {lang: function(){ return lang; }, game: "pepperkaketarn"}) : null;
 $("sxMenu").appendChild(SX.block()); $("sxOver").appendChild(SX.block()); $("sxOverD").appendChild(SXD.block());
 
 /* ---------- HUD ---------- */

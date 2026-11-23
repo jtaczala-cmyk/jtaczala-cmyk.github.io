@@ -111,6 +111,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <div class="row"><button id="calBtn" type="button"></button><button id="topDayBtn" type="button" data-t="topDay">🏆 Today&#x27;s top 10</button></div>
   <div class="row"><button class="shareB" data-t="share">🔗 Share</button></div>
   <div id="sxMenu"></div>
+  <div id="kodyBox"></div>
   <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
   <ul class="how"><li data-t="how1">👆 Drag to aim – let go and Magic drops the yarn</li><li data-t="how2">🧶 Two matching things make a bigger one: thimble → button → yarn → hat → scarf → mittens → sweater</li><li data-t="how3">📅 Today&#x27;s basket: 40 throws, the same for everyone – your first try counts · 🛸 In free play the UFO borrows small yarn</li></ul>
   <p class="love" data-t="love">Made with passion</p>
@@ -147,7 +148,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <pre id="overGrid" role="button" tabindex="0" hidden></pre>
   <div class="row"><button id="scoreShare" type="button" data-t="shareScore">Share result</button><button id="overMenu" data-t="menu">Menu</button></div>
   <div id="scoreLinks"></div>
-  <div id="sxOver"></div><div id="sxOverD" hidden></div>
+  <p id="oKody" class="small" hidden></p><div id="sxOver"></div><div id="sxOverD" hidden></div>
   <p class="love" id="overLove" data-t="love">Made with passion</p>
   <p class="small"><a href="/nostekurv/en/privacy/" data-t="privacy">Privacy</a> · <a href="/">stop60.no</a></p>
 </section>
@@ -156,6 +157,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
 <script src="/assets/vendor/qrcode/qrcode.min.js"></script>
 <script src="/assets/s60-social.js?v=2"></script>
 <script src="/assets/score-share.js"></script>
+<script src="/assets/s60-kody.js?v=2"></script>
 <script>
 "use strict";
 /* Nøstekurv – © 2026 Stop60. All rights reserved. Drop-and-merge yarn puzzle: Magic the cat drops yarn into Grandma's basket. */
@@ -188,7 +190,7 @@ function applyLang(){
   document.querySelectorAll("[data-t]").forEach(function(e){ e.textContent = t(e.dataset.t); });
   document.querySelectorAll("a[data-t=privacy]").forEach(function(a){ a.href = PRIV[lang]; });
   document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
-  refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
+  if (typeof KB !== "undefined" && KB) KB.relabel(); refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
   if (typeof SX !== "undefined"){ SX.relabel(); SXD.relabel(); if (!$("menu").hidden) SX.fortune($("playBtn"), true); else if (!$("over").hidden) SX.fortune($("overLove"), true); }
 }
 document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = P.lang = b.dataset.l; save(); applyLang(); }; });
@@ -512,7 +514,7 @@ function drawMagic(x, y, s, look, paw, hop){
   line(ctx, [0, 4, -2, 5.6], "#5a2a2a", .9); line(ctx, [0, 4, 2, 5.6], "#5a2a2a", .9);
   line(ctx, [-6, 3, -15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [-6, 4.5, -15, 5], "rgba(255,255,255,.7)", .7);
   line(ctx, [6, 3, 15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [6, 4.5, 15, 5], "rgba(255,255,255,.7)", .7);
-  if (XMAS){ // Santa hat
+  if (window.S60Kody && S60Kody.hatOn()){ S60Kody.drawHat(ctx, 0, -8.5, 23); } else if (XMAS){ // Santa hat
     ctx.fillStyle = "#D62B3A"; ctx.beginPath(); ctx.moveTo(-10, -8); ctx.quadraticCurveTo(-2, -26, 12, -22); ctx.lineTo(9, -7); ctx.closePath(); ctx.fill();
     ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(-11, -10, 22, 5, 2.5); ctx.fill(); circ(ctx, 13, -22, 3.2, "#fff");
   }
@@ -561,7 +563,7 @@ var finished = false, endWhy = "", tNow = 0, runT0 = 0, calmT = 0, lastThrowT = 
 var VMAX = 260, VUP = 70, DT = 1/240, G = 270, ITER = 4, DAMP = .9985, acc = 0;
 function newBall(l, x, y){ var r = RAD[l]; return {id: ++ballId, l: l, r: r, m: r*r, x: x, y: y, px: x, py: y, born: tNow, over: 0, pop: .25, beam: 0}; }
 function today0(){ return dayNum(); }
-function newRun(m){
+function newRun(m){ kodyUsed = false; kodyAsked = false;
   playMode = m === "free" ? "free" : "daily";
   balls = []; score = 0; merges = 0; throws = 0; topL = 0; row = [0, 0, 0, 0, 0, 0, 0, 0]; parts = []; texts = []; banner = null; finished = false; endWhy = ""; acc = 0;
   tNow = 0; calmT = 0; lastThrowT = 0; cool = .3; ufo = null; ufoT = rnd(30, 45); dangerT = 0; warned = false; seenTop = 0; newBest = false; aim = BW/2;
@@ -632,7 +634,7 @@ function physStep(){
   if (pend){ doMerge(pend[0], pend[1]); balls = balls.filter(function(x){ return !x.dead; }); }
 }
 function maxSpeed(){ var m = 0; for (var i = 0; i < balls.length; i++){ var b = balls[i]; if (b.beam) continue; var v = Math.abs(b.x - b.px) + Math.abs(b.y - b.py); if (v > m) m = v; } return m/DT; }
-function simulate(dt){
+function simulate(dt){ if (mode === "kody") return;
   tNow += dt; cool = Math.max(0, cool - dt); paw = Math.max(0, paw - dt*4);
   acc += dt; var steps = 0; while (acc >= DT && steps < 40){ physStep(); acc -= DT; steps++; } if (steps >= 40) acc = 0;
   // danger line
@@ -686,7 +688,7 @@ function dailyDoneToday(){ return !!(P.daily && P.daily.day === dayNum()); }
 (function(){ if (P.daily && P.daily.why === "partial"){ var d = P.daily.day; if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; } P.daily.why = "quit"; save(); } })();
 
 function endRun(why){
-  if (finished) return; finished = true; endWhy = why;
+  if (finished) return; if (kodyOffer(why)) return; finished = true; endWhy = why;
   var isNew = false;
   if (playMode === "daily") finishDaily();
   else { if (score > P.best){ P.best = score; isNew = score > 0; } P.bestTop = Math.max(P.bestTop, topL); }
@@ -696,7 +698,7 @@ function endRun(why){
   var secs = Math.round((Date.now() - runT0)/1000);
   if (!DEBUG){
     if (playMode === "daily") SXD.result({score: score, ko: merges, wave: dayNum(), secs: secs});
-    else SX.result({score: score, ko: merges, wave: topL + 1, secs: secs});
+    else if (!kodyUsed) SX.result({score: score, ko: merges, wave: topL + 1, secs: secs});
     try { window.goatcounter && goatcounter.count && goatcounter.count({path: "nostekurv-over", title: "nostekurv over " + playMode + " " + why, event: true}); } catch(e){}
     if (playMode === "daily") try { window.goatcounter && goatcounter.count && goatcounter.count({path: "nostekurv-daily-finish", title: "nostekurv daily finish", event: true}); } catch(e){}
   }
@@ -721,7 +723,7 @@ function paintOver(){
   var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.merges) % gr.length];
   $("retryBtn").textContent = daily ? t("free") : t("retry");
   $("oCd").hidden = !daily; $("overGrid").hidden = false; $("overGrid").textContent = shareText();
-  $("sxOver").hidden = !!daily; $("sxOverD").hidden = !daily;
+  $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
   refreshStats(); tickCd();
 }
 function showSavedDaily(){ lastShown = "daily"; newBest = false; setMode("over"); }
@@ -794,6 +796,25 @@ function mkSX(game, daily){
   }) : {block: function(){ return document.createElement("div"); }, relabel: function(){}, fortune: function(){}, result: function(){}, start: function(){}, board: function(){}};
 }
 var SX = mkSX("nostekurv", false), SXD = mkSX("nostekurv-dag", true);
+
+/* ---------- Kode / Kod / Code: extra life in free play + Magic's gold hat ---------- */
+var kodyUsed = false, kodyAsked = false;
+function kodyOffer(why){
+  if (playMode !== "free" || why === "done" || why === "quit" || kodyUsed || kodyAsked || !window.S60Kody || S60Kody.lives() <= 0) return false;
+  kodyAsked = true; mode = "kody";
+  S60Kody.offerLife({lang: function(){ return lang; }, game: "nostekurv",
+    onYes: function(){ kodyUsed = true; mode = "play"; kodyRevive(); },
+    onNo: function(){ mode = "play"; endRun(why); }});
+  return true;
+}
+function kodyRevive(){
+  var arr = balls.filter(function(b){ return !b.beam; }).sort(function(a, b){ return (a.y - a.r) - (b.y - b.r); }), kill = [];
+  arr.forEach(function(b, i){ if (i < 4 || b.y - b.r < DL + 40) kill.push(b); });
+  kill.forEach(function(b){ burst(b.x, b.y, "#FFD45A", 10); });
+  balls = balls.filter(function(b){ return kill.indexOf(b) < 0; }); balls.forEach(function(b){ b.over = 0; });
+  dangerT = 0; warned = false; cool = .5; hop = 1; say(S60Kody.t(lang).rev, 1.8);
+}
+var KB = window.S60Kody ? S60Kody.mount($("kodyBox"), {lang: function(){ return lang; }, game: "nostekurv"}) : null;
 $("sxMenu").appendChild(SX.block()); $("sxOver").appendChild(SX.block()); $("sxOverD").appendChild(SXD.block());
 
 /* ---------- HUD ---------- */
