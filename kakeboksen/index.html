@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="nb" data-lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="Gratis puslespill uten reklame i nettleseren: hjelp katten Magic og mormor å fylle kakeboksen. Trykk på like ting som ligger inntil hverandre – sukker blir til egg, smør, deig, kjeks og til slutt kake. Dagens boks: 30 trekk, lik for alle.">
+<link rel="canonical" href="https://stop60.no/kakeboksen/">
+<link rel="alternate" hreflang="nb" href="https://stop60.no/kakeboksen/">
+<link rel="alternate" hreflang="pl" href="https://stop60.no/kakeboksen/pl/">
+<link rel="alternate" hreflang="en" href="https://stop60.no/kakeboksen/en/">
+<link rel="alternate" hreflang="x-default" href="https://stop60.no/kakeboksen/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stop60">
+<meta property="og:title" content="Kakeboksen – mormors kakeboks | gratis puslespill uten reklame">
+<meta property="og:description" content="Gratis puslespill uten reklame i nettleseren: hjelp katten Magic og mormor å fylle kakeboksen. Trykk på like ting som ligger inntil hverandre – sukker blir til egg, smør, deig, kjeks og til slutt kake. Dagens boks: 30 trekk, lik for alle.">
+<meta property="og:url" content="https://stop60.no/kakeboksen/">
+<meta property="og:locale" content="nb_NO">
+<meta property="og:image" content="https://stop60.no/kakeboksen/og-no.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kakeboksen: mormor med bollen, katten Magic med nisselue og en kakeboks full av smilende kjeks, muffins og kaker">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kakeboksen – mormors kakeboks | gratis puslespill uten reklame">
+<meta name="twitter:description" content="Gratis puslespill uten reklame i nettleseren: hjelp katten Magic og mormor å fylle kakeboksen. Trykk på like ting som ligger inntil hverandre – sukker blir til egg, smør, deig, kjeks og til slutt kake. Dagens boks: 30 trekk, lik for alle.">
+<meta name="twitter:image" content="https://stop60.no/kakeboksen/og-no.jpg?v=1">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Kakeboksen", "alternateName": "Mormors kakeboks", "url": "https://stop60.no/kakeboksen/", "description": "Gratis puslespill uten reklame i nettleseren: hjelp katten Magic og mormor å fylle kakeboksen. Trykk på like ting som ligger inntil hverandre – sukker blir til egg, smør, deig, kjeks og til slutt kake. Dagens boks: 30 trekk, lik for alle.", "inLanguage": "nb", "genre": ["Puzzle", "Casual"], "gamePlatform": "Web browser", "applicationCategory": "Game", "operatingSystem": "Any", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "author": {"@type": "Person", "name": "Jacek Taczala"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "image": "https://stop60.no/kakeboksen/og-no.jpg"}</script>
+<meta name="theme-color" content="#2A1626">
+<title>Kakeboksen – mormors kakeboks | gratis puslespill uten reklame</title>
+<link rel="icon" href="/kakeboksen/favicon.ico?v=1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/kakeboksen/icon-32.png?v=1"><link rel="apple-touch-icon" href="/kakeboksen/apple-touch-icon.png?v=1"><link rel="manifest" href="/kakeboksen/manifest.webmanifest">
+<style>
+
+:root{--bg:#2A1626;--bg2:#3B2133;--gold:#F2C14E;--red:#E23B3B;--rose:#FF9FB2;--green:#7FD49A;--cream:#FFF4E6;--muted:#D9C3C8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--cream);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:none}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+button{font:inherit;color:var(--cream);background:linear-gradient(180deg,rgba(110,58,86,.95),rgba(60,28,50,.95));border:1px solid rgba(255,214,170,.35);border-radius:12px;padding:10px 16px;cursor:pointer;transition:transform .08s;box-shadow:0 2px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12)}
+button:active{transform:scale(.95)}
+button.big{background:linear-gradient(180deg,#FFE08A,#F2C14E 55%,#D39A22);color:#2A1606;border:0;font-weight:800;font-size:1.15rem;padding:14px 30px;box-shadow:0 0 0 2px rgba(255,236,180,.25),0 8px 28px rgba(242,193,78,.45),inset 0 1px 0 rgba(255,255,255,.6);animation:pulse 2.2s ease-in-out infinite}
+button.big.done{animation:none;background:linear-gradient(180deg,#C9F2D3,#7FD49A 60%,#4FA86E);color:#10301C;font-size:1rem}
+button.alt{font-weight:800;font-size:1.02rem;padding:12px 26px;background:linear-gradient(180deg,#FFB7C5,#E8728C 60%,#B9445F);color:#3A0C18;border:0}
+@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(255,236,180,.18),0 8px 36px rgba(242,193,78,.7),inset 0 1px 0 rgba(255,255,255,.6)}}
+.langs{position:fixed;top:calc(8px + env(safe-area-inset-top));right:10px;z-index:30;display:flex;gap:4px}
+.langs[hidden]{display:none}
+.langs button{padding:4px 7px;font-size:1.25rem;background:rgba(42,22,38,.6);border-color:transparent;opacity:.55;box-shadow:none}
+.langs button.cur{opacity:1;border-color:var(--gold)}
+.card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;width:min(92vw,420px);max-height:90vh;max-height:90dvh;overflow:auto;text-align:center;border-radius:22px;padding:20px 18px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(92,44,72,.9),rgba(38,18,34,.95));border:1px solid rgba(255,214,170,.4);box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 0 40px rgba(255,159,178,.16),0 24px 70px rgba(0,0,0,.7)}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 60% at 50% 0%,rgba(255,200,150,.14),transparent 60%)}
+.card[hidden],#hud[hidden]{display:none}
+.logo{width:64px;height:64px;display:block;margin:0 auto 4px}
+.brand{font-weight:900;letter-spacing:.25em;color:var(--red);font-size:.85rem}
+h1{font-size:2.4rem;margin:2px 0;background:linear-gradient(180deg,#FFFFFF,#FFE2C2 50%,#F2A97F);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(255,190,150,.5));letter-spacing:.02em}
+.sub{color:var(--gold);font-weight:700;font-size:1rem;margin-bottom:6px}
+h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
+.tag{color:var(--muted);margin-bottom:10px;line-height:1.35}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.how{list-style:none;color:var(--muted);font-size:.86rem;line-height:1.5;margin-top:10px}
+.small{font-size:.78rem;color:var(--muted);margin-top:10px}
+.small a{color:var(--muted)}
+.love{color:var(--gold);font-style:italic;margin:6px 0}
+.gran{color:var(--cream);background:rgba(0,0,0,.25);border:1px solid rgba(242,193,78,.3);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:.92rem;line-height:1.35}
+.stat{font-size:1.08rem;margin:4px 0}.stat b{color:var(--gold)}
+.cd{font-size:.9rem;color:var(--muted);margin:6px 0;font-variant-numeric:tabular-nums}
+.streak{font-weight:800;color:#FFB37A;margin:6px 0}
+#hud{position:fixed;left:0;right:0;top:0;z-index:10;padding:calc(6px + env(safe-area-inset-top)) 8px 0;pointer-events:none;display:flex;gap:6px;align-items:flex-start}
+#hud div.v{display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,rgba(60,26,48,.78),rgba(36,16,30,.55));border:1px solid rgba(255,214,170,.22);border-radius:10px;padding:3px 9px 4px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 4px 14px rgba(0,0,0,.35);min-width:50px}
+#hud small{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+#hud b{font-size:1.15rem;font-variant-numeric:tabular-nums;text-shadow:0 0 10px rgba(246,241,230,.35)}
+#hud b.warn{color:#FF7A7A;animation:blink .5s steps(2) infinite}
+#hNext{width:24px;height:24px;display:block}
+@keyframes blink{50%{opacity:.45}}
+#hud .sp{flex:1}
+#muteBtn,#pauseBtn{pointer-events:auto;padding:6px 10px;font-size:1.1rem;background:rgba(42,22,38,.6);border:1px solid rgba(255,214,170,.3)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:40;background:var(--cream);color:#3A1630;padding:8px 16px;border-radius:20px;font-weight:700;transition:.25s;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.s60w{text-align:left}
+#overGrid{display:block;margin:8px auto 10px;padding:10px 12px;max-width:min(17em,100%);min-width:0;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.22);border-radius:12px;font:600 17px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;text-align:center;letter-spacing:.02em;cursor:pointer;color:#fff8ee;-webkit-user-select:text;user-select:text}
+#overGrid[hidden]{display:none}
+#calGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:10px 0}
+#calGrid div{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:800;font-size:1rem;background:linear-gradient(180deg,#8C2A3A,#5E1A28);border:1px solid rgba(255,214,170,.35);color:#FFE7C2;box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+#calGrid div.open{background:linear-gradient(180deg,#2F6B47,#1D4A30);font-size:1.35rem}
+#calGrid div.today{outline:2px solid var(--gold);animation:pulse 2.2s ease-in-out infinite}
+#calGrid div.miss{opacity:.45}
+#calBtn[hidden],#oCal[hidden],#oStreak[hidden],#oCd[hidden],#mStreak[hidden],#mCd[hidden],#sxOverD[hidden],#sxOver[hidden],#oBestRow[hidden]{display:none}
+.how-top{margin:6px 0 8px;padding:0;list-style:none;text-align:left;display:grid;gap:4px;font-size:.85rem;font-weight:600;line-height:1.3}.how-top li{background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:5px 9px}.seo-lead{font-size:.76rem!important;opacity:.8;margin:6px 0 2px!important;line-height:1.4!important}
+
+#mDone{font-weight:800;color:#C9F2D3;margin:4px 0}#mDone[hidden]{display:none}
+.testbadge{display:inline-block;background:#F2C14E;color:#2A1606;font-weight:800;font-size:.72rem;border-radius:8px;padding:2px 8px;margin:2px 0 6px}
+#hTop{font-size:1.05rem}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
+<div id="hud" hidden>
+  <div class="v"><small data-t="score"></small><b id="hScore">0</b></div>
+  <div class="v"><small id="hL2"></small><b id="hTh">30</b></div>
+  <div class="v"><small data-t="top"></small><b id="hTop">🧊</b></div>
+  <div class="sp"></div>
+  <button id="muteBtn" aria-label="Sound">🔊</button>
+  <button id="pauseBtn" aria-label="Pause">⏸</button>
+</div>
+<section id="menu" class="card">
+  <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
+  <div class="brand">STOP60</div>
+  <h1 data-t="name">Kakeboksen</h1>
+  <p class="sub" data-t="sub"></p>
+  <p class="tag" data-t="tag"></p>
+  <p class="seo-lead" style="margin:10px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Kakeboksen er et gratis puslespill uten reklame i nettleseren. Trykk med én finger på grupper av like ting, så baker mormor og Magic dem om til noe bedre – fra sukkerbit til kake. Dagens boks er lik for alle, og resultatet kan deles med venner. Spill på mobil eller PC på stop60.no.</p>
+  <p id="mStreak" class="streak" hidden></p>
+  <ul class="how how-top"><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li></ul>
+  <button id="playBtn" class="big">START</button>
+  <p id="mDone" hidden></p>
+  <p id="mCd" class="cd" hidden></p>
+  <div class="row"><button id="freeBtn" class="alt" data-t="free"></button></div>
+  <p class="stat"><span data-t="best"></span>: <b class="bestV">0</b></p>
+  <div class="row"><button class="shareB" data-t="share"></button></div>
+  <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
+  <p class="love" data-t="love"></p>
+  <p class="small"><span data-t="local"></span> · <a href="/kakeboksen/personvern/" data-t="privacy" class="privA"></a> · <a href="/">stop60.no</a></p>
+</section>
+<section id="pause" class="card" hidden>
+  <h2 data-t="paused"></h2>
+  <button id="resumeBtn" class="big" data-t="resume"></button>
+  <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
+  <div class="row"><button id="quitBtn" data-t="menu"></button></div>
+</section>
+<section id="over" class="card" hidden>
+  <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
+  <h2 id="overTitle"></h2>
+  <p class="stat"><span data-t="score"></span>: <b id="oScore">0</b></p>
+  <p class="stat" id="oBestRow"><span data-t="best"></span>: <b class="bestV">0</b></p>
+  <p class="stat"><span data-t="biggest"></span>: <b id="oBig">–</b> · <span data-t="merges"></span>: <b id="oMerges">0</b></p>
+  <p id="oNew" class="love" hidden data-t="newbest"></p>
+  <p id="oStreak" class="streak" hidden></p>
+  <p id="oGran" class="gran"></p>
+  <button id="retryBtn" class="big"></button>
+  <p id="oCd" class="cd" hidden></p>
+  <pre id="overGrid" role="button" tabindex="0"></pre>
+  <div class="row"><button id="scoreShare" type="button" data-t="shareScore"></button><button id="overMenu" data-t="menu"></button></div>
+  <p class="love" data-t="love"></p>
+  <p class="small"><a href="/kakeboksen/personvern/" data-t="privacy" class="privA"></a> · <a href="/">stop60.no</a></p>
+</section>
+<div id="toast"></div>
+<script>
+var LANG0 = "no";
+var PAGE_URL = "https://stop60.no/kakeboksen/";
+var PRIV = {no: "/kakeboksen/personvern/", pl: "/kakeboksen/prywatnosc/", en: "/kakeboksen/en/privacy/"};
+var T = {"no": {"name": "Kakeboksen", "sub": "Mormors kakeboks", "tag": "Trykk på to eller flere like ting som ligger inntil hverandre – de blir til noe bedre. Fra sukkerbit helt til mormors julekake!", "tagN": "Trykk på to eller flere like ting som ligger inntil hverandre – de blir til noe bedre. Fra sukkerbit helt til mormors bløtkake!", "how1": "👆 Trykk på en gruppe med 2+ like ting som rører hverandre", "how2": "🍪 Sukker → egg → smør → deig → kjeks → pepperkakehjerte → muffins → julekake", "how2N": "🍪 Sukker → egg → smør → deig → kjeks → kanelbolle → muffins → bløtkake", "how3": "📅 Dagens boks: 30 trekk, lik for alle – første forsøk teller · Fritt spill: 50 trekk · 5+ på én gang hopper et steg", "play": "START", "free": "Fritt spill", "dailyDone": "✓ Dagens boks: {s} poeng", "nextIn": "Ny boks om {t}", "streak": "🔥 Serie: {n}", "share": "🔗 Del", "shareScore": "Del resultatet", "local": "Rekorden lagres bare på denne enheten", "love": "Laget med lidenskap", "score": "Poeng", "best": "Rekord", "moves": "Trekk", "top": "Beste", "menu": "Meny", "paused": "Pause", "resume": "Fortsett", "retry": "Spill igjen", "newbest": "Ny rekord!", "overStuck": "Ingen flere par i boksen!", "overDone": "Dagens boks er ferdig!", "merges": "Sammenslåinger", "biggest": "Beste bakst", "goDaily": "30 trekk – god bakst!", "goFree": "Fritt spill – kos deg!", "star": "Mormors stjerne! +5000", "big": "Stor gruppe – ett steg ekstra!", "newItem": "Ny: {i}!", "last5": "5 trekk igjen!", "shake": "Magic rister boksen!", "snd": "Lyd", "vib": "Vibrasjon", "copied": "Kopiert", "freeName": "fritt spill", "streakW": "Serie", "items": ["Sukkerbit", "Egg", "Smør", "Deigklump", "Sjokoladekjeks", "Pepperkakehjerte", "Julemuffins", "Julekake"], "itemsN": ["Sukkerbit", "Egg", "Smør", "Deigklump", "Sjokoladekjeks", "Kanelbolle", "Muffins", "Bløtkake"], "gran": ["Mormor: «Det dufter herlig, Magic! Én boks til?»", "Mormor: «Ikke smak på deigen, Magic …»", "Mormor: «Nå setter jeg på kakao.»", "Mormor: «For en fin boks – den tar vi med i selskapet!»"], "title": "Kakeboksen – mormors kakeboks | gratis puslespill uten reklame", "overFree": "Boksen er full av godsaker!", "privacy": "Personvern"}, "pl": {"name": "Kakeboksen", "sub": "Babcina puszka ciastek", "tag": "Stuknij w dwie lub więcej takich samych rzeczy, które się stykają – zamienią się w coś lepszego. Od kostki cukru aż po świąteczny tort babci!", "tagN": "Stuknij w dwie lub więcej takich samych rzeczy, które się stykają – zamienią się w coś lepszego. Od kostki cukru aż po babciny tort!", "how1": "👆 Stuknij w grupę 2+ takich samych rzeczy, które się stykają", "how2": "🍪 Cukier → jajko → masło → ciasto → ciastko → piernikowe serce → babeczka → świąteczny tort", "how2N": "🍪 Cukier → jajko → masło → ciasto → ciastko → cynamonka → babeczka → tort", "how3": "📅 Puszka dnia: 30 ruchów, taka sama dla wszystkich – liczy się pierwsza próba · Gra swobodna: 50 ruchów · 5+ naraz przeskakuje o krok", "play": "START", "free": "Gra swobodna", "dailyDone": "✓ Puszka dnia: {s} pkt", "nextIn": "Nowa puszka za {t}", "streak": "🔥 Seria: {n}", "share": "🔗 Udostępnij", "shareScore": "Udostępnij wynik", "local": "Rekord zapisuje się tylko na tym urządzeniu", "love": "Gry stworzone z pasji", "score": "Punkty", "best": "Rekord", "moves": "Ruchy", "top": "Najlepsze", "menu": "Menu", "paused": "Pauza", "resume": "Graj dalej", "retry": "Zagraj jeszcze raz", "newbest": "Nowy rekord!", "overStuck": "W puszce nie ma już par!", "overDone": "Puszka dnia gotowa!", "merges": "Połączenia", "biggest": "Najlepszy wypiek", "goDaily": "30 ruchów – smacznego!", "goFree": "Gra swobodna – miłej zabawy!", "star": "Gwiazda babci! +5000", "big": "Duża grupa – krok dalej!", "newItem": "Nowość: {i}!", "last5": "Zostało 5 ruchów!", "shake": "Magic potrząsa puszką!", "snd": "Dźwięk", "vib": "Wibracje", "copied": "Skopiowano", "freeName": "gra swobodna", "streakW": "Seria", "items": ["Kostka cukru", "Jajko", "Masło", "Kula ciasta", "Ciastko z czekoladą", "Piernikowe serce", "Świąteczna babeczka", "Świąteczny tort"], "itemsN": ["Kostka cukru", "Jajko", "Masło", "Kula ciasta", "Ciastko z czekoladą", "Cynamonka", "Babeczka", "Tort"], "gran": ["Babcia: «Pięknie pachnie, Magic! Jeszcze jedna puszka?»", "Babcia: «Magic, nie podjadaj ciasta…»", "Babcia: «To ja nastawię kakao.»", "Babcia: «Taką puszkę zabierzemy na przyjęcie!»"], "title": "Kakeboksen – babcina puszka ciastek | darmowa gra logiczna bez reklam", "overFree": "Puszka pełna smakołyków!", "privacy": "Prywatność"}, "en": {"name": "Kakeboksen", "sub": "Grandma's Cookie Tin", "tag": "Tap two or more matching things that touch – they turn into something better. From a sugar cube all the way to Grandma's Christmas cake!", "tagN": "Tap two or more matching things that touch – they turn into something better. From a sugar cube all the way to Grandma's cream cake!", "how1": "👆 Tap a group of 2+ matching things that touch", "how2": "🍪 Sugar → egg → butter → dough → cookie → gingerbread heart → cupcake → Christmas cake", "how2N": "🍪 Sugar → egg → butter → dough → cookie → cinnamon bun → cupcake → cream cake", "how3": "📅 Today's tin: 30 moves, the same for everyone – first try counts · Free play: 50 moves · 5+ at once skips a step", "play": "START", "free": "Free play", "dailyDone": "✓ Today's tin: {s} pts", "nextIn": "New tin in {t}", "streak": "🔥 Streak: {n}", "share": "🔗 Share", "shareScore": "Share result", "local": "Your best is saved on this device only", "love": "Games made with passion", "score": "Score", "best": "Best", "moves": "Moves", "top": "Top", "menu": "Menu", "paused": "Paused", "resume": "Resume", "retry": "Play again", "newbest": "New best!", "overStuck": "No more pairs in the tin!", "overDone": "Today's tin is done!", "merges": "Merges", "biggest": "Best bake", "goDaily": "30 moves – happy baking!", "goFree": "Free play – enjoy!", "star": "Grandma's star! +5000", "big": "Big group – one step extra!", "newItem": "New: {i}!", "last5": "5 moves left!", "shake": "Magic shakes the tin!", "snd": "Sound", "vib": "Vibration", "copied": "Copied", "freeName": "free play", "streakW": "Streak", "items": ["Sugar cube", "Egg", "Butter", "Dough ball", "Choc chip cookie", "Gingerbread heart", "Christmas cupcake", "Christmas cake"], "itemsN": ["Sugar cube", "Egg", "Butter", "Dough ball", "Choc chip cookie", "Cinnamon bun", "Cupcake", "Cream cake"], "gran": ["Grandma: “Smells lovely, Magic! One more tin?”", "Grandma: “Magic, don't nibble the dough …”", "Grandma: “I'll put the cocoa on.”", "Grandma: “What a tin – we'll take it to the party!”"], "title": "Kakeboksen – Grandma's Cookie Tin | free puzzle game, no ads", "overFree": "The tin is full of treats!", "privacy": "Privacy"}};
+"use strict";
+/* Kakeboksen – © 2026 Stop60. All rights reserved. Tap-to-merge baking puzzle: Magic the cat helps Grandma fill her cookie tin. */
+function gc(path, title){ if (DEBUG) return; try { window.goatcounter && goatcounter.count && goatcounter.count({path: path, title: title, event: true}); } catch(e){} }
+var $ = function(id){ return document.getElementById(id); };
+var SAVE = "kakeboksen.v1", P;
+try { P = JSON.parse(localStorage.getItem(SAVE)) || {}; } catch(e){ P = {}; }
+P.best = P.best || 0; P.games = P.games || 0; P.streak = P.streak || 0; P.lastDay = P.lastDay || 0;
+function save(){ try { localStorage.setItem(SAVE, JSON.stringify(P)); } catch(e){} }
+var QS = new URLSearchParams(location.search), DEBUG = QS.get("debug") === "1";
+var lang = T[LANG0] ? LANG0 : "no";
+
+/* ---------- day + season ---------- */
+function today(){
+  var d = new Date();
+  if (DEBUG && /^\d{4}-\d\d-\d\d$/.test(QS.get("date") || "")){ var p = QS.get("date").split("-"); d = new Date(+p[0], +p[1] - 1, +p[2], d.getHours(), d.getMinutes(), d.getSeconds()); }
+  return d;
+}
+function dayNum(d){ d = d || today(); return Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 10, 23))/864e5); }
+/* Christmas cast until 26.12; civilian from 27.12. ?xmas=0/1 forces either. */
+function isXmas(d){ var m = d.getMonth(), day = d.getDate(); return (m === 10 && day >= 15) || (m === 11 && day <= 26); }
+var XMAS = QS.get("xmas") === "1" ? true : QS.get("xmas") === "0" ? false : isXmas(today());
+
+function t(k){ var o = T[lang]; if (!XMAS && o[k + "N"] !== undefined) return o[k + "N"]; return o[k]; }
+function fmtN(n){ n = Math.round(n || 0); return n >= 1000 ? String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : String(n); }
+function toast(s){ var e = $("toast"); e.textContent = s; e.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(function(){ e.classList.remove("show"); }, 1700); }
+function applyLang(){
+  document.documentElement.lang = lang === "no" ? "nb" : lang; document.documentElement.dataset.lang = lang; document.title = t("title");
+  document.querySelectorAll("[data-t]").forEach(function(e){ e.textContent = t(e.dataset.t); });
+  document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
+  document.querySelectorAll("a.privA").forEach(function(e){ e.href = PRIV[lang]; });
+  refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
+}
+document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = b.dataset.l; applyLang(); }; });
+function refreshStats(){ document.querySelectorAll(".bestV").forEach(function(e){ e.textContent = fmtN(P.best); }); }
+
+/* ---------- audio + haptics (same music-box style as Nøstekurv) ---------- */
+var AC = null, master = null, sfxBus = null, musBus = null, mute = !!P.mute, novib = !!P.novib, unlocked = false;
+function audio(){
+  if (!AC){ try {
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    var comp = AC.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 12;
+    master = AC.createGain(); master.gain.value = mute ? 0 : .8; master.connect(comp); comp.connect(AC.destination);
+    sfxBus = AC.createGain(); sfxBus.gain.value = .7; sfxBus.connect(master);
+    musBus = AC.createGain(); musBus.gain.value = .14; musBus.connect(master);
+  } catch(e){ AC = null; return; } }
+  if (AC.state !== "running"){ try { AC.resume(); } catch(e){} }
+  if (!unlocked){ try { var sb = AC.createBufferSource(); sb.buffer = AC.createBuffer(1, 1, 22050); sb.connect(AC.destination); sb.start(0); unlocked = true; } catch(e){} }
+  startMusic();
+}
+["touchstart", "touchend", "pointerdown", "mousedown", "keydown"].forEach(function(ev){ addEventListener(ev, audio, {capture: true, passive: true}); });
+document.addEventListener("visibilitychange", function(){
+  if (document.hidden && mode === "play") setMode("pause");
+  if (!AC) return; if (document.hidden){ try { AC.suspend(); } catch(e){} } else { try { AC.resume(); } catch(e){} }
+});
+function setMute(m){ mute = P.mute = m; save(); refreshToggles(); if (master) master.gain.setTargetAtTime(mute ? 0 : .8, AC.currentTime, .03); }
+var lastTone = {};
+function tone(f, d, type, vol, slide, key, delay, bus){
+  if (mute || !AC || AC.state !== "running") return; var now = AC.currentTime + (delay || 0);
+  if (key){ if (lastTone[key] && now - lastTone[key] < .05) return; lastTone[key] = now; }
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = type || "sine"; o.frequency.setValueAtTime(f, now); if (slide) o.frequency.exponentialRampToValueAtTime(slide, now + d);
+  g.gain.setValueAtTime(.0001, now); g.gain.linearRampToValueAtTime(vol || .15, now + .006); g.gain.exponentialRampToValueAtTime(.0001, now + d);
+  o.connect(g); g.connect(bus || sfxBus); o.start(now); o.stop(now + d + .03);
+}
+var SFX = {
+  tap: function(){ tone(300, .08, "triangle", .05, 220, "tap"); },
+  meow: function(){ tone(620, .22, "triangle", .07, 880); tone(880, .2, "sine", .04, 560, null, .12); },
+  pop: function(l, n){ var f = 660*Math.pow(1.09, l); for (var i = 0; i < Math.min(n, 6); i++) tone(f*Math.pow(1.06, i), .12, "sine", .1, f*1.5*Math.pow(1.06, i), null, i*.03); },
+  land: function(){ tone(180, .06, "sine", .04, 120, "land"); },
+  star: function(){ [784, 988, 1175, 1568, 1976].forEach(function(f, i){ tone(f, .3, "triangle", .09, 0, null, i*.07); }); },
+  shake: function(){ for (var i = 0; i < 6; i++) tone(420 + (i % 2)*80, .07, "square", .025, 0, null, i*.07); },
+  newItem: function(){ [659, 784, 988, 1319].forEach(function(f, i){ tone(f, .2, "triangle", .08, 0, null, i*.07); }); },
+  end: function(){ [784, 659, 523, 392].forEach(function(f, i){ tone(f, .3, "triangle", .09, 0, null, i*.14); }); },
+  done: function(){ [523, 659, 784, 1047, 1319].forEach(function(f, i){ tone(f, .25, "triangle", .09, 0, null, i*.09); }); }
+};
+var musT = 0, musStep = 0, musTimer = null, CH = [[60, 64, 67], [57, 60, 64], [65, 69, 72], [67, 71, 74]];
+function mtof(n){ return 440*Math.pow(2, (n - 69)/12); }
+function startMusic(){
+  if (musTimer || !AC) return; musT = AC.currentTime + .1;
+  musTimer = setInterval(function(){
+    if (!AC || AC.state !== "running") return;
+    if (musT < AC.currentTime) musT = AC.currentTime + .05;
+    while (musT < AC.currentTime + .3){
+      var bar = Math.floor(musStep/8) % 4, st = musStep % 8, ch = CH[bar], dl = musT - AC.currentTime, q = mode === "play" ? 1 : .6;
+      if (!mute){ var n = ch[[0, 2, 1, 2, 0, 2, 1, 2][st]] + 12 + (st === 6 ? 12 : 0);
+        tone(mtof(n), .45, "sine", .08*q, 0, null, dl, musBus); if (st % 4 === 0) tone(mtof(ch[0] - 12), .7, "sine", .11*q, 0, null, dl, musBus); }
+      musT += .21; musStep++;
+    }
+  }, 70);
+}
+function vib(p){ if (!novib && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(p); } catch(e){} }
+function refreshToggles(){
+  document.querySelectorAll(".sndB").forEach(function(b){ b.textContent = (mute ? "🔇 " : "🔊 ") + t("snd"); }); $("muteBtn").textContent = mute ? "🔇" : "🔊";
+  document.querySelectorAll(".vibB").forEach(function(b){ b.textContent = (novib ? "📴 " : "📳 ") + t("vib"); });
+}
+document.querySelectorAll(".sndB").forEach(function(b){ b.onclick = function(){ audio(); setMute(!mute); }; });
+$("muteBtn").onclick = function(ev){ ev.stopPropagation(); audio(); setMute(!mute); };
+document.querySelectorAll(".vibB").forEach(function(b){ b.onclick = function(){ novib = P.novib = !novib; save(); refreshToggles(); vib(40); }; });
+
+/* ---------- rules ---------- */
+var COLS = 6, ROWS = 8, NL = 8, DAILY_N = 30, FREE_N = 50, BIG = 5, STAR = 5000;
+var WCAP = 520; if (DEBUG && QS.get("poster")){ COLS = 7; ROWS = 4; WCAP = 594; } /* poster layout only for rendering card/og images */
+var PTS = [0, 10, 30, 80, 200, 500, 1200, 3000];
+var WEIGHTS = [44, 34, 22];
+var SQ = ["⬜", "🟨", "🟧", "🟫", "🟥", "🟪", "🟩", "⭐"];
+function EMO(l){ return ["🧊", "🥚", "🧈", "🥣", "🍪", XMAS ? "❤️" : "🥐", "🧁", "🎂"][l] || "🍪"; }
+var PLATE = ["#7FC4F2", "#8EDC9A", "#FFD45A", "#F7A97B", "#C98B5A", "#E8586A", "#F49AC8", "#B48CF0"];
+function mulberry32(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t2 = Math.imul(a ^ a >>> 15, 1 | a); t2 = t2 + Math.imul(t2 ^ t2 >>> 7, 61 | t2) ^ t2; return ((t2 ^ t2 >>> 14) >>> 0)/4294967296; }; }
+function hashStr(s){ var h = 2166136261; for (var i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function pick(r){ var s = 0, x = r*100; for (var i = 0; i < WEIGHTS.length; i++){ s += WEIGHTS[i]; if (x < s) return i; } return 0; }
+
+/* ---------- canvas + layout ---------- */
+var cv = $("c"), ctx = cv.getContext("2d"), DPR = 1, W = 390, H = 844, CS = 56, TX = 20, TY = 400, HUDH = 58, side = false;
+var gX = 70, gY = 300, gS = .8, trX = 330, trY = 300, trS = .8, BG = null, SPR = {};
+function clamp(v, a, b){ return v < a ? a : v > b ? b : v; }
+function rnd(a, b){ return a + Math.random()*(b - a); }
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+  var band = clamp(H*.2, 110, 190), bottom = 22;
+  CS = Math.floor(Math.max(34, Math.min((Math.min(W, WCAP) - 34)/COLS, (H - HUDH - band - bottom)/ROWS)));
+  TX = Math.round((W - CS*COLS)/2); TY = Math.round(H - bottom - CS*ROWS);
+  side = TX > 170;
+  if (side){ gS = clamp(CS/60, .8, 1.25); gX = TX - 100*gS; gY = TY + CS*ROWS - 80*gS; trS = gS; trX = TX + CS*COLS + 90*trS; trY = TY + CS*ROWS - 70*trS; }
+  else { gS = clamp((TY - HUDH - 16)/165, .5, Math.min(.95, W/430)); gX = 12 + 70*gS; gY = TY - 10 - 72*gS; trS = gS; trX = W - 14 - 40*trS; trY = TY - 10 - 60*trS; }
+  SPR = {}; mkBG();
+}
+function circ(c, x, y, r, f){ c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fillStyle = f; c.fill(); }
+function ell(c, x, y, rx, ry, f, rot){ c.beginPath(); c.ellipse(x, y, rx, ry, rot || 0, 0, 6.2832); c.fillStyle = f; c.fill(); }
+function line(c, pts, col, w){ c.beginPath(); c.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) c.lineTo(pts[i], pts[i + 1]); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.lineJoin = "round"; c.stroke(); }
+function rr(c, x, y, w, h, r, f){ c.beginPath(); c.roundRect(x, y, w, h, r); c.fillStyle = f; c.fill(); }
+function smile(c, x, y, r, col, w, open){
+  if (open){ c.beginPath(); c.arc(x, y, r, .1*Math.PI, .9*Math.PI); c.closePath(); c.fillStyle = "#5a1e1e"; c.fill(); }
+  c.beginPath(); c.arc(x, y, r, .12*Math.PI, .88*Math.PI); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.stroke();
+}
+function happyEye(c, x, y, r, col, w){ c.beginPath(); c.arc(x, y + r*.5, r, 1.15*Math.PI, 1.85*Math.PI); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.stroke(); }
+function dotEye(c, x, y, r){ circ(c, x, y, r, "#2a1a1a"); circ(c, x - r*.35, y - r*.35, r*.38, "#fff"); }
+function face(c, r, y0, open, happy){
+  var dx = r*.3, y = (y0 || 0)*r, e = Math.max(1.4, r*.1);
+  if (happy){ happyEye(c, -dx, y - r*.1, e*1.3, "#2a1a1a", Math.max(1.5, r*.06)); happyEye(c, dx, y - r*.1, e*1.3, "#2a1a1a", Math.max(1.5, r*.06)); }
+  else { dotEye(c, -dx, y - r*.08, e); dotEye(c, dx, y - r*.08, e); }
+  circ(c, -dx*1.5, y + r*.12, r*.1, "rgba(255,110,130,.45)"); circ(c, dx*1.5, y + r*.12, r*.1, "rgba(255,110,130,.45)");
+  smile(c, 0, y + r*.04, r*.18, "#5a1e1e", Math.max(1.3, r*.055), open);
+}
+/* ---------- item art: a soft coloured plate + a smiling bake ---------- */
+function drawItem(g, l, r){
+  var pg = g.createRadialGradient(-r*.3, -r*.4, r*.1, 0, 0, r*1.2); pg.addColorStop(0, "rgba(255,255,255,.55)"); pg.addColorStop(.35, PLATE[l]); pg.addColorStop(1, "rgba(0,0,0,.25)");
+  rr(g, -r, -r, r*2, r*2, r*.34, PLATE[l]); rr(g, -r, -r, r*2, r*2, r*.34, pg);
+  g.lineWidth = Math.max(1.2, r*.05); g.strokeStyle = "rgba(255,255,255,.55)"; g.beginPath(); g.roundRect(-r + 1, -r + 1, r*2 - 2, r*2 - 2, r*.32); g.stroke();
+  var k = r*.78;
+  if (l === 0){ // sugar cube
+    rr(g, -k*.72, -k*.6, k*1.44, k*1.3, k*.18, "#FFFFFF"); rr(g, -k*.72, -k*.6, k*1.44, k*.32, k*.16, "#EEF3FA");
+    g.fillStyle = "rgba(150,170,200,.45)"; for (var i = 0; i < 9; i++) g.fillRect(-k*.6 + (i*37 % 10)/10*k*1.2, -k*.2 + (i*53 % 10)/10*k*.8, k*.06, k*.06);
+    face(g, k, .2, false);
+  } else if (l === 1){ // egg
+    ell(g, 0, k*.05, k*.66, k*.86, "#FFF6E4"); ell(g, -k*.2, -k*.3, k*.18, k*.26, "rgba(255,255,255,.9)");
+    g.lineWidth = Math.max(1, k*.05); g.strokeStyle = "#D9C6A5"; g.beginPath(); g.ellipse(0, k*.05, k*.66, k*.86, 0, 0, 6.283); g.stroke();
+    face(g, k, .2, false);
+  } else if (l === 2){ // butter in paper
+    rr(g, -k*.8, -k*.42, k*1.6, k*.95, k*.14, "#FFE680"); rr(g, -k*.8, k*.1, k*1.6, k*.43, k*.1, "#E9F1FF"); g.fillStyle = "#4A7BD0"; g.fillRect(-k*.8, k*.22, k*1.6, k*.1);
+    face(g, k, -.05, false);
+  } else if (l === 3){ // dough ball
+    var dg = g.createRadialGradient(-k*.25, -k*.3, k*.1, 0, 0, k*.85); dg.addColorStop(0, "#FFF0D4"); dg.addColorStop(1, "#E3B97E"); g.beginPath(); g.arc(0, k*.06, k*.8, 0, 6.283); g.fillStyle = dg; g.fill();
+    g.fillStyle = "rgba(255,255,255,.8)"; [[-.4, -.4], [.3, -.5], [.5, .1], [-.5, .3]].forEach(function(p){ g.fillRect(p[0]*k, p[1]*k, k*.08, k*.08); });
+    face(g, k, .12, true);
+  } else if (l === 4){ // choc chip cookie
+    circ(g, 0, 0, k*.86, "#C98B4A"); circ(g, 0, 0, k*.74, "#E0A660");
+    [[-.45, -.35], [.42, -.4], [.5, .35], [-.5, .4], [0, .62], [.05, -.62]].forEach(function(p){ ell(g, p[0]*k, p[1]*k, k*.1, k*.08, "#5A3216"); });
+    face(g, k, .05, false, true);
+  } else if (l === 5){
+    if (XMAS){ // gingerbread heart with icing
+      g.save(); g.scale(k/30, k/30); g.beginPath(); g.moveTo(0, 26); g.bezierCurveTo(-34, 4, -26, -28, 0, -12); g.bezierCurveTo(26, -28, 34, 4, 0, 26); g.fillStyle = "#B8682E"; g.fill();
+      g.strokeStyle = "#FFFFFF"; g.lineWidth = 2.4; g.beginPath(); g.moveTo(0, 20); g.bezierCurveTo(-26, 2, -20, -22, 0, -8); g.bezierCurveTo(20, -22, 26, 2, 0, 20); g.stroke(); g.restore();
+      circ(g, 0, k*.55, k*.07, "#E23B3B"); face(g, k*.8, .02, false, true);
+    } else { // cinnamon bun
+      circ(g, 0, 0, k*.84, "#C77B3A"); g.strokeStyle = "#7A3E14"; g.lineWidth = k*.1; g.beginPath();
+      for (var a = 0; a < 15; a += .2){ var rad = k*.06*a; g.lineTo(Math.cos(a)*rad*.85, Math.sin(a)*rad*.85); } g.stroke();
+      line(g, [-k*.5, -k*.3, k*.5, -k*.4], "rgba(255,255,255,.9)", k*.09); face(g, k, .25, false, true);
+    }
+  } else if (l === 6){ // cupcake
+    g.fillStyle = XMAS ? "#D62B3A" : "#4FB3D9"; g.beginPath(); g.moveTo(-k*.6, k*.1); g.lineTo(k*.6, k*.1); g.lineTo(k*.45, k*.85); g.lineTo(-k*.45, k*.85); g.fill();
+    g.strokeStyle = "rgba(255,255,255,.4)"; g.lineWidth = k*.05; for (var j = -2; j <= 2; j++) line(g, [j*k*.22, k*.15, j*k*.17, k*.8], "rgba(255,255,255,.35)", k*.05);
+    var fr = XMAS ? "#FFFFFF" : "#FFB7D5"; ell(g, 0, 0, k*.72, k*.34, fr); ell(g, 0, -k*.3, k*.52, k*.28, fr); ell(g, 0, -k*.55, k*.28, k*.2, fr);
+    if (XMAS){ ell(g, -k*.12, -k*.74, k*.12, k*.06, "#2F8F4E", -.5); ell(g, k*.12, -k*.74, k*.12, k*.06, "#2F8F4E", .5); circ(g, 0, -k*.7, k*.09, "#E23B3B"); }
+    else circ(g, 0, -k*.74, k*.11, "#E23B3B");
+    face(g, k*.8, .55, false);
+  } else { // cake
+    rr(g, -k*.8, -k*.15, k*1.6, k*.95, k*.12, XMAS ? "#F5EDE0" : "#FFE3EE");
+    g.fillStyle = XMAS ? "#8E4A26" : "#E2557A"; g.fillRect(-k*.8, k*.22, k*1.6, k*.12);
+    rr(g, -k*.86, -k*.3, k*1.72, k*.26, k*.12, "#FFFFFF");
+    for (var d = -3; d <= 3; d++) ell(g, d*k*.24, -k*.06, k*.08, k*.13, "#FFFFFF");
+    if (XMAS){ ell(g, -k*.16, -k*.42, k*.16, k*.07, "#2F8F4E", -.4); ell(g, k*.16, -k*.42, k*.16, k*.07, "#2F8F4E", .4); circ(g, -k*.04, -k*.42, k*.08, "#E23B3B"); circ(g, k*.08, -k*.46, k*.08, "#E23B3B"); }
+    else { rr(g, -k*.04, -k*.78, k*.08, k*.42, k*.03, "#7FC4F2"); ell(g, 0, -k*.86, k*.06, k*.1, "#FFD45A"); }
+    face(g, k*.85, .45, true, true);
+  }
+}
+function spr(l){
+  if (!SPR[l]){ var r = CS*.44, pad = 3, sz = Math.ceil((r*2 + pad*2)*DPR), c = document.createElement("canvas"); c.width = c.height = sz;
+    var g = c.getContext("2d"); g.scale(DPR, DPR); g.translate(r + pad, r + pad); drawItem(g, l, r); SPR[l] = c; }
+  return SPR[l];
+}
+
+/* ---------- kitchen background (cached) ---------- */
+function mkBG(){
+  BG = document.createElement("canvas"); BG.width = cv.width; BG.height = cv.height;
+  var c = BG.getContext("2d"); c.scale(DPR, DPR);
+  var g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#3A1E33"); g.addColorStop(1, "#24121F"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.fillStyle = "rgba(255,210,170,.05)"; for (var y = 10; y < H; y += 26) for (var x = (y/26 % 2)*13; x < W; x += 26) c.fillRect(x, y, 3, 3);
+  // window
+  var ww = side ? 150 : Math.min(140, W*.26), wx = W*.5 - ww/2, wy = HUDH + 8, wh = side ? Math.max(50, Math.min(150, TY - HUDH - 40)) : Math.max(44, Math.min(130, gY - 80*gS - wy - 4));
+  var sk = c.createLinearGradient(0, wy, 0, wy + wh); sk.addColorStop(0, "#0C1636"); sk.addColorStop(1, "#2B3D78"); c.fillStyle = sk; c.fillRect(wx, wy, ww, wh);
+  c.fillStyle = "#fff"; for (var i = 0; i < 16; i++) c.fillRect(wx + ((i*53) % ww), wy + ((i*37) % (wh*.6)), 1.5, 1.5);
+  circ(c, wx + ww*.78, wy + wh*.24, 9, "#FFF3C4"); circ(c, wx + ww*.78 + 4, wy + wh*.24 - 3, 8, "#13204A");
+  if (XMAS){ c.fillStyle = "#EAF2FF"; c.beginPath(); c.moveTo(wx, wy + wh); c.quadraticCurveTo(wx + ww*.3, wy + wh*.8, wx + ww*.55, wy + wh*.9); c.quadraticCurveTo(wx + ww*.8, wy + wh*.78, wx + ww, wy + wh*.88); c.lineTo(wx + ww, wy + wh); c.fill(); }
+  c.strokeStyle = "#7A4A2E"; c.lineWidth = 6; c.strokeRect(wx, wy, ww, wh); c.lineWidth = 3; c.beginPath(); c.moveTo(wx + ww/2, wy); c.lineTo(wx + ww/2, wy + wh); c.moveTo(wx, wy + wh/2); c.lineTo(wx + ww, wy + wh/2); c.stroke();
+  // checked kitchen curtains
+  [[-1, wx], [1, wx + ww]].forEach(function(s2){ var x0 = s2[1], d = s2[0];
+    c.fillStyle = "#C8424F"; c.beginPath(); c.moveTo(x0 - d*14, wy - 6); c.quadraticCurveTo(x0 + d*8, wy + wh*.45, x0 - d*4, wy + wh*.62); c.lineTo(x0 - d*18, wy + wh*.62); c.lineTo(x0 - d*18, wy - 6); c.fill(); });
+  // shelf with jars
+  var shY = wy + wh + 22; if (shY < TY - 30 && !side){ /* hidden by characters on small screens */ }
+  // counter top under the tin
+  c.fillStyle = "#5A3424"; c.fillRect(0, TY + CS*ROWS + 6, W, H); c.fillStyle = "#7A4A30"; c.fillRect(0, TY + CS*ROWS + 6, W, 5);
+  // tin body (back)
+  var bx = TX - 8, by = TY - 8, bw = CS*COLS + 16, bh = CS*ROWS + 16;
+  rr(c, bx - 4, by - 4, bw + 8, bh + 8, 22, XMAS ? "#B3213A" : "#2E7D8C");
+  rr(c, bx, by, bw, bh, 18, "#2A1420");
+  var ig = c.createLinearGradient(0, by, 0, by + bh); ig.addColorStop(0, "#3C2032"); ig.addColorStop(1, "#2A1422"); rr(c, bx + 4, by + 4, bw - 8, bh - 8, 15, ig);
+  c.fillStyle = "rgba(255,230,200,.05)"; for (var cx = 0; cx < COLS; cx++) for (var cy = 0; cy < ROWS; cy++) if ((cx + cy) % 2 === 0) c.fillRect(TX + cx*CS, TY + cy*CS, CS, CS);
+}
+function drawTinRim(){
+  var bx = TX - 8, by = TY - 8, bw = CS*COLS + 16, bh = CS*ROWS + 16, col = XMAS ? "#D9334F" : "#3FA0B0";
+  ctx.lineWidth = 6; ctx.strokeStyle = col; ctx.beginPath(); ctx.roundRect(bx - 1, by - 1, bw + 2, bh + 2, 20); ctx.stroke();
+  ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,240,200,.5)"; ctx.beginPath(); ctx.roundRect(bx + 3, by + 3, bw - 6, bh - 6, 16); ctx.stroke();
+  // little label on the front
+  var lw = Math.min(130, bw*.45), lx = TX + CS*COLS/2 - lw/2, ly = by + bh - 4;
+  rr(ctx, lx, ly, lw, 16, 8, "#F2C14E"); ctx.fillStyle = "#4A1E10"; ctx.font = "800 10px system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(XMAS ? "★ KAKEBOKSEN ★" : "KAKEBOKSEN", lx + lw/2, ly + 8.5);
+}
+
+/* ---------- Grandma at the counter, whisking ---------- */
+function drawGrandma(x, y, s, tm){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = "#6B2E45"; ctx.beginPath(); ctx.roundRect(-58, -70, 116, 130, 26); ctx.fill();
+  ctx.fillStyle = "#83385A"; ctx.beginPath(); ctx.roundRect(-70, -10, 30, 70, 14); ctx.fill(); ctx.beginPath(); ctx.roundRect(40, -10, 30, 70, 14); ctx.fill();
+  var sw = XMAS ? "#C8283A" : "#3D7A8C";
+  ctx.fillStyle = sw; ctx.beginPath(); ctx.moveTo(-34, 50); ctx.quadraticCurveTo(-40, -8, 0, -14); ctx.quadraticCurveTo(40, -8, 34, 50); ctx.closePath(); ctx.fill();
+  // apron
+  ctx.fillStyle = "#FFF4E6"; ctx.beginPath(); ctx.moveTo(-18, -2); ctx.lineTo(18, -2); ctx.lineTo(24, 48); ctx.lineTo(-24, 48); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = XMAS ? "#2F8F4E" : "#E8728C"; for (var i = -2; i <= 2; i++) circ(ctx, i*9, 40, 2.4, ctx.fillStyle);
+  ctx.fillStyle = "#3A2A4A"; ctx.beginPath(); ctx.roundRect(-34, 46, 68, 18, 8); ctx.fill();
+  ell(ctx, -14, 70, 11, 6, "#2A1A1A"); ell(ctx, 14, 70, 11, 6, "#2A1A1A");
+  circ(ctx, 0, -36, 22, "#F6CDB0");
+  ctx.fillStyle = "#E9E6F0"; ctx.beginPath(); ctx.arc(0, -42, 23, Math.PI*1.02, Math.PI*1.98); ctx.fill();
+  circ(ctx, 0, -64, 11, "#E9E6F0"); circ(ctx, -20, -40, 7, "#E9E6F0"); circ(ctx, 20, -40, 7, "#E9E6F0");
+  ctx.strokeStyle = "#6A4A3A"; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(-8, -34, 6, 0, 6.283); ctx.stroke(); ctx.beginPath(); ctx.arc(8, -34, 6, 0, 6.283); ctx.stroke(); line(ctx, [-2, -34, 2, -34], "#6A4A3A", 1.6);
+  if ((tm % 4.2) < .12){ line(ctx, [-11, -34, -5, -34], "#3a2a2a", 1.6); line(ctx, [5, -34, 11, -34], "#3a2a2a", 1.6); } else { dotEye(ctx, -8, -34, 2); dotEye(ctx, 8, -34, 2); }
+  circ(ctx, -14, -26, 4, "rgba(255,120,140,.45)"); circ(ctx, 14, -26, 4, "rgba(255,120,140,.45)");
+  smile(ctx, 0, -27, 5, "#7a2a2a", 1.6, cheer > 0);
+  // bowl + whisk
+  var k = Math.sin(tm*(cheer > 0 ? 16 : 6))*4;
+  ell(ctx, -18, 12, 9, 15, sw, .5); ell(ctx, 18, 12, 9, 15, sw, -.5);
+  ctx.fillStyle = "#D9E4EE"; ctx.beginPath(); ctx.moveTo(-20, 18); ctx.lineTo(20, 18); ctx.quadraticCurveTo(18, 38, 0, 38); ctx.quadraticCurveTo(-18, 38, -20, 18); ctx.fill();
+  ell(ctx, 0, 18, 20, 5, "#F1E2C4");
+  circ(ctx, -14, 20, 5, "#F6CDB0"); line(ctx, [8 + k, 4, 2 + k*.5, 18], "#B9C2CF", 2.4); ell(ctx, 2 + k*.5, 18, 4, 3, "#B9C2CF"); circ(ctx, 9 + k, 4, 5, "#F6CDB0");
+  ctx.restore();
+}
+/* ---------- Magic the cat (brown tabby, green eyes) ---------- */
+function drawMagic(x, y, s, look, paw, hop){
+  ctx.save(); ctx.translate(x, y - (hop || 0)); ctx.scale(s, s);
+  var fur = "#9A6A3E", dark = "#5E3C1E", light = "#D7B48A", tw = Math.sin(performance.now()/300)*6;
+  line(ctx, [14, 8, 26, 0, 28 + tw, -16], fur, 6); line(ctx, [27 + tw*.8, -8, 28 + tw, -16], dark, 6);
+  ell(ctx, 0, 6, 18, 13, fur);
+  line(ctx, [-6, -4, -4, 4], dark, 2.4); line(ctx, [2, -5, 3, 4], dark, 2.4); line(ctx, [9, -3, 9, 5], dark, 2.4);
+  ell(ctx, -2, 12, 9, 6, light); ell(ctx, -10, 18, 5, 3.5, light); ell(ctx, 8, 18, 5, 3.5, light);
+  if (paw > 0){ line(ctx, [-12, 4, -14 + look*4, 4 + paw*14], fur, 6); circ(ctx, -14 + look*4, 4 + paw*14, 3.6, light); }
+  ctx.save(); ctx.translate(-14, -8);
+  ctx.fillStyle = fur; ctx.beginPath(); ctx.moveTo(-11, -4); ctx.lineTo(-9, -17); ctx.lineTo(-2, -9); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(11, -4); ctx.lineTo(9, -17); ctx.lineTo(2, -9); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#F2A0A8"; ctx.beginPath(); ctx.moveTo(-8.5, -7); ctx.lineTo(-8, -13); ctx.lineTo(-4.5, -9); ctx.fill(); ctx.beginPath(); ctx.moveTo(8.5, -7); ctx.lineTo(8, -13); ctx.lineTo(4.5, -9); ctx.fill();
+  ell(ctx, 0, 0, 12, 10.5, fur);
+  line(ctx, [-3, -9, -2, -5], dark, 1.6); line(ctx, [0, -10, 0, -5], dark, 1.6); line(ctx, [3, -9, 2, -5], dark, 1.6);
+  ell(ctx, 0, 4, 6.5, 4.5, light);
+  var ex = look*1.5;
+  ell(ctx, -4.6, -1, 2.6, 3, "#5FBF4A"); ell(ctx, 4.6, -1, 2.6, 3, "#5FBF4A");
+  ell(ctx, -4.6 + ex, -1, 1, 2.4, "#1a1a1a"); ell(ctx, 4.6 + ex, -1, 1, 2.4, "#1a1a1a");
+  circ(ctx, -5.2 + ex, -2.2, .7, "#fff"); circ(ctx, 4 + ex, -2.2, .7, "#fff");
+  ctx.fillStyle = "#E87A8A"; ctx.beginPath(); ctx.moveTo(-1.6, 2.4); ctx.lineTo(1.6, 2.4); ctx.lineTo(0, 4); ctx.fill();
+  line(ctx, [0, 4, -2, 5.6], "#5a2a2a", .9); line(ctx, [0, 4, 2, 5.6], "#5a2a2a", .9);
+  line(ctx, [-6, 3, -15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [-6, 4.5, -15, 5], "rgba(255,255,255,.7)", .7);
+  line(ctx, [6, 3, 15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [6, 4.5, 15, 5], "rgba(255,255,255,.7)", .7);
+  if (XMAS){ ctx.fillStyle = "#D62B3A"; ctx.beginPath(); ctx.moveTo(-10, -8); ctx.quadraticCurveTo(-2, -26, 12, -22); ctx.lineTo(9, -7); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(-11, -10, 22, 5, 2.5); ctx.fill(); circ(ctx, 13, -22, 3.2, "#fff"); }
+  ctx.restore(); ctx.restore();
+}
+function drawTree(x, y, s, tm){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = "#6B3E22"; ctx.fillRect(-5, 34, 10, 12);
+  ctx.fillStyle = "#B8324A"; ctx.beginPath(); ctx.moveTo(-14, 46); ctx.lineTo(14, 46); ctx.lineTo(10, 60); ctx.lineTo(-10, 60); ctx.fill();
+  var gr = ["#1F6B3A", "#24804A", "#2B9656"];
+  [[-36, 38, 36, 38, 0, 0], [-30, 14, 30, 14, 0, -24], [-22, -10, 22, -10, 0, -48], [-14, -34, 14, -34, 0, -64]].forEach(function(tr, i){ ctx.fillStyle = gr[i % 3]; ctx.beginPath(); ctx.moveTo(tr[0], tr[1]); ctx.lineTo(tr[2], tr[3]); ctx.lineTo(tr[4], tr[5] - 8); ctx.closePath(); ctx.fill(); });
+  for (var i = 0; i < 12; i++){ var px = -26 + (i*17 % 52), py = -40 + i*6.5; circ(ctx, px*(.4 + i/20), py, 2, ["#FFE066", "#FF6B6B", "#6BD1FF"][(i + Math.floor(tm*2)) % 3]); }
+  ctx.fillStyle = "#FFE066"; ctx.font = "16px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("★", 0, -66);
+  ctx.restore();
+}
+function drawPlant(x, y, s){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = "#C4683A"; ctx.beginPath(); ctx.moveTo(-18, 30); ctx.lineTo(18, 30); ctx.lineTo(13, 58); ctx.lineTo(-13, 58); ctx.fill();
+  ctx.fillStyle = "#A9532B"; ctx.fillRect(-20, 26, 40, 7);
+  [[-0.9, 40], [-0.4, 52], [0.1, 58], [0.6, 48], [1.0, 38]].forEach(function(l){ ctx.save(); ctx.translate(0, 26); ctx.rotate(l[0]); ell(ctx, 0, -l[1]/2, 8, l[1]/2, "#2E8B57"); line(ctx, [0, 0, 0, -l[1]*.9], "#1F6B3A", 1.5); ctx.restore(); });
+  ctx.restore();
+}
+
+/* ---------- game state ---------- */
+var mode = "menu", playMode = "daily", grid = [], rng = Math.random, score = 0, merges = 0, moves = 0, topL = 0, row = [], shakes = 0;
+var finished = false, endWhy = "", flyers = [], parts = [], texts = [], banner = null, paw = 0, hop = 0, cheer = 0, magicX = 0, look = 0, idleT = 0, hint = null, shakeT = 0, needCheck = false, seenTop = 2, newBest = false, uid = 0, runT0 = 0, cursor = null;
+function mk(l, vy){ return {l: l, id: ++uid, vy: vy, sp: 0, pop: 0, wig: 0, hold: 0, from: -1}; }
+function hasMove(){
+  for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
+    if (c + 1 < COLS && grid[c + 1][r] && grid[c + 1][r].l === o.l) return true;
+    if (r + 1 < ROWS && grid[c][r + 1] && grid[c][r + 1].l === o.l) return true; }
+  return false;
+}
+function group(c0, r0){
+  var o = grid[c0][r0]; if (!o) return []; var L = o.l, seen = {}, st = [[c0, r0]], out = [];
+  while (st.length){ var p = st.pop(), k = p[0]*16 + p[1]; if (seen[k]) continue; seen[k] = 1;
+    var q = grid[p[0]] && grid[p[0]][p[1]]; if (!q || q.l !== L) continue; out.push(p);
+    st.push([p[0] + 1, p[1]], [p[0] - 1, p[1]], [p[0], p[1] + 1], [p[0], p[1] - 1]); }
+  return out.filter(function(p){ return p[0] >= 0 && p[0] < COLS && p[1] >= 0 && p[1] < ROWS; });
+}
+function fill(){
+  for (var c = 0; c < COLS; c++){
+    var col = grid[c], keep = [];
+    for (var r = ROWS - 1; r >= 0; r--) if (col[r]) keep.push(col[r]);
+    var n = 0;
+    for (r = ROWS - 1; r >= 0; r--){
+      if (keep.length) col[r] = keep.shift();
+      else { n++; col[r] = mk(pick(rng()), -n - .4); }
+    }
+  }
+}
+function newRun(m){
+  playMode = m === "free" ? "free" : "daily";
+  rng = playMode === "daily" ? mulberry32(hashStr("kakeboks:" + dayNum())) : Math.random;
+  grid = []; for (var c = 0; c < COLS; c++){ grid.push([]); for (var r = 0; r < ROWS; r++) grid[c].push(null); }
+  fill(); var guard = 0; while (!hasMove() && guard++ < 50){ for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++) grid[c][r] = null; fill(); }
+  for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++) grid[c][r].vy = r - ROWS - 1 - c*.15;
+  score = 0; merges = 0; moves = 0; topL = 0; row = [0, 0, 0, 0, 0, 0]; shakes = playMode === "daily" ? 1 : 3;
+  finished = false; endWhy = ""; flyers = []; parts = []; texts = []; banner = null; idleT = 0; hint = null; shakeT = 0; needCheck = true; seenTop = 2; newBest = false; magicX = COLS/2; runT0 = Date.now(); cursor = null;
+  updHud(true);
+}
+function cellX(c){ return TX + (c + .5)*CS; } function cellY(r){ return TY + (r + .5)*CS; }
+function busy(){ if (flyers.length || shakeT > 0) return true; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (o && (o.vy < r - .001 || o.hold > 0)) return true; } return false; }
+function say(s, d){ banner = {s: s, t: d || 1.6}; }
+function addPts(p, x, y){ score += p; texts.push({s: "+" + fmtN(p), x: x, y: y, l: 1}); }
+function burst(x, y, col, n){ for (var i = 0; i < n; i++){ var a = Math.random()*6.283, v = rnd(40, 160); parts.push({x: x, y: y, vx: Math.cos(a)*v, vy: Math.sin(a)*v - 40, l: rnd(.4, .8), c: col}); } }
+function tap(c, r){
+  if (mode !== "play" || finished || busy()) return false;
+  if (c < 0 || c >= COLS || r < 0 || r >= ROWS || !grid[c][r]) return false;
+  var g = group(c, r), o = grid[c][r];
+  idleT = 0; hint = null; magicX = c + .5; paw = 1;
+  if (g.length < 2){ o.wig = .35; SFX.tap(); return false; }
+  var L = o.l, n = g.length, x = cellX(c), y = cellY(r);
+  moves++; merges++; cheer = 1.2; hop = 1;
+  var seg = Math.min(5, Math.floor((moves - 1)/5));
+  if (L === NL - 1){ // two cakes → Grandma's star, all leave the tin
+    g.forEach(function(p){ var q = grid[p[0]][p[1]]; flyers.push({l: L, x: cellX(p[0]), y: cellY(p[1]), tx: W/2, ty: HUDH + 20, t: 0, d: .5}); grid[p[0]][p[1]] = null; });
+    addPts(STAR*(n - 1), x, y); burst(x, y, "#FFE066", 40); burst(x, y, "#fff", 20); say(t("star"), 2.2); SFX.star(); vib([30, 40, 60]); topL = NL - 1; row[seg] = Math.max(row[seg], 7);
+  } else {
+    var nl = Math.min(NL - 1, L + (n >= BIG ? 2 : 1));
+    g.forEach(function(p){ if (p[0] === c && p[1] === r) return; flyers.push({l: L, x: cellX(p[0]), y: cellY(p[1]), tx: x, ty: y, t: 0, d: .16}); grid[p[0]][p[1]] = null; });
+    o.from = L; o.l = nl; o.hold = .16; o.pop = 0;
+    addPts(PTS[nl] + 5*n*(L + 1), x, y - CS*.3); row[seg] = Math.max(row[seg], nl);
+    setTimeout(function(){ burst(x, y, PLATE[nl], 10 + nl*3); SFX.pop(nl, n); vib(10 + nl*4); }, 150);
+    if (n >= BIG) say(t("big"), 1.4);
+    if (nl > topL){ topL = nl; if (nl >= 3 && nl > seenTop){ seenTop = nl; say(t("newItem").replace("{i}", t("items")[nl]), 1.8); setTimeout(SFX.newItem, 200); } }
+  }
+  fill(); needCheck = true;
+  if (moves === limit() - 5) say(t("last5"));
+  if (playMode === "daily") saveDailyProgress();
+  if (Math.random() < .1) SFX.meow();
+  updHud(); return true;
+}
+function shake(){
+  shakes--; shakeT = .7; SFX.shake(); say(t("shake"), 1.6); hop = 1; vib([20, 30, 20]);
+  var all = []; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) all.push(grid[c][r]);
+  for (var guard = 0; guard < 40; guard++){
+    for (var i = all.length - 1; i > 0; i--){ var j = Math.floor(rng()*(i + 1)), tmp = all[i]; all[i] = all[j]; all[j] = tmp; }
+    for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++) grid[c][r] = all[c*ROWS + r];
+    if (hasMove()) break;
+  }
+  if (!hasMove()){ grid[0][ROWS - 1].l = grid[1][ROWS - 1].l; }
+  for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++){ grid[c][r].vy = r - .6; grid[c][r].sp = 0; }
+}
+function afterSettle(){
+  needCheck = false;
+  if (finished) return;
+  if (moves >= limit()){ endRun("done"); return; }
+  if (!hasMove()){ if (shakes > 0){ shake(); needCheck = true; } else endRun("stuck"); }
+}
+
+/* ---------- daily result, streak ---------- */
+function limit(){ return playMode === "daily" ? DAILY_N : FREE_N; }
+function curStreak(){ var d = dayNum(); return (P.lastDay === d || P.lastDay === d - 1) ? P.streak : 0; }
+function rowStr(r){ return (r || []).map(function(v, i){ return v ? SQ[v] : "▫️"; }).join(""); }
+function saveDailyProgress(){ if (playMode !== "daily" || finished) return; P.daily = {day: dayNum(), score: score, merges: merges, top: topL, row: row.slice(), why: "partial", moves: moves}; save(); }
+addEventListener("pagehide", function(){ if (mode === "play" || mode === "pause") saveDailyProgress(); });
+function finishDaily(){
+  var d = dayNum(); if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; }
+  P.daily = {day: d, score: score, merges: merges, top: topL, row: row.slice(), why: endWhy, moves: moves}; save();
+}
+function dailyDoneToday(){ return !!(P.daily && P.daily.day === dayNum()); }
+(function(){ if (P.daily && P.daily.why === "partial"){ var d = P.daily.day; if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; } P.daily.why = "quit"; save(); } })();
+function endRun(why){
+  if (finished) return; finished = true; endWhy = why;
+  if (playMode === "daily") finishDaily(); else { newBest = score > P.best && score > 0; if (newBest) P.best = score; }
+  P.games++; save();
+  gc("kakeboksen-over", "kakeboksen over " + playMode + " " + why); if (playMode === "daily") gc("kakeboksen-daily-finish", "kakeboksen daily finish");
+  if (why === "done") SFX.done(); else SFX.end(); vib(why === "done" ? [30, 50, 30] : [80, 60, 120]);
+  setTimeout(function(){ if (finished && mode === "play") setMode("over"); }, 1000);
+}
+var lastShown = "daily";
+function shareText(){
+  if (lastShown === "daily" && P.daily){ var dd = P.daily, s = curStreak();
+    return t("name") + " #" + dd.day + " 🍪 " + fmtN(dd.score) + "\n" + rowStr(dd.row) + "\n" + t("biggest") + ": " + EMO(dd.top) + (s > 0 ? " · " + t("streakW") + " " + s + "🔥" : "") + "\nstop60.no"; }
+  return t("name") + " · " + t("freeName") + " 🍪 " + fmtN(score) + "\n" + t("biggest") + ": " + EMO(topL) + " · " + t("merges") + ": " + merges + "\nstop60.no";
+}
+function paintOver(){
+  var daily = lastShown === "daily" && P.daily, d = daily ? P.daily : {score: score, merges: merges, top: topL, why: endWhy};
+  $("overTitle").textContent = daily ? (d.why === "stuck" ? t("overStuck") : t("overDone")) + " #" + d.day : (d.why === "stuck" ? t("overStuck") : t("overFree"));
+  $("oScore").textContent = fmtN(d.score); $("oMerges").textContent = d.merges; $("oBig").textContent = EMO(d.top) + " " + t("items")[d.top];
+  $("oBestRow").hidden = !!daily; $("oNew").hidden = daily || !newBest;
+  var s = curStreak(); $("oStreak").hidden = !daily || !s; $("oStreak").textContent = t("streak").replace("{n}", s);
+  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.merges) % gr.length];
+  $("retryBtn").textContent = daily ? t("free") : t("retry");
+  $("oCd").hidden = !daily; $("overGrid").textContent = shareText();
+  refreshStats(); tickCd();
+}
+function doShare(txt){
+  var url = PAGE_URL;
+  if (navigator.share){ navigator.share({text: txt, url: url}).catch(function(){}); return; }
+  try { navigator.clipboard.writeText(txt + "\n" + url).then(function(){ toast(t("copied")); }); } catch(e){ toast(t("copied")); }
+}
+$("scoreShare").onclick = function(){ gc("kakeboksen-share-score", "kakeboksen share score"); doShare(shareText()); };
+$("overGrid").onclick = function(){ doShare(shareText()); };
+document.querySelectorAll(".shareB").forEach(function(b){ b.onclick = function(){ gc("kakeboksen-share", "kakeboksen share"); doShare(t("name") + " – " + t("sub")); }; });
+
+/* ---------- menu + modes ---------- */
+function refreshMenu(){
+  var done = dailyDoneToday(), pb = $("playBtn");
+  pb.textContent = t("play"); pb.classList.toggle("done", false);
+  $("mDone").hidden = !done; if (done) $("mDone").textContent = t("dailyDone").replace("{s}", fmtN(P.daily.score));
+  $("mCd").hidden = !done;
+  var s = curStreak(); $("mStreak").hidden = !s; $("mStreak").textContent = t("streak").replace("{n}", s);
+  tickCd();
+}
+function cdStr(){ var n = new Date(), m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1), s = Math.max(0, Math.floor((m - n)/1000)); return Math.floor(s/3600) + ":" + String(Math.floor(s/60) % 60).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); }
+function tickCd(){ var s = t("nextIn").replace("{t}", cdStr()); if (!$("mCd").hidden) $("mCd").textContent = s; if (!$("oCd").hidden) $("oCd").textContent = s; }
+setInterval(tickCd, 1000);
+function setMode(m){
+  mode = m;
+  $("menu").hidden = m !== "menu"; $("pause").hidden = m !== "pause"; $("over").hidden = m !== "over";
+  $("hud").hidden = !(m === "play" || m === "pause"); $("langs").hidden = m !== "menu";
+  if (m === "menu") refreshMenu(); if (m === "over") paintOver();
+}
+/* START always says START; if today's tin is already played it shows the saved result, otherwise starts today's tin */
+function start(m){
+  audio();
+  if (m === "daily" && dailyDoneToday()){ lastShown = "daily"; newBest = false; setMode("over"); return; }
+  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8);
+  if (playMode === "daily") saveDailyProgress();
+  gc("kakeboksen-start", "kakeboksen start " + playMode);
+}
+$("playBtn").onclick = function(){ start("daily"); };
+$("freeBtn").onclick = function(){ start("free"); };
+$("retryBtn").onclick = function(){ start("free"); };
+$("overMenu").onclick = function(){ setMode("menu"); };
+$("pauseBtn").onclick = function(ev){ ev.stopPropagation(); if (mode === "play") setMode("pause"); };
+$("resumeBtn").onclick = function(){ setMode("play"); };
+$("quitBtn").onclick = function(){ if (!finished && playMode === "daily"){ finished = true; endWhy = "quit"; finishDaily(); lastShown = "daily"; setMode("over"); return; } setMode("menu"); };
+
+/* ---------- HUD ---------- */
+var hudCache = {};
+function setTxt(id, v){ v = String(v); if (hudCache[id] !== v){ hudCache[id] = v; $(id).textContent = v; } }
+function updHud(force){
+  if (force) hudCache = {};
+  setTxt("hScore", fmtN(score));
+  setTxt("hL2", t("moves")); setTxt("hTh", Math.max(0, limit() - moves)); $("hTh").classList.toggle("warn", limit() - moves <= 5 && mode === "play" && !finished);
+  setTxt("hTop", EMO(topL));
+}
+
+/* ---------- simulation ---------- */
+function step(dt){
+  for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
+    if (o.hold > 0){ o.hold -= dt; if (o.hold <= 0){ o.hold = 0; o.pop = 1; } }
+    if (o.vy < r){ o.sp += 46*dt; o.vy += o.sp*dt; if (o.vy >= r){ o.vy = r; if (o.sp > 4) o.pop = Math.max(o.pop, .25); o.sp = 0; } }
+    else o.vy = r;
+    if (o.pop > 0) o.pop = Math.max(0, o.pop - dt*3); if (o.wig > 0) o.wig = Math.max(0, o.wig - dt); }
+  for (var i = flyers.length - 1; i >= 0; i--){ var f = flyers[i]; f.t += dt; if (f.t >= f.d) flyers.splice(i, 1); }
+  if (shakeT > 0) shakeT = Math.max(0, shakeT - dt);
+  if (needCheck && !busy()) afterSettle();
+  idleT += dt;
+  if (idleT > 6 && !hint && !finished && !busy()){ // gentle hint: wiggle one group
+    outer: for (var cc = 0; cc < COLS; cc++) for (var rr2 = 0; rr2 < ROWS; rr2++){ var g = group(cc, rr2); if (g.length >= 2){ hint = g; break outer; } }
+  }
+}
+function fx(dt){
+  for (var i = parts.length - 1; i >= 0; i--){ var p = parts[i]; p.l -= dt; if (p.l <= 0){ parts.splice(i, 1); continue; } p.x += p.vx*dt; p.y += p.vy*dt; p.vy += 260*dt; }
+  for (i = texts.length - 1; i >= 0; i--){ var tx = texts[i]; tx.l -= dt; tx.y -= 40*dt; if (tx.l <= 0) texts.splice(i, 1); }
+  if (banner){ banner.t -= dt; if (banner.t <= 0) banner = null; }
+  paw = Math.max(0, paw - dt*4); hop = Math.max(0, hop - dt*3); cheer = Math.max(0, cheer - dt);
+  look += (clamp((magicX - COLS/2)/2, -1, 1) - look)*Math.min(1, dt*6);
+}
+
+/* ---------- render ---------- */
+function render(){
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(BG, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  var tm = performance.now()/1000, sx = shakeT > 0 ? Math.sin(tm*60)*6*shakeT : 0;
+  if (XMAS) drawTree(trX, trY, trS, tm); else drawPlant(trX, trY, trS);
+  drawGrandma(gX, gY, gS, tm);
+  var showGrid = mode !== "menu" || grid.length;
+  if (showGrid && grid.length){
+    ctx.save(); ctx.beginPath(); ctx.rect(TX - 4, TY - 4, CS*COLS + 8, CS*ROWS + 8); ctx.clip();
+    for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
+      var l = o.hold > 0 ? o.from : o.l, s = spr(l), sz = s.width/DPR, k = 1 + o.pop*.25, x = cellX(c) + sx, y = TY + (o.vy + .5)*CS, rot = o.wig > 0 ? Math.sin(o.wig*40)*.15 : 0;
+      if (hint && idleT > 6 && hint.some(function(p){ return p[0] === c && p[1] === r; })) { k *= 1 + Math.sin(tm*8)*.06; rot = Math.sin(tm*8)*.06; }
+      if (y < TY - CS) continue;
+      ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot); if (k !== 1) ctx.scale(k, k); ctx.drawImage(s, -sz/2, -sz/2, sz, sz); ctx.restore();
+      if (cursor && cursor[0] === c && cursor[1] === r && mode === "play"){ ctx.lineWidth = 3; ctx.strokeStyle = "#FFE9A8"; ctx.beginPath(); ctx.roundRect(TX + c*CS + 2, TY + r*CS + 2, CS - 4, CS - 4, 12); ctx.stroke(); }
+    }
+    ctx.restore();
+    for (var i = 0; i < flyers.length; i++){ var f = flyers[i], q = Math.min(1, f.t/f.d), e = q*q, fs = spr(f.l), fz = fs.width/DPR*(1 - q*.5);
+      ctx.globalAlpha = 1 - q*.4; ctx.drawImage(fs, f.x + (f.tx - f.x)*e - fz/2, f.y + (f.ty - f.y)*e - fz/2, fz, fz); } ctx.globalAlpha = 1;
+  }
+  drawTinRim();
+  var ms = clamp(CS/40, 1, 1.8), mx = TX + clamp(magicX, .5, COLS - .5)*CS;
+  if (!side){ var mlo = gX + 72*gS + 6*ms, mhi = trX - 40*trS - 34*ms; if (mhi > mlo) mx = clamp(mx, mlo, mhi); }
+  drawMagic(mx + 14*ms, TY - 8 - 20*ms, ms, look, paw, hop*8*ms);
+  for (i = 0; i < parts.length; i++){ var p = parts[i]; ctx.globalAlpha = Math.min(1, p.l*2); circ(ctx, p.x, p.y, 3, p.c); } ctx.globalAlpha = 1;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "800 " + Math.round(clamp(CS*.36, 14, 22)) + "px system-ui, sans-serif";
+  for (i = 0; i < texts.length; i++){ var tx = texts[i]; ctx.globalAlpha = Math.min(1, tx.l*2); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(40,10,30,.85)"; ctx.strokeText(tx.s, tx.x, tx.y); ctx.fillStyle = "#FFE9A8"; ctx.fillText(tx.s, tx.x, tx.y); } ctx.globalAlpha = 1;
+  if (banner && mode === "play"){ ctx.font = "800 " + Math.round(clamp(W*.05, 16, 24)) + "px system-ui, sans-serif"; var by = TY + CS*ROWS*.42; ctx.globalAlpha = Math.min(1, banner.t*2);
+    var tw = Math.min(W - 16, ctx.measureText(banner.s).width + 28); ctx.fillStyle = "rgba(42,22,38,.88)"; ctx.beginPath(); ctx.roundRect(W/2 - tw/2, by - 21, tw, 42, 21); ctx.fill(); ctx.fillStyle = "#FFE9A8"; ctx.fillText(banner.s, W/2, by, W - 30); ctx.globalAlpha = 1; }
+}
+
+/* ---------- input ---------- */
+function cellAt(ev){ var c = Math.floor((ev.clientX - TX)/CS), r = Math.floor((ev.clientY - TY)/CS); return [c, r]; }
+cv.addEventListener("pointerdown", function(ev){ if (mode !== "play") return; cursor = null; var p = cellAt(ev); tap(p[0], p[1]); });
+addEventListener("keydown", function(ev){
+  if (mode === "play"){
+    var mv = {ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1]}[ev.key];
+    if (mv){ cursor = cursor || [2, 3]; cursor = [clamp(cursor[0] + mv[0], 0, COLS - 1), clamp(cursor[1] + mv[1], 0, ROWS - 1)]; ev.preventDefault(); }
+    else if ((ev.key === " " || ev.key === "Enter") && cursor){ tap(cursor[0], cursor[1]); ev.preventDefault(); }
+    else if (ev.key === "p" || ev.key === "P" || ev.key === "Escape") setMode("pause");
+  } else if (mode === "pause" && (ev.key === "p" || ev.key === "P" || ev.key === "Escape")) setMode("play");
+});
+
+/* ---------- loop ---------- */
+var last = performance.now();
+function frame(now){
+  var dt = Math.min(.05, (now - last)/1000); last = now;
+  if (mode === "play") step(dt);
+  if (mode !== "pause") fx(dt);
+  updHud(); render(); requestAnimationFrame(frame);
+}
+if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){ r = Math.min(r, w/2, h/2); this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
+addEventListener("resize", resize);
+resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
+if (DEBUG && QS.get("start")) start(QS.get("start") === "free" ? "free" : "daily");
+
+/* ---------- test hooks ---------- */
+window.__kb = {
+  get mode(){ return mode; }, get score(){ return score; }, get moves(){ return moves; }, get top(){ return topL; }, get finished(){ return finished; }, get busy(){ return busy(); }, get xmas(){ return XMAS; }, get shakes(){ return shakes; },
+  grid: function(){ return grid.map(function(col){ return col.map(function(o){ return o ? o.l : -1; }); }); },
+  tap: tap, group: group, hasMove: hasMove, day: dayNum, share: function(){ return shareText(); }, P: function(){ return JSON.parse(JSON.stringify(P)); },
+  settle: function(){ for (var i = 0; i < 400 && (busy() || needCheck); i++) step(1/60); fx(.5); return !busy(); },
+  setGrid: function(a){ for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; o.l = a[r][c]; o.vy = r; o.sp = 0; o.hold = 0; o.pop = 0; } SPR = {}; },
+  deco: function(x, y, s, col){ texts.push({s: s, x: x, y: y, l: 50}); burst(x, y, col || "#FFE066", 30); },
+  magic: function(c){ magicX = c; }, layout: function(){ return {TX: TX, TY: TY, CS: CS}; },
+  icon: function(sz, l){ var c = document.createElement("canvas"); c.width = c.height = sz; var g = c.getContext("2d"); g.fillStyle = "#2A1626"; g.fillRect(0, 0, sz, sz); g.translate(sz/2, sz/2); drawItem(g, l, sz*.36); return c.toDataURL("image/png"); },
+  firstMove: function(){ for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (group(c, r).length >= 2) return [c, r]; return null; }
+};
+
+</script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+<script src="/assets/s60-back.js?v=2" data-game="kakeboksen" data-pos="tl" data-dy="52" data-compact="1" data-end="after:#retryBtn|in:#pause" defer></script>
+</body>
+</html>
