@@ -1,4 +1,4 @@
-/* Stop60 · Bestefar / Dziadek / Grandpa – shared cozy-series character (canvas, no images).
+/* Stop60 · Bestefar Jørgen / Dziadek Jørgen / Grandpa Jørgen (clumsy, warm) – shared cozy-series character (canvas, no images).
    Usage in a game:
      S60Bestefar.init({xmas: XMAS, game: "<id>", mode: function(){ return mode; }});
      S60Bestefar.draw(ctx, x, y, s)          // in render(); x,y = same anchor as drawGrandma (feet at y+72*s)
@@ -12,64 +12,109 @@
   var O = {xmas: false, game: "", mode: function(){ return "play"; }};
   var L = {
     no: {
-      start: ["Kaffen er klar – kjør på!", "Bestefar heier på deg!", "Jeg passer på Magic, jeg."],
-      startX: ["God jul! Kaffen er klar.", "Bestefar heier på deg!", "Nissen er sen i år – vi starter uten ham!"],
-      combo: ["Oi oi oi!", "Fy flate, så flott!", "Det klarte ikke jeg i min ungdom!", "Nå snakker vi!"],
-      level: ["Psst… ikke si det til mormor.", "Den smaker jeg på senere…", "Mormor, se her!", "Én til meg, én til deg…"],
-      win: ["Bravo! Det fortjener en kopp kaffe!", "Hurra! Nå tar vi en kake!", "Mesterlig! Jeg er stolt av deg."],
-      over: ["Godt jobba! En runde til?", "Ikke verst i det hele tatt!", "Selv bestefar bommer av og til."],
-      stuck: ["Ta det med ro – en slurk kaffe hjelper.", "Hmm… jeg tenker. Eller sover jeg?"],
-      oops: ["Oj! Rolig nå.", "Det skjer de beste!"],
-      hurry: ["Raskt nå, før kaffen blir kald!", "Litt fart på, vennen!"],
-      code: ["Ekstra liv? Det kaller jeg flaks!", "Hemmelig kode? Jeg sier ingenting."],
+      start: ["Kaffen er klar – nå kjører vi!", "Jørgen er klar! Hvor er brillene mine?", "Jeg skal bare hjelpe litt…"],
+      startX: ["God jul! Jørgen er klar.", "Nissen er sen – Jørgen hjelper til så lenge!", "Hvor la jeg nisselua? Å, den sitter på hodet."],
+      combo: ["Oi oi oi!", "Fy flate, så flott!", "Det klarte ikke jeg i min ungdom!", "Bravo! Jeg klapper… au, kaffen!"],
+      level: ["«Jørgen, ikke spis alle kjeksene!» – «Bare én…»", "Den smaker jeg på senere…", "{G}, se her! …{G}?", "Psst… ikke si det til {g}."],
+      win: ["Bravo! Det fortjener en kopp kaffe!", "Hurra! Jeg danser… nei, ryggen.", "Mesterlig! Jørgen er stolt av deg."],
+      over: ["Godt jobba! En runde til?", "Ikke verst! Jeg hadde mistet brillene for lenge siden.", "Selv Jørgen bommer av og til. Ofte, faktisk."],
+      stuck: ["Hmm… hva var det jeg skulle? Å ja, hjelpe deg!", "Ta det med ro – en slurk kaffe hjelper."],
+      oops: ["Oj! Det var nok min skyld.", "Det skjer de beste – og Jørgen hver dag!"],
+      hurry: ["Raskt nå, før kaffen blir kald!", "Litt fart på! Jeg kommer… straks… uff."],
+      code: ["Ekstra liv? Det trenger jeg også!", "Hemmelig kode? Jeg har glemt min."],
       wake: ["Hm? Jeg sov ikke, jeg tenkte!", "Hæ? Jeg bare hvilte øynene."],
-      tap: ["Hei hei! Trykk START, så kommer jeg.", "Kaffe? Alltid.", "Magic stjal tøflene mine igjen."],
-      who: "Bestefar"
+      tap: ["Hei! Jeg er Jørgen. Trykk START!", "Kaffe? Alltid.", "Har noen sett brillene mine?"],
+      trip: ["Huff! Hvem la garnnøstet her?", "Oppsann! Magic, garnet ditt igjen!", "Jeg sto stødig… nesten."],
+      drop_cookie: ["Kjeksen! Nei, Magic, den er min!", "Oi, glapp! Magic var raskere.", "Femsekundersregelen… Magic tok den på to."],
+      drop_sock: ["Strømpa! Magic, gi den tilbake!", "Oi, glapp! Nå leker Magic med den."],
+      drop_jar: ["Glasset! …Puh, det holdt.", "Oi, glapp! Heldigvis var lokket på."],
+      drop_can: ["Kanna! Nå vannet jeg tøflene.", "Oi, glapp! Magic ble litt våt."],
+      glasses: ["Hvor ER brillene mine? …Å. På panna.", "Har noen sett brillene? Ingen?", "Brillene! Der var de jo."],
+      spill: ["Oi, kaffen! Ingen så det, ok?", "Ups… termosen ville visst ligge.", "Det er ikke søl, det er pynt."],
+      groan: ["Uff… knærne mine sier hei.", "Opp fra stolen… et øyeblikk… nå!", "Æsj, jeg satt på fjernkontrollen!"],
+      who: "Bestefar Jørgen"
     },
     pl: {
-      start: ["Kawa gotowa – do dzieła!", "Dziadek trzyma kciuki!", "Ja tu pilnuję Magica."],
-      startX: ["Wesołych Świąt! Kawa gotowa.", "Dziadek trzyma kciuki!", "Mikołaj się spóźnia – zaczynamy bez niego!"],
-      combo: ["Ojojoj!", "Ale numer!", "Tego nawet ja za młodu nie umiałem!", "No to rozumiem!"],
-      level: ["Ćśś… tylko nie mów babci.", "Tego spróbuję później…", "Babciu, patrz!", "Jedno dla mnie, jedno dla ciebie…"],
-      win: ["Brawo! To zasługuje na kawę!", "Hurra! Teraz po ciastku!", "Mistrzostwo! Jestem dumny."],
-      over: ["Dobra robota! Jeszcze runda?", "Wcale nieźle!", "Nawet dziadkowi czasem nie wychodzi."],
-      stuck: ["Spokojnie – łyk kawy pomaga.", "Hmm… myślę. A może śpię?"],
-      oops: ["Ups! Spokojnie.", "Najlepszym się zdarza!"],
-      hurry: ["Szybko, zanim kawa wystygnie!", "Troszkę żwawiej, kochanie!"],
-      code: ["Dodatkowe życie? To się nazywa szczęście!", "Tajny kod? Ja nic nie wiem."],
+      start: ["Kawa gotowa – do dzieła!", "Jørgen gotowy! Gdzie moje okulary?", "Ja tylko trochę pomogę…"],
+      startX: ["Wesołych Świąt! Jørgen gotowy.", "Mikołaj się spóźnia – Jørgen go zastąpi!", "Gdzie moja czapka? A, mam ją na głowie."],
+      combo: ["Ojojoj!", "Ale numer!", "Tego nawet ja za młodu nie umiałem!", "Brawo! Klaszczę… ojej, kawa!"],
+      level: ["«Jørgen, nie zjadaj wszystkich ciastek!» – «Tylko jedno…»", "Tego spróbuję później…", "Babciu, patrz! …Babciu?", "Ćśś… tylko nie mów babci."],
+      win: ["Brawo! To zasługuje na kawę!", "Hurra! Zatańczę… nie, krzyż.", "Mistrzostwo! Jørgen jest dumny."],
+      over: ["Dobra robota! Jeszcze runda?", "Nieźle! Ja bym już dawno zgubił okulary.", "Nawet Jørgenowi czasem nie wychodzi. Często, prawdę mówiąc."],
+      stuck: ["Hmm… po co ja tu przyszedłem? A, żeby pomóc!", "Spokojnie – łyk kawy pomaga."],
+      oops: ["Ojej! To chyba moja wina.", "Najlepszym się zdarza – a Jørgenowi codziennie!"],
+      hurry: ["Szybko, zanim kawa wystygnie!", "Żwawiej! Już idę… zaraz… uff."],
+      code: ["Dodatkowe życie? Też bym chciał!", "Tajny kod? Ja swój zapomniałem."],
       wake: ["Hę? Nie spałem, myślałem!", "Co? Tylko oczy odpoczywały."],
-      tap: ["Cześć! Naciśnij START, to przyjdę.", "Kawa? Zawsze.", "Magic znowu schował moje kapcie."],
-      who: "Dziadek"
+      tap: ["Cześć! Jestem Jørgen. Naciśnij START!", "Kawa? Zawsze.", "Ktoś widział moje okulary?"],
+      trip: ["Ojej! Kto tu zostawił kłębek?", "Hop! Magic, znowu twoja włóczka!", "Stałem pewnie… prawie."],
+      drop_cookie: ["Ciastko! Nie, Magic, to moje!", "Ups, wypadło! Magic był szybszy.", "Zasada pięciu sekund… Magic zdążył w dwie."],
+      drop_sock: ["Skarpetka! Magic, oddawaj!", "Ups, wypadła! Teraz Magic się nią bawi."],
+      drop_jar: ["Słoik! …Uff, cały.", "Ups, wypadł! Na szczęście był zakręcony."],
+      drop_can: ["Konewka! Podlałem sobie kapcie.", "Ups, wypadła! Magic trochę zmókł."],
+      glasses: ["Gdzie są moje okulary? …A. Na czole.", "Ktoś widział okulary? Nikt?", "Okulary! No przecież tu są."],
+      spill: ["Ojej, kawa! Nikt nie widział, dobra?", "Ups… termos chciał się położyć.", "To nie plama, to ozdoba."],
+      groan: ["Uff… kolana mówią dzień dobry.", "Wstaję z fotela… chwileczkę… już!", "Ojej, usiadłem na pilocie!"],
+      who: "Dziadek Jørgen"
     },
     en: {
-      start: ["Coffee's ready – off you go!", "Grandpa's cheering for you!", "I'll keep an eye on Magic."],
-      startX: ["Merry Christmas! Coffee's ready.", "Grandpa's cheering for you!", "Santa's late – we'll start without him!"],
-      combo: ["Oh my!", "Well, would you look at that!", "Couldn't do that in my younger days!", "Now we're talking!"],
-      level: ["Shh… don't tell Grandma.", "I'll taste-test that later…", "Look, dear, look!", "One for me, one for you…"],
-      win: ["Bravo! That deserves a cup of coffee!", "Hooray! Cake time!", "Masterful! I'm proud of you."],
-      over: ["Well done! One more round?", "Not bad at all!", "Even Grandpa slips up sometimes."],
-      stuck: ["Easy now – a sip of coffee helps.", "Hmm… I'm thinking. Or am I napping?"],
-      oops: ["Oops! Easy now.", "Happens to the best of us!"],
-      hurry: ["Quick, before the coffee gets cold!", "A bit faster, dear!"],
-      code: ["An extra life? Now that's luck!", "A secret code? My lips are sealed."],
+      start: ["Coffee's ready – off you go!", "Jørgen's ready! Where are my glasses?", "I'll just help a little…"],
+      startX: ["Merry Christmas! Jørgen's ready.", "Santa's late – Jørgen will fill in!", "Where's my Santa hat? Oh, it's on my head."],
+      combo: ["Oh my!", "Well, would you look at that!", "Couldn't do that in my younger days!", "Bravo! I'm clapping… oops, the coffee!"],
+      level: ["“Jørgen, don't eat all the cookies!” – “Just one…”", "I'll taste-test that later…", "Look, dear, look! …Dear?", "Shh… don't tell Grandma."],
+      win: ["Bravo! That deserves a cup of coffee!", "Hooray! I'd dance… but my back.", "Masterful! Jørgen is proud of you."],
+      over: ["Well done! One more round?", "Not bad! I'd have lost my glasses by now.", "Even Jørgen slips up sometimes. Often, actually."],
+      stuck: ["Hmm… what did I come here for? Oh yes, to help!", "Easy now – a sip of coffee helps."],
+      oops: ["Oops! That was probably me.", "Happens to the best of us – and to Jørgen daily!"],
+      hurry: ["Quick, before the coffee gets cold!", "Hurry! I'm coming… just… oof."],
+      code: ["An extra life? I could use one too!", "A secret code? I forgot mine."],
       wake: ["Hm? I wasn't asleep, I was thinking!", "Eh? Just resting my eyes."],
-      tap: ["Hello! Press START and I'll join you.", "Coffee? Always.", "Magic hid my slippers again."],
-      who: "Grandpa"
+      tap: ["Hello! I'm Jørgen. Press START!", "Coffee? Always.", "Has anyone seen my glasses?"],
+      trip: ["Whoops! Who left the yarn here?", "Oopsy-daisy! Magic, your yarn again!", "I was perfectly steady… almost."],
+      drop_cookie: ["My cookie! No, Magic, that's mine!", "Oops, dropped it! Magic was quicker.", "Five-second rule… Magic did it in two."],
+      drop_sock: ["My sock! Magic, give it back!", "Oops, dropped it! Now Magic's playing with it."],
+      drop_jar: ["The jar! …Phew, it's fine.", "Oops, dropped it! Good thing the lid was on."],
+      drop_can: ["The watering can! I watered my slippers.", "Oops, dropped it! Magic got a bit wet."],
+      glasses: ["Where ARE my glasses? …Oh. On my forehead.", "Anyone seen my glasses? No one?", "My glasses! There they are."],
+      spill: ["Oops, the coffee! Nobody saw that, OK?", "Uh-oh… the thermos wanted a lie-down.", "It's not a spill, it's decoration."],
+      groan: ["Oof… my knees say hello.", "Up from the chair… one moment… there!", "Oh dear, I sat on the remote!"],
+      who: "Grandpa Jørgen"
     }
   };
   var POSE = {start: "wave", combo: "cheer", level: "cookie", win: "cheer", over: "sip", stuck: "sip", oops: "idle", hurry: "cheer", code: "cheer", wake: "idle", tap: "wave"};
-  var st = {pose: "idle", poseT: 0, msg: null, msgT: 0, lastSpeak: -99, lastAct: 0, dozing: false, hop: 0, head: [0, 0, 1], seq: 0};
+  var ITEM = {kakeboksen: "cookie", sokkeskuffen: "sock", syltetoyhylla: "jar", "mormors-hage": "can"};
+  var DUR = {trip: 2.2, drop: 2.6, glasses: 2.8, spill: 2.6, groan: 2.2}, CLUMSY = ["trip", "drop", "glasses", "spill", "groan"];
+  var HX = {glassUp: false, lookDown: false, oMouth: false, squint: false, mark: ""};
+  var st = {pose: "idle", poseT: 0, poseDur: 2, lastClumsy: -99, lastKind: "", dt: 0, msg: null, msgT: 0, lastSpeak: -99, lastAct: 0, dozing: false, hop: 0, head: [0, 0, 1], seq: 0};
   function now(){ return performance.now()/1000; }
   function lang(){ var l = document.documentElement.dataset.lang || "no"; return L[l] ? l : "no"; }
   function pick(a){ st.seq++; return a[(Math.floor(Math.random()*a.length) + st.seq) % a.length]; }
-  function line(k){ var T = L[lang()]; if (k === "start" && O.xmas) k = "startX"; return T[k] ? pick(T[k]) : ""; }
+  function fill(m){ var no = O.game === "syltetoyhylla" ? "bestemor" : "mormor"; return m.replace(/\{g\}/g, no).replace(/\{G\}/g, no.charAt(0).toUpperCase() + no.slice(1)); }
+  function line(k){ var T = L[lang()]; if (k === "start" && O.xmas) k = "startX"; if (k === "drop") k = "drop_" + (ITEM[O.game] || "cookie"); return T[k] ? fill(pick(T[k])) : ""; }
+  function clumsy(kind){
+    var t = now(); if (!kind){ var a = CLUMSY.filter(function(k){ return k !== st.lastKind; }); kind = a[Math.floor(Math.random()*a.length)]; }
+    st.pose = kind; st.poseT = st.poseDur = DUR[kind] || 2.4; st.lastKind = kind; st.lastClumsy = t; st.dozing = false;
+    st.msg = line(kind); st.msgT = 2.8; st.lastSpeak = t;
+  }
 
   function react(kind, opt){
     opt = opt || {}; var t = now(), wasDozing = st.dozing;
     st.lastAct = t; st.dozing = false;
-    st.pose = POSE[kind] || "idle"; st.poseT = kind === "level" ? 2.6 : 2.0; if (st.pose === "cheer") st.hop = 1;
     var big = kind === "start" || kind === "win" || kind === "over" || kind === "code" || opt.force;
-    if (!big && t - st.lastSpeak < 5) return;
+    var free = t - st.lastSpeak >= 5;
+    // clumsy moments (only when he has not spoken for ~5 s, never more often)
+    if (free && !wasDozing && !opt.force){
+      var r = Math.random(), ck = null;
+      if (kind === "combo" && r < .45) ck = r < .22 ? "trip" : "spill";
+      else if (kind === "level" && r < .5) ck = r < .1 ? "groan" : "drop";
+      else if (kind === "stuck") ck = "glasses";
+      else if (kind === "oops") ck = "trip";
+      else if (kind === "hurry" && r < .5) ck = "groan";
+      if (ck){ clumsy(ck); return; }
+    }
+    if (opt.clumsy){ clumsy(opt.clumsy); return; }
+    st.pose = POSE[kind] || "idle"; st.poseT = st.poseDur = kind === "level" ? 2.6 : 2.0; if (st.pose === "cheer") st.hop = 1;
+    if (!big && !free) return;
     if (!big && (kind === "combo" || kind === "level") && Math.random() < .3) return;
     var k = wasDozing && !big && Math.random() < .6 ? "wake" : kind;
     st.msg = line(k); st.msgT = k === "start" ? 2.8 : 2.6; st.lastSpeak = t;
@@ -94,6 +139,16 @@
   }
   function cookie(c, x, y, r){ circ(c, x, y, r, "#D9A35B"); circ(c, x - r*.3, y - r*.2, r*.18, "#5A3420"); circ(c, x + r*.35, y + r*.1, r*.16, "#5A3420"); circ(c, x - r*.05, y + r*.4, r*.15, "#5A3420"); }
   function hand(c, x, y){ circ(c, x, y, 6, SKIN); }
+  function yarn(c, x, y, rot){ c.save(); c.translate(x, y); c.rotate(rot); c.scale(1.2, 1.2); circ(c, 0, 0, 8, "#B85CC4"); c.strokeStyle = "#8E3E9C"; c.lineWidth = 1.3; c.beginPath(); c.arc(0, 0, 5, .3, 2.6); c.stroke(); c.beginPath(); c.arc(0, 0, 8, 3.6, 5.2); c.stroke(); ln(c, [-6, -3, 6, 3], "#8E3E9C", 1.2); c.restore(); }
+  function item(c, kind, x, y, rot){
+    c.save(); c.translate(x, y); c.rotate(rot || 0);
+    if (kind === "sock"){ ln(c, [0, -9, 0, 3, 7, 6], "#E9E2D6", 7); ln(c, [-3.5, -5, 3.5, -5], RED, 2); ln(c, [-3.5, -1, 3.5, -1], RED, 2); circ(c, 8, 6, 3.5, RED); }
+    else if (kind === "jar"){ rr(c, -6, -8, 12, 15, 3, "rgba(230,240,250,.85)"); rr(c, -5, -3, 10, 9, 2, "#C8283A"); rr(c, -6.5, -11, 13, 4, 1.5, RED); ell(c, 0, -11, 6.5, 1.5, "#F4EFE4"); }
+    else if (kind === "can"){ rr(c, -7, -6, 14, 12, 3, "#3E9A6A"); ln(c, [7, -2, 14, -9], "#3E9A6A", 3); ln(c, [-7, -4, -11, 0, -7, 4], "#2E7A52", 2); circ(c, 14, -9, 2.4, "#2E7A52"); }
+    else cookie(c, 0, 0, 7.5);
+    c.restore();
+  }
+  function paw(c, x, y){ ln(c, [x - 44, y + 1, x - 6, y], "#9A6A3E", 11); for (var i = 0; i < 3; i++) ln(c, [x - 34 + i*9, y - 4.5, x - 32 + i*9, y + 4.5], "#5E3C1E", 2.2); ell(c, x, y, 7, 5.5, "#D7B48A"); circ(c, x + 5, y - 4, 2, "#D7B48A"); circ(c, x + 7, y, 2, "#D7B48A"); circ(c, x + 5, y + 4, 2, "#D7B48A"); }
   function arm(c, sx, sy, ex, ey, bx, by){ // sleeve with bend, white cuff
     var mx = bx === undefined ? (sx + ex)/2 : bx, my = by === undefined ? (sy + ey)/2 : by;
     ln(c, [sx, sy, mx, my, ex, ey], NAVY, 15);
@@ -137,13 +192,15 @@
     // brows
     ell(c, -9, -61, 6.5, 2.6, GREY, -.12); ell(c, 9, -61, 6.5, 2.6, GREY, .12);
     // eyes + glasses
-    if (doze || blink){ ln(c, [-12, eyesY, -9, eyesY + 1.6, -6, eyesY], "#3a2a2a", 1.6); ln(c, [6, eyesY, 9, eyesY + 1.6, 12, eyesY], "#3a2a2a", 1.6); }
-    else { var lk = pose === "cookie" ? 1.6 : 0; circ(c, -9 + lk, eyesY, 2.1, "#2a1c1c"); circ(c, 9 + lk, eyesY, 2.1, "#2a1c1c"); circ(c, -8.3 + lk, eyesY - .8, .7, "#fff"); circ(c, 9.7 + lk, eyesY - .8, .7, "#fff"); }
-    c.strokeStyle = "#5A4434"; c.lineWidth = 1.8; c.beginPath(); if (c.roundRect){ c.roundRect(-16, eyesY - 5, 13, 10, 4); c.roundRect(3, eyesY - 5, 13, 10, 4); } c.stroke(); ln(c, [-3, eyesY - 1, 3, eyesY - 1], "#5A4434", 1.6);
+    if (HX.squint && !doze){ ln(c, [-12, eyesY - 1, -6, eyesY + 1], "#3a2a2a", 1.7); ln(c, [6, eyesY + 1, 12, eyesY - 1], "#3a2a2a", 1.7); }
+    else if (doze || blink){ ln(c, [-12, eyesY, -9, eyesY + 1.6, -6, eyesY], "#3a2a2a", 1.6); ln(c, [6, eyesY, 9, eyesY + 1.6, 12, eyesY], "#3a2a2a", 1.6); }
+    else { var lk = pose === "cookie" ? 1.6 : 0, ld = HX.lookDown ? 1.8 : 0; circ(c, -9 + lk, eyesY + ld, 2.1, "#2a1c1c"); circ(c, 9 + lk, eyesY + ld, 2.1, "#2a1c1c"); circ(c, -8.3 + lk, eyesY - .8 + ld, .7, "#fff"); circ(c, 9.7 + lk, eyesY - .8 + ld, .7, "#fff"); }
+    var gy = HX.glassUp ? eyesY - 12 : eyesY;
+    c.strokeStyle = "#5A4434"; c.lineWidth = 1.8; c.beginPath(); if (c.roundRect){ c.roundRect(-16, gy - 5, 13, 10, 4); c.roundRect(3, gy - 5, 13, 10, 4); } c.stroke(); ln(c, [-3, gy - 1, 3, gy - 1], "#5A4434", 1.6);
     circ(c, -15, -44, 4, "rgba(255,110,120,.4)"); circ(c, 15, -44, 4, "rgba(255,110,120,.4)");
     ell(c, 0, -46, 5, 4.5, "#E8A086");                                                         // nose
     // mouth (under the moustache)
-    if (pose === "cheer" || pose === "wave") ell(c, 0, -35, 4.5, 4, "#7a2a2a");
+    if (pose === "cheer" || pose === "wave" || HX.oMouth) ell(c, 0, -35, 4.5, HX.oMouth ? 4.8 : 4, "#7a2a2a");
     else if (pose === "cookie"){ var ch = Math.sin(tm*14)*1.2; ell(c, 0, -35.5, 3.5, 2 + Math.abs(ch), "#7a2a2a"); circ(c, 13, -40, 4.5, SKIN); }
     else { c.strokeStyle = "#7a2a2a"; c.lineWidth = 1.5; c.beginPath(); c.arc(0, -37, 4, .25*Math.PI, .75*Math.PI); c.stroke(); }
     // walrus moustache
@@ -151,7 +208,7 @@
     ell(c, -7, -40.5, 9.5, 4.6, GREY, -.22 + mw); ell(c, 7, -40.5, 9.5, 4.6, GREY, .22 - mw); ell(c, -13, -38.5, 4, 3, GREY, -.6); ell(c, 13, -38.5, 4, 3, GREY, .6);
     ln(c, [-3, -42, 0, -40.5, 3, -42], GREY2, 1);
     // unlit pipe (no smoke)
-    if (pose !== "cookie" && pose !== "sip" && pose !== "cheer" && pose !== "wave"){
+    if (pose !== "cookie" && pose !== "sip" && pose !== "cheer" && pose !== "wave" && !HX.oMouth && !(pose === "drop" && HX.p < .25)){
       var dr = doze ? 4 : 0;
       ln(c, [5, -37, 13, -35 + dr*.5, 18, -36 + dr], "#3A2418", 2.4);
       rr(c, 15, -45 + dr, 8, 10, 3, "#6B3E22"); ell(c, 19, -45 + dr, 4, 1.6, "#2A1810");
@@ -159,15 +216,57 @@
     if (doze){ c.fillStyle = "#EAF2FF"; c.font = "800 11px system-ui, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; var z = (tm*.8) % 1; c.globalAlpha = 1 - z; c.fillText("z", 24 + z*10, -70 - z*16); c.globalAlpha = Math.max(0, 1 - ((z + .5) % 1)); c.font = "800 14px system-ui, sans-serif"; c.fillText("Z", 24 + ((z + .5) % 1)*12, -70 - ((z + .5) % 1)*18); c.globalAlpha = 1; }
   }
 
-  function figure(c, tm, pose, hop){
+  function figure(c, tm, pose, hop, p){
+    var P = p === undefined ? (tm*.4) % 1 : p, it = ITEM[O.game] || "cookie", rot = 0, piv = 72, pre = null, post = null, mark = "";
+    HX.p = P; HX.glassUp = false; HX.lookDown = false; HX.oMouth = false; HX.squint = false;
+    if (pose === "trip"){
+      var k = P < .25 ? 0 : P < .8 ? (P - .25)/.55 : 1, yx = P < .25 ? -70 + P/.25*58 : -12 + (P - .25)*160;
+      rot = k > 0 && k < 1 ? Math.sin(k*Math.PI*3)*.2*(1 - k*.5) : 0; HX.oMouth = k > 0 && k < 1;
+      post = function(){ if (P > .25) ln(c, [-14, 70, (yx - 14)/2, 72, yx - 6, 68], "#B85CC4", 1.4); yarn(c, yx, 66, yx/8); };
+    } else if (pose === "drop"){
+      HX.lookDown = P > .22; HX.oMouth = P > .22 && P < .65;
+      var f = Math.max(0, Math.min(1, (P - .22)/.22)), ix = -17 - f*14, iy = Math.min(66, -37 + 103*f*f), bo = P > .44 && P < .56 ? -Math.sin((P - .44)/.12*Math.PI)*6 : 0;
+      var grab = it === "cookie" || it === "sock", px = P < .6 ? -160 : P < .75 ? -160 + (P - .6)/.15*(ix + 160) : ix - (P - .75)/.25*130;
+      if (grab && P > .75) ix = px;
+      post = function(){
+        if (P >= .22) item(c, it, ix, iy + bo, f*2.4 + (it === "jar" && P > .56 ? Math.sin(tm*18)*.2*(1 - P) : 0));
+        if (grab && P > .6) paw(c, px + 5, 66);
+        if (it === "can" && P > .44 && P < .85){ var q = (P - .44)/.41; for (var i = 0; i < 5; i++) circ(c, ix + (i - 2)*9*q, 64 - Math.sin(q*Math.PI)*16 + Math.abs(i - 2)*2, 1.9, "rgba(120,190,255,.85)"); }
+      };
+    } else if (pose === "glasses"){
+      HX.glassUp = P < .8; HX.squint = P < .8; mark = P < .8 ? "?" : "!";
+    } else if (pose === "spill"){
+      HX.oMouth = P > .12;
+      var a = Math.min(1, P/.18)*1.5708, pw = Math.max(0, Math.min(1, (P - .15)/.4))*24;
+      pre = function(){ if (pw > 0) ell(c, 98, 73, pw, pw*.25, "rgba(107,66,38,.85)"); };
+      post = function(){ c.save(); c.translate(52, 72); c.rotate(a); thermos(c, 0, 0, 1); c.restore(); if (pw > 4) ell(c, 98, 73, pw*.5, pw*.1, "rgba(160,110,70,.6)"); };
+    } else if (pose === "groan"){
+      rot = -.06 - Math.sin(P*Math.PI)*.08; piv = 40; HX.squint = true;
+    }
     c.save(); c.translate(0, -hop);
-    // legs + shoes
+    if (pre) pre();
+    if (rot){ c.translate(0, piv); c.rotate(rot); c.translate(0, -piv); }
+    // legs + slippers
     rr(c, -24, 38, 48, 30, 8, "#5A4232"); ln(c, [0, 46, 0, 66], "#45322545", 1.6);
     ell(c, -13, 70, 12.5, 6, "#9E2A2E"); ell(c, 13, 70, 12.5, 6, "#9E2A2E"); ln(c, [-23, 73, -3, 73], "#F1E6D2", 1.6); ln(c, [3, 73, 23, 73], "#F1E6D2", 1.6);
-    // arms behind the body (thermos side) are drawn after the sweater
     sweater(c);
     var sw = Math.sin(tm*(pose === "cheer" ? 14 : 3)), fg = null;
-    if (pose === "cheer"){
+    if (pose === "trip"){
+      var fl = Math.sin(tm*22)*5; arm(c, -30, -18, -50, -50 + fl, -50, -26); hand(c, -50, -52 + fl); arm(c, 30, -18, 52, -54 - fl, 52, -28); hand(c, 52, -56 - fl);
+    } else if (pose === "drop"){
+      arm(c, 30, -18, 38, 22, 42, 2); thermos(c, 38, 52, .95); hand(c, 38, 22);
+      if (P < .22){ arm(c, -30, -18, -20, -30, -40, 2); fg = function(){ item(c, it, -17, -37, 0); hand(c, -22, -31); }; }
+      else { arm(c, -30, -18, -36, 14, -46, -4); hand(c, -36, 16); }
+    } else if (pose === "glasses"){
+      var pat = Math.sin(tm*10)*4; arm(c, -30, -18, -10 + pat, 12, -36, 8); hand(c, -10 + pat, 12);
+      if (P < .8){ var sc = Math.sin(tm*4)*3; arm(c, 30, -18, 20 + sc, -58, 44, -32); fg = function(){ hand(c, 20 + sc, -59); }; }
+      else { arm(c, 30, -18, 10, -66, 40, -38); fg = function(){ hand(c, 10, -67); }; }
+    } else if (pose === "spill"){
+      if (P < .3){ arm(c, -30, -18, -6, 16, -36, 6); hand(c, -6, 16); arm(c, 30, -18, 50, 30, 46, 4); hand(c, 50, 32); }
+      else { arm(c, -30, -18, -15, -40, -42, -12); arm(c, 30, -18, 15, -40, 42, -12); fg = function(){ hand(c, -16, -41); hand(c, 16, -41); }; }
+    } else if (pose === "groan"){
+      arm(c, -30, -18, -32, 22, -44, 4); hand(c, -32, 24); arm(c, 30, -18, 22, 36, 40, 10); hand(c, 22, 38); thermos(c, 48, 72 - (rot ? 0 : 0), 1);
+    } else if (pose === "cheer"){
       arm(c, -30, -18, -42 + sw*2, -70, -44, -42); hand(c, -42 + sw*2, -72);
       arm(c, 30, -18, 42 - sw*2, -70, 44, -42); thermos(c, 42 - sw*2, -64, .8); hand(c, 42 - sw*2, -70);
     } else if (pose === "wave"){
@@ -176,7 +275,7 @@
       ln(c, [40 + wv*.4, -74, 38 + wv*.4, -80], SKIN, 3); ln(c, [44 + wv*.4, -76, 44 + wv*.4, -82], SKIN, 3); ln(c, [48 + wv*.4, -74, 50 + wv*.4, -80], SKIN, 3);
     } else if (pose === "cookie"){
       thermos(c, 40, 44, .9); arm(c, 30, -18, 36, 30, 42, 6); hand(c, 36, 30);
-      var bob = Math.sin(tm*7)*2; arm(c, -30, -18, -20, -30 + bob, -40, 2); fg = function(){ cookie(c, -17, -37 + bob, 7.5); hand(c, -22, -31 + bob); };
+      var bob = Math.sin(tm*7)*2; arm(c, -30, -18, -20, -30 + bob, -40, 2); fg = function(){ item(c, it === "cookie" ? "cookie" : "cookie", -17, -37 + bob, 0); hand(c, -22, -31 + bob); };
     } else if (pose === "sip"){
       arm(c, -30, -18, -36, 22, -40, 0); hand(c, -36, 24); thermos(c, -42, 70, 1);
       var lift = Math.max(0, Math.sin(tm*1.4))*4; arm(c, 30, -18, 20, -28 - lift, 40, 4); fg = function(){ cup(c, 15, -31 - lift, tm); hand(c, 21, -28 - lift); };
@@ -186,12 +285,13 @@
       arm(c, -30, -18, -6, 16, -36, 6); hand(c, -6, 16);
       arm(c, 30, -18, 38, 22, 42, 2); thermos(c, 38, 52, .95); hand(c, 38, 22);
     }
-    // head (tilts when dozing)
     c.save(); if (pose === "doze"){ c.translate(0, -30); c.rotate(-.14 + Math.sin(tm*1.2)*.03); c.translate(0, 30); }
     headDraw(c, tm, pose);
     c.restore();
     if (fg) fg();
+    if (mark){ c.fillStyle = "#FFE9A8"; c.strokeStyle = "rgba(60,25,40,.7)"; c.lineWidth = 3; c.font = "900 18px system-ui, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; var my = -104 + Math.sin(tm*6)*3; c.strokeText(mark, 30, my); c.fillText(mark, 30, my); if (mark === "?"){ c.strokeText("?", 42, my + 8); c.fillText("?", 42, my + 8); } }
     c.restore();
+    if (post){ c.save(); c.translate(0, -hop); post(); c.restore(); }
   }
 
   function curPose(){
@@ -202,15 +302,19 @@
     return (t % 11) < 2.5 ? "sip" : "idle";
   }
   var lastT = 0;
-  function tick(){ var t = now(), dt = Math.min(.1, t - (lastT || t)); lastT = t; if (st.poseT > 0) st.poseT -= dt; if (st.msgT > 0) st.msgT -= dt; st.hop = Math.max(0, st.hop - dt*2.2); }
+  function tick(){ var t = now(), dt = Math.min(.1, t - (lastT || t)); lastT = t; st.dt = dt; if (st.poseT > 0) st.poseT -= dt; if (st.msgT > 0) st.msgT -= dt; st.hop = Math.max(0, st.hop - dt*2.2); }
 
   function draw(c, x, y, s){
-    tick(); var tm = now(), pose = curPose(), hop = Math.sin(Math.min(1, st.hop)*Math.PI)*8;
+    tick(); var tm = now(), md = O.mode ? O.mode() : "play";
+    // an occasional clumsy moment while playing (never within ~7 s of his last line, at most every ~12 s)
+    if (md === "play" && st.poseT <= 0 && !st.dozing && tm - st.lastSpeak > 7 && tm - st.lastClumsy > 12 && Math.random() < st.dt*.12) clumsy();
+    var pose = curPose(), hop = Math.sin(Math.min(1, st.hop)*Math.PI)*8, pp = Math.max(0, Math.min(1, 1 - st.poseT/(st.poseDur || 2)));
     c.save(); c.translate(x, y); c.scale(s, s);
     ell(c, 0, 74, 34, 6, "rgba(0,0,0,.18)");
-    figure(c, tm, pose, hop);
+    figure(c, tm, pose, hop, pp);
     c.restore();
     st.head = [x, y - (O.xmas ? 100 : 96)*s - hop*s, s];
+    if (pose === "trip" || pose === "groan") st.head[1] -= 6*s;
   }
 
   function bubble(c){
@@ -263,8 +367,8 @@
 
   window.S60Bestefar = {
     init: function(o){ for (var k in o) O[k] = o[k]; st.lastAct = now(); return this; },
-    draw: draw, bubble: bubble, react: react, overLine: overLine, mountMenu: mountMenu,
+    draw: draw, bubble: bubble, react: react, clumsy: clumsy, overLine: overLine, mountMenu: mountMenu,
     get pose(){ return curPose(); }, get msg(){ return st.msgT > 0 ? st.msg : null; },
-    _lines: L, _figure: figure, _setXmas: function(v){ O.xmas = !!v; }
+    _lines: L, _figure: figure, _setXmas: function(v){ O.xmas = !!v; }, _setGame: function(g){ O.game = g; }
   };
 })();
