@@ -16,14 +16,14 @@
 <meta property="og:description" content="Gratis puslespill uten reklame i nettleseren: hell frukten mellom glassene på mormors hylle til hvert glass bare har én slags frukt – jordbær, plommer, kirsebær, blåbær og mer. Dagens hylle er lik for alle. Katten Magic hjelper til.">
 <meta property="og:url" content="https://stop60.no/syltetoyhylla/">
 <meta property="og:locale" content="nb_NO">
-<meta property="og:image" content="https://stop60.no/syltetoyhylla/og-no.jpg?v=1">
+<meta property="og:image" content="https://stop60.no/syltetoyhylla/og-no.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Syltetøyhylla: mormor med et syltetøyglass, katten Magic på hylla og glass fulle av jordbær, plommer, kirsebær, blåbær, aprikoser og pærer">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Syltetøyhylla – mormors spiskammer | gratis puslespill uten reklame">
 <meta name="twitter:description" content="Gratis puslespill uten reklame i nettleseren: hell frukten mellom glassene på mormors hylle til hvert glass bare har én slags frukt – jordbær, plommer, kirsebær, blåbær og mer. Dagens hylle er lik for alle. Katten Magic hjelper til.">
-<meta name="twitter:image" content="https://stop60.no/syltetoyhylla/og-no.jpg?v=1">
+<meta name="twitter:image" content="https://stop60.no/syltetoyhylla/og-no.jpg?v=2">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Syltetøyhylla", "alternateName": "Mormors spiskammer", "url": "https://stop60.no/syltetoyhylla/", "description": "Gratis puslespill uten reklame i nettleseren: hell frukten mellom glassene på mormors hylle til hvert glass bare har én slags frukt – jordbær, plommer, kirsebær, blåbær og mer. Dagens hylle er lik for alle. Katten Magic hjelper til.", "inLanguage": "nb", "genre": ["Puzzle", "Casual"], "gamePlatform": "Web browser", "applicationCategory": "Game", "operatingSystem": "Any", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "author": {"@type": "Person", "name": "Jacek Taczala"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "image": "https://stop60.no/syltetoyhylla/og-no.jpg"}</script>
 <meta name="theme-color" content="#2A1626">
 <title>Syltetøyhylla – mormors spiskammer | gratis puslespill uten reklame</title>
@@ -189,7 +189,7 @@ function applyLang(){
   document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
   refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
 }
-document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = b.dataset.l; applyLang(); }; });
+document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = P.lang = b.dataset.l; save(); applyLang(); }; });
 function refreshStats(){ document.querySelectorAll(".bestV").forEach(function(e){ e.textContent = fmtN(P.best); }); }
 
 /* ---------- audio + haptics (same music-box style as Nøstekurv) ---------- */
@@ -783,6 +783,7 @@ window.__sy = {
 
 </script>
 <script src="https://stop60.no/assets/wisdom.js?v=3" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:document.documentElement.dataset.lang||"no",after:document.getElementById("playBtn")})});</script>
 <script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
 <script src="/assets/s60-back.js?v=2" data-game="syltetoyhylla" data-pos="tl" data-dy="52" data-compact="1" data-end="after:#retryBtn|in:#pause" defer></script>
 <script src="/assets/s60-cameo.js?v=1" data-game="syltetoyhylla" data-play="mode==='play'" data-sound="!mute" data-top="60" defer></script>
