@@ -199,7 +199,7 @@ function applyLang(){
 document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = b.dataset.l; applyLang(); }; });
 function refreshStats(){ document.querySelectorAll(".bestV").forEach(function(e){ e.textContent = fmtN(P.best); }); }
 
-/* ---------- audio + haptics (same music-box style as Nøstekurv) ---------- */
+/* ---------- audio + haptics (same music-box style as Motki kotki) ---------- */
 var AC = null, master = null, sfxBus = null, musBus = null, mute = !!P.mute, novib = !!P.novib, unlocked = false;
 function audio(){
   if (!AC){ try {
