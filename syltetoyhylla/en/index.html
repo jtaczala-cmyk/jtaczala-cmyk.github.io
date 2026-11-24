@@ -93,6 +93,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
 </head>
 <body>
 <canvas id="c"></canvas>
+<script src="/assets/s60-bestefar.js?v=2"></script>
 <nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
 <div id="hud" hidden>
   <div class="v"><small id="hL1"></small><b id="hMoves">0</b></div>
@@ -140,6 +141,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <p id="oNew" class="love" hidden data-t="newbest"></p>
   <p id="oStreak" class="streak" hidden></p>
   <p id="oGran" class="gran"></p>
+  <p id="oBestefar" class="gran" hidden></p>
   <button id="retryBtn" class="big"></button>
   <p id="oCd" class="cd" hidden></p>
   <pre id="overGrid" role="button" tabindex="0"></pre>
@@ -511,7 +513,9 @@ function drawMagic(x, y, s, look, paw, hop){
 var mode = "menu", playMode = "daily", jars = [], init = [], sel = -1, hist = [], rowAll = [], undoLeft = 3, undoMax = 3, baseMoves = 0, restarts = 0, par = 0;
 var finished = false, endWhy = "", pour = null, hint = null, idleT = 0, hintTried = false, banner = null, parts = [], texts = [], paw = 0, hop = 0, cheer = 0, magicX = 0, look = 0, jl = [], lidT = [], cursor = -1, score = 0, stars = 0, newBest = false, lastShown = "daily", shakeT = 0;
 function movesN(){ return baseMoves + hist.length; }
-function say(s, d){ banner = {s: s, t: d || 1.8}; }
+function say(s, d, k){ banner = {s: s, t: d || 1.8}; if (k) BF(k); }
+function BF(k){ if (window.S60Bestefar) S60Bestefar.react(k); }
+function bfDraw(){ if (!window.S60Bestefar) return; var s = gS*.92, rx = JX.length ? Math.max.apply(null, JX) + JW : W*.7, x = side ? (gX - 170*gS > 6 ? gX - 125*gS : Math.min(W - 50*s, rx + 95*gS)) : Math.min(W - 46*s, Math.max(gX + 120*gS, W*.62)); S60Bestefar.draw(ctx, x, gY, s); }
 function burst(x, y, col, n){ for (var i = 0; i < n; i++){ var a = Math.random()*6.283, v = rnd(50, 200); parts.push({x: x, y: y, vx: Math.cos(a)*v, vy: Math.sin(a)*v - 80, l: rnd(.5, 1), c: col}); } }
 function shuffle(a, r){ for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(r()*(i + 1)), x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
 function relabel(st, fmap){ return st.map(function(j){ return j.split("").map(function(d){ return String(fmap[+d]); }).join(""); }); }
@@ -561,9 +565,9 @@ function restart(){
 function commitPour(){
   var p = pour, a = p.a, b = p.b; jars = jars.slice(); jars[b] = jars[b] + jars[a].slice(jars[a].length - p.k); jars[a] = jars[a].slice(0, jars[a].length - p.k);
   hist.push({a: a, b: b, k: p.k, f: p.f}); rowAll.push(p.f); pour = null; hop = 1; idleT = 0; hint = null; hintTried = false;
-  if (jarComplete(jars[b])){ lidT[b] = 0; burst(JX[b] + JW/2, JY[b], FR[p.f].c, 22); SFX.lid(); vib([20, 30, 20]); cheer = 1.2; say(t("jarDone").replace("{f}", t("fruits")[p.f]), 1.6); }
+  if (jarComplete(jars[b])){ lidT[b] = 0; burst(JX[b] + JW/2, JY[b], FR[p.f].c, 22); SFX.lid(); vib([20, 30, 20]); cheer = 1.2; say(t("jarDone").replace("{f}", t("fruits")[p.f]), 1.6, "level"); }
   if (isSolved(jars)){ win(); return; }
-  if (!hasMove()) say(t("stuck"), 3);
+  if (!hasMove()) say(t("stuck"), 3, "stuck");
   saveDailyProgress();
 }
 function calcScore(){ var extra = Math.max(0, movesN() - par), used = undoMax - undoLeft; var sc = Math.max(100, 1000 - extra*30 - used*20 - restarts*50); var st = extra <= 2 ? 3 : extra <= 6 ? 2 : 1; if (restarts > 0) st = Math.min(st, 2); return [sc, st]; }
@@ -574,7 +578,7 @@ function win(){
   var secs = Math.round((Date.now() - runT0)/1000);
   if (!DEBUG){ if (playMode === "daily") SXD.result({score: score, ko: movesN(), wave: dayNum(), secs: secs}); else if (!kodyUsed) SX.result({score: score, ko: movesN(), wave: par, secs: secs}); }
   gc("over", "over " + playMode); if (playMode === "daily") gc("daily-finish", "daily finish");
-  P.games++; save(); SFX.done(); vib([30, 50, 30, 50, 80]); cheer = 3;
+  P.games++; save(); SFX.done(); vib([30, 50, 30, 50, 80]); cheer = 3; BF("win");
   for (var i = 0; i < jars.length; i++) if (jars[i].length) burst(JX[i] + JW/2, JY[i] + JH/3, FR[+jars[i].charAt(0)].c, 10);
   setTimeout(function(){ if (finished && mode === "play") setMode("over"); }, 1500);
 }
@@ -599,7 +603,7 @@ function kodyOffer(){
   if (playMode !== "free" || finished || kodyAsked || !window.S60Kody || S60Kody.lives() <= 0) return false;
   kodyAsked = true; mode = "kody";
   S60Kody.offerLife({lang: function(){ return lang; }, game: "syltetoyhylla",
-    onYes: function(){ kodyUsed = true; mode = "play"; undoLeft += 3; say(S60Kody.t(lang).rev, 1.8); },
+    onYes: function(){ kodyUsed = true; mode = "play"; undoLeft += 3; say(S60Kody.t(lang).rev, 1.8, "code"); },
     onNo: function(){ mode = "play"; }});
   return true;
 }
@@ -623,7 +627,7 @@ function paintOver(){
   $("oScore").textContent = fmtN(d.score); $("oMerges").textContent = d.moves + " / " + d.par; $("oBig").textContent = "⭐".repeat(d.stars || 1);
   $("oBestRow").hidden = !!daily; $("oNew").hidden = daily || !newBest;
   var s = curStreak(); $("oStreak").hidden = !daily || !s; $("oStreak").textContent = t("streak").replace("{n}", s);
-  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.moves) % gr.length];
+  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.moves) % gr.length]; if (window.S60Bestefar) S60Bestefar.overLine($("oBestefar"), "win", d.score);
   $("retryBtn").textContent = daily ? t("free") : t("retry");
   $("oCd").hidden = !daily; $("overGrid").textContent = shareText();
   $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
@@ -663,7 +667,7 @@ function setMode(m){
 function start(m){
   audio();
   if (m === "daily" && dailyDoneToday()){ lastShown = "daily"; newBest = false; setMode("over"); return; }
-  newRun(m, true); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 2.2); updHud(true);
+  newRun(m, true); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 2.2); BF("start"); updHud(true);
   runT0 = Date.now(); kodyUsed = false; kodyAsked = false; if (playMode === "daily") SXD.start(); else SX.start();
   gc("start", "start " + playMode);
 }
@@ -697,7 +701,7 @@ function step(dt){
   idleT += dt;
   if (idleT > HINT_IDLE && !hint && !hintTried && !finished && !pour){
     hintTried = true; var sol = solve(jars.slice(), 120000);
-    if (sol && sol.path.length){ hint = sol.path[0]; say(t("hint"), 2.4); SFX.meow(); } else if (hasMove()) say(t("tryUndo"), 3);
+    if (sol && sol.path.length){ hint = sol.path[0]; say(t("hint"), 2.4, "stuck"); SFX.meow(); } else if (hasMove()) say(t("tryUndo"), 3);
   }
 }
 function fx(dt){
@@ -717,7 +721,7 @@ function rotPt(ox, oy, a){ return [ox*Math.cos(a) - oy*Math.sin(a), ox*Math.sin(
 function render(){
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(BG, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   var tm = performance.now()/1000;
-  drawGrandma(gX, gY, gS, tm);
+  bfDraw(); drawGrandma(gX, gY, gS, tm);
   if (!jars.length) return;
   var ms = clamp(JW/52, .9, 1.8), mx = magicX, my = JY[0] - 24*ms - (jarComplete(jars[clamp(Math.round((magicX - JX[0] - JW/2)/(JX[1] - JX[0])), 0, NCOL - 1)] || "") ? JH*.03 : 0);
   drawMagic(mx, my, ms, look, paw, hop*10*ms);
@@ -739,6 +743,7 @@ function render(){
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot); drawJar(-JW/2, -JH/2, segs2, {glow: true}); ctx.restore();
   }
   for (i = 0; i < parts.length; i++){ var pp = parts[i]; ctx.globalAlpha = Math.min(1, pp.l*2); circ(ctx, pp.x, pp.y, 3.5, pp.c); } ctx.globalAlpha = 1;
+  if (window.S60Bestefar) S60Bestefar.bubble(ctx);
   if (banner && mode === "play"){ ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "800 " + Math.round(clamp(W*.045, 15, 22)) + "px system-ui, sans-serif"; var by = HUDH + (side ? 34 : 62); ctx.globalAlpha = Math.min(1, banner.t*2);
     var tw = Math.min(W - 16, ctx.measureText(banner.s).width + 28); ctx.fillStyle = "rgba(42,22,38,.9)"; ctx.beginPath(); ctx.roundRect(W/2 - tw/2, by - 20, tw, 40, 20); ctx.fill(); ctx.fillStyle = "#FFE9A8"; ctx.fillText(banner.s, W/2, by, W - 30); ctx.globalAlpha = 1; }
 }
@@ -767,7 +772,8 @@ function frame(now){
 }
 if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){ r = Math.min(r, w/2, h/2); this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
 addEventListener("resize", resize);
-jars = []; resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
+jars = []; if (window.S60Bestefar){ S60Bestefar.init({xmas: XMAS, game: "syltetoyhylla", mode: function(){ return mode; }}); S60Bestefar.mountMenu($("menu")); }
+resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
 
 /* ---------- test hooks ---------- */
 window.__sy = {

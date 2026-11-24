@@ -97,6 +97,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
 </head>
 <body>
 <canvas id="c"></canvas>
+<script src="/assets/s60-bestefar.js?v=2"></script>
 <nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
 <div id="hud" hidden>
   <div class="v"><small data-t="score"></small><b id="hScore">0</b></div>
@@ -143,6 +144,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <p id="oNew" class="love" hidden data-t="newbest"></p>
   <p id="oStreak" class="streak" hidden></p>
   <p id="oGran" class="gran"></p>
+  <p id="oBestefar" class="gran" hidden></p>
   <button id="retryBtn" class="big"></button>
   <p id="oCd" class="cd" hidden></p>
   <pre id="overGrid" role="button" tabindex="0"></pre>
@@ -519,11 +521,13 @@ function newRun(m){
   updHud(true);
 }
 function busy(){ if (flyers.length || dig) return true; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (o && o.hold > 0) return true; } return false; }
-function say(s, d){ banner = {s: s, t: d || 1.6}; }
+function say(s, d, k){ banner = {s: s, t: d || 1.6}; if (k) BF(k); }
+function BF(k){ if (window.S60Bestefar) S60Bestefar.react(k); }
+function bfDraw(){ if (!window.S60Bestefar) return; var s = gS*.92, x = (side && gX - 160*gS > 6) ? gX - 122*gS : gX + 64*gS; S60Bestefar.draw(ctx, x, gY, s); }
 function addPts(p, x, y){ score += p; texts.push({s: "+" + fmtN(p), x: x, y: y, l: 1}); }
 function burst(x, y, col, n, up){ for (var i = 0; i < n; i++){ var a = Math.random()*6.283, v = rnd(40, 160); parts.push({x: x, y: y, vx: Math.cos(a)*v, vy: Math.sin(a)*v - (up || 40), l: rnd(.4, .8), c: col}); } }
 function segNow(){ return Math.min(7, Math.floor(Math.max(0, moves - 1)/SEG)); }
-function note(nl){ row[segNow()] = Math.max(row[segNow()], nl); if (nl > topL){ topL = nl; if (nl >= 3 && nl > seenTop){ seenTop = nl; say(t("newItem").replace("{i}", t("items")[nl]), 1.8); setTimeout(SFX.newItem, 200); } } }
+function note(nl){ row[segNow()] = Math.max(row[segNow()], nl); if (nl > topL){ topL = nl; if (nl >= 3 && nl > seenTop){ seenTop = nl; say(t("newItem").replace("{i}", t("items")[nl]), 1.8, "level"); setTimeout(SFX.newItem, 200); } } }
 function hasMerge(){ return !!findPair(); }
 
 /* a move: drag plant A onto plant B (same kind → grows one step) or onto an empty bed (replant) */
@@ -540,7 +544,7 @@ function act(c1, r1, c2, r2){
     var o = mk(a.l); o.hold = .16; o.from = -1; grid[c2][r2] = o; grid[c1][r1] = null; SFX.land(); vib(6);
   } else if (a.l === NL - 1){ // two prize plants → Grandma's rosette
     flyers.push({l: a.l, x: cellX(c1), y: cellY(r1), tx: x, ty: y, t: 0, d: .2}); flyers.push({l: b.l, x: x, y: y, tx: x, ty: y - CS, t: 0, d: .3});
-    grid[c1][r1] = null; grid[c2][r2] = null; merges++; addPts(STAR, x, y - CS*.3); burst(x, y, "#FFE066", 40); burst(x, y, "#fff", 20); say(t("star"), 2.2); SFX.star(); vib([30, 40, 60]); note(NL - 1);
+    grid[c1][r1] = null; grid[c2][r2] = null; merges++; addPts(STAR, x, y - CS*.3); burst(x, y, "#FFE066", 40); burst(x, y, "#fff", 20); say(t("star"), 2.2, "win"); SFX.star(); vib([30, 40, 60]); note(NL - 1);
   } else {
     var nl = a.l + 1; merges++;
     flyers.push({l: a.l, x: cellX(c1), y: cellY(r1), tx: x, ty: y, t: 0, d: .16});
@@ -553,10 +557,10 @@ function act(c1, r1, c2, r2){
   if (moves % DIG_EVERY === 0 && moves < limit()){
     var minL = 99; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (grid[c][r]) minL = Math.min(minL, grid[c][r].l);
     if (minL <= 2){ var cand = []; for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++) if (grid[c][r] && grid[c][r].l === minL) cand.push([c, r]);
-      var pc = cand[Math.floor(rng()*cand.length)]; dig = {c: pc[0], r: pc[1], l: minL, t: 0, did: false}; skip = pc; grid[pc[0]][pc[1]] = null; say(t("dig"), 1.6); }
+      var pc = cand[Math.floor(rng()*cand.length)]; dig = {c: pc[0], r: pc[1], l: minL, t: 0, did: false}; skip = pc; grid[pc[0]][pc[1]] = null; say(t("dig"), 1.6, "combo"); }
   }
   spawn(skip);
-  if (moves === limit() - 5) say(t("last5"));
+  if (moves === limit() - 5) say(t("last5"), 0, "hurry");
   needCheck = true;
   if (playMode === "daily") saveDailyProgress();
   if (Math.random() < .1) SFX.meow();
@@ -582,7 +586,7 @@ function afterSettle(){
   if (moves >= limit()){ endRun("done"); return; }
   if (!emptyCells().length && !hasMerge()){
     var any = false; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (grid[c][r] && grid[c][r].l < NL - 1) any = true;
-    if (cans > 0 && any){ if (!banner || banner.s !== t("stuckCan")) say(t("stuckCan"), 2.4); } else endRun("stuck");
+    if (cans > 0 && any){ if (!banner || banner.s !== t("stuckCan")) say(t("stuckCan"), 2.4, "stuck"); } else endRun("stuck");
   }
 }
 
@@ -624,7 +628,7 @@ function paintOver(){
   $("oScore").textContent = fmtN(d.score); $("oMerges").textContent = d.merges; $("oBig").textContent = EMO(d.top) + " " + t("items")[d.top];
   $("oBestRow").hidden = !!daily; $("oNew").hidden = daily || !newBest;
   var s = curStreak(); $("oStreak").hidden = !daily || !s; $("oStreak").textContent = t("streak").replace("{n}", s);
-  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.merges) % gr.length];
+  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.merges) % gr.length]; if (window.S60Bestefar) S60Bestefar.overLine($("oBestefar"), (newBest ? "win" : "over"), d.score);
   $("retryBtn").textContent = daily ? t("free") : t("retry");
   $("oCd").hidden = !daily; $("overGrid").textContent = shareText();
   $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
@@ -667,7 +671,7 @@ function setMode(m){
 function start(m){
   audio();
   if (m === "daily" && dailyDoneToday()){ lastShown = "daily"; newBest = false; setMode("over"); return; }
-  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8);
+  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8); BF("start");
   if (playMode === "daily"){ SXD.start(); saveDailyProgress(); } else SX.start();
   gc("mormors-hage-start", "mormors-hage start " + playMode);
 }
@@ -746,7 +750,7 @@ function kodyRevive(){ // Magic digs up the six smallest plants and Grandma refi
   var all = []; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (grid[c][r]) all.push([c, r, grid[c][r].l]);
   all.sort(function(a, b){ return a[2] - b[2]; });
   all.slice(0, 6).forEach(function(p){ burst(cellX(p[0]), cellY(p[1]), "#FFD45A", 10); grid[p[0]][p[1]] = null; });
-  cans++; hop = 1; cheer = 1.2; SFX.dig(); say(S60Kody.t(lang).rev, 1.8); needCheck = true; updHud(true);
+  cans++; hop = 1; cheer = 1.2; SFX.dig(); say(S60Kody.t(lang).rev, 1.8, "code"); needCheck = true; updHud(true);
 }
 var KB = window.S60Kody ? S60Kody.mount($("kodyBox"), {lang: function(){ return lang; }, game: "mormors-hage"}) : null;
 $("sxMenu").appendChild(SX.block()); $("sxOver").appendChild(SX.block()); $("sxOverD").appendChild(SXD.block());
@@ -757,7 +761,7 @@ function render(){
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(BG, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   var tm = performance.now()/1000;
   drawDecor(trX, trY, trS, tm);
-  drawGrandma(gX, gY, gS, tm);
+  bfDraw(); drawGrandma(gX, gY, gS, tm);
   if (grid.length){
     var hintCells = hint && hint.a ? [hint.a, hint.b] : [];
     for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
@@ -792,6 +796,7 @@ function render(){
   for (i = 0; i < parts.length; i++){ var p = parts[i]; ctx.globalAlpha = Math.min(1, p.l*2); circ(ctx, p.x, p.y, 3, p.c); } ctx.globalAlpha = 1;
   ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "800 " + Math.round(clamp(CS*.3, 14, 22)) + "px system-ui, sans-serif";
   for (i = 0; i < texts.length; i++){ var tx = texts[i]; ctx.globalAlpha = Math.min(1, tx.l*2); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(30,50,20,.85)"; ctx.strokeText(tx.s, tx.x, tx.y); ctx.fillStyle = "#FFF3B0"; ctx.fillText(tx.s, tx.x, tx.y); } ctx.globalAlpha = 1;
+  if (window.S60Bestefar) S60Bestefar.bubble(ctx);
   if (banner && mode === "play"){ ctx.font = "800 " + Math.round(clamp(W*.045, 15, 22)) + "px system-ui, sans-serif"; var by = TY + CS*ROWS*.45; ctx.globalAlpha = Math.min(1, banner.t*2);
     var tw = Math.min(W - 16, ctx.measureText(banner.s).width + 28); ctx.fillStyle = "rgba(30,50,26,.9)"; ctx.beginPath(); ctx.roundRect(W/2 - tw/2, by - 21, tw, 42, 21); ctx.fill(); ctx.fillStyle = "#FFF3B0"; ctx.fillText(banner.s, W/2, by, W - 30); ctx.globalAlpha = 1; }
   if (XMAS) drawSnow(tm);
@@ -852,6 +857,7 @@ var _applyLang = applyLang; applyLang = function(){ _applyLang(); if (cv.width) 
   document.querySelectorAll("a[data-t=privacy]").forEach(function(a){ a.href = PRIV[lang]; });
   if (KB) KB.relabel(); SX.relabel(); SXD.relabel();
   if (!$("menu").hidden) SX.fortune($("playBtn"), true); else if (!$("over").hidden) SX.fortune($("overLove"), true); };
+if (window.S60Bestefar){ S60Bestefar.init({xmas: XMAS, game: "mormors-hage", mode: function(){ return mode; }}); S60Bestefar.mountMenu($("menu")); }
 resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
 
 /* ---------- test hooks ---------- */
