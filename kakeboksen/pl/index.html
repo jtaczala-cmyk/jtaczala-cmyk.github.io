@@ -92,6 +92,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
 </head>
 <body>
 <canvas id="c"></canvas>
+<script src="/assets/s60-bestefar.js?v=1"></script>
 <nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
 <div id="hud" hidden>
   <div class="v"><small data-t="score"></small><b id="hScore">0</b></div>
@@ -138,6 +139,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <p id="oNew" class="love" hidden data-t="newbest"></p>
   <p id="oStreak" class="streak" hidden></p>
   <p id="oGran" class="gran"></p>
+  <p id="oBestefar" class="gran" hidden></p>
   <button id="retryBtn" class="big"></button>
   <p id="oCd" class="cd" hidden></p>
   <pre id="overGrid" role="button" tabindex="0"></pre>
@@ -511,7 +513,9 @@ function newRun(m){
 }
 function cellX(c){ return TX + (c + .5)*CS; } function cellY(r){ return TY + (r + .5)*CS; }
 function busy(){ if (flyers.length || shakeT > 0) return true; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (o && (o.vy < r - .001 || o.hold > 0)) return true; } return false; }
-function say(s, d){ banner = {s: s, t: d || 1.6}; }
+function say(s, d, k){ banner = {s: s, t: d || 1.6}; if (k) BF(k); }
+function BF(k){ if (window.S60Bestefar) S60Bestefar.react(k); }
+function bfDraw(){ if (!window.S60Bestefar) return; var s = gS*.92, x = (side && gX - 160*gS > 6) ? gX - 122*gS : gX + 64*gS; S60Bestefar.draw(ctx, x, gY, s); }
 function addPts(p, x, y){ score += p; texts.push({s: "+" + fmtN(p), x: x, y: y, l: 1}); }
 function burst(x, y, col, n){ for (var i = 0; i < n; i++){ var a = Math.random()*6.283, v = rnd(40, 160); parts.push({x: x, y: y, vx: Math.cos(a)*v, vy: Math.sin(a)*v - 40, l: rnd(.4, .8), c: col}); } }
 function tap(c, r){
@@ -525,24 +529,24 @@ function tap(c, r){
   var seg = Math.min(5, Math.floor((moves - 1)/5));
   if (L === NL - 1){ // two cakes → Grandma's star, all leave the tin
     g.forEach(function(p){ var q = grid[p[0]][p[1]]; flyers.push({l: L, x: cellX(p[0]), y: cellY(p[1]), tx: W/2, ty: HUDH + 20, t: 0, d: .5}); grid[p[0]][p[1]] = null; });
-    addPts(STAR*(n - 1), x, y); burst(x, y, "#FFE066", 40); burst(x, y, "#fff", 20); say(t("star"), 2.2); SFX.star(); vib([30, 40, 60]); topL = NL - 1; row[seg] = Math.max(row[seg], 7);
+    addPts(STAR*(n - 1), x, y); burst(x, y, "#FFE066", 40); burst(x, y, "#fff", 20); say(t("star"), 2.2, "win"); SFX.star(); vib([30, 40, 60]); topL = NL - 1; row[seg] = Math.max(row[seg], 7);
   } else {
     var nl = Math.min(NL - 1, L + (n >= BIG ? 2 : 1));
     g.forEach(function(p){ if (p[0] === c && p[1] === r) return; flyers.push({l: L, x: cellX(p[0]), y: cellY(p[1]), tx: x, ty: y, t: 0, d: .16}); grid[p[0]][p[1]] = null; });
     o.from = L; o.l = nl; o.hold = .16; o.pop = 0;
     addPts(PTS[nl] + 5*n*(L + 1), x, y - CS*.3); row[seg] = Math.max(row[seg], nl);
     setTimeout(function(){ burst(x, y, PLATE[nl], 10 + nl*3); SFX.pop(nl, n); vib(10 + nl*4); }, 150);
-    if (n >= BIG) say(t("big"), 1.4);
-    if (nl > topL){ topL = nl; if (nl >= 3 && nl > seenTop){ seenTop = nl; say(t("newItem").replace("{i}", t("items")[nl]), 1.8); setTimeout(SFX.newItem, 200); } }
+    if (n >= BIG) say(t("big"), 1.4, "combo");
+    if (nl > topL){ topL = nl; if (nl >= 3 && nl > seenTop){ seenTop = nl; say(t("newItem").replace("{i}", t("items")[nl]), 1.8, "level"); setTimeout(SFX.newItem, 200); } }
   }
   fill(); needCheck = true;
-  if (moves === limit() - 5) say(t("last5"));
+  if (moves === limit() - 5) say(t("last5"), 0, "hurry");
   if (playMode === "daily") saveDailyProgress();
   if (Math.random() < .1) SFX.meow();
   updHud(); return true;
 }
 function shake(){
-  shakes--; shakeT = .7; SFX.shake(); say(t("shake"), 1.6); hop = 1; vib([20, 30, 20]);
+  shakes--; shakeT = .7; SFX.shake(); say(t("shake"), 1.6, "stuck"); hop = 1; vib([20, 30, 20]);
   var all = []; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) all.push(grid[c][r]);
   for (var guard = 0; guard < 40; guard++){
     for (var i = all.length - 1; i > 0; i--){ var j = Math.floor(rng()*(i + 1)), tmp = all[i]; all[i] = all[j]; all[j] = tmp; }
@@ -593,7 +597,7 @@ function paintOver(){
   $("oScore").textContent = fmtN(d.score); $("oMerges").textContent = d.merges; $("oBig").textContent = EMO(d.top) + " " + t("items")[d.top];
   $("oBestRow").hidden = !!daily; $("oNew").hidden = daily || !newBest;
   var s = curStreak(); $("oStreak").hidden = !daily || !s; $("oStreak").textContent = t("streak").replace("{n}", s);
-  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.merges) % gr.length];
+  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.merges) % gr.length]; if (window.S60Bestefar) S60Bestefar.overLine($("oBestefar"), (newBest ? "win" : "over"), d.score);
   $("retryBtn").textContent = daily ? t("free") : t("retry");
   $("oCd").hidden = !daily; $("overGrid").textContent = shareText();
   $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
@@ -631,7 +635,7 @@ function setMode(m){
 function start(m){
   audio();
   if (m === "daily" && dailyDoneToday()){ lastShown = "daily"; newBest = false; setMode("over"); return; }
-  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8);
+  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8); BF("start");
   if (playMode === "daily"){ SXD.start(); saveDailyProgress(); } else SX.start();
   gc("kakeboksen-start", "kakeboksen start " + playMode);
 }
@@ -669,7 +673,7 @@ function kodyOffer(why){
 function kodyRevive(why){
   bonusMoves += 10; hop = 1; cheer = 1.2;
   if (!hasMove()){ shakes++; shake(); }
-  needCheck = true; say(S60Kody.t(lang).rev + " " + t("kodyMore"), 2); updHud(true);
+  needCheck = true; say(S60Kody.t(lang).rev + " " + t("kodyMore"), 2, "code"); updHud(true);
 }
 var KB = window.S60Kody ? S60Kody.mount($("kodyBox"), {lang: function(){ return lang; }, game: "kakeboksen"}) : null;
 $("sxMenu").appendChild(SX.block()); $("sxOver").appendChild(SX.block()); $("sxOverD").appendChild(SXD.block());
@@ -712,7 +716,7 @@ function render(){
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(BG, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   var tm = performance.now()/1000, sx = shakeT > 0 ? Math.sin(tm*60)*6*shakeT : 0;
   if (XMAS) drawTree(trX, trY, trS, tm); else drawPlant(trX, trY, trS);
-  drawGrandma(gX, gY, gS, tm);
+  bfDraw(); drawGrandma(gX, gY, gS, tm);
   var showGrid = mode !== "menu" || grid.length;
   if (showGrid && grid.length){
     ctx.save(); ctx.beginPath(); ctx.rect(TX - 4, TY - 4, CS*COLS + 8, CS*ROWS + 8); ctx.clip();
@@ -729,11 +733,12 @@ function render(){
   }
   drawTinRim();
   var ms = clamp(CS/40, 1, 1.8), mx = TX + clamp(magicX, .5, COLS - .5)*CS;
-  if (!side){ var mlo = gX + 72*gS + 6*ms, mhi = trX - 40*trS - 34*ms; if (mhi > mlo) mx = clamp(mx, mlo, mhi); }
+  if (!side){ var mlo = gX + (window.S60Bestefar ? 100 : 72)*gS + 6*ms, mhi = trX - 40*trS - 34*ms; if (mhi > mlo) mx = clamp(mx, mlo, mhi); }
   drawMagic(mx + 14*ms, TY - 8 - 20*ms, ms, look, paw, hop*8*ms);
   for (i = 0; i < parts.length; i++){ var p = parts[i]; ctx.globalAlpha = Math.min(1, p.l*2); circ(ctx, p.x, p.y, 3, p.c); } ctx.globalAlpha = 1;
   ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "800 " + Math.round(clamp(CS*.36, 14, 22)) + "px system-ui, sans-serif";
   for (i = 0; i < texts.length; i++){ var tx = texts[i]; ctx.globalAlpha = Math.min(1, tx.l*2); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(40,10,30,.85)"; ctx.strokeText(tx.s, tx.x, tx.y); ctx.fillStyle = "#FFE9A8"; ctx.fillText(tx.s, tx.x, tx.y); } ctx.globalAlpha = 1;
+  if (window.S60Bestefar) S60Bestefar.bubble(ctx);
   if (banner && mode === "play"){ ctx.font = "800 " + Math.round(clamp(W*.05, 16, 24)) + "px system-ui, sans-serif"; var by = TY + CS*ROWS*.42; ctx.globalAlpha = Math.min(1, banner.t*2);
     var tw = Math.min(W - 16, ctx.measureText(banner.s).width + 28); ctx.fillStyle = "rgba(42,22,38,.88)"; ctx.beginPath(); ctx.roundRect(W/2 - tw/2, by - 21, tw, 42, 21); ctx.fill(); ctx.fillStyle = "#FFE9A8"; ctx.fillText(banner.s, W/2, by, W - 30); ctx.globalAlpha = 1; }
 }
@@ -760,6 +765,7 @@ function frame(now){
 }
 if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){ r = Math.min(r, w/2, h/2); this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
 addEventListener("resize", resize);
+if (window.S60Bestefar){ S60Bestefar.init({xmas: XMAS, game: "kakeboksen", mode: function(){ return mode; }}); S60Bestefar.mountMenu($("menu")); }
 resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
 if (DEBUG && QS.get("start")) start(QS.get("start") === "free" ? "free" : "daily");
 

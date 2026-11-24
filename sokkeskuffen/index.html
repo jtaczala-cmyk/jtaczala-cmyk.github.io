@@ -96,6 +96,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
 </head>
 <body>
 <canvas id="c"></canvas>
+<script src="/assets/s60-bestefar.js?v=1"></script>
 <nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
 <div id="hud" hidden>
   <div class="v"><small data-t="score"></small><b id="hScore">0</b></div>
@@ -142,6 +143,7 @@ h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
   <p id="oNew" class="love" hidden data-t="newbest"></p>
   <p id="oStreak" class="streak" hidden></p>
   <p id="oGran" class="gran"></p>
+  <p id="oBestefar" class="gran" hidden></p>
   <button id="retryBtn" class="big"></button>
   <p id="oCd" class="cd" hidden></p>
   <pre id="overGrid" role="button" tabindex="0"></pre>
@@ -515,7 +517,9 @@ function newRun(m){
   loadDrawer(0);
 }
 function busy(){ if (drawerT > 0) return true; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c] && grid[c][r]; if (o && o.vy < r - .5) return true; } return false; }
-function say(s, d){ banner = {s: s, t: d || 1.6}; }
+function say(s, d, k){ banner = {s: s, t: d || 1.6}; if (k) BF(k); }
+function BF(k){ if (window.S60Bestefar) S60Bestefar.react(k); }
+function bfDraw(){ if (!window.S60Bestefar) return; var s = gS*.92, x = (side && gX - 160*gS > 6) ? gX - 122*gS : gX + 64*gS; S60Bestefar.draw(ctx, x, gY, s); }
 function addPts(p, x, y){ score += p; texts.push({s: "+" + fmtN(p), x: x, y: y, l: 1}); }
 function burst(x, y, col, n){ for (var i = 0; i < n; i++){ var a = Math.random()*6.283, v = rnd(40, 160); parts.push({x: x, y: y, vx: Math.cos(a)*v, vy: Math.sin(a)*v - 40, l: rnd(.4, .8), c: col}); } }
 function same(a, b){ return a && b && a[0] === b[0] && a[1] === b[1]; }
@@ -535,17 +539,17 @@ function tryPair(a, b){
   var xa = cellX(a[0]), ya = cellY(a[1]), xb = cellX(b[0]), yb = cellY(b[1]), mx = (xa + xb)/2, my = (ya + yb)/2;
   sel = null;
   if (!ok){
-    miss++; combo = 0; tleft = Math.max(0, tleft - PEN); oa.wig = ob.wig = .4; SFX.bad(); vib([40, 30, 40]); say(t("tangle").replace("{s}", PEN), 1);
+    miss++; combo = 0; tleft = Math.max(0, tleft - PEN); oa.wig = ob.wig = .4; SFX.bad(); vib([40, 30, 40]); say(t("tangle").replace("{s}", PEN), 1, "oops");
     texts.push({s: "−" + PEN + " s", x: mx, y: my, l: 1}); return false;
   }
   var nn = counts(), sock = oa.k === YARN ? ob : oa, oddSaved = wild && nn[sock.k] % 2 === 1, code, pts;
   if (wild){
     pts = oddSaved ? 250 : 30; code = oddSaved ? 4 : 5; if (!oddSaved) combo = 0;
-    if (oddSaved){ say(t("oddSaved"), 1.6); SFX.yarn(); burst(mx, my, "#C9A4FF", 24); } else SFX.pair(0);
+    if (oddSaved){ say(t("oddSaved"), 1.6, "combo"); SFX.yarn(); burst(mx, my, "#C9A4FF", 24); } else SFX.pair(0);
   } else {
     combo = comboT <= 3 && combo > 0 ? combo + 1 : 1; bestCombo = Math.max(bestCombo, combo);
     pts = 50 + 25*Math.min(combo, 6); code = sinceT <= 2.5 ? 3 : sinceT <= 5 ? 2 : 1; SFX.pair(combo); burst(mx, my, DES[oa.k].b, 14);
-    if (combo >= 3) say(t("combo").replace("{n}", combo), 1.1);
+    if (combo >= 3) say(t("combo").replace("{n}", combo), 1.1, "combo");
   }
   comboT = 0; sinceT = 0; pairs++; rows[dr].push(code); cheer = 1.2; hop = 1; vib(12);
   flyers.push({k: oa.k, flip: oa.flip, x: xa, y: ya, tx: mx, ty: my, t: 0, d: .2}, {k: ob.k, flip: ob.flip, x: xb, y: yb, tx: mx, ty: my, t: 0, d: .2});
@@ -562,7 +566,7 @@ function drawerDone(){
   items().forEach(function(e){ flyers.push({k: e.o.k, flip: e.o.flip, x: cellX(e.c), y: cellY(e.r), tx: TX + magicX*CS, ty: TY - 20, t: 0, d: .7}); grid[e.c][e.r] = null; });
   if (dr >= D.length - 1){ addPts(Math.round(tleft)*10, W/2, TY + CS*ROWS*.5); endRun("done"); return; }
   tleft += playMode === "daily" ? BONUS_DAILY : BONUS_FREE; drawerT = 1.6; SFX.drawer(); vib([20, 30, 40]); hop = 1; cheer = 2;
-  say(t("drawerDone").replace("{s}", playMode === "daily" ? BONUS_DAILY : BONUS_FREE), 1.5);
+  say(t("drawerDone").replace("{s}", playMode === "daily" ? BONUS_DAILY : BONUS_FREE), 1.5, "level");
   if (playMode === "daily") saveDailyProgress();
 }
 
@@ -605,7 +609,7 @@ function paintOver(){
   $("oScore").textContent = fmtN(d.score); $("oMerges").textContent = d.pairs; $("oBig").textContent = "×" + d.combo;
   $("oBestRow").hidden = !!daily; $("oNew").hidden = daily || !newBest;
   var s = curStreak(); $("oStreak").hidden = !daily || !s; $("oStreak").textContent = t("streak").replace("{n}", s);
-  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.pairs) % gr.length];
+  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.pairs) % gr.length]; if (window.S60Bestefar) S60Bestefar.overLine($("oBestefar"), (newBest ? "win" : "over"), d.score);
   $("retryBtn").textContent = daily ? t("free") : t("retry");
   $("oCd").hidden = !daily; $("overGrid").textContent = shareText();
   $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
@@ -641,7 +645,7 @@ function kodyOffer(why){
   if (playMode !== "free" || why !== "time" || kodyUsed || kodyAsked || !window.S60Kody || S60Kody.lives() <= 0) return false;
   kodyAsked = true; mode = "kody";
   S60Kody.offerLife({lang: function(){ return lang; }, game: "sokkeskuffen",
-    onYes: function(){ kodyUsed = true; mode = "play"; tleft = 15; warned = false; hop = 1; say(S60Kody.t(lang).rev, 1.8); },
+    onYes: function(){ kodyUsed = true; mode = "play"; tleft = 15; warned = false; hop = 1; say(S60Kody.t(lang).rev, 1.8, "code"); },
     onNo: function(){ mode = "play"; endRun(why); }});
   return true;
 }
@@ -671,7 +675,7 @@ function setMode(m){
 function start(m){
   audio();
   if (m === "daily" && dailyDoneToday()){ lastShown = "daily"; newBest = false; setMode("over"); return; }
-  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8);
+  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8); BF("start");
   if (playMode === "daily"){ SXD.start(); saveDailyProgress(); } else SX.start();
   gc("sokkeskuffen-start", "sokkeskuffen start " + playMode);
 }
@@ -704,7 +708,7 @@ function step(dt){
   if (drawerT > 0){ drawerT -= dt; if (drawerT <= 0){ drawerT = 0; loadDrawer(dr + 1); } return; }
   if (!busy()){ tleft -= dt; comboT += dt; sinceT += dt; idleT += dt; }
   var sec = Math.ceil(tleft); if (tleft <= 10 && sec !== lastSec && tleft > 0){ lastSec = sec; SFX.tick(); }
-  if (tleft <= 10 && !warned){ warned = true; say(t("last10")); }
+  if (tleft <= 10 && !warned){ warned = true; say(t("last10"), 0, "hurry"); }
   if (tleft <= 0){ tleft = 0; endRun("time"); return; }
   if (idleT > 6 && !hint && !busy()){ hint = findMove(); }
 }
@@ -721,7 +725,7 @@ function render(){
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(BG, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   var tm = performance.now()/1000;
   if (XMAS) drawTree(trX, trY, trS, tm); else drawPlant(trX, trY, trS);
-  drawGrandma(gX, gY, gS, tm);
+  bfDraw(); drawGrandma(gX, gY, gS, tm);
   if (grid.length && mode !== "menu"){
     ctx.save(); ctx.beginPath(); ctx.rect(TX - 4, TY - 4, CS*COLS + 8, CS*ROWS + 8); ctx.clip();
     for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
@@ -743,6 +747,7 @@ function render(){
   for (i = 0; i < parts.length; i++){ var p = parts[i]; ctx.globalAlpha = Math.min(1, p.l*2); circ(ctx, p.x, p.y, 3, p.c); } ctx.globalAlpha = 1;
   ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "800 " + Math.round(clamp(CS*.36, 14, 22)) + "px system-ui, sans-serif";
   for (i = 0; i < texts.length; i++){ var tx = texts[i]; ctx.globalAlpha = Math.min(1, tx.l*2); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(40,10,30,.85)"; ctx.strokeText(tx.s, tx.x, tx.y); ctx.fillStyle = "#FFE9A8"; ctx.fillText(tx.s, tx.x, tx.y); } ctx.globalAlpha = 1;
+  if (window.S60Bestefar) S60Bestefar.bubble(ctx);
   if (banner && mode === "play"){ ctx.font = "800 " + Math.round(clamp(W*.05, 16, 24)) + "px system-ui, sans-serif"; var by = TY + CS*ROWS*.42; ctx.globalAlpha = Math.min(1, banner.t*2);
     var tw = Math.min(W - 16, ctx.measureText(banner.s).width + 28); ctx.fillStyle = "rgba(42,22,38,.88)"; ctx.beginPath(); ctx.roundRect(W/2 - tw/2, by - 21, tw, 42, 21); ctx.fill(); ctx.fillStyle = "#FFE9A8"; ctx.fillText(banner.s, W/2, by, W - 30); ctx.globalAlpha = 1; }
 }
@@ -780,6 +785,7 @@ function frame(now){
 }
 if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){ r = Math.min(r, w/2, h/2); this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
 addEventListener("resize", resize);
+if (window.S60Bestefar){ S60Bestefar.init({xmas: XMAS, game: "sokkeskuffen", mode: function(){ return mode; }}); S60Bestefar.mountMenu($("menu")); }
 resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
 
 
