@@ -1,0 +1,38 @@
+/* Stop60 – wide desktop layout (2026-11-26). Mobile/tablet (<1024px) unchanged. */
+/* Christmas row: Pepperkaketårn + Dagens kode live in .xm-row (moved into .xm). */
+.xm-row .kd{padding:10px 0 2px}
+.xm-row .kd .wrap{padding:0}
+@media (min-width:1180px){
+  body .xm-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:16px;margin-top:16px;align-items:stretch}
+  body .xm-row .xm-pk{margin-top:0}
+  body .xm-row .kd{padding:0;display:flex}
+  body .xm-row .kd .wrap{max-width:none;width:100%;display:flex}
+  body .xm-row .kd-c{flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 18px 14px}
+}
+@media (min-width:1024px){
+  /* Dagens spill: 4 columns, featured tile spans two rows */
+  body .today{padding:22px 0 10px}
+  body .today-lead{max-width:62rem}
+  body .today-row,body .today-row-flag{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  body .today-row-flag .today-flag{grid-row:span 2;min-height:124px}
+  body .s60c{max-width:none;margin:18px 0 12px;gap:12px}
+  body .s60c-t{padding:14px 8px}
+  body .follow{max-width:960px!important}
+}
+@media (min-width:1280px){
+  body .wrap,body .xm .wrap{max-width:1240px}
+  body .xm-art{min-height:460px}
+  body .s60f-in{max-width:1240px;margin:0 auto}
+}
+@media (min-width:1360px){body .cards{grid-template-columns:repeat(4,minmax(0,1fr))}body .cards .play{gap:6px}body .cards .play a{padding:0 11px}body .cards .play a.o{padding:0 9px}}
+@media (min-width:1600px){
+  body .wrap,body .xm .wrap{max-width:1440px}
+  body .xm-art{min-height:520px}
+  body .s60f-in{max-width:1440px}
+}
+@media (min-width:2200px){
+  body .wrap,body .xm .wrap{max-width:1680px}
+  body .xm-art{min-height:600px}
+  body .s60f-in{max-width:1680px}
+  body .cards{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
