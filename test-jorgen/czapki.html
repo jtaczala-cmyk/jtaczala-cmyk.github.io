@@ -1,0 +1,11 @@
+<!doctype html><html lang="pl" data-lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Test – Dziadek Jørgen: czapki</title>
+<style>body{margin:0;background:#FBF3E4;font-family:system-ui,sans-serif;color:#3A2030;text-align:center}h1{font-size:20px;margin:16px 8px 4px}p{margin:4px 8px 12px;font-size:14px}.row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;padding:8px}.card{background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:8px 8px 10px}.card b{display:block;font-size:14px;margin-top:2px}canvas{display:block}</style></head>
+<body><h1>Dziadek Jørgen – czapki według daty</h1><p>Mikołajowa: do 26.12 · Uszatka: 27.12 – koniec lutego · Zwykła czerwona czapka: od 1.03</p>
+<div class="row" id="row"></div><p>Ostatnia karta: nowa poza „głaskanie” do filmików z Magiciem.</p>
+<script src="/assets/s60-bestefar-next.js?v=1"></script>
+<script>
+var cards=[["santa","idle","Do 26.12 – Mikołaj"],["ushanka","idle","Od 27.12 – uszatka"],["ushanka","wave","Uszatka – macha"],["ushanka","sip","Uszatka – kawa"],["cap","idle","Od 1.03 – zwykła czapka"],["ushanka","pet","Głaskanie (filmiki)"]];
+var row=document.getElementById("row"),cvs=[];
+cards.forEach(function(k){var d=document.createElement("div");d.className="card";var c=document.createElement("canvas"),D=Math.min(2,devicePixelRatio||1);c.width=200*D;c.height=230*D;c.style.width="200px";c.style.height="230px";d.appendChild(c);var b=document.createElement("b");b.textContent=k[2];d.appendChild(b);row.appendChild(d);cvs.push([c,D,k]);});
+(function loop(){requestAnimationFrame(loop);var tm=performance.now()/1000;cvs.forEach(function(o){var c=o[0].getContext("2d"),D=o[1],k=o[2];c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,o[0].width,o[0].height);c.setTransform(D*1.45,0,0,D*1.45,(k[1]==="pet"?78:100)*D,120*D);S60Bestefar._setHat(k[0]);S60Bestefar._figure(c,tm,k[1],0);});})();
+</script></body></html>

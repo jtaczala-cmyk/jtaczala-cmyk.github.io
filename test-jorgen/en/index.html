@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Free puzzle game with no ads in your browser: grow Grandma's garden with Magic the cat. Drag a plant onto an identical one and it grows – seed turns into sprout, daisy, tulip, sunflower and finally a prize pumpkin. Today's garden: 40 moves, the same for everyone.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stop60">
+<meta property="og:title" content="Grandma's Garden – free cosy puzzle game, no ads | Stop60">
+<meta property="og:description" content="Free puzzle game with no ads in your browser: grow Grandma's garden with Magic the cat. Drag a plant onto an identical one and it grows – seed turns into sprout, daisy, tulip, sunflower and finally a prize pumpkin. Today's garden: 40 moves, the same for everyone.">
+<meta property="og:url" content="https://stop60.no/mormors-hage/en/">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://stop60.no/mormors-hage/og-en.jpg?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Grandma's Garden: Grandma with her watering can, Magic the cat in a Santa hat and a garden bed full of smiling seeds, flowers and pumpkins">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grandma's Garden – free cosy puzzle game, no ads | Stop60">
+<meta name="twitter:description" content="Free puzzle game with no ads in your browser: grow Grandma's garden with Magic the cat. Drag a plant onto an identical one and it grows – seed turns into sprout, daisy, tulip, sunflower and finally a prize pumpkin. Today's garden: 40 moves, the same for everyone.">
+<meta name="twitter:image" content="https://stop60.no/mormors-hage/og-en.jpg?v=3">
+<meta name="theme-color" content="#1F3A2A">
+<title>Grandma's Garden – free cosy puzzle game, no ads | Stop60</title>
+<link rel="icon" href="/mormors-hage/favicon.ico?v=1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/mormors-hage/icon-32.png?v=1"><link rel="apple-touch-icon" href="/mormors-hage/apple-touch-icon.png?v=1"><link rel="manifest" href="/mormors-hage/manifest.webmanifest">
+<style>
+
+:root{--bg:#1F3A2A;--bg2:#2B4A36;--gold:#F2C14E;--red:#E23B3B;--rose:#FF9FB2;--green:#7FD49A;--cream:#FFF4E6;--muted:#CFE3D3}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--cream);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;overscroll-behavior:none}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+button{font:inherit;color:var(--cream);background:linear-gradient(180deg,rgba(70,128,84,.95),rgba(36,78,50,.95));border:1px solid rgba(255,214,170,.35);border-radius:12px;padding:10px 16px;cursor:pointer;transition:transform .08s;box-shadow:0 2px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12)}
+button:active{transform:scale(.95)}
+button.big{background:linear-gradient(180deg,#FFE08A,#F2C14E 55%,#D39A22);color:#2A1606;border:0;font-weight:800;font-size:1.15rem;padding:14px 30px;box-shadow:0 0 0 2px rgba(255,236,180,.25),0 8px 28px rgba(242,193,78,.45),inset 0 1px 0 rgba(255,255,255,.6);animation:pulse 2.2s ease-in-out infinite}
+button.big.done{animation:none;background:linear-gradient(180deg,#C9F2D3,#7FD49A 60%,#4FA86E);color:#10301C;font-size:1rem}
+button.alt{font-weight:800;font-size:1.02rem;padding:12px 26px;background:linear-gradient(180deg,#FFB7C5,#E8728C 60%,#B9445F);color:#3A0C18;border:0}
+@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(255,236,180,.18),0 8px 36px rgba(242,193,78,.7),inset 0 1px 0 rgba(255,255,255,.6)}}
+.langs{position:fixed;top:calc(8px + env(safe-area-inset-top));right:10px;z-index:30;display:flex;gap:4px}
+.langs[hidden]{display:none}
+.langs button{padding:4px 7px;font-size:1.25rem;background:rgba(20,50,32,.7);border-color:transparent;opacity:.55;box-shadow:none}
+.langs button.cur{opacity:1;border-color:var(--gold)}
+.card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;width:min(92vw,420px);max-height:90vh;max-height:90dvh;overflow:auto;text-align:center;border-radius:22px;padding:20px 18px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(46,92,60,.92),rgba(20,44,30,.96));border:1px solid rgba(255,214,170,.4);box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 0 40px rgba(160,230,150,.16),0 24px 70px rgba(0,0,0,.7)}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 60% at 50% 0%,rgba(255,200,150,.14),transparent 60%)}
+.card[hidden],#hud[hidden]{display:none}
+.logo{width:64px;height:64px;display:block;margin:0 auto 4px}
+.brand{font-weight:900;letter-spacing:.25em;color:var(--red);font-size:.85rem}
+h1{font-size:2.4rem;margin:2px 0;background:linear-gradient(180deg,#FFFFFF,#E4FFD0 50%,#9AE07A);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(170,240,150,.5));letter-spacing:.02em}
+.sub{color:var(--gold);font-weight:700;font-size:1rem;margin-bottom:6px}
+h2{font-size:1.5rem;color:var(--gold);margin-bottom:6px}
+.tag{color:var(--muted);margin-bottom:10px;line-height:1.35}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.how{list-style:none;color:var(--muted);font-size:.86rem;line-height:1.5;margin-top:10px}
+.small{font-size:.78rem;color:var(--muted);margin-top:10px}
+.small a{color:var(--muted)}
+.love{color:var(--gold);font-style:italic;margin:6px 0}
+.gran{color:var(--cream);background:rgba(0,0,0,.25);border:1px solid rgba(242,193,78,.3);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:.92rem;line-height:1.35}
+.stat{font-size:1.08rem;margin:4px 0}.stat b{color:var(--gold)}
+.cd{font-size:.9rem;color:var(--muted);margin:6px 0;font-variant-numeric:tabular-nums}
+.streak{font-weight:800;color:#FFB37A;margin:6px 0}
+#hud{position:fixed;left:0;right:0;top:0;z-index:10;padding:calc(6px + env(safe-area-inset-top)) 8px 0;pointer-events:none;display:flex;gap:6px;align-items:flex-start}
+#hud div.v{display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,rgba(34,80,50,.82),rgba(20,50,32,.6));border:1px solid rgba(255,214,170,.22);border-radius:10px;padding:3px 9px 4px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 4px 14px rgba(0,0,0,.35);min-width:50px}
+#hud small{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+#hud b{font-size:1.15rem;font-variant-numeric:tabular-nums;text-shadow:0 0 10px rgba(246,241,230,.35)}
+#hud b.warn{color:#FF7A7A;animation:blink .5s steps(2) infinite}
+#hNext{width:24px;height:24px;display:block}
+@keyframes blink{50%{opacity:.45}}
+#hud .sp{flex:1}
+#muteBtn,#pauseBtn{pointer-events:auto;padding:6px 10px;font-size:1.1rem;background:rgba(20,50,32,.7);border:1px solid rgba(255,214,170,.3)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:40;background:var(--cream);color:#3A1630;padding:8px 16px;border-radius:20px;font-weight:700;transition:.25s;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.s60w{text-align:left}
+#overGrid{display:block;margin:8px auto 10px;padding:10px 12px;max-width:min(17em,100%);min-width:0;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.22);border-radius:12px;font:600 17px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;text-align:center;letter-spacing:.02em;cursor:pointer;color:#fff8ee;-webkit-user-select:text;user-select:text}
+#overGrid[hidden]{display:none}
+#calGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:10px 0}
+#calGrid div{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:800;font-size:1rem;background:linear-gradient(180deg,#8C2A3A,#5E1A28);border:1px solid rgba(255,214,170,.35);color:#FFE7C2;box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+#calGrid div.open{background:linear-gradient(180deg,#2F6B47,#1D4A30);font-size:1.35rem}
+#calGrid div.today{outline:2px solid var(--gold);animation:pulse 2.2s ease-in-out infinite}
+#calGrid div.miss{opacity:.45}
+#calBtn[hidden],#oCal[hidden],#oStreak[hidden],#oCd[hidden],#mStreak[hidden],#mCd[hidden],#sxOverD[hidden],#sxOver[hidden],#oBestRow[hidden]{display:none}
+.how-top{margin:6px 0 8px;padding:0;list-style:none;text-align:left;display:grid;gap:4px;font-size:.85rem;font-weight:600;line-height:1.3}.how-top li{background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:5px 9px}.seo-lead{font-size:.76rem!important;opacity:.8;margin:6px 0 2px!important;line-height:1.4!important}
+
+#canBtn{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:12;font-weight:800;font-size:1.05rem;padding:11px 24px;background:linear-gradient(180deg,#A9D8FF,#5FA6E0 60%,#3A7DB8);color:#07213A;border:0;box-shadow:0 6px 20px rgba(60,140,220,.45),inset 0 1px 0 rgba(255,255,255,.6)}
+#canBtn:active{transform:translateX(-50%) scale(.95)}
+#canBtn[hidden]{display:none}
+#canBtn.on{outline:3px solid #FFF3B0;animation:pulse 1s ease-in-out infinite}
+#canBtn.off{opacity:.5;filter:grayscale(.6)}
+
+#mDone{font-weight:800;color:#C9F2D3;margin:4px 0}#mDone[hidden]{display:none}
+.testbadge{display:inline-block;background:#F2C14E;color:#2A1606;font-weight:800;font-size:.72rem;border-radius:8px;padding:2px 8px;margin:2px 0 6px}
+#hTop{font-size:1.05rem}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="/assets/s60-bestefar-next.js?v=1"></script>
+<nav class="langs" id="langs"><button data-l="no" aria-label="Norsk">🇳🇴</button><button data-l="pl" aria-label="Polski">🇵🇱</button><button data-l="en" aria-label="English">🇬🇧</button></nav>
+<div id="hud" hidden>
+  <div class="v"><small data-t="score"></small><b id="hScore">0</b></div>
+  <div class="v"><small id="hL2"></small><b id="hTh">40</b></div>
+  <div class="v"><small data-t="top"></small><b id="hTop">🌰</b></div>
+  <div class="sp"></div>
+  <button id="muteBtn" aria-label="Sound">🔊</button>
+  <button id="pauseBtn" aria-label="Pause">⏸</button>
+</div>
+<section id="menu" class="card">
+  <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
+  <div class="brand">STOP60</div>
+  <h1 data-t="name">Grandma's Garden</h1>
+  <p class="sub" data-t="sub"></p>
+  <p class="tag" data-t="tag"></p>
+  <p class="seo-lead" style="margin:10px 0 4px;line-height:1.55;font-size:0.95rem;max-width:36rem">Grandma's Garden is a free puzzle game with no ads in your browser. Drag matching plants together in Grandma's garden beds and they grow one step – from a tiny seed all the way to a prize pumpkin. The watering can helps when the beds fill up, and Magic the cat sometimes digs something up. Today's garden is the same for everyone, and you can share your result with friends. Play on mobile or PC at stop60.no.</p>
+  <p id="mStreak" class="streak" hidden></p>
+  <ul class="how how-top"><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li></ul>
+  <button id="playBtn" class="big">START</button>
+  <p id="mDone" hidden></p>
+  <p id="mCd" class="cd" hidden></p>
+  <div class="row"><button id="freeBtn" class="alt" data-t="free"></button></div>
+  <p class="stat"><span data-t="best"></span>: <b class="bestV">0</b></p>
+  <div class="row"><button id="topDayBtn" type="button" data-t="topDay"></button></div>
+  <div class="row"><button class="shareB" data-t="share"></button></div>
+  <div id="sxMenu"></div>
+  <div id="kodyBox"></div>
+  <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
+  <p class="love" data-t="love"></p>
+  <p class="small"><span data-t="local"></span> · <a href="/mormors-hage/en/privacy/" data-t="privacy"></a> · <a href="/">stop60.no</a></p>
+</section>
+<section id="pause" class="card" hidden>
+  <h2 data-t="paused"></h2>
+  <button id="resumeBtn" class="big" data-t="resume"></button>
+  <div class="row"><button class="sndB"></button><button class="vibB"></button></div>
+  <div class="row"><button id="quitBtn" data-t="menu"></button></div>
+</section>
+<section id="over" class="card" hidden>
+  <img class="logo" src="/assets/logo-round.svg" alt="STOP60" width="64" height="64">
+  <h2 id="overTitle"></h2>
+  <p class="stat"><span data-t="score"></span>: <b id="oScore">0</b></p>
+  <p class="stat" id="oBestRow"><span data-t="best"></span>: <b class="bestV">0</b></p>
+  <p class="stat"><span data-t="biggest"></span>: <b id="oBig">–</b> · <span data-t="merges"></span>: <b id="oMerges">0</b></p>
+  <p id="oNew" class="love" hidden data-t="newbest"></p>
+  <p id="oStreak" class="streak" hidden></p>
+  <p id="oGran" class="gran"></p>
+  <p id="oBestefar" class="gran" hidden></p>
+  <button id="retryBtn" class="big"></button>
+  <p id="oCd" class="cd" hidden></p>
+  <pre id="overGrid" role="button" tabindex="0"></pre>
+  <div class="row"><button id="scoreShare" type="button" data-t="shareScore"></button><button id="overMenu" data-t="menu"></button></div>
+  <div id="scoreLinks"></div>
+  <p id="oKody" class="small" hidden></p><div id="sxOver"></div><div id="sxOverD" hidden></div>
+  <p class="love" id="overLove" data-t="love"></p>
+  <p class="small"><a href="/mormors-hage/en/privacy/" data-t="privacy"></a> · <a href="/">stop60.no</a></p>
+</section>
+<button id="canBtn" hidden></button>
+<div id="toast"></div>
+<script src="/assets/vendor/qrcode/qrcode.min.js"></script>
+<script src="/assets/s60-social.js?v=2"></script>
+<script src="/assets/score-share.js"></script>
+<script src="/assets/s60-kody.js?v=2"></script>
+<script>
+var LANG0 = "en";
+var PAGE_URL = "https://stop60.no/mormors-hage/en/";
+var PRIV = {no: "/mormors-hage/personvern/", pl: "/mormors-hage/prywatnosc/", en: "/mormors-hage/en/privacy/"};
+var T = {"pl": {"name": "Ogródek babci", "sub": "Babcina grządka pełna niespodzianek", "tag": "Przeciągnij roślinkę na taką samą – urośnie o krok! Od nasionka po świąteczną choinkę. Magic czasem coś wykopie…", "tagN": "Przeciągnij roślinkę na taką samą – urośnie o krok! Od nasionka po nagrodową dynię babci. Magic czasem coś wykopie…", "how1": "👆 Przeciągnij roślinkę na taką samą (albo stuknij jedną, potem drugą) – urośnie. Pusta grządka = przesadzanie", "how2": "🌰 Nasionko → kiełek → stokrotka → tulipan → słonecznik → poinsecja → choinka", "how2N": "🌰 Nasionko → kiełek → stokrotka → tulipan → słonecznik → dynia → nagrodowa dynia", "how3": "📅 Ogródek dnia: 40 ruchów, taki sam dla wszystkich – liczy się pierwsza próba · Gra swobodna: 60 ruchów · 💧 Konewka podlewa bez ruchu", "play": "START", "free": "Gra swobodna", "dailyDone": "✓ Ogródek dnia: {s} pkt", "nextIn": "Nowy ogródek za {t}", "streak": "🔥 Seria: {n}", "share": "🔗 Udostępnij", "shareScore": "Udostępnij wynik", "local": "Rekord zapisuje się tylko na tym urządzeniu", "love": "Gry stworzone z pasji", "score": "Punkty", "best": "Rekord", "moves": "Ruchy", "top": "Najlepsze", "menu": "Menu", "paused": "Pauza", "resume": "Graj dalej", "retry": "Zagraj jeszcze raz", "newbest": "Nowy rekord!", "overStuck": "Grządki pełne – brak par!", "overDone": "Ogródek dnia gotowy!", "merges": "Połączenia", "biggest": "Najlepsza roślina", "goDaily": "40 ruchów – miłego sadzenia!", "goFree": "Gra swobodna – miłej zabawy!", "star": "Rozeta babci! +5000", "newItem": "Nowość: {i}!", "last5": "Zostało 5 ruchów!", "dig": "Magic grzebie w grządce!", "can": "Konewka", "canUse": "Stuknij roślinkę do podlania 💧", "canNone": "Konewka jest pusta", "stuckCan": "Brak par – użyj konewki!", "snd": "Dźwięk", "vib": "Wibracje", "copied": "Skopiowano", "freeName": "gra swobodna", "streakW": "Seria", "items": ["Nasionko", "Kiełek", "Stokrotka", "Tulipan", "Słonecznik", "Poinsecja", "Choinka"], "itemsN": ["Nasionko", "Kiełek", "Stokrotka", "Tulipan", "Słonecznik", "Dynia", "Nagrodowa dynia"], "gran": ["Babcia: «Pięknie rośnie, Magic! Jeszcze jedna grządka?»", "Babcia: «Magic, to nie kuweta…»", "Babcia: «Zaparzę herbatę z miodem.»", "Babcia: «Z tego będzie bukiet dla całej rodziny!»"], "title": "Ogródek babci (Mormors hage) – darmowa gra logiczna bez reklam | Stop60", "overFree": "Ogródek pełen kwiatów!", "privacy": "Prywatność", "shareText": "Zagraj w Ogródek babci – przytulną grę logiczną!", "topDay": "🏆 Top 10 dnia", "dayName": "ogródek dnia", "sxShare": "Mam {s} punktów w Ogródku babci – pobijesz mój wynik?", "sxRow": "{s} pkt · {e}", "sxRowD": "{s} pkt"}, "en": {"name": "Grandma's Garden", "sub": "Grandma's cosy garden beds", "tag": "Drag a plant onto its twin and it grows one step! From a tiny seed to a Christmas fir. Magic sometimes digs something up…", "tagN": "Drag a plant onto its twin and it grows one step! From a tiny seed to Grandma's prize pumpkin. Magic sometimes digs something up…", "how1": "👆 Drag a plant onto an identical one (or tap one, then the other) to grow it. Empty bed = replant", "how2": "🌰 Seed → sprout → daisy → tulip → sunflower → poinsettia → fir tree", "how2N": "🌰 Seed → sprout → daisy → tulip → sunflower → pumpkin → prize pumpkin", "how3": "📅 Garden of the day: 40 moves, same for everyone – first try counts · Free play: 60 moves · 💧 Watering can grows a plant for free", "play": "START", "free": "Free play", "dailyDone": "✓ Garden of the day: {s} pts", "nextIn": "New garden in {t}", "streak": "🔥 Streak: {n}", "share": "🔗 Share", "shareScore": "Share score", "local": "Best score is saved on this device only", "love": "Games made with passion", "score": "Score", "best": "Best", "moves": "Moves", "top": "Best plant", "menu": "Menu", "paused": "Paused", "resume": "Resume", "retry": "Play again", "newbest": "New best!", "overStuck": "Beds full – no pairs left!", "overDone": "Garden of the day done!", "merges": "Merges", "biggest": "Best plant", "goDaily": "40 moves – happy planting!", "goFree": "Free play – have fun!", "star": "Grandma's rosette! +5000", "newItem": "New: {i}!", "last5": "5 moves left!", "dig": "Magic is digging!", "can": "Can", "canUse": "Tap a plant to water it 💧", "canNone": "The can is empty", "stuckCan": "No pairs – use the can!", "snd": "Sound", "vib": "Vibration", "copied": "Copied", "freeName": "free play", "streakW": "Streak", "items": ["Seed", "Sprout", "Daisy", "Tulip", "Sunflower", "Poinsettia", "Fir tree"], "itemsN": ["Seed", "Sprout", "Daisy", "Tulip", "Sunflower", "Pumpkin", "Prize pumpkin"], "gran": ["Grandma: “It's growing beautifully, Magic! One more bed?”", "Grandma: “Magic, that's not a litter box…”", "Grandma: “I'll make honey tea.”", "Grandma: “These will make a bouquet for the whole family!”"], "title": "Grandma's Garden – free cosy puzzle game, no ads | Stop60", "overFree": "A garden full of flowers!", "privacy": "Privacy", "shareText": "Come and play Grandma's Garden – a cosy merge puzzle!", "topDay": "🏆 Today's top 10", "dayName": "today's garden", "sxShare": "I scored {s} in Grandma's Garden – can you beat me?", "sxRow": "{s} pts · {e}", "sxRowD": "{s} pts"}, "no": {"name": "Mormors hage", "sub": "Mormors koselige hagebed", "tag": "Dra en plante over en lik plante, så vokser den ett steg! Fra lite frø til juletre. Magic graver av og til noe opp…", "tagN": "Dra en plante over en lik plante, så vokser den ett steg! Fra lite frø til mormors prisgresskar. Magic graver av og til noe opp…", "how1": "👆 Dra en plante over en lik (eller trykk på én, så den andre) – den vokser. Tomt bed = flytt planten", "how2": "🌰 Frø → spire → tusenfryd → tulipan → solsikke → julestjerne → juletre", "how2N": "🌰 Frø → spire → tusenfryd → tulipan → solsikke → gresskar → prisgresskar", "how3": "📅 Dagens hage: 40 trekk, lik for alle – første forsøk teller · Fri lek: 60 trekk · 💧 Vannkannen får en plante til å vokse gratis", "play": "START", "free": "Fri lek", "dailyDone": "✓ Dagens hage: {s} poeng", "nextIn": "Ny hage om {t}", "streak": "🔥 Rekke: {n}", "share": "🔗 Del", "shareScore": "Del resultat", "local": "Rekorden lagres bare på denne enheten", "love": "Spill laget med lidenskap", "score": "Poeng", "best": "Rekord", "moves": "Trekk", "top": "Beste", "menu": "Meny", "paused": "Pause", "resume": "Fortsett", "retry": "Spill igjen", "newbest": "Ny rekord!", "overStuck": "Bedene er fulle – ingen par igjen!", "overDone": "Dagens hage er ferdig!", "merges": "Slått sammen", "biggest": "Beste plante", "goDaily": "40 trekk – god planting!", "goFree": "Fri lek – ha det gøy!", "star": "Mormors rosett! +5000", "newItem": "Nytt: {i}!", "last5": "5 trekk igjen!", "dig": "Magic graver!", "can": "Kanne", "canUse": "Trykk på en plante for å vanne 💧", "canNone": "Kannen er tom", "stuckCan": "Ingen par – bruk kannen!", "snd": "Lyd", "vib": "Vibrasjon", "copied": "Kopiert", "freeName": "fri lek", "streakW": "Rekke", "items": ["Frø", "Spire", "Tusenfryd", "Tulipan", "Solsikke", "Julestjerne", "Juletre"], "itemsN": ["Frø", "Spire", "Tusenfryd", "Tulipan", "Solsikke", "Gresskar", "Prisgresskar"], "gran": ["Mormor: «Så fint det vokser, Magic! Ett bed til?»", "Mormor: «Magic, det er ikke kattesand…»", "Mormor: «Jeg lager honningte.»", "Mormor: «Dette blir en bukett til hele familien!»"], "title": "Mormors hage – gratis koselig puslespill uten reklame | Stop60", "overFree": "En hage full av blomster!", "privacy": "Personvern", "shareText": "Bli med og spill Mormors hage – koselig hagepuslespill!", "topDay": "🏆 Dagens topp 10", "dayName": "dagens hage", "sxShare": "Jeg fikk {s} poeng i Mormors hage – klarer du mer?", "sxRow": "{s} p · {e}", "sxRowD": "{s} p"}};
+"use strict";
+/* Grandma's Garden – © 2026 Stop60. All rights reserved. Drag-to-merge garden puzzle: Magic the cat helps Grandma grow her garden. HIDDEN TEST BUILD. */
+var $ = function(id){ return document.getElementById(id); };
+var SAVE = "mormors-hage.v1", P;
+try { P = JSON.parse(localStorage.getItem(SAVE)) || {}; } catch(e){ P = {}; }
+P.best = P.best || 0; P.games = P.games || 0; P.streak = P.streak || 0; P.lastDay = P.lastDay || 0;
+function save(){ try { localStorage.setItem(SAVE, JSON.stringify(P)); } catch(e){} }
+var QS = new URLSearchParams(location.search), DEBUG = QS.get("debug") === "1";
+var lang = T[LANG0] ? LANG0 : "no";
+function gc(path, title){ if (DEBUG) return; try { window.goatcounter && goatcounter.count && goatcounter.count({path: path, title: title, event: true}); } catch(e){} }
+
+/* ---------- day + season ---------- */
+function today(){
+  var d = new Date();
+  if (DEBUG && /^\d{4}-\d\d-\d\d$/.test(QS.get("date") || "")){ var p = QS.get("date").split("-"); d = new Date(+p[0], +p[1] - 1, +p[2], d.getHours(), d.getMinutes(), d.getSeconds()); }
+  return d;
+}
+function dayNum(d){ d = d || today(); return Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 10, 23))/864e5); }
+/* Christmas cast until 26.12; civilian from 27.12. ?xmas=0/1 forces either. */
+function isXmas(d){ var m = d.getMonth(), day = d.getDate(); return (m === 10 && day >= 15) || (m === 11 && day <= 26); }
+var XMAS = QS.get("xmas") === "1" ? true : QS.get("xmas") === "0" ? false : isXmas(today());
+
+function t(k){ var o = T[lang]; if (!XMAS && o[k + "N"] !== undefined) return o[k + "N"]; return o[k]; }
+function fmtN(n){ n = Math.round(n || 0); return n >= 1000 ? String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : String(n); }
+function toast(s){ var e = $("toast"); e.textContent = s; e.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(function(){ e.classList.remove("show"); }, 1700); }
+function applyLang(){
+  document.documentElement.lang = lang === "no" ? "nb" : lang; document.documentElement.dataset.lang = lang; document.title = t("title");
+  document.querySelectorAll("[data-t]").forEach(function(e){ e.textContent = t(e.dataset.t); });
+  document.querySelectorAll(".langs button").forEach(function(b){ b.classList.toggle("cur", b.dataset.l === lang); });
+  refreshToggles(); refreshStats(); refreshMenu(); if (mode === "over") paintOver(); updHud(true);
+}
+document.querySelectorAll(".langs button").forEach(function(b){ b.onclick = function(){ lang = P.lang = b.dataset.l; save(); applyLang(); }; });
+function refreshStats(){ document.querySelectorAll(".bestV").forEach(function(e){ e.textContent = fmtN(P.best); }); }
+
+/* ---------- audio + haptics (music-box style) ---------- */
+var AC = null, master = null, sfxBus = null, musBus = null, mute = !!P.mute, novib = !!P.novib, unlocked = false;
+function audio(){
+  if (!AC){ try {
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    var comp = AC.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 12;
+    master = AC.createGain(); master.gain.value = mute ? 0 : .8; master.connect(comp); comp.connect(AC.destination);
+    sfxBus = AC.createGain(); sfxBus.gain.value = .7; sfxBus.connect(master);
+    musBus = AC.createGain(); musBus.gain.value = .14; musBus.connect(master);
+  } catch(e){ AC = null; return; } }
+  if (AC.state !== "running"){ try { AC.resume(); } catch(e){} }
+  if (!unlocked){ try { var sb = AC.createBufferSource(); sb.buffer = AC.createBuffer(1, 1, 22050); sb.connect(AC.destination); sb.start(0); unlocked = true; } catch(e){} }
+  startMusic();
+}
+["touchstart", "touchend", "pointerdown", "mousedown", "keydown"].forEach(function(ev){ addEventListener(ev, audio, {capture: true, passive: true}); });
+document.addEventListener("visibilitychange", function(){
+  if (document.hidden && mode === "play") setMode("pause");
+  if (!AC) return; if (document.hidden){ try { AC.suspend(); } catch(e){} } else { try { AC.resume(); } catch(e){} }
+});
+function setMute(m){ mute = P.mute = m; save(); refreshToggles(); if (master) master.gain.setTargetAtTime(mute ? 0 : .8, AC.currentTime, .03); }
+var lastTone = {};
+function tone(f, d, type, vol, slide, key, delay, bus){
+  if (mute || !AC || AC.state !== "running") return; var now = AC.currentTime + (delay || 0);
+  if (key){ if (lastTone[key] && now - lastTone[key] < .05) return; lastTone[key] = now; }
+  var o = AC.createOscillator(), g = AC.createGain();
+  o.type = type || "sine"; o.frequency.setValueAtTime(f, now); if (slide) o.frequency.exponentialRampToValueAtTime(slide, now + d);
+  g.gain.setValueAtTime(.0001, now); g.gain.linearRampToValueAtTime(vol || .15, now + .006); g.gain.exponentialRampToValueAtTime(.0001, now + d);
+  o.connect(g); g.connect(bus || sfxBus); o.start(now); o.stop(now + d + .03);
+}
+var SFX = {
+  tap: function(){ tone(300, .08, "triangle", .05, 220, "tap"); },
+  meow: function(){ tone(620, .22, "triangle", .07, 880); tone(880, .2, "sine", .04, 560, null, .12); },
+  pop: function(l, n){ var f = 660*Math.pow(1.09, l); for (var i = 0; i < Math.min(n, 6); i++) tone(f*Math.pow(1.06, i), .12, "sine", .1, f*1.5*Math.pow(1.06, i), null, i*.03); },
+  land: function(){ tone(180, .06, "sine", .04, 120, "land"); },
+  star: function(){ [784, 988, 1175, 1568, 1976].forEach(function(f, i){ tone(f, .3, "triangle", .09, 0, null, i*.07); }); },
+  water: function(){ for (var i = 0; i < 7; i++) tone(900 + i*60, .09, "sine", .045, 500, null, i*.035); },
+  dig: function(){ for (var i = 0; i < 5; i++) tone(160 + (i%2)*40, .07, "square", .03, 90, null, i*.09); },
+  shake: function(){ for (var i = 0; i < 6; i++) tone(420 + (i % 2)*80, .07, "square", .025, 0, null, i*.07); },
+  newItem: function(){ [659, 784, 988, 1319].forEach(function(f, i){ tone(f, .2, "triangle", .08, 0, null, i*.07); }); },
+  end: function(){ [784, 659, 523, 392].forEach(function(f, i){ tone(f, .3, "triangle", .09, 0, null, i*.14); }); },
+  done: function(){ [523, 659, 784, 1047, 1319].forEach(function(f, i){ tone(f, .25, "triangle", .09, 0, null, i*.09); }); }
+};
+var musT = 0, musStep = 0, musTimer = null, CH = [[60, 64, 67], [57, 60, 64], [65, 69, 72], [67, 71, 74]];
+function mtof(n){ return 440*Math.pow(2, (n - 69)/12); }
+function startMusic(){
+  if (musTimer || !AC) return; musT = AC.currentTime + .1;
+  musTimer = setInterval(function(){
+    if (!AC || AC.state !== "running") return;
+    if (musT < AC.currentTime) musT = AC.currentTime + .05;
+    while (musT < AC.currentTime + .3){
+      var bar = Math.floor(musStep/8) % 4, st = musStep % 8, ch = CH[bar], dl = musT - AC.currentTime, q = mode === "play" ? 1 : .6;
+      if (!mute){ var n = ch[[0, 2, 1, 2, 0, 2, 1, 2][st]] + 12 + (st === 6 ? 12 : 0);
+        tone(mtof(n), .45, "sine", .08*q, 0, null, dl, musBus); if (st % 4 === 0) tone(mtof(ch[0] - 12), .7, "sine", .11*q, 0, null, dl, musBus); }
+      musT += .21; musStep++;
+    }
+  }, 70);
+}
+function vib(p){ if (!novib && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(p); } catch(e){} }
+function refreshToggles(){
+  document.querySelectorAll(".sndB").forEach(function(b){ b.textContent = (mute ? "🔇 " : "🔊 ") + t("snd"); }); $("muteBtn").textContent = mute ? "🔇" : "🔊";
+  document.querySelectorAll(".vibB").forEach(function(b){ b.textContent = (novib ? "📴 " : "📳 ") + t("vib"); });
+}
+document.querySelectorAll(".sndB").forEach(function(b){ b.onclick = function(){ audio(); setMute(!mute); }; });
+$("muteBtn").onclick = function(ev){ ev.stopPropagation(); audio(); setMute(!mute); };
+document.querySelectorAll(".vibB").forEach(function(b){ b.onclick = function(){ novib = P.novib = !novib; save(); refreshToggles(); vib(40); }; });
+
+function mulberry32(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t2 = Math.imul(a ^ a >>> 15, 1 | a); t2 = t2 + Math.imul(t2 ^ t2 >>> 7, 61 | t2) ^ t2; return ((t2 ^ t2 >>> 14) >>> 0)/4294967296; }; }
+function hashStr(s){ var h = 2166136261; for (var i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function clamp(v, a, b){ return v < a ? a : v > b ? b : v; }
+function rnd(a, b){ return a + Math.random()*(b - a); }
+function circ(c, x, y, r, f){ c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fillStyle = f; c.fill(); }
+function ell(c, x, y, rx, ry, f, rot){ c.beginPath(); c.ellipse(x, y, rx, ry, rot || 0, 0, 6.2832); c.fillStyle = f; c.fill(); }
+function line(c, pts, col, w){ c.beginPath(); c.moveTo(pts[0], pts[1]); for (var i = 2; i < pts.length; i += 2) c.lineTo(pts[i], pts[i + 1]); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.lineJoin = "round"; c.stroke(); }
+function rr(c, x, y, w, h, r, f){ c.beginPath(); c.roundRect(x, y, w, h, r); c.fillStyle = f; c.fill(); }
+function smile(c, x, y, r, col, w, open){
+  if (open){ c.beginPath(); c.arc(x, y, r, .1*Math.PI, .9*Math.PI); c.closePath(); c.fillStyle = "#5a1e1e"; c.fill(); }
+  c.beginPath(); c.arc(x, y, r, .12*Math.PI, .88*Math.PI); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.stroke();
+}
+function happyEye(c, x, y, r, col, w){ c.beginPath(); c.arc(x, y + r*.5, r, 1.15*Math.PI, 1.85*Math.PI); c.strokeStyle = col; c.lineWidth = w; c.lineCap = "round"; c.stroke(); }
+function dotEye(c, x, y, r){ circ(c, x, y, r, "#2a1a1a"); circ(c, x - r*.35, y - r*.35, r*.38, "#fff"); }
+function face(c, r, y0, open, happy){
+  var dx = r*.3, y = (y0 || 0)*r, e = Math.max(1.4, r*.1);
+  if (happy){ happyEye(c, -dx, y - r*.1, e*1.3, "#2a1a1a", Math.max(1.5, r*.06)); happyEye(c, dx, y - r*.1, e*1.3, "#2a1a1a", Math.max(1.5, r*.06)); }
+  else { dotEye(c, -dx, y - r*.08, e); dotEye(c, dx, y - r*.08, e); }
+  circ(c, -dx*1.5, y + r*.12, r*.1, "rgba(255,110,130,.45)"); circ(c, dx*1.5, y + r*.12, r*.1, "rgba(255,110,130,.45)");
+  smile(c, 0, y + r*.04, r*.18, "#5a1e1e", Math.max(1.3, r*.055), open);
+}
+/* ---------- Magic's look (Stop60 standard): polka-dot bow tie, black on even / red on odd Europe/Oslo days ---------- */
+function osloDay(){ try { return +new Intl.DateTimeFormat("en-GB", {timeZone: "Europe/Oslo", day: "numeric"}).format(new Date()); } catch(e){ return new Date().getDate(); } }
+var BOWQ = (function(){ try { return new URLSearchParams(location.search).get("bow"); } catch(e){ return null; } })();
+var BOWK = BOWQ === "black" || BOWQ === "red" ? BOWQ : (osloDay() % 2 === 0 ? "black" : "red");
+var BOWC = BOWK === "black" ? ["#1C1A22", "#34303C", "#0A090D"] : ["#D3263A", "#F04A5C", "#7E1020"];
+function drawBow(c, x, y, k){
+  c.save(); c.translate(x, y); c.scale(k, k);
+  var col = BOWC[0], hi = BOWC[1], ink = BOWC[2];
+  [-1, 1].forEach(function(d){
+    c.beginPath(); c.moveTo(d*1.4, -1.1);
+    c.quadraticCurveTo(d*4.2, -4.4, d*7.2, -3.4); c.quadraticCurveTo(d*8.4, 0, d*7.2, 3.4);
+    c.quadraticCurveTo(d*4.2, 4.4, d*1.4, 1.1); c.closePath();
+    c.fillStyle = col; c.fill(); c.lineWidth = .7; c.strokeStyle = ink; c.stroke();
+    c.save(); c.clip();
+    c.fillStyle = hi; c.beginPath(); c.ellipse(d*4.6, -2.2, 2.6, .9, d*.25, 0, 6.2832); c.fill();
+    c.fillStyle = "#FFFFFF"; [[3.2, -1.6], [5.9, -.6], [4.4, 1.7], [6.8, 2.2], [2.4, 1.0], [6.4, -2.6]].forEach(function(q){ c.beginPath(); c.arc(d*q[0], q[1], .62, 0, 6.2832); c.fill(); });
+    c.restore();
+    c.beginPath(); c.moveTo(d*2.2, -.6); c.quadraticCurveTo(d*3.6, 0, d*2.2, .6); c.lineWidth = .45; c.strokeStyle = ink; c.stroke();
+  });
+  c.beginPath(); c.roundRect(-1.9, -2, 3.8, 4, 1.3); c.fillStyle = col; c.fill(); c.lineWidth = .7; c.strokeStyle = ink; c.stroke();
+  c.fillStyle = "#FFFFFF"; c.beginPath(); c.arc(-.3, -.4, .55, 0, 6.2832); c.fill();
+  c.restore();
+}
+/* ---------- Magic the cat (brown tabby, green eyes) ---------- */
+function drawMagic(x, y, s, look, paw, hop){
+  ctx.save(); ctx.translate(x, y - (hop || 0)); ctx.scale(s, s);
+  var fur = "#9A6A3E", dark = "#5E3C1E", light = "#D7B48A", tw = Math.sin(performance.now()/300)*6;
+  line(ctx, [14, 8, 26, 0, 28 + tw, -16], fur, 6); line(ctx, [27 + tw*.8, -8, 28 + tw, -16], dark, 6);
+  ell(ctx, 0, 6, 18, 13, fur);
+  line(ctx, [-6, -4, -4, 4], dark, 2.4); line(ctx, [2, -5, 3, 4], dark, 2.4); line(ctx, [9, -3, 9, 5], dark, 2.4);
+  ell(ctx, -2, 12, 9, 6, light); ell(ctx, -10, 18, 5, 3.5, light); ell(ctx, 8, 18, 5, 3.5, light);
+  if (paw > 0){ var pxx = -15 + look*4, pyy = 7 + paw*10; line(ctx, [-9, 5, pxx, pyy], dark, 8.4); line(ctx, [-9, 5, pxx, pyy], fur, 7); ell(ctx, pxx, pyy + 1, 4.6, 3.6, light); circ(ctx, pxx - 2.4, pyy + 3.4, 1.1, "#E8919B"); circ(ctx, pxx, pyy + 3.9, 1.1, "#E8919B"); circ(ctx, pxx + 2.4, pyy + 3.4, 1.1, "#E8919B"); }
+  ctx.save(); ctx.translate(-14, -8);
+  ctx.fillStyle = fur; ctx.beginPath(); ctx.moveTo(-11, -4); ctx.lineTo(-9, -17); ctx.lineTo(-2, -9); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(11, -4); ctx.lineTo(9, -17); ctx.lineTo(2, -9); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#F2A0A8"; ctx.beginPath(); ctx.moveTo(-8.5, -7); ctx.lineTo(-8, -13); ctx.lineTo(-4.5, -9); ctx.fill(); ctx.beginPath(); ctx.moveTo(8.5, -7); ctx.lineTo(8, -13); ctx.lineTo(4.5, -9); ctx.fill();
+  ell(ctx, 0, 0, 12, 10.5, fur);
+  line(ctx, [-3, -9, -2, -5], dark, 1.6); line(ctx, [0, -10, 0, -5], dark, 1.6); line(ctx, [3, -9, 2, -5], dark, 1.6);
+  ell(ctx, 0, 4, 6.5, 4.5, light);
+  var ex = look*1.5;
+  ell(ctx, -4.6, -1, 2.6, 3, "#5FBF4A"); ell(ctx, 4.6, -1, 2.6, 3, "#5FBF4A");
+  ell(ctx, -4.6 + ex, -1, 1, 2.4, "#1a1a1a"); ell(ctx, 4.6 + ex, -1, 1, 2.4, "#1a1a1a");
+  circ(ctx, -5.2 + ex, -2.2, .7, "#fff"); circ(ctx, 4 + ex, -2.2, .7, "#fff");
+  [-4.6, 4.6].forEach(function(qx){ ctx.save(); ctx.beginPath(); ctx.ellipse(qx, -1, 2.7, 3.1, 0, 0, 6.2832); ctx.clip(); ell(ctx, qx, 3.1, 3.6, 2.2, fur); ctx.restore(); }); // smiling eyes
+  ctx.fillStyle = "#E87A8A"; ctx.beginPath(); ctx.moveTo(-1.6, 2.4); ctx.lineTo(1.6, 2.4); ctx.lineTo(0, 4); ctx.fill();
+  circ(ctx, -7.6, 3.4, 2.3, "rgba(255,120,140,.5)"); circ(ctx, 7.6, 3.4, 2.3, "rgba(255,120,140,.5)"); // soft rounded smile
+  ctx.strokeStyle = "#5a2a2a"; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = .8; ctx.beginPath(); ctx.moveTo(0, 3.9); ctx.lineTo(0, 4.9); ctx.stroke(); ctx.lineWidth = 1.05; ctx.beginPath(); ctx.moveTo(-3.8, 4.4); ctx.bezierCurveTo(-2.9, 7.6, 2.9, 7.6, 3.8, 4.4); ctx.stroke();
+  line(ctx, [-6, 3, -15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [-6, 4.5, -15, 5], "rgba(255,255,255,.7)", .7);
+  line(ctx, [6, 3, 15, 1], "rgba(255,255,255,.7)", .7); line(ctx, [6, 4.5, 15, 5], "rgba(255,255,255,.7)", .7);
+  if (window.S60Kody && S60Kody.hatOn()){ S60Kody.drawHat(ctx, 0, -9, 22); } else if (XMAS){ ctx.fillStyle = "#D62B3A"; ctx.beginPath(); ctx.moveTo(-10, -8); ctx.quadraticCurveTo(-2, -26, 12, -22); ctx.lineTo(9, -7); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(-11, -10, 22, 5, 2.5); ctx.fill(); circ(ctx, 13, -22, 3.2, "#fff"); }
+  drawBow(ctx, 0, 11.6, 1); // bow tie under the chin
+  ctx.restore(); ctx.restore();
+}
+
+/* ---------- rules ---------- */
+var COLS = 5, ROWS = 6, NL = 7, DAILY_N = 40, FREE_N = 60, CAN_D = 1, CAN_F = 3, DIG_EVERY = 8, STAR = 5000, SEG = 5;
+var PTS = [0, 10, 30, 80, 200, 500, 1200];
+var WEIGHTS = [72, 24, 4];
+var SQ = ["▫️", "🟩", "🟨", "🟥", "🟧", "🟪", "⭐"];
+function EMO(l){ return ["🌰", "🌱", "🌼", "🌷", "🌻", XMAS ? "🌺" : "🎃", XMAS ? "🎄" : "🏆"][l] || "🌱"; }
+function plate(l){ return ["#C9A27A", "#9ADB8A", "#FFF2A8", "#FFA9BC", "#FFD45A", XMAS ? "#FF8F8F" : "#FFB070", XMAS ? "#8FD3A0" : "#C7A8F5"][l] || "#ccc"; }
+function pick(r){ var s = 0, x = r*100; for (var i = 0; i < WEIGHTS.length; i++){ s += WEIGHTS[i]; if (x < s) return i; } return 0; }
+
+/* ---------- canvas + layout ---------- */
+var cv = $("c"), ctx = cv.getContext("2d"), DPR = 1, W = 390, H = 844, CS = 70, TX = 20, TY = 340, HUDH = 58, side = false;
+var gX = 70, gY = 300, gS = .8, trX = 330, trY = 300, trS = .8, BG = null, SPR = {}, HY = 200;
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+  var band = clamp(H*.2, 110, 190), bottom = 70;
+  CS = Math.floor(Math.max(34, Math.min((Math.min(W, 520) - 30)/COLS, (H - HUDH - band - bottom)/ROWS)));
+  TX = Math.round((W - CS*COLS)/2); TY = Math.round(H - bottom - CS*ROWS);
+  side = TX > 170;
+  if (side){ gS = clamp(CS/62, .8, 1.25); gX = TX - 100*gS; gY = TY + CS*ROWS - 80*gS; trS = gS; trX = TX + CS*COLS + 90*trS; trY = TY + CS*ROWS - 70*trS; }
+  else { gS = clamp((TY - HUDH - 16)/165, .5, Math.min(.95, W/430)); gX = 12 + 70*gS; gY = TY - 12 - 72*gS; trS = gS; trX = W - 14 - 44*trS; trY = TY - 12 - 56*trS; }
+  SPR = {}; mkBG();
+}
+
+/* ---------- plant art: a soft round badge + a smiling plant ---------- */
+function drawPlantArt(g, l, r){
+  var pc = plate(l), pg = g.createRadialGradient(-r*.3, -r*.4, r*.1, 0, 0, r*1.15); pg.addColorStop(0, "rgba(255,255,255,.65)"); pg.addColorStop(.4, pc); pg.addColorStop(1, "rgba(60,40,20,.28)");
+  circ(g, 0, 0, r, pc); circ(g, 0, 0, r, pg);
+  g.lineWidth = Math.max(1.4, r*.06); g.strokeStyle = "rgba(255,255,255,.7)"; g.beginPath(); g.arc(0, 0, r - 1, 0, 6.2832); g.stroke();
+  var k = r*.74, i, a;
+  if (l === 0){ // seed on a little mound
+    ell(g, 0, k*.62, k*.85, k*.3, "#6B4A2E"); ell(g, 0, k*.55, k*.7, k*.2, "#7F5A38");
+    ell(g, 0, -k*.05, k*.46, k*.6, "#B9824A", .0); ell(g, -k*.15, -k*.3, k*.12, k*.2, "rgba(255,255,255,.5)");
+    line(g, [0, -k*.55, 0, k*.45], "rgba(110,66,30,.5)", k*.06); face(g, k*.85, .08, false);
+  } else if (l === 1){ // sprout
+    ell(g, 0, k*.62, k*.9, k*.32, "#6B4A2E"); circ(g, 0, k*.25, k*.5, "#7F5A38");
+    line(g, [0, k*.0, 0, -k*.45], "#3E9B4A", k*.12);
+    ell(g, -k*.34, -k*.55, k*.36, k*.2, "#58C25F", -.5); ell(g, k*.34, -k*.62, k*.36, k*.2, "#6ED06E", .5);
+    face(g, k*.62, .55, false);
+  } else if (l === 2){ // daisy
+    line(g, [0, k*.3, 0, k*.95], "#3E9B4A", k*.1); ell(g, k*.3, k*.72, k*.3, k*.13, "#58C25F", -.5);
+    for (i = 0; i < 9; i++){ a = i/9*6.2832; ell(g, Math.cos(a)*k*.58, -k*.08 + Math.sin(a)*k*.58, k*.3, k*.16, "#FFFFFF", a); }
+    circ(g, 0, -k*.08, k*.42, "#FFD23F"); face(g, k*.62, -.12, false, true);
+  } else if (l === 3){ // tulip
+    line(g, [0, 0, 0, k*.95], "#3E9B4A", k*.11); ell(g, -k*.34, k*.62, k*.32, k*.13, "#58C25F", .6); ell(g, k*.34, k*.68, k*.32, k*.13, "#58C25F", -.6);
+    g.beginPath(); g.moveTo(-k*.62, -k*.5); g.lineTo(-k*.34, -k*.2); g.lineTo(0, -k*.62); g.lineTo(k*.34, -k*.2); g.lineTo(k*.62, -k*.5); g.bezierCurveTo(k*.7, k*.3, k*.3, k*.5, 0, k*.5); g.bezierCurveTo(-k*.3, k*.5, -k*.7, k*.3, -k*.62, -k*.5); g.fillStyle = "#E8466A"; g.fill();
+    ell(g, 0, k*.12, k*.3, k*.3, "rgba(255,255,255,.18)"); face(g, k*.72, .08, false, true);
+  } else if (l === 4){ // sunflower
+    line(g, [0, k*.4, 0, k*.98], "#3E9B4A", k*.1);
+    for (i = 0; i < 14; i++){ a = i/14*6.2832; ell(g, Math.cos(a)*k*.66, -k*.05 + Math.sin(a)*k*.66, k*.3, k*.14, i % 2 ? "#FFC21F" : "#FFD84A", a); }
+    circ(g, 0, -k*.05, k*.5, "#B8782E"); circ(g, 0, -k*.05, k*.44, "#CF9244"); face(g, k*.7, -.08, false, true);
+  } else if (l === 5){
+    if (XMAS){ // poinsettia
+      for (i = 0; i < 6; i++){ a = i/6*6.2832 + .3; ell(g, Math.cos(a)*k*.55, Math.sin(a)*k*.55, k*.42, k*.2, "#2F8F4E", a); }
+      for (i = 0; i < 6; i++){ a = i/6*6.2832; ell(g, Math.cos(a)*k*.45, Math.sin(a)*k*.45, k*.42, k*.21, "#D62B3A", a); }
+      circ(g, 0, 0, k*.34, "#FFD84A"); face(g, k*.56, 0, false, true);
+    } else { // pumpkin
+      ell(g, -k*.4, 0, k*.4, k*.62, "#F0861F"); ell(g, k*.4, 0, k*.4, k*.62, "#F0861F"); ell(g, 0, 0, k*.5, k*.68, "#FF9A2E");
+      g.strokeStyle = "rgba(160,70,0,.35)"; g.lineWidth = k*.05; g.beginPath(); g.ellipse(-k*.22, 0, k*.22, k*.64, 0, 0, 6.28); g.stroke(); g.beginPath(); g.ellipse(k*.22, 0, k*.22, k*.64, 0, 0, 6.28); g.stroke();
+      rr(g, -k*.07, -k*.9, k*.14, k*.3, k*.05, "#4F8A2E"); ell(g, k*.2, -k*.66, k*.2, k*.09, "#5CAA3A", -.4);
+      face(g, k*.8, .1, true, false);
+    }
+  } else {
+    if (XMAS){ // little fir tree with star and garland
+      rr(g, -k*.1, k*.65, k*.2, k*.3, k*.04, "#6B3E22");
+      [[.78, .72, .5], [.5, .52, .12], [.28, .36, -.2]].forEach(function(s, j){ g.fillStyle = ["#1F7A44", "#26904F", "#2FA85C"][j]; g.beginPath(); g.moveTo(-k*s[1], k*s[2] + k*.5); g.lineTo(k*s[1], k*s[2] + k*.5); g.lineTo(0, k*s[2] - k*s[0]*.6); g.fill(); });
+      ell(g, 0, -k*.2, k*.4, k*.06, "#FFFFFF", -.2); circ(g, -k*.3, k*.2, k*.06, "#FFD84A"); circ(g, k*.28, k*.38, k*.06, "#FF6B6B"); circ(g, k*.1, -k*.05, k*.05, "#6BD1FF");
+      g.fillStyle = "#FFE066"; g.font = "800 " + Math.round(k*.6) + "px system-ui"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("★", 0, -k*.82);
+      face(g, k*.5, .35, true, true);
+    } else { // prize pumpkin with rosette
+      ell(g, -k*.46, k*.04, k*.46, k*.66, "#F29A1F"); ell(g, k*.46, k*.04, k*.46, k*.66, "#F29A1F"); ell(g, 0, k*.04, k*.56, k*.72, "#FFB02E");
+      g.strokeStyle = "rgba(160,80,0,.35)"; g.lineWidth = k*.05; g.beginPath(); g.ellipse(-k*.26, k*.04, k*.24, k*.68, 0, 0, 6.28); g.stroke(); g.beginPath(); g.ellipse(k*.26, k*.04, k*.24, k*.68, 0, 0, 6.28); g.stroke();
+      rr(g, -k*.07, -k*.95, k*.14, k*.3, k*.05, "#4F8A2E");
+      face(g, k*.85, .12, true, true);
+      g.fillStyle = "#7A4AD0"; g.beginPath(); g.moveTo(k*.22, k*.55); g.lineTo(k*.05, k*1.0); g.lineTo(k*.22, k*.88); g.lineTo(k*.38, k*1.0); g.lineTo(k*.45, k*.55); g.fill();
+      circ(g, k*.34, k*.5, k*.2, "#FFD84A"); circ(g, k*.34, k*.5, k*.13, "#7A4AD0"); g.fillStyle = "#FFE066"; g.font = "800 " + Math.round(k*.24) + "px system-ui"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("★", k*.34, k*.52);
+    }
+  }
+}
+function spr(l){
+  if (!SPR[l]){ var r = CS*.45, pad = 3, sz = Math.ceil((r*2 + pad*2)*DPR), c = document.createElement("canvas"); c.width = c.height = sz;
+    var g = c.getContext("2d"); g.scale(DPR, DPR); g.translate(r + pad, r + pad); drawPlantArt(g, l, r); SPR[l] = c; }
+  return SPR[l];
+}
+
+/* ---------- garden background (cached) ---------- */
+function fir(c, x, y, s, snow){
+  c.fillStyle = "#6B3E22"; c.fillRect(x - 3*s, y - 6*s, 6*s, 10*s);
+  [[26, 0, 30], [20, -22, 26], [14, -42, 22]].forEach(function(t2, i){ c.fillStyle = ["#1F6B3A", "#24804A", "#2B9656"][i]; c.beginPath(); c.moveTo(x - t2[0]*s, y + t2[1]*s - 6*s); c.lineTo(x + t2[0]*s, y + t2[1]*s - 6*s); c.lineTo(x, y + t2[1]*s - 6*s - t2[2]*s*1.5); c.fill();
+    if (snow){ c.fillStyle = "rgba(255,255,255,.92)"; c.beginPath(); c.moveTo(x - t2[0]*s*.55, y + t2[1]*s - 6*s - t2[2]*s*.7); c.lineTo(x + t2[0]*s*.55, y + t2[1]*s - 6*s - t2[2]*s*.7); c.lineTo(x, y + t2[1]*s - 6*s - t2[2]*s*1.5); c.fill(); } });
+}
+function mkBG(){
+  BG = document.createElement("canvas"); BG.width = cv.width; BG.height = cv.height;
+  var c = BG.getContext("2d"); c.scale(DPR, DPR);
+  HY = Math.max(HUDH + 70, TY - 150);
+  var sk = c.createLinearGradient(0, 0, 0, HY + 20); if (XMAS){ sk.addColorStop(0, "#0E1A3C"); sk.addColorStop(1, "#3C5C9C"); } else { sk.addColorStop(0, "#7CCBF2"); sk.addColorStop(1, "#E4F6FF"); }
+  c.fillStyle = sk; c.fillRect(0, 0, W, HY + 40);
+  var i;
+  if (XMAS){ c.fillStyle = "#fff"; for (i = 0; i < 40; i++) c.fillRect((i*97) % W, (i*53) % (HY - 20), i % 5 ? 1.5 : 2.5, i % 5 ? 1.5 : 2.5);
+    circ(c, W*.8, HY*.38, 15, "#FFF3C4"); circ(c, W*.8 + 6, HY*.38 - 4, 13, "#243C78"); }
+  else { circ(c, W*.82, HY*.36, 26, "rgba(255,240,170,.35)"); circ(c, W*.82, HY*.36, 17, "#FFE680");
+    [[.2, .3, 1], [.5, .2, .8], [.68, .5, .7]].forEach(function(cl){ var x = W*cl[0], y = HY*cl[1], s = cl[2]*Math.min(1.2, W/390); c.fillStyle = "rgba(255,255,255,.9)"; c.beginPath(); c.arc(x, y, 16*s, 0, 6.3); c.arc(x + 18*s, y - 6*s, 20*s, 0, 6.3); c.arc(x + 38*s, y, 15*s, 0, 6.3); c.fill(); }); }
+  // hills + ground
+  var hc = XMAS ? ["#DCE8F7", "#C8DAF0"] : ["#A6D884", "#86C66A"];
+  ell(c, W*.2, HY + 28, W*.55, 60, hc[0]); ell(c, W*.85, HY + 36, W*.6, 70, hc[1]);
+  var gr = c.createLinearGradient(0, HY, 0, H); if (XMAS){ gr.addColorStop(0, "#EEF4FF"); gr.addColorStop(1, "#C4D8F0"); } else { gr.addColorStop(0, "#78BD5E"); gr.addColorStop(1, "#4A9446"); }
+  c.fillStyle = gr; c.fillRect(0, HY + 22, W, H);
+  if (XMAS){ fir(c, W*.08, HY + 30, .7, true); fir(c, W*.93, HY + 26, .8, true); fir(c, W*.5, HY + 18, .5, true); }
+  else { [[.1, 1], [.88, .9]].forEach(function(b){ circ(c, W*b[0], HY + 34, 24*b[1], "#3F9A46"); circ(c, W*b[0] + 18, HY + 40, 18*b[1], "#4FAE52"); circ(c, W*b[0] - 16, HY + 42, 16*b[1], "#46A64B"); }); }
+  // picket fence
+  var fy = HY + 30, pw = 20; c.fillStyle = XMAS ? "#EDEFF8" : "#FFF4E6";
+  for (var x = -4; x < W + pw; x += pw + 5){ c.beginPath(); c.moveTo(x, fy + 36); c.lineTo(x, fy + 6); c.lineTo(x + pw/2, fy - 4); c.lineTo(x + pw, fy + 6); c.lineTo(x + pw, fy + 36); c.fill();
+    if (XMAS){ c.fillStyle = "#fff"; c.beginPath(); c.moveTo(x, fy + 8); c.lineTo(x + pw/2, fy - 5); c.lineTo(x + pw, fy + 8); c.quadraticCurveTo(x + pw/2, fy + 3, x, fy + 8); c.fill(); c.fillStyle = "#EDEFF8"; } }
+  c.fillStyle = XMAS ? "#D5D9EA" : "#E8D5B8"; c.fillRect(0, fy + 12, W, 4); c.fillRect(0, fy + 26, W, 4);
+  if (XMAS){ var cols = ["#FF5A5A", "#FFD84A", "#5ADBFF", "#7CFF8A"]; c.strokeStyle = "rgba(30,50,30,.7)"; c.lineWidth = 1.4; c.beginPath(); for (x = 0; x <= W; x += 6){ var yy = fy + 14 + Math.sin(x/W*Math.PI*6)*7; if (x === 0) c.moveTo(x, yy); else c.lineTo(x, yy); } c.stroke();
+    for (x = 8, i = 0; x < W; x += 24, i++){ var y2 = fy + 14 + Math.sin(x/W*Math.PI*6)*7; circ(c, x, y2 + 3, 6, "rgba(255,255,200,.2)"); circ(c, x, y2 + 3, 3, cols[i % 4]); } }
+  else { var fl = ["#FF7A9A", "#FFD23F", "#FFFFFF", "#B48CF0"]; for (i = 0; i < 26; i++){ var fx2 = (i*83 + 17) % W, fy2 = HY + 70 + (i*47) % Math.max(40, H - HY - 90); if (fy2 > TY - 12 && fy2 < TY + CS*ROWS + 12 && fx2 > TX - 12 && fx2 < TX + CS*COLS + 12) continue; circ(c, fx2, fy2, 2.4, fl[i % 4]); } }
+  // lower grass band under the bed
+  // raised wooden bed
+  var bx = TX - 10, by = TY - 10, bw = CS*COLS + 20, bh = CS*ROWS + 20;
+  rr(c, bx + 3, by + 6, bw, bh, 18, "rgba(0,0,0,.25)");
+  rr(c, bx, by, bw, bh, 18, "#8A5A34"); rr(c, bx + 3, by + 3, bw - 6, bh - 6, 15, "#A8723E");
+  rr(c, bx + 8, by + 8, bw - 16, bh - 16, 11, "#3F2716");
+  for (var cx = 0; cx < COLS; cx++) for (var cy = 0; cy < ROWS; cy++){ rr(c, TX + cx*CS + 2, TY + cy*CS + 2, CS - 4, CS - 4, 10, (cx + cy) % 2 ? "#5A3A22" : "#6A4529");
+    c.fillStyle = "rgba(0,0,0,.18)"; c.fillRect(TX + cx*CS + CS*.2 + (cx*7 % 9), TY + cy*CS + CS*.78, 3, 2); c.fillRect(TX + cx*CS + CS*.7 - (cy*5 % 7), TY + cy*CS + CS*.22, 3, 2); }
+  if (XMAS){ c.fillStyle = "rgba(255,255,255,.96)"; c.beginPath(); c.moveTo(bx + 6, by + 8); for (x = bx + 6; x < bx + bw - 6; x += 14){ c.quadraticCurveTo(x + 7, by - 8 - ((x*13) % 6), x + 14, by + 8); } c.lineTo(bx + bw - 6, by + 14); c.lineTo(bx + 6, by + 14); c.fill(); }
+}
+
+/* ---------- Grandma with her watering can ---------- */
+function drawGrandma(x, y, s, tm){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = "#6B4A8C"; ctx.beginPath(); ctx.roundRect(-58, -70, 116, 130, 26); ctx.fill();
+  ctx.fillStyle = "#83599F"; ctx.beginPath(); ctx.roundRect(-70, -10, 30, 70, 14); ctx.fill(); ctx.beginPath(); ctx.roundRect(40, -10, 30, 70, 14); ctx.fill();
+  var sw = XMAS ? "#C8283A" : "#4E9A5A";
+  ctx.fillStyle = sw; ctx.beginPath(); ctx.moveTo(-34, 50); ctx.quadraticCurveTo(-40, -8, 0, -14); ctx.quadraticCurveTo(40, -8, 34, 50); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#FFF4E6"; ctx.beginPath(); ctx.moveTo(-18, -2); ctx.lineTo(18, -2); ctx.lineTo(24, 48); ctx.lineTo(-24, 48); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = XMAS ? "#2F8F4E" : "#E8728C"; for (var i = -2; i <= 2; i++) circ(ctx, i*9, 40, 2.4, ctx.fillStyle);
+  ctx.fillStyle = "#5A3A22"; ctx.beginPath(); ctx.roundRect(-34, 46, 68, 18, 8); ctx.fill();
+  ell(ctx, -14, 70, 11, 6, "#3A2A1A"); ell(ctx, 14, 70, 11, 6, "#3A2A1A");
+  circ(ctx, 0, -36, 22, "#F6CDB0");
+  ctx.fillStyle = "#E9E6F0"; ctx.beginPath(); ctx.arc(0, -42, 23, Math.PI*1.02, Math.PI*1.98); ctx.fill();
+  circ(ctx, -20, -40, 7, "#E9E6F0"); circ(ctx, 20, -40, 7, "#E9E6F0");
+  if (XMAS){ ctx.fillStyle = "#C8283A"; ctx.beginPath(); ctx.moveTo(-24, -52); ctx.quadraticCurveTo(-4, -92, 24, -70); ctx.lineTo(24, -52); ctx.closePath(); ctx.fill(); ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.roundRect(-26, -58, 52, 9, 4.5); ctx.fill(); circ(ctx, 26, -72, 5, "#fff"); }
+  else { ell(ctx, 0, -55, 40, 8, "#E9C46A"); ctx.fillStyle = "#F0D27A"; ctx.beginPath(); ctx.arc(0, -58, 22, Math.PI, 0); ctx.fill(); ctx.fillStyle = "#D95D7A"; ctx.fillRect(-22, -61, 44, 5); ell(ctx, 0, -55, 40, 8, "rgba(120,80,20,.2)"); }
+  ctx.strokeStyle = "#6A4A3A"; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(-8, -34, 6, 0, 6.283); ctx.stroke(); ctx.beginPath(); ctx.arc(8, -34, 6, 0, 6.283); ctx.stroke(); line(ctx, [-2, -34, 2, -34], "#6A4A3A", 1.6);
+  if ((tm % 4.2) < .12){ line(ctx, [-11, -34, -5, -34], "#3a2a2a", 1.6); line(ctx, [5, -34, 11, -34], "#3a2a2a", 1.6); } else { dotEye(ctx, -8, -34, 2); dotEye(ctx, 8, -34, 2); }
+  circ(ctx, -14, -26, 4, "rgba(255,120,140,.45)"); circ(ctx, 14, -26, 4, "rgba(255,120,140,.45)");
+  smile(ctx, 0, -27, 5, "#7a2a2a", 1.6, cheer > 0);
+  // watering can in her hand (tilts when cheering)
+  var tilt = cheer > 0 ? -.5 : (canMode ? -.4 : Math.sin(tm*1.5)*.05);
+  ell(ctx, -18, 12, 9, 15, sw, .5);
+  ctx.save(); ctx.translate(38, 22); ctx.rotate(tilt);
+  ctx.fillStyle = "#6FA8D6"; ctx.beginPath(); ctx.roundRect(-14, -12, 28, 24, 5); ctx.fill(); ctx.fillStyle = "#8EC1EA"; ctx.fillRect(-14, -12, 28, 6);
+  line(ctx, [-14, -4, -26, -16, -30, -16], "#6FA8D6", 4); ell(ctx, -31, -17, 5, 3, "#8EC1EA", -.7);
+  ctx.strokeStyle = "#4C86B8"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(2, -12, 9, Math.PI, 0); ctx.stroke(); ctx.restore();
+  circ(ctx, 28, 14, 5, "#F6CDB0");
+  if (cheer > 0 || canMode){ for (i = 0; i < 4; i++){ var ph = (tm*3 + i*.25) % 1; circ(ctx, 6 - ph*16 - i*2, 8 + ph*40, 2.2, "rgba(140,200,255,.85)"); } }
+  ctx.restore();
+}
+function drawDecor(x, y, s, tm){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  if (XMAS){ // snowman
+    ell(ctx, 0, 40, 30, 28, "#FFFFFF"); ell(ctx, 0, 6, 22, 20, "#FFFFFF"); circ(ctx, 0, -22, 15, "#FFFFFF");
+    ctx.fillStyle = "#2A2A3A"; ctx.fillRect(-12, -46, 24, 14); ctx.fillRect(-17, -34, 34, 4); ctx.fillStyle = "#C8283A"; ctx.fillRect(-12, -36, 24, 4);
+    circ(ctx, -5, -24, 1.8, "#222"); circ(ctx, 5, -24, 1.8, "#222"); ctx.fillStyle = "#F28A2E"; ctx.beginPath(); ctx.moveTo(0, -21); ctx.lineTo(13, -18); ctx.lineTo(0, -17); ctx.fill();
+    circ(ctx, 0, 2, 2.4, "#222"); circ(ctx, 0, 12, 2.4, "#222"); line(ctx, [-20, 2, -34, -10], "#6B3E22", 2.4); line(ctx, [20, 2, 34, -8], "#6B3E22", 2.4);
+    ctx.fillStyle = "#C8283A"; ctx.beginPath(); ctx.roundRect(-16, -12, 32, 6, 3); ctx.fill();
+  } else { // wheelbarrow with flowers
+    ctx.fillStyle = "#4A7BD0"; ctx.beginPath(); ctx.moveTo(-32, 8); ctx.lineTo(32, 8); ctx.lineTo(24, 38); ctx.lineTo(-22, 38); ctx.closePath(); ctx.fill();
+    [[-18, 4, "#FF7A9A"], [-4, -4, "#FFD23F"], [10, 2, "#FF9F4A"], [22, 6, "#B48CF0"]].forEach(function(f){ line(ctx, [f[0], 10, f[0], f[1] + 4], "#3E9B4A", 2.4); circ(ctx, f[0], f[1], 7, f[2]); circ(ctx, f[0], f[1], 2.6, "#FFF4C4"); });
+    line(ctx, [30, 14, 52, 30], "#8A5A34", 4); line(ctx, [-30, 24, -42, 46], "#8A5A34", 3); circ(ctx, 4, 46, 11, "#2A2A2A"); circ(ctx, 4, 46, 5, "#8A8A8A");
+  }
+  ctx.restore();
+}
+
+/* ---------- game state ---------- */
+var runT0 = 0, mode = "menu", playMode = "daily", grid = [], rng = Math.random, score = 0, merges = 0, moves = 0, topL = 0, row = [], cans = 0, canMode = false;
+var finished = false, endWhy = "", flyers = [], parts = [], texts = [], banner = null, paw = 0, hop = 0, cheer = 0, magicX = 2.5, look = 0, idleT = 0, hint = null, needCheck = false, newBest = false, uid = 0, cursor = null, sel = null, drag = null, dig = null, mx = 0, my = 0, seenTop = 2;
+function mk(l){ return {l: l, id: ++uid, pop: 0, wig: 0, hold: 0, from: -1, born: 0}; }
+function cellX(c){ return TX + (c + .5)*CS; } function cellY(r){ return TY + (r + .5)*CS; }
+function inB(c, r){ return c >= 0 && c < COLS && r >= 0 && r < ROWS; }
+function findPair(){ // best pair = highest level first
+  var best = null;
+  for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
+    for (var c2 = 0; c2 < COLS; c2++) for (var r2 = 0; r2 < ROWS; r2++){ if (c2*ROWS + r2 <= c*ROWS + r) continue; var q = grid[c2][r2]; if (q && q.l === o.l && (!best || o.l > best.l)) best = {a: [c, r], b: [c2, r2], l: o.l}; } }
+  return best;
+}
+function emptyCells(skip){ var e = []; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (!grid[c][r] && !(skip && skip[0] === c && skip[1] === r)) e.push([c, r]); return e; }
+function plantCount(){ return COLS*ROWS - emptyCells().length; }
+function spawn(skip){
+  var e = emptyCells(skip); if (!e.length) return;
+  var p = e[Math.floor(rng()*e.length)], o = mk(pick(rng())); o.born = .3; grid[p[0]][p[1]] = o;
+}
+function newRun(m){
+  playMode = m === "free" ? "free" : "daily";
+  rng = playMode === "daily" ? mulberry32(hashStr("hage:" + dayNum())) : Math.random;
+  var guard = 0;
+  do { grid = []; for (var c = 0; c < COLS; c++){ grid.push([]); for (var r = 0; r < ROWS; r++) grid[c].push(null); } for (var i = 0; i < 9; i++) spawn(); } while (!findPair() && guard++ < 60);
+  for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++) if (grid[c][r]) grid[c][r].born = .25 + (c + r)*.04;
+  score = 0; merges = 0; moves = 0; topL = 0; row = [0, 0, 0, 0, 0, 0, 0, 0]; cans = playMode === "daily" ? CAN_D : CAN_F; canMode = false;
+  for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++) if (grid[c][r]) topL = Math.max(topL, grid[c][r].l);
+  topL = 0;
+  finished = false; endWhy = ""; flyers = []; parts = []; texts = []; banner = null; idleT = 0; hint = null; needCheck = true; seenTop = 2; newBest = false; magicX = COLS/2; cursor = null; sel = null; drag = null; dig = null; runT0 = Date.now(); kodyUsed = false; kodyAsked = false;
+  updHud(true);
+}
+function busy(){ if (flyers.length || dig) return true; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (o && o.hold > 0) return true; } return false; }
+function say(s, d, k){ banner = {s: s, t: d || 1.6}; if (k) BF(k); }
+function BF(k){ if (window.S60Bestefar) S60Bestefar.react(k); }
+function bfDraw(){ if (!window.S60Bestefar) return; var s = gS*.92, x = (side && gX - 160*gS > 6) ? gX - 122*gS : gX + 64*gS; S60Bestefar.draw(ctx, x, gY, s); }
+function addPts(p, x, y){ score += p; texts.push({s: "+" + fmtN(p), x: x, y: y, l: 1}); }
+function burst(x, y, col, n, up){ for (var i = 0; i < n; i++){ var a = Math.random()*6.283, v = rnd(40, 160); parts.push({x: x, y: y, vx: Math.cos(a)*v, vy: Math.sin(a)*v - (up || 40), l: rnd(.4, .8), c: col}); } }
+function segNow(){ return Math.min(7, Math.floor(Math.max(0, moves - 1)/SEG)); }
+function note(nl){ row[segNow()] = Math.max(row[segNow()], nl); if (nl > topL){ topL = nl; if (nl >= 3 && nl > seenTop){ seenTop = nl; say(t("newItem").replace("{i}", t("items")[nl]), 1.8, "level"); setTimeout(SFX.newItem, 200); } } }
+function hasMerge(){ return !!findPair(); }
+
+/* a move: drag plant A onto plant B (same kind → grows one step) or onto an empty bed (replant) */
+function act(c1, r1, c2, r2){
+  if (mode !== "play" || finished || busy() || canMode) return false;
+  if (!inB(c1, r1) || !inB(c2, r2) || (c1 === c2 && r1 === r2)) return false;
+  var a = grid[c1][r1], b = grid[c2][r2]; if (!a) return false;
+  idleT = 0; hint = null; magicX = c2 + .5; paw = 1;
+  if (b && b.l !== a.l){ b.wig = .35; a.wig = .35; SFX.tap(); vib(8); return false; }
+  var x = cellX(c2), y = cellY(r2);
+  moves++; cheer = 1.2; hop = 1;
+  if (!b){ // replant
+    flyers.push({l: a.l, x: cellX(c1), y: cellY(r1), tx: x, ty: y, t: 0, d: .16});
+    var o = mk(a.l); o.hold = .16; o.from = -1; grid[c2][r2] = o; grid[c1][r1] = null; SFX.land(); vib(6);
+  } else if (a.l === NL - 1){ // two prize plants → Grandma's rosette
+    flyers.push({l: a.l, x: cellX(c1), y: cellY(r1), tx: x, ty: y, t: 0, d: .2}); flyers.push({l: b.l, x: x, y: y, tx: x, ty: y - CS, t: 0, d: .3});
+    grid[c1][r1] = null; grid[c2][r2] = null; merges++; addPts(STAR, x, y - CS*.3); burst(x, y, "#FFE066", 40); burst(x, y, "#fff", 20); say(t("star"), 2.2, "win"); SFX.star(); vib([30, 40, 60]); note(NL - 1);
+  } else {
+    var nl = a.l + 1; merges++;
+    flyers.push({l: a.l, x: cellX(c1), y: cellY(r1), tx: x, ty: y, t: 0, d: .16});
+    grid[c1][r1] = null; b.from = a.l; b.l = nl; b.hold = .16; b.pop = 0;
+    addPts(PTS[nl], x, y - CS*.3); note(nl);
+    setTimeout(function(){ burst(x, y, plate(nl), 10 + nl*3); SFX.pop(nl, 2); vib(10 + nl*4); }, 150);
+  }
+  // Magic digs now and then: he removes one of the smallest plants (clears room)
+  var skip = null;
+  if (moves % DIG_EVERY === 0 && moves < limit()){
+    var minL = 99; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (grid[c][r]) minL = Math.min(minL, grid[c][r].l);
+    if (minL <= 2){ var cand = []; for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++) if (grid[c][r] && grid[c][r].l === minL) cand.push([c, r]);
+      var pc = cand[Math.floor(rng()*cand.length)]; dig = {c: pc[0], r: pc[1], l: minL, t: 0, did: false}; skip = pc; grid[pc[0]][pc[1]] = null; say(t("dig"), 1.6, "combo"); }
+  }
+  spawn(skip);
+  if (moves === limit() - 5) say(t("last5"), 0, "hurry");
+  needCheck = true;
+  if (playMode === "daily") saveDailyProgress();
+  if (Math.random() < .1) SFX.meow();
+  updHud(); return true;
+}
+function canUse(c, r){
+  if (mode !== "play" || finished || busy() || cans <= 0) return false;
+  if (!inB(c, r) || !grid[c][r] || grid[c][r].l >= NL - 1) return false;
+  var o = grid[c][r], x = cellX(c), y = cellY(r); cans--; canMode = false; idleT = 0; hint = null;
+  o.from = o.l; o.l++; o.hold = .25; o.pop = 0; cheer = 1.2; magicX = c + .5;
+  addPts(Math.round(PTS[o.l]/2), x, y - CS*.3); note(o.l); SFX.water(); vib([10, 20, 10]);
+  for (var i = 0; i < 14; i++) parts.push({x: x + rnd(-CS*.3, CS*.3), y: y - CS*.6 - rnd(0, CS*.2), vx: rnd(-10, 10), vy: rnd(40, 120), l: rnd(.4, .7), c: "#8EC9FF"});
+  setTimeout(function(){ burst(x, y, plate(o.l), 12); SFX.pop(o.l, 2); }, 250);
+  needCheck = true; if (playMode === "daily") saveDailyProgress(); updHud(); return true;
+}
+function setCan(on){
+  if (mode !== "play" || finished) return; if (on && cans <= 0){ say(t("canNone"), 1.2); return; }
+  canMode = on; if (on) say(t("canUse"), 2.2); SFX.tap(); updHud();
+}
+function afterSettle(){
+  needCheck = false;
+  if (finished) return;
+  if (moves >= limit()){ endRun("done"); return; }
+  if (!emptyCells().length && !hasMerge()){
+    var any = false; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (grid[c][r] && grid[c][r].l < NL - 1) any = true;
+    if (cans > 0 && any){ if (!banner || banner.s !== t("stuckCan")) say(t("stuckCan"), 2.4, "stuck"); } else endRun("stuck");
+  }
+}
+
+/* ---------- daily result, streak ---------- */
+function limit(){ return playMode === "daily" ? DAILY_N : FREE_N; }
+function curStreak(){ var d = dayNum(); return (P.lastDay === d || P.lastDay === d - 1) ? P.streak : 0; }
+function rowStr(r){ return (r || []).map(function(v){ return SQ[v] || "▫️"; }).join(""); }
+function saveDailyProgress(){ if (playMode !== "daily" || finished) return; P.daily = {day: dayNum(), score: score, merges: merges, top: topL, row: row.slice(), why: "partial", moves: moves}; save(); }
+addEventListener("pagehide", function(){ if (mode === "play" || mode === "pause") saveDailyProgress(); });
+function finishDaily(){
+  var d = dayNum(); if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; }
+  P.daily = {day: d, score: score, merges: merges, top: topL, row: row.slice(), why: endWhy, moves: moves}; save();
+}
+function dailyDoneToday(){ return !!(P.daily && P.daily.day === dayNum()); }
+(function(){ if (P.daily && P.daily.why === "partial"){ var d = P.daily.day; if (P.lastDay !== d){ P.streak = (P.lastDay === d - 1 ? P.streak : 0) + 1; P.lastDay = d; } P.daily.why = "quit"; save(); } })();
+function endRun(why){
+  if (finished) return; if (kodyOffer(why)) return; finished = true; endWhy = why; canMode = false;
+  var secs = Math.round((Date.now() - runT0)/1000);
+  if (playMode === "daily") finishDaily(); else { newBest = score > P.best && score > 0; if (newBest) P.best = score; }
+  P.games++; save();
+  if (!DEBUG){
+    if (playMode === "daily") SXD.result({score: score, ko: merges, wave: dayNum(), secs: secs});
+    else if (!kodyUsed) SX.result({score: score, ko: merges, wave: topL + 1, secs: secs});
+  }
+  gc("mormors-hage-over", "mormors-hage over " + playMode + " " + why);
+  if (playMode === "daily") gc("mormors-hage-daily-finish", "mormors-hage daily finish");
+  if (why === "done") SFX.done(); else SFX.end(); vib(why === "done" ? [30, 50, 30] : [80, 60, 120]);
+  setTimeout(function(){ if (finished && mode === "play") setMode("over"); }, 1000);
+}
+var lastShown = "daily";
+function shareText(){
+  if (lastShown === "daily" && P.daily){ var dd = P.daily, s = curStreak();
+    return t("name") + " #" + dd.day + " 🌻 " + fmtN(dd.score) + "\n" + rowStr(dd.row) + "\n" + t("biggest") + ": " + EMO(dd.top) + (s > 0 ? " · " + t("streakW") + " " + s + "🔥" : "") + "\nstop60.no"; }
+  return t("name") + " · " + t("freeName") + " 🌻 " + fmtN(score) + "\n" + t("biggest") + ": " + EMO(topL) + " · " + t("merges") + ": " + merges + "\nstop60.no";
+}
+function paintOver(){
+  var daily = lastShown === "daily" && P.daily, d = daily ? P.daily : {score: score, merges: merges, top: topL, why: endWhy};
+  $("overTitle").textContent = daily ? (d.why === "stuck" ? t("overStuck") : t("overDone")) + " #" + d.day : (d.why === "stuck" ? t("overStuck") : t("overFree"));
+  $("oScore").textContent = fmtN(d.score); $("oMerges").textContent = d.merges; $("oBig").textContent = EMO(d.top) + " " + t("items")[d.top];
+  $("oBestRow").hidden = !!daily; $("oNew").hidden = daily || !newBest;
+  var s = curStreak(); $("oStreak").hidden = !daily || !s; $("oStreak").textContent = t("streak").replace("{n}", s);
+  var gr = t("gran"); $("oGran").textContent = gr[(d.score + d.merges) % gr.length]; if (window.S60Bestefar) S60Bestefar.overLine($("oBestefar"), (newBest ? "win" : "over"), d.score);
+  $("retryBtn").textContent = daily ? t("free") : t("retry");
+  $("oCd").hidden = !daily; $("overGrid").textContent = shareText();
+  $("sxOver").hidden = !!daily || kodyUsed; $("sxOverD").hidden = !daily; $("oKody").hidden = !!daily || !kodyUsed; if (window.S60Kody) $("oKody").textContent = "❤️ " + S60Kody.t(lang).flag;
+  refreshStats(); tickCd();
+}
+function doShare(txt){
+  var url = PAGE_URL;
+  if (navigator.share){ navigator.share({text: txt, url: url}).catch(function(){}); return; }
+  try { navigator.clipboard.writeText(txt + "\n" + url).then(function(){ toast(t("copied")); }); } catch(e){ toast(t("copied")); }
+}
+if (window.S60ScoreShare) S60ScoreShare.bind($("scoreShare"), { game: "mormors-hage", links: $("scoreLinks"), lang: function(){ return lang; }, gameName: function(){ return t("name"); }, score: function(){ return $("oScore").textContent || 0; }, text: function(){ var g = $("overGrid"); return (g && g.textContent) || ""; } });
+else $("scoreShare").onclick = function(){ doShare(shareText()); gc("mormors-hage-share-score", "mormors-hage share score"); };
+$("overGrid").onclick = function(){ $("scoreShare").click(); };
+document.querySelectorAll(".shareB").forEach(function(b){ b.onclick = function(){
+  var d = {title: t("name"), text: t("shareText"), url: PAGE_URL};
+  if (navigator.share) navigator.share(d).catch(function(){}); else if (navigator.clipboard) navigator.clipboard.writeText(PAGE_URL).then(function(){ toast(t("copied")); });
+  gc("mormors-hage-share", "mormors-hage share");
+}; });
+
+/* ---------- menu + modes ---------- */
+function refreshMenu(){
+  var done = dailyDoneToday(), pb = $("playBtn");
+  pb.textContent = t("play"); pb.classList.toggle("done", false);
+  $("mDone").hidden = !done; if (done) $("mDone").textContent = t("dailyDone").replace("{s}", fmtN(P.daily.score));
+  $("mCd").hidden = !done;
+  var s = curStreak(); $("mStreak").hidden = !s; $("mStreak").textContent = t("streak").replace("{n}", s);
+  tickCd();
+}
+function cdStr(){ var n = new Date(), m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1), s = Math.max(0, Math.floor((m - n)/1000)); return Math.floor(s/3600) + ":" + String(Math.floor(s/60) % 60).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); }
+function tickCd(){ var s = t("nextIn").replace("{t}", cdStr()); if (!$("mCd").hidden) $("mCd").textContent = s; if (!$("oCd").hidden) $("oCd").textContent = s; }
+setInterval(tickCd, 1000);
+function setMode(m){
+  mode = m;
+  $("menu").hidden = m !== "menu"; $("pause").hidden = m !== "pause"; $("over").hidden = m !== "over";
+  $("hud").hidden = !(m === "play" || m === "pause"); $("langs").hidden = m !== "menu"; $("canBtn").hidden = m !== "play";
+  if (m === "menu"){ refreshMenu(); SX.fortune($("playBtn")); }
+  if (m === "over"){ paintOver(); SX.fortune($("overLove")); }
+}
+/* START always says START; if today's garden is already played it shows the saved result, otherwise starts today's garden */
+function start(m){
+  audio();
+  if (m === "daily" && dailyDoneToday()){ lastShown = "daily"; newBest = false; setMode("over"); return; }
+  newRun(m); lastShown = playMode; setMode("play"); say(playMode === "daily" ? t("goDaily") : t("goFree"), 1.8); BF("start");
+  if (playMode === "daily"){ SXD.start(); saveDailyProgress(); } else SX.start();
+  gc("mormors-hage-start", "mormors-hage start " + playMode);
+}
+$("playBtn").onclick = function(){ start("daily"); };
+$("freeBtn").onclick = function(){ start("free"); };
+$("retryBtn").onclick = function(){ start("free"); };
+$("overMenu").onclick = function(){ setMode("menu"); };
+$("pauseBtn").onclick = function(ev){ ev.stopPropagation(); if (mode === "play") setMode("pause"); };
+$("resumeBtn").onclick = function(){ setMode("play"); };
+$("topDayBtn").onclick = function(){ SXD.board(); };
+$("canBtn").onclick = function(ev){ ev.stopPropagation(); setCan(!canMode); };
+$("quitBtn").onclick = function(){ if (!finished && playMode === "daily"){ finished = true; endWhy = "quit"; finishDaily(); lastShown = "daily"; setMode("over"); return; } setMode("menu"); };
+
+/* ---------- HUD ---------- */
+var hudCache = {};
+function setTxt(id, v){ v = String(v); if (hudCache[id] !== v){ hudCache[id] = v; $(id).textContent = v; } }
+function updHud(force){
+  if (force) hudCache = {};
+  setTxt("hScore", fmtN(score));
+  setTxt("hL2", t("moves")); setTxt("hTh", Math.max(0, limit() - moves)); $("hTh").classList.toggle("warn", limit() - moves <= 5 && mode === "play" && !finished);
+  setTxt("hTop", EMO(topL));
+  setTxt("canBtn", "💧 " + t("can") + " ×" + cans); $("canBtn").classList.toggle("on", canMode); $("canBtn").classList.toggle("off", cans <= 0); $("canBtn").classList.toggle("on", canMode || !!(hint && hint.can));
+}
+
+/* ---------- simulation ---------- */
+function step(dt){
+  for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
+    if (o.hold > 0){ o.hold -= dt; if (o.hold <= 0){ o.hold = 0; o.pop = 1; } }
+    if (o.born > 0) o.born = Math.max(0, o.born - dt);
+    if (o.pop > 0) o.pop = Math.max(0, o.pop - dt*3); if (o.wig > 0) o.wig = Math.max(0, o.wig - dt); }
+  for (var i = flyers.length - 1; i >= 0; i--){ var f = flyers[i]; f.t += dt; if (f.t >= f.d) flyers.splice(i, 1); }
+  if (dig){ dig.t += dt; if (!dig.did && dig.t > .55){ dig.did = true; burst(cellX(dig.c), cellY(dig.r), "#6B4A2E", 18); burst(cellX(dig.c), cellY(dig.r), "#8A6038", 8); SFX.dig(); vib([20, 20, 20]); } if (dig.t > 1.1) dig = null; }
+  if (needCheck && !busy()) afterSettle();
+  idleT += dt;
+  if (idleT > 6 && !hint && !finished && !busy() && !drag){
+    var p = findPair(); if (p) hint = p; else if (cans > 0) hint = {can: true};
+  }
+}
+function fx(dt){
+  for (var i = parts.length - 1; i >= 0; i--){ var p = parts[i]; p.l -= dt; if (p.l <= 0){ parts.splice(i, 1); continue; } p.x += p.vx*dt; p.y += p.vy*dt; p.vy += 260*dt; }
+  for (i = texts.length - 1; i >= 0; i--){ var tx = texts[i]; tx.l -= dt; tx.y -= 40*dt; if (tx.l <= 0) texts.splice(i, 1); }
+  if (banner){ banner.t -= dt; if (banner.t <= 0) banner = null; }
+  paw = Math.max(0, paw - dt*4); hop = Math.max(0, hop - dt*3); cheer = Math.max(0, cheer - dt);
+  look += (clamp((magicX - COLS/2)/2, -1, 1) - look)*Math.min(1, dt*6);
+  var ms = clamp(CS/40, 1, 1.8), hx = TX + clamp(magicX, .5, COLS - .5)*CS + 14*ms, hy = TY - 8 - 20*ms, tx2 = hx, ty2 = hy;
+  if (dig){ tx2 = cellX(dig.c) + 10*ms; ty2 = cellY(dig.r) + 4*ms; }
+  if (!mx){ mx = hx; my = hy; }
+  var k = Math.min(1, dt*(dig ? 9 : 7)); mx += (tx2 - mx)*k; my += (ty2 - my)*k;
+}
+
+/* ---------- leaderboards: free play + garden of the day ---------- */
+function mkSX(game, daily){
+  return window.S60Social ? S60Social.create({
+    game: game, url: PAGE_URL, lang: function(){ return lang; }, gameName: function(){ return t("name") + (daily ? " · " + t("dayName") + " #" + dayNum() : ""); },
+    shareText: function(r){ return t("sxShare").replace("{s}", fmtN(r ? r.score : (daily ? (P.daily && P.daily.score) || 0 : P.best))); },
+    fmt: function(r){ return daily ? t("sxRowD").replace("{s}", fmtN(r.score)) : t("sxRow").replace("{s}", fmtN(r.score)).replace("{e}", EMO(clamp((r.wave || 1) - 1, 0, NL - 1))); },
+    rpc: {start: "mormors_hage_start", submit: "mormors_hage_submit"},
+    args: function(r, tok){ return {p_name: r.name, p_score: r.score, p_ko: r.ko, p_wave: r.wave, p_secs: r.secs | 0, p_token: tok || null, p_daily: daily}; },
+    filter: daily ? function(){ return "&wave=eq." + dayNum(); } : null,
+    toast: toast
+  }) : {block: function(){ return document.createElement("div"); }, relabel: function(){}, fortune: function(){}, result: function(){}, start: function(){}, board: function(){}};
+}
+var SX = mkSX("mormors-hage", false), SXD = mkSX("mormors-hage-dag", true);
+
+/* ---------- Kode / Kod / Code: extra life in free play + Magic's gold hat ---------- */
+var kodyUsed = false, kodyAsked = false;
+function kodyOffer(why){
+  if (playMode !== "free" || why !== "stuck" || kodyUsed || kodyAsked || !window.S60Kody || S60Kody.lives() <= 0) return false;
+  kodyAsked = true; mode = "kody";
+  S60Kody.offerLife({lang: function(){ return lang; }, game: "mormors-hage",
+    onYes: function(){ kodyUsed = true; mode = "play"; kodyRevive(); },
+    onNo: function(){ mode = "play"; endRun(why); }});
+  return true;
+}
+function kodyRevive(){ // Magic digs up the six smallest plants and Grandma refills the can
+  var all = []; for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++) if (grid[c][r]) all.push([c, r, grid[c][r].l]);
+  all.sort(function(a, b){ return a[2] - b[2]; });
+  all.slice(0, 6).forEach(function(p){ burst(cellX(p[0]), cellY(p[1]), "#FFD45A", 10); grid[p[0]][p[1]] = null; });
+  cans++; hop = 1; cheer = 1.2; SFX.dig(); say(S60Kody.t(lang).rev, 1.8, "code"); needCheck = true; updHud(true);
+}
+var KB = window.S60Kody ? S60Kody.mount($("kodyBox"), {lang: function(){ return lang; }, game: "mormors-hage"}) : null;
+$("sxMenu").appendChild(SX.block()); $("sxOver").appendChild(SX.block()); $("sxOverD").appendChild(SXD.block());
+
+/* ---------- render ---------- */
+function ease(q){ return 1 - Math.pow(1 - q, 3); }
+function render(){
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(BG, 0, 0); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  var tm = performance.now()/1000;
+  drawDecor(trX, trY, trS, tm);
+  bfDraw(); drawGrandma(gX, gY, gS, tm);
+  if (grid.length){
+    var hintCells = hint && hint.a ? [hint.a, hint.b] : [];
+    for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var o = grid[c][r]; if (!o) continue;
+      if (o.hold > 0 && o.from < 0) continue;
+      var l = o.hold > 0 ? o.from : o.l, s = spr(l), sz = s.width/DPR, k = 1 + o.pop*.25, x = cellX(c), y = cellY(r), rot = o.wig > 0 ? Math.sin(o.wig*40)*.15 : 0;
+      if (o.born > 0) k *= Math.max(.01, 1 - ease(Math.min(1, o.born/.3)));
+      if (hintCells.some(function(p){ return p[0] === c && p[1] === r; })){ k *= 1 + Math.sin(tm*7)*.07; rot = Math.sin(tm*7)*.06; }
+      var isDrag = drag && drag.on && drag.c === c && drag.r === r;
+      if (canMode && o.l < NL - 1){ ctx.lineWidth = 3; ctx.strokeStyle = "rgba(142,201,255," + (.5 + Math.sin(tm*6)*.3) + ")"; ctx.beginPath(); ctx.arc(x, y, CS*.46, 0, 6.2832); ctx.stroke(); }
+      if (isDrag) ctx.globalAlpha = .3;
+      ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot); if (k !== 1) ctx.scale(k, k); ctx.drawImage(s, -sz/2, -sz/2, sz, sz); ctx.restore(); ctx.globalAlpha = 1;
+      if (sel && sel[0] === c && sel[1] === r && mode === "play"){ ctx.lineWidth = 3.5; ctx.strokeStyle = "#FFF3B0"; ctx.beginPath(); ctx.arc(x, y, CS*.48, 0, 6.2832); ctx.stroke(); }
+      if (cursor && cursor[0] === c && cursor[1] === r && mode === "play"){ ctx.lineWidth = 3; ctx.strokeStyle = "#FFE9A8"; ctx.beginPath(); ctx.roundRect(TX + c*CS + 2, TY + r*CS + 2, CS - 4, CS - 4, 12); ctx.stroke(); }
+    }
+    if (hint && hint.a){ // little hand-dot travelling from one plant to its twin
+      var q = (tm*.9) % 1, e = ease(q), hx = cellX(hint.a[0]) + (cellX(hint.b[0]) - cellX(hint.a[0]))*e, hy = cellY(hint.a[1]) + (cellY(hint.b[1]) - cellY(hint.a[1]))*e;
+      ctx.globalAlpha = Math.sin(q*3.1416); circ(ctx, hx, hy, CS*.11, "#FFF"); ctx.globalAlpha = 1; }
+    // valid targets while dragging / selected
+    var src = drag && drag.on ? [drag.c, drag.r] : (sel ? sel : null);
+    if (src && grid[src[0]] && grid[src[0]][src[1]] && mode === "play"){ var sl = grid[src[0]][src[1]].l;
+      for (c = 0; c < COLS; c++) for (r = 0; r < ROWS; r++){ if (c === src[0] && r === src[1]) continue; var q2 = grid[c][r];
+        if (q2 && q2.l === sl){ ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,243,176," + (.55 + Math.sin(tm*8)*.35) + ")"; ctx.beginPath(); ctx.arc(cellX(c), cellY(r), CS*.47, 0, 6.2832); ctx.stroke(); }
+        else if (!q2){ circ(ctx, cellX(c), cellY(r), CS*.06, "rgba(255,243,176,.45)"); } } }
+    if (dig && dig.t < .6){ var ds = spr(dig.l), dz = ds.width/DPR*(1 - dig.t/.6*.6); ctx.globalAlpha = 1 - dig.t/.6; ctx.drawImage(ds, cellX(dig.c) - dz/2, cellY(dig.r) - dz/2 + dig.t*20, dz, dz); ctx.globalAlpha = 1; }
+    if (dig){ ell(ctx, cellX(dig.c), cellY(dig.r) + CS*.28, CS*.3, CS*.12, "#4A2E1A"); }
+    for (var i = 0; i < flyers.length; i++){ var f = flyers[i], fq = Math.min(1, f.t/f.d), fe = fq*fq, fs = spr(f.l), fz = fs.width/DPR*(1 - fq*.15);
+      ctx.globalAlpha = 1 - fq*.4; ctx.drawImage(fs, f.x + (f.tx - f.x)*fe - fz/2, f.y + (f.ty - f.y)*fe - fz/2, fz, fz); } ctx.globalAlpha = 1;
+  }
+  var ms = clamp(CS/40, 1, 1.8);
+  drawMagic(mx || (TX + 14*ms), my || (TY - 8 - 20*ms), ms, dig ? 0 : look, dig ? .5 + Math.sin(tm*18)*.5 : paw, dig ? 0 : hop*8*ms);
+  if (drag && drag.on && grid[drag.c] && grid[drag.c][drag.r]){ var dl = grid[drag.c][drag.r].l, dsp = spr(dl), dsz = dsp.width/DPR*1.15; ctx.globalAlpha = .28; ell(ctx, drag.x + 4, drag.y + dsz*.45, dsz*.4, dsz*.12, "#000"); ctx.globalAlpha = 1; ctx.drawImage(dsp, drag.x - dsz/2, drag.y - dsz/2 - 8, dsz, dsz); }
+  for (i = 0; i < parts.length; i++){ var p = parts[i]; ctx.globalAlpha = Math.min(1, p.l*2); circ(ctx, p.x, p.y, 3, p.c); } ctx.globalAlpha = 1;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "800 " + Math.round(clamp(CS*.3, 14, 22)) + "px system-ui, sans-serif";
+  for (i = 0; i < texts.length; i++){ var tx = texts[i]; ctx.globalAlpha = Math.min(1, tx.l*2); ctx.lineWidth = 4; ctx.strokeStyle = "rgba(30,50,20,.85)"; ctx.strokeText(tx.s, tx.x, tx.y); ctx.fillStyle = "#FFF3B0"; ctx.fillText(tx.s, tx.x, tx.y); } ctx.globalAlpha = 1;
+  if (window.S60Bestefar) S60Bestefar.bubble(ctx);
+  if (banner && mode === "play"){ ctx.font = "800 " + Math.round(clamp(W*.045, 15, 22)) + "px system-ui, sans-serif"; var by = TY + CS*ROWS*.45; ctx.globalAlpha = Math.min(1, banner.t*2);
+    var tw = Math.min(W - 16, ctx.measureText(banner.s).width + 28); ctx.fillStyle = "rgba(30,50,26,.9)"; ctx.beginPath(); ctx.roundRect(W/2 - tw/2, by - 21, tw, 42, 21); ctx.fill(); ctx.fillStyle = "#FFF3B0"; ctx.fillText(banner.s, W/2, by, W - 30); ctx.globalAlpha = 1; }
+  if (XMAS) drawSnow(tm);
+}
+var flakes = []; for (var fi = 0; fi < 45; fi++) flakes.push({x: (fi*137.5) % 1, y: (fi*0.618) % 1, s: 1 + (fi % 4), v: .03 + (fi % 5)*.012});
+function drawSnow(tm){
+  ctx.fillStyle = "rgba(255,255,255,.85)";
+  for (var i = 0; i < flakes.length; i++){ var f = flakes[i], y = ((f.y + tm*f.v) % 1)*H, x = ((f.x + Math.sin(tm*.7 + i)*.02) % 1)*W; ctx.beginPath(); ctx.arc(x, y, f.s*.7, 0, 6.2832); ctx.fill(); }
+}
+
+/* ---------- input: drag a plant onto its twin (or tap one, then the other) ---------- */
+function cellAt(ev){ return [Math.floor((ev.clientX - TX)/CS), Math.floor((ev.clientY - TY)/CS)]; }
+cv.addEventListener("pointerdown", function(ev){
+  if (mode !== "play") return; cursor = null; var p = cellAt(ev);
+  if (canMode){ if (!canUse(p[0], p[1])) { if (inB(p[0], p[1]) && grid[p[0]][p[1]]) grid[p[0]][p[1]].wig = .35; } return; }
+  if (busy() || finished) return;
+  if (sel && inB(p[0], p[1]) && !(sel[0] === p[0] && sel[1] === p[1])){ var s0 = sel; sel = null; if (grid[s0[0]][s0[1]]) act(s0[0], s0[1], p[0], p[1]); return; }
+  if (inB(p[0], p[1]) && grid[p[0]][p[1]]){
+    if (sel && sel[0] === p[0] && sel[1] === p[1]){ sel = null; return; }
+    drag = {c: p[0], r: p[1], x: ev.clientX, y: ev.clientY, sx: ev.clientX, sy: ev.clientY, on: false, wasSel: false}; idleT = 0; hint = null;
+    try { cv.setPointerCapture(ev.pointerId); } catch(e){}
+  } else sel = null;
+});
+cv.addEventListener("pointermove", function(ev){
+  if (!drag) return; drag.x = ev.clientX; drag.y = ev.clientY;
+  if (!drag.on && Math.hypot(ev.clientX - drag.sx, ev.clientY - drag.sy) > 8){ drag.on = true; sel = null; SFX.tap(); }
+});
+function endDrag(ev){
+  if (!drag) return; var d = drag; drag = null;
+  if (d.on){ var p = cellAt(ev); if (inB(p[0], p[1]) && (p[0] !== d.c || p[1] !== d.r)) act(d.c, d.r, p[0], p[1]); }
+  else if (grid[d.c] && grid[d.c][d.r] && mode === "play" && !busy()){ sel = [d.c, d.r]; SFX.tap(); }
+}
+cv.addEventListener("pointerup", endDrag); cv.addEventListener("pointercancel", function(){ drag = null; });
+addEventListener("keydown", function(ev){
+  if (mode === "play"){
+    var mv = {ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1]}[ev.key];
+    if (mv){ cursor = cursor || [2, 3]; cursor = [clamp(cursor[0] + mv[0], 0, COLS - 1), clamp(cursor[1] + mv[1], 0, ROWS - 1)]; ev.preventDefault(); }
+    else if ((ev.key === " " || ev.key === "Enter") && cursor){ ev.preventDefault();
+      if (canMode){ canUse(cursor[0], cursor[1]); return; }
+      if (sel && !(sel[0] === cursor[0] && sel[1] === cursor[1])){ var s0 = sel; sel = null; act(s0[0], s0[1], cursor[0], cursor[1]); }
+      else if (grid[cursor[0]][cursor[1]]) sel = sel ? null : [cursor[0], cursor[1]]; }
+    else if (ev.key === "w" || ev.key === "W") setCan(!canMode);
+    else if (ev.key === "p" || ev.key === "P" || ev.key === "Escape"){ if (canMode || sel){ canMode = false; sel = null; updHud(); } else setMode("pause"); }
+  } else if (mode === "pause" && (ev.key === "p" || ev.key === "P" || ev.key === "Escape")) setMode("play");
+});
+
+/* ---------- loop ---------- */
+var last = performance.now();
+function frame(now){
+  var dt = Math.min(.05, (now - last)/1000); last = now;
+  if (mode === "play") step(dt);
+  if (mode !== "pause") fx(dt);
+  updHud(); render(); requestAnimationFrame(frame);
+}
+if (!CanvasRenderingContext2D.prototype.roundRect) CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){ r = Math.min(r, w/2, h/2); this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
+addEventListener("resize", resize);
+var _applyLang = applyLang; applyLang = function(){ _applyLang(); if (cv.width) mkBG();
+  document.querySelectorAll("a[data-t=privacy]").forEach(function(a){ a.href = PRIV[lang]; });
+  if (KB) KB.relabel(); SX.relabel(); SXD.relabel();
+  if (!$("menu").hidden) SX.fortune($("playBtn"), true); else if (!$("over").hidden) SX.fortune($("overLove"), true); };
+if (window.S60Bestefar){ S60Bestefar.init({xmas: XMAS, game: "mormors-hage", mode: function(){ return mode; }}); S60Bestefar.mountMenu($("menu")); }
+resize(); applyLang(); setMode("menu"); requestAnimationFrame(frame);
+
+/* ---------- test hooks ---------- */
+window.__hg = {
+  get mode(){ return mode; }, get score(){ return score; }, get moves(){ return moves; }, get top(){ return topL; }, get finished(){ return finished; }, get busy(){ return busy(); }, get xmas(){ return XMAS; }, get cans(){ return cans; },
+  grid: function(){ return grid.map(function(col){ return col.map(function(o){ return o ? o.l : -1; }); }); },
+  act: act, can: canUse, pair: findPair, day: dayNum, share: function(){ return shareText(); }, P: function(){ return JSON.parse(JSON.stringify(P)); },
+  settle: function(){ for (var i = 0; i < 400 && (busy() || needCheck); i++) step(1/60); fx(.5); return !busy(); },
+  setGrid: function(G){ for (var c = 0; c < COLS; c++) for (var r = 0; r < ROWS; r++){ var v = G[r][c]; grid[c][r] = v >= 0 ? mk(v) : null; } topL = 0; G.forEach(function(row){ row.forEach(function(v){ topL = Math.max(topL, v); }); }); hint = null; idleT = 0; updHud(true); },
+  icon: function(sz, l){ var c = document.createElement("canvas"); c.width = c.height = sz; var g = c.getContext("2d"), gr = g.createLinearGradient(0, 0, 0, sz); gr.addColorStop(0, XMAS ? "#3C5C9C" : "#7CCBF2"); gr.addColorStop(.55, XMAS ? "#EEF4FF" : "#A6D884"); gr.addColorStop(1, XMAS ? "#C4D8F0" : "#4A9446"); g.fillStyle = gr; g.fillRect(0, 0, sz, sz); g.translate(sz/2, sz/2); drawPlantArt(g, l, sz*.36); return c.toDataURL("image/png"); },
+  firstEmpty: function(){ var e = emptyCells(); return e[0] || null; }
+};
+
+</script>
+<script src="/assets/s60-przerwa.js?v=1"></script>
+<script src="https://stop60.no/assets/wisdom.js?v=3" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:document.documentElement.dataset.lang||"no",after:document.getElementById("playBtn")})});</script>
+<script src="/assets/s60-back.js?v=2" data-game="mormors-hage" data-pos="tl" data-dy="52" data-compact="1" data-end="after:#retryBtn|in:#pause" defer></script>
+<script src="/assets/s60-cameo.js?v=2" data-game="mormors-hage" data-play="mode==='play'" data-sound="!mute" data-top="60" defer></script>
+</body>
+</html>
