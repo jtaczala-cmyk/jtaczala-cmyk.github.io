@@ -135,13 +135,37 @@
     c.restore();
   }
 
+  /* ---------- Magic's look (Stop60 standard): polka-dot bow tie, black on even / red on odd Europe/Oslo days ---------- */
+  function osloDay(){ try { return +new Intl.DateTimeFormat("en-GB", {timeZone: "Europe/Oslo", day: "numeric"}).format(new Date()); } catch(e){ return new Date().getDate(); } }
+  var BOWQ = (function(){ try { return new URLSearchParams(location.search).get("bow"); } catch(e){ return null; } })();
+  var BOWK = BOWQ === "black" || BOWQ === "red" ? BOWQ : (osloDay() % 2 === 0 ? "black" : "red");
+  var BOWC = BOWK === "black" ? ["#1C1A22", "#34303C", "#0A090D"] : ["#D3263A", "#F04A5C", "#7E1020"];
+  function drawBow(c, x, y, k){
+    c.save(); c.translate(x, y); c.scale(k, k);
+    var col = BOWC[0], hi = BOWC[1], ink = BOWC[2];
+    [-1, 1].forEach(function(d){
+      c.beginPath(); c.moveTo(d*1.4, -1.1);
+      c.quadraticCurveTo(d*4.2, -4.4, d*7.2, -3.4); c.quadraticCurveTo(d*8.4, 0, d*7.2, 3.4);
+      c.quadraticCurveTo(d*4.2, 4.4, d*1.4, 1.1); c.closePath();
+      c.fillStyle = col; c.fill(); c.lineWidth = .7; c.strokeStyle = ink; c.stroke();
+      c.save(); c.clip();
+      c.fillStyle = hi; c.beginPath(); c.ellipse(d*4.6, -2.2, 2.6, .9, d*.25, 0, 6.2832); c.fill();
+      c.fillStyle = "#FFFFFF"; [[3.2, -1.6], [5.9, -.6], [4.4, 1.7], [6.8, 2.2], [2.4, 1.0], [6.4, -2.6]].forEach(function(q){ c.beginPath(); c.arc(d*q[0], q[1], .62, 0, 6.2832); c.fill(); });
+      c.restore();
+      c.beginPath(); c.moveTo(d*2.2, -.6); c.quadraticCurveTo(d*3.6, 0, d*2.2, .6); c.lineWidth = .45; c.strokeStyle = ink; c.stroke();
+    });
+    c.beginPath(); if (c.roundRect) c.roundRect(-1.9, -2, 3.8, 4, 1.3); else c.rect(-1.9, -2, 3.8, 4); c.fillStyle = col; c.fill(); c.lineWidth = .7; c.strokeStyle = ink; c.stroke();
+    c.fillStyle = "#FFFFFF"; c.beginPath(); c.arc(-.3, -.4, .55, 0, 6.2832); c.fill();
+    c.restore();
+  }
+
   /* ---------- characters (unit box ~ 100 x 140, origin at the face centre, everyone looks at the viewer and smiles) ---------- */
   function drawMagic(c, t) {
     var wave = RM ? 0 : Math.sin(t * 9) * 0.35;
     // body
     ell(c, 0, 62, 34, 30, '#8f5f36'); ell(c, 0, 66, 18, 22, '#c9a27a');
     // waving paw
-    c.save(); c.translate(34, 42); c.rotate(0.45 + wave); ell(c, 0, -16, 9, 18, '#9A6A3E'); circ(c, 0, -32, 9, '#a87547'); circ(c, -3, -35, 2.4, '#f0b9a0'); circ(c, 3, -35, 2.4, '#f0b9a0'); c.restore();
+    c.save(); c.translate(34, 42); c.rotate(0.45 + wave); ell(c, 0, -16, 11, 18, '#9A6A3E'); ell(c, 0, -33, 11.5, 10, '#a87547'); circ(c, -5, -37, 2.6, '#f0b9a0'); circ(c, 0, -39, 2.6, '#f0b9a0'); circ(c, 5, -37, 2.6, '#f0b9a0'); ell(c, 0, -31, 4.2, 3.2, '#f0b9a0'); c.restore();
     // ears
     [-1, 1].forEach(function (d) { c.beginPath(); c.moveTo(d * 34, -14); c.lineTo(d * 36, -54); c.lineTo(d * 8, -34); c.closePath(); c.fillStyle = '#9A6A3E'; c.fill(); c.beginPath(); c.moveTo(d * 29, -20); c.lineTo(d * 31, -44); c.lineTo(d * 14, -32); c.closePath(); c.fillStyle = '#F0B9A0'; c.fill(); });
     // head
@@ -154,10 +178,13 @@
     circ(c, -26, 10, 5, 'rgba(255,140,150,.45)'); circ(c, 26, 10, 5, 'rgba(255,140,150,.45)');
     // nose + happy cat mouth
     c.beginPath(); c.moveTo(-5, 6); c.lineTo(5, 6); c.lineTo(0, 11); c.closePath(); c.fillStyle = '#e88a9a'; c.fill();
-    c.beginPath(); c.moveTo(0, 11); c.quadraticCurveTo(0, 20, -8, 18); c.moveTo(0, 11); c.quadraticCurveTo(0, 20, 8, 18); c.strokeStyle = '#3a2212'; c.lineWidth = 2.4; c.lineCap = 'round'; c.stroke();
-    c.beginPath(); c.moveTo(-6, 18); c.quadraticCurveTo(0, 26, 6, 18); c.closePath(); c.fillStyle = '#c4505e'; c.fill();
+    // soft rounded smile (Stop60 standard)
+    c.beginPath(); c.moveTo(-10, 13.5); c.bezierCurveTo(-7, 23.5, 7, 23.5, 10, 13.5); c.quadraticCurveTo(0, 16.5, -10, 13.5); c.closePath(); c.fillStyle = '#6a2430'; c.fill();
+    ell(c, 0, 18.6, 4.2, 2.6, '#F28C9A');
+    c.strokeStyle = '#3a2212'; c.lineWidth = 2.2; c.lineCap = 'round'; c.beginPath(); c.moveTo(0, 11); c.lineTo(0, 14); c.stroke();
     // whiskers
     [-1, 1].forEach(function (d) { line(c, [d * 14, 12, d * 38, 8], 'rgba(255,255,255,.8)', 1.2); line(c, [d * 14, 15, d * 38, 16], 'rgba(255,255,255,.8)', 1.2); });
+    drawBow(c, 0, 39.5, 2.6); // polka-dot bow tie (black even / red odd Oslo day)
     if (XMAS) hat(c, -14, -30, 34, -0.35);
   }
   function drawGrandma(c, t) {
