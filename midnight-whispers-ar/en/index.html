@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="Free AR game with no ads in your browser: look around through your phone camera and drive away the creatures whispering in the dark. A whisper in the dark that quickly turns into a scream. The camera feed is processed locally only.">
+<link rel="canonical" href="https://stop60.no/midnight-whispers-ar/en/">
+<link rel="alternate" hreflang="nb" href="https://stop60.no/midnight-whispers-ar/">
+<link rel="alternate" hreflang="pl" href="https://stop60.no/midnight-whispers-ar/pl/">
+<link rel="alternate" hreflang="en" href="https://stop60.no/midnight-whispers-ar/en/">
+<link rel="alternate" hreflang="x-default" href="https://stop60.no/midnight-whispers-ar/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stop60">
+<meta property="og:title" content="Midnight Whispers AR – free AR game with your phone camera | Stop60">
+<meta property="og:description" content="Free AR game with no ads in your browser: look around through your phone camera and drive away the creatures whispering in the dark. A whisper in the dark that quickly turns into a scream. The camera feed is processed locally only.">
+<meta property="og:url" content="https://stop60.no/midnight-whispers-ar/en/">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://stop60.no/midnight-whispers-ar/og-en.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Midnight Whispers AR: a glowing shadow creature with red eyes lunging at a phone screen in the dark">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@stop60_games">
+<meta name="twitter:title" content="Midnight Whispers AR – free AR game with your phone camera | Stop60">
+<meta name="twitter:description" content="Free AR game with no ads in your browser: look around through your phone camera and drive away the creatures whispering in the dark. A whisper in the dark that quickly turns into a scream. The camera feed is processed locally only.">
+<meta name="twitter:image" content="https://stop60.no/midnight-whispers-ar/og-en.jpg?v=1">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Midnight Whispers AR", "url": "https://stop60.no/midnight-whispers-ar/en/", "description": "Free AR game with no ads in your browser: look around through your phone camera and drive away the creatures whispering in the dark. A whisper in the dark that quickly turns into a scream. The camera feed is processed locally only.", "inLanguage": "en", "genre": ["Action", "Horror"], "gamePlatform": "Web browser", "applicationCategory": "Game", "operatingSystem": "Any", "isAccessibleForFree": true, "typicalAgeRange": "13-", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "author": {"@type": "Person", "name": "Jacek Taczala"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "image": "https://stop60.no/midnight-whispers-ar/og-en.jpg"}</script>
+<meta name="theme-color" content="#07040c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Midnight Whispers">
+<title>Midnight Whispers AR – free AR horror game in your browser, no ads | Stop60</title>
+<link rel="icon" href="/midnight-whispers-ar/favicon.ico?v=1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/midnight-whispers-ar/icon-32.png?v=1"><link rel="apple-touch-icon" href="/midnight-whispers-ar/apple-touch-icon.png?v=1"><link rel="manifest" href="/midnight-whispers-ar/manifest.webmanifest">
+<link rel="stylesheet" href="/midnight-whispers-ar/game.css?v=1">
+</head>
+<body>
+<video id="cam" autoplay playsinline muted></video>
+<canvas id="scene" aria-label="Midnight Whispers AR"></canvas>
+
+<div id="edgeL" class="edge edge-l"></div>
+<div id="edgeR" class="edge edge-r"></div>
+<div id="edgeB" class="edge edge-b"></div>
+<div id="vignette"></div>
+
+<div id="hud" class="hidden">
+  <div class="hud-top">
+    <div class="stats">
+      <div class="stat"><span class="lbl">Score</span><span id="score" class="val">0</span></div>
+      <div class="stat"><span class="lbl">Wave</span><span id="wave" class="val">1</span></div>
+      <div id="comboBox" class="combo">x<span id="combo">1</span> <small>combo</small></div>
+    </div>
+    <div class="radar-wrap">
+      <canvas id="radar" width="240" height="240"></canvas>
+      <div id="modeTag" class="mode-tag">AR</div>
+    </div>
+  </div>
+  <div id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+  <div id="banner" class="banner"></div>
+  <div id="toast" class="toast"></div>
+  <div class="hud-bottom">
+    <div class="hp">
+      <div class="hp-lbl">Life <span id="hpNum">100</span></div>
+      <div class="hp-bar" id="hpBar">
+        <span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span>
+      </div>
+    </div>
+    <button id="fireBtn" class="fire" aria-label="Fire">FIRE</button>
+  </div>
+  <button id="muteBtn" class="icon-btn mute" aria-label="Sound on/off">🔊</button>
+  <button id="pauseBtn" class="icon-btn pause" aria-label="Pause">❚❚</button>
+</div>
+
+<section id="safetyScreen" class="screen safety-screen" role="dialog" aria-modal="true" aria-labelledby="safetyTitle">
+  <div class="panel safety-panel">
+    <div class="warn-icon" aria-hidden="true"><span>!</span></div>
+    <h2 id="safetyTitle" class="safety-title">Before you start</h2>
+    <p class="safety-sub">Important safety information</p>
+    <p class="safety-lead">Midnight Whispers AR is an augmented reality game. You see the world through your phone camera and turn around, so it is easy to lose track of what is really happening around you.</p>
+    <ul class="safety-list">
+      <li><b>Look around before you start.</b> Only play in a safe, open place with plenty of free space around you.</li>
+      <li><b>Watch out for obstacles:</b> furniture, walls, windows, stairs, kerbs, other people and animals.</li>
+      <li><b>Never play in the street</b>, near traffic, railway tracks, water or at heights.</li>
+      <li><b>Do not play while driving</b>, cycling, riding a scooter or walking in a crowd.</li>
+      <li><b>Photosensitive epilepsy warning.</b> The game contains flashes, flickering and screen shake. People with photosensitive epilepsy or sensitivity to flashing lights should not play. If you feel dizzy, nauseous or your eyes get tired, stop playing immediately.</li>
+      <li><b>Hold your phone firmly.</b> Children should play under adult supervision.</li>
+      <li><b>Age restriction (13+):</b> the game is intended for people aged 13 and over (in countries with a higher age threshold, e.g. 16+, and for younger children – only with the consent and under the supervision of a parent or legal guardian).</li>
+      <li><b>Respect the law and other people's property.</b> Do not enter private property, restricted areas or dangerous places.</li>
+      <li><b>Camera privacy:</b> the camera feed is processed locally on your device only – nothing is recorded, stored or sent over the internet.</li>
+    </ul>
+    <div class="safety" role="note">
+      <b>⚠️ Important – safety:</b> Always be aware of your surroundings. Do not play in the street, near traffic or while driving. You use the game at your own risk. To the fullest extent permitted by law, the creator accepts no liability for any damage, injury or accident resulting from improper, careless or unlawful use of the game.
+    </div>
+    <div class="safety-cta">
+      <label class="safety-check" for="safetyAccept">
+        <input type="checkbox" id="safetyAccept" required>
+        <span class="safety-check-box" aria-hidden="true"></span>
+        <span class="safety-check-text">I have read and accept the safety rules above, I am old enough (or have a guardian's consent) and I play at my own risk.</span>
+      </label>
+      <button id="safetyOk" class="btn primary safety-btn" disabled aria-disabled="true">I understand, go to the game</button>
+    </div>
+  </div>
+</section>
+
+<section id="startScreen" class="screen hidden">
+  <div class="panel">
+    <div class="logo">
+      <div class="eyes"><span></span><span></span></div>
+      <h1>Midnight Whispers <em>AR</em></h1>
+    </div>
+    <p class="tagline"><b>A whisper in the dark that quickly turns into a scream.</b><br>Look around. They're already whispering behind you.</p>
+    <button id="startAR" class="btn primary">START (AR)</button>
+    <button id="startSim" class="btn ghost">No-camera mode (Simulation)</button>
+    <p id="startMsg" class="msg"></p>
+    <ul class="howto">
+      <li><b>Turn around</b> with your phone – the radar in the corner shows where they are coming from.</li>
+      <li><b>Tap</b> a creature or press <b>FIRE</b> to hit the target in the middle of the crosshair.</li>
+      <li>Red glow at the edge = something is right next to you!</li>
+      <li><b>Sound:</b> after you start you will hear a short chime. Hear nothing? Turn up the volume and tap the screen.</li>
+      <li>In simulation: drag with your finger/mouse or use the arrow keys / WASD, space = fire.</li>
+    </ul>
+    <div class="best">Best: <span id="bestStart">0</span></div>
+    <nav class="langs" aria-label="Language"><a href="/midnight-whispers-ar/" hreflang="nb">Norsk</a><a href="/midnight-whispers-ar/pl/" hreflang="pl">Polski</a><a href="/midnight-whispers-ar/en/" hreflang="en" class="cur" aria-current="page">English</a></nav>
+    <p class="love">Games made with passion</p>
+    <p class="seo-lead">Midnight Whispers AR is a free AR game with no ads for your phone (and computer in simulation mode). Turn around with your phone, spot the creatures on the radar and stop them before they reach you. The camera feed is processed locally only and is never recorded or sent anywhere.</p>
+    <p class="small"><a href="/midnight-whispers-ar/en/privacy/">Privacy</a> · <a href="/en/">stop60.no</a></p>
+  </div>
+</section>
+
+<section id="pauseScreen" class="screen hidden">
+  <div class="panel small">
+    <h2>Paused</h2>
+    <button id="resumeBtn" class="btn primary">Back to the game</button>
+    <button id="quitBtn" class="btn ghost">Main menu</button>
+    <p class="love">Games made with passion</p>
+  </div>
+</section>
+
+<section id="overScreen" class="screen hidden">
+  <div class="panel">
+    <h2 class="dead">The shadows got you</h2>
+    <div class="results">
+      <div><span>Score</span><b id="finalScore">0</b></div>
+      <div><span>Wave</span><b id="finalWave">1</b></div>
+      <div><span>Creatures banished</span><b id="finalKills">0</b></div>
+      <div><span>Best combo</span><b id="finalCombo">x1</b></div>
+    </div>
+    <p id="newRecord" class="record hidden">★ New best! ★</p>
+    <div class="best">Best: <span id="bestOver">0</span></div>
+    <button id="againBtn" class="btn primary">Play again</button>
+    <button id="scoreShare" class="btn ghost" type="button">📣 Share your score</button>
+    <div id="scoreLinks" hidden></div>
+    <button id="menuBtn" class="btn ghost">Main menu</button>
+    <nav class="langs" aria-label="Language"><a href="/midnight-whispers-ar/" hreflang="nb">Norsk</a><a href="/midnight-whispers-ar/pl/" hreflang="pl">Polski</a><a href="/midnight-whispers-ar/en/" hreflang="en" class="cur" aria-current="page">English</a></nav>
+    <p class="love">Games made with passion</p>
+    <p class="small"><a href="/midnight-whispers-ar/en/privacy/">Privacy</a> · <a href="/en/">stop60.no</a></p>
+  </div>
+</section>
+
+<script src="/midnight-whispers-ar/game.js?v=1"></script>
+<script src="/assets/score-share.js"></script>
+<script>if (window.S60ScoreShare) S60ScoreShare.bind(document.getElementById("scoreShare"), {game: "midnight-whispers-ar", links: document.getElementById("scoreLinks"), lang: "en", gameName: "Midnight Whispers AR", score: function(){ return window.__mwaScore ? __mwaScore() : 0; }});</script>
+<script src="https://stop60.no/assets/wisdom.js?v=3" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"en",after:document.getElementById("startSim")})});</script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+<script src="/assets/s60-back.js?v=2" data-game="midnight-whispers-ar" data-pos="tl" data-dx="98" data-compact="1" data-end="after:#againBtn|in:#pauseScreen .panel" defer></script>
+<script src="/assets/s60-cameo.js?v=2" data-game="midnight-whispers-ar" data-play="window.__mwaPlay&&__mwaPlay()" data-sound="window.__mwaSound&&__mwaSound()" data-top="150" defer></script>
+</body>
+</html>

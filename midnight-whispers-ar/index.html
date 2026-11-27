@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="nb" data-lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="Gratis AR-spill uten reklame i nettleseren: se deg rundt gjennom mobilkameraet og jag bort skapningene som hvisker i mørket. Et hvisk i mørket som raskt blir til et skrik. Kameraet behandles kun lokalt på enheten.">
+<link rel="canonical" href="https://stop60.no/midnight-whispers-ar/">
+<link rel="alternate" hreflang="nb" href="https://stop60.no/midnight-whispers-ar/">
+<link rel="alternate" hreflang="pl" href="https://stop60.no/midnight-whispers-ar/pl/">
+<link rel="alternate" hreflang="en" href="https://stop60.no/midnight-whispers-ar/en/">
+<link rel="alternate" hreflang="x-default" href="https://stop60.no/midnight-whispers-ar/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stop60">
+<meta property="og:title" content="Midnight Whispers AR – gratis AR-skrekkspill med mobilkameraet | Stop60">
+<meta property="og:description" content="Gratis AR-spill uten reklame i nettleseren: se deg rundt gjennom mobilkameraet og jag bort skapningene som hvisker i mørket. Et hvisk i mørket som raskt blir til et skrik. Kameraet behandles kun lokalt på enheten.">
+<meta property="og:url" content="https://stop60.no/midnight-whispers-ar/">
+<meta property="og:locale" content="nb_NO">
+<meta property="og:image" content="https://stop60.no/midnight-whispers-ar/og-no.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Midnight Whispers AR: glødende skyggeskapning med røde øyne som kaster seg mot mobilskjermen i mørket">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@stop60_games">
+<meta name="twitter:title" content="Midnight Whispers AR – gratis AR-skrekkspill med mobilkameraet | Stop60">
+<meta name="twitter:description" content="Gratis AR-spill uten reklame i nettleseren: se deg rundt gjennom mobilkameraet og jag bort skapningene som hvisker i mørket. Et hvisk i mørket som raskt blir til et skrik. Kameraet behandles kun lokalt på enheten.">
+<meta name="twitter:image" content="https://stop60.no/midnight-whispers-ar/og-no.jpg?v=1">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Midnight Whispers AR", "url": "https://stop60.no/midnight-whispers-ar/", "description": "Gratis AR-spill uten reklame i nettleseren: se deg rundt gjennom mobilkameraet og jag bort skapningene som hvisker i mørket. Et hvisk i mørket som raskt blir til et skrik. Kameraet behandles kun lokalt på enheten.", "inLanguage": "nb", "genre": ["Action", "Horror"], "gamePlatform": "Web browser", "applicationCategory": "Game", "operatingSystem": "Any", "isAccessibleForFree": true, "typicalAgeRange": "13-", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "author": {"@type": "Person", "name": "Jacek Taczala"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "image": "https://stop60.no/midnight-whispers-ar/og-no.jpg"}</script>
+<meta name="theme-color" content="#07040c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Midnight Whispers">
+<title>Midnight Whispers AR – gratis AR-skrekkspill i nettleseren, uten reklame | Stop60</title>
+<link rel="icon" href="/midnight-whispers-ar/favicon.ico?v=1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/midnight-whispers-ar/icon-32.png?v=1"><link rel="apple-touch-icon" href="/midnight-whispers-ar/apple-touch-icon.png?v=1"><link rel="manifest" href="/midnight-whispers-ar/manifest.webmanifest">
+<link rel="stylesheet" href="/midnight-whispers-ar/game.css?v=1">
+</head>
+<body>
+<video id="cam" autoplay playsinline muted></video>
+<canvas id="scene" aria-label="Midnight Whispers AR"></canvas>
+
+<div id="edgeL" class="edge edge-l"></div>
+<div id="edgeR" class="edge edge-r"></div>
+<div id="edgeB" class="edge edge-b"></div>
+<div id="vignette"></div>
+
+<div id="hud" class="hidden">
+  <div class="hud-top">
+    <div class="stats">
+      <div class="stat"><span class="lbl">Poeng</span><span id="score" class="val">0</span></div>
+      <div class="stat"><span class="lbl">Bølge</span><span id="wave" class="val">1</span></div>
+      <div id="comboBox" class="combo">x<span id="combo">1</span> <small>combo</small></div>
+    </div>
+    <div class="radar-wrap">
+      <canvas id="radar" width="240" height="240"></canvas>
+      <div id="modeTag" class="mode-tag">AR</div>
+    </div>
+  </div>
+  <div id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+  <div id="banner" class="banner"></div>
+  <div id="toast" class="toast"></div>
+  <div class="hud-bottom">
+    <div class="hp">
+      <div class="hp-lbl">Liv <span id="hpNum">100</span></div>
+      <div class="hp-bar" id="hpBar">
+        <span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span>
+      </div>
+    </div>
+    <button id="fireBtn" class="fire" aria-label="Skyt">SKYT</button>
+  </div>
+  <button id="muteBtn" class="icon-btn mute" aria-label="Lyd av/på">🔊</button>
+  <button id="pauseBtn" class="icon-btn pause" aria-label="Pause">❚❚</button>
+</div>
+
+<section id="safetyScreen" class="screen safety-screen" role="dialog" aria-modal="true" aria-labelledby="safetyTitle">
+  <div class="panel safety-panel">
+    <div class="warn-icon" aria-hidden="true"><span>!</span></div>
+    <h2 id="safetyTitle" class="safety-title">Før du starter</h2>
+    <p class="safety-sub">Viktig sikkerhetsinformasjon</p>
+    <p class="safety-lead">Midnight Whispers AR er et spill i utvidet virkelighet (AR). Du ser verden gjennom mobilkameraet og snur deg rundt, så det er lett å miste oversikten over det som faktisk skjer rundt deg.</p>
+    <ul class="safety-list">
+      <li><b>Se deg rundt før du starter.</b> Spill bare på et trygt, åpent sted med god plass rundt deg.</li>
+      <li><b>Pass på hindringer:</b> møbler, vegger, vinduer, trapper, fortauskanter, andre mennesker og dyr.</li>
+      <li><b>Spill aldri i gaten</b>, nær trafikk, jernbane, vann eller i høyden.</li>
+      <li><b>Ikke spill mens du kjører</b>, sykler, kjører sparkesykkel eller går i folkemengder.</li>
+      <li><b>Advarsel om lysfølsom epilepsi.</b> Spillet inneholder lysglimt, flimring og risting i bildet. Personer med lysfølsom (fotosensitiv) epilepsi eller følsomhet for lysglimt bør ikke spille. Ved svimmelhet, kvalme eller slitne øyne: avbryt spillet umiddelbart.</li>
+      <li><b>Hold telefonen godt fast.</b> Barn bør spille under tilsyn av en voksen.</li>
+      <li><b>Aldersgrense (13+):</b> spillet er beregnet for personer fra 13 år (i land med høyere aldersgrense, f.eks. 16+, og for yngre barn – kun med samtykke og under tilsyn av en forelder eller foresatt).</li>
+      <li><b>Respekter loven og andres eiendom.</b> Ikke gå inn på privat eiendom, forbudte områder eller farlige steder.</li>
+      <li><b>Kamera og personvern:</b> kamerabildet behandles kun lokalt på enheten din – ingenting blir tatt opp, lagret eller sendt over nettet.</li>
+    </ul>
+    <div class="safety" role="note">
+      <b>⚠️ Viktig – sikkerhet:</b> Vær alltid oppmerksom på omgivelsene dine. Ikke spill i gaten, nær trafikk eller mens du kjører. Du bruker spillet på eget ansvar. I den utstrekning loven tillater, er skaperen ikke ansvarlig for noen skader, personskader eller ulykker som skyldes feilaktig, uforsiktig eller ulovlig bruk av spillet.
+    </div>
+    <div class="safety-cta">
+      <label class="safety-check" for="safetyAccept">
+        <input type="checkbox" id="safetyAccept" required>
+        <span class="safety-check-box" aria-hidden="true"></span>
+        <span class="safety-check-text">Jeg har lest og godtar sikkerhetsreglene ovenfor, jeg har riktig alder (eller samtykke fra en foresatt) og spiller på eget ansvar.</span>
+      </label>
+      <button id="safetyOk" class="btn primary safety-btn" disabled aria-disabled="true">Jeg forstår, gå til spillet</button>
+    </div>
+  </div>
+</section>
+
+<section id="startScreen" class="screen hidden">
+  <div class="panel">
+    <div class="logo">
+      <div class="eyes"><span></span><span></span></div>
+      <h1>Midnight Whispers <em>AR</em></h1>
+    </div>
+    <p class="tagline"><b>Et hvisk i mørket som raskt blir til et skrik.</b><br>Se deg rundt. De hvisker allerede bak deg.</p>
+    <button id="startAR" class="btn primary">START (AR)</button>
+    <button id="startSim" class="btn ghost">Uten kamera (simulering)</button>
+    <p id="startMsg" class="msg"></p>
+    <ul class="howto">
+      <li><b>Snu deg rundt</b> med telefonen – radaren i hjørnet viser hvor de kommer fra.</li>
+      <li><b>Trykk</b> på en skapning eller trykk <b>SKYT</b> for å treffe målet midt i siktet.</li>
+      <li>Rødt lys ved kanten = noe er rett ved siden av deg!</li>
+      <li><b>Lyd:</b> etter start hører du et kort signal. Hører du ingenting? Skru opp volumet og trykk på skjermen.</li>
+      <li>I simulering: dra med fingeren/musen eller bruk piltastene / WASD, mellomrom = skudd.</li>
+    </ul>
+    <div class="best">Rekord: <span id="bestStart">0</span></div>
+    <nav class="langs" aria-label="Språk"><a href="/midnight-whispers-ar/" hreflang="nb" class="cur" aria-current="page">Norsk</a><a href="/midnight-whispers-ar/pl/" hreflang="pl">Polski</a><a href="/midnight-whispers-ar/en/" hreflang="en">English</a></nav>
+    <p class="love">Spill laget med lidenskap</p>
+    <p class="seo-lead">Midnight Whispers AR er et gratis AR-spill uten reklame for mobil (og datamaskin i simuleringsmodus). Snu deg rundt med telefonen, finn skapningene på radaren og stopp dem før de når deg. Kamerabildet behandles kun lokalt og blir aldri tatt opp eller sendt noe sted.</p>
+    <p class="small"><a href="/midnight-whispers-ar/personvern/">Personvern</a> · <a href="/">stop60.no</a></p>
+  </div>
+</section>
+
+<section id="pauseScreen" class="screen hidden">
+  <div class="panel small">
+    <h2>Pause</h2>
+    <button id="resumeBtn" class="btn primary">Tilbake til spillet</button>
+    <button id="quitBtn" class="btn ghost">Hovedmeny</button>
+    <p class="love">Spill laget med lidenskap</p>
+  </div>
+</section>
+
+<section id="overScreen" class="screen hidden">
+  <div class="panel">
+    <h2 class="dead">Skyggene tok deg</h2>
+    <div class="results">
+      <div><span>Poeng</span><b id="finalScore">0</b></div>
+      <div><span>Bølge</span><b id="finalWave">1</b></div>
+      <div><span>Skapninger jaget bort</span><b id="finalKills">0</b></div>
+      <div><span>Beste combo</span><b id="finalCombo">x1</b></div>
+    </div>
+    <p id="newRecord" class="record hidden">★ Ny rekord! ★</p>
+    <div class="best">Rekord: <span id="bestOver">0</span></div>
+    <button id="againBtn" class="btn primary">Spill igjen</button>
+    <button id="scoreShare" class="btn ghost" type="button">📣 Del poengsummen</button>
+    <div id="scoreLinks" hidden></div>
+    <button id="menuBtn" class="btn ghost">Hovedmeny</button>
+    <nav class="langs" aria-label="Språk"><a href="/midnight-whispers-ar/" hreflang="nb" class="cur" aria-current="page">Norsk</a><a href="/midnight-whispers-ar/pl/" hreflang="pl">Polski</a><a href="/midnight-whispers-ar/en/" hreflang="en">English</a></nav>
+    <p class="love">Spill laget med lidenskap</p>
+    <p class="small"><a href="/midnight-whispers-ar/personvern/">Personvern</a> · <a href="/">stop60.no</a></p>
+  </div>
+</section>
+
+<script src="/midnight-whispers-ar/game.js?v=1"></script>
+<script src="/assets/score-share.js"></script>
+<script>if (window.S60ScoreShare) S60ScoreShare.bind(document.getElementById("scoreShare"), {game: "midnight-whispers-ar", links: document.getElementById("scoreLinks"), lang: "no", gameName: "Midnight Whispers AR", score: function(){ return window.__mwaScore ? __mwaScore() : 0; }});</script>
+<script src="https://stop60.no/assets/wisdom.js?v=3" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"no",after:document.getElementById("startSim")})});</script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+<script src="/assets/s60-back.js?v=2" data-game="midnight-whispers-ar" data-pos="tl" data-dx="98" data-compact="1" data-end="after:#againBtn|in:#pauseScreen .panel" defer></script>
+<script src="/assets/s60-cameo.js?v=2" data-game="midnight-whispers-ar" data-play="window.__mwaPlay&&__mwaPlay()" data-sound="window.__mwaSound&&__mwaSound()" data-top="150" defer></script>
+</body>
+</html>
