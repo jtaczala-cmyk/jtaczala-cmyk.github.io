@@ -128,27 +128,68 @@
   ['gesturestart', 'gesturechange', 'gestureend'].forEach((t) => document.addEventListener(t, (e) => e.preventDefault()));
   document.addEventListener('touchmove', (e) => { if (!e.target.closest('.screen')) e.preventDefault(); }, { passive: false });
   let lastTouchEnd = 0;
-  document.addEventListener('touchend', (e) => { const n = Date.now(); if (n - lastTouchEnd < 300) e.preventDefault(); lastTouchEnd = n; }, { passive: false });
+  document.addEventListener('touchend', (e) => { const n = Date.now(); if (n - lastTouchEnd < 300 && !e.target.closest('button')) e.preventDefault(); lastTouchEnd = n; }, { passive: false });
   document.addEventListener('contextmenu', (e) => e.preventDefault());
   document.addEventListener('dblclick', (e) => e.preventDefault());
 
   // ---------- Dźwięk (Web Audio, proceduralny) ----------
   const audio = (() => {
-    let ac = null, master = null, noiseBuf = null, muted = false;
+    let ac = null, master = null, comp = null, noiseBuf = null, muted = false, htmlUnlocked = false, pendingChime = false;
+    const MASTER_VOL = 1.0;
+    // Cichy WAV (generowany w kodzie) – odtworzenie <audio> w geście przełącza sesję audio iOS
+    // na „playback”, dzięki czemu Web Audio gra także przy włączonym przełączniku wyciszenia (iOS < 17).
+    function silentWavUrl() {
+      const n = 2205, b = new ArrayBuffer(44 + n * 2), v = new DataView(b);
+      const w = (o, str) => { for (let i = 0; i < str.length; i++) v.setUint8(o + i, str.charCodeAt(i)); };
+      w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true);
+      v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 22050, true); v.setUint32(28, 44100, true);
+      v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+      return URL.createObjectURL(new Blob([b], { type: 'audio/wav' }));
+    }
+    let silentEl = null;
+    function unlockHtmlAudio() {
+      if (htmlUnlocked || navigator.audioSession) return; // iOS 17+ ma audioSession – trik niepotrzebny
+      try {
+        if (!silentEl) { silentEl = document.createElement('audio'); silentEl.src = silentWavUrl(); silentEl.loop = true; silentEl.setAttribute('playsinline', ''); silentEl.preload = 'auto'; }
+        const pr = silentEl.play();
+        htmlUnlocked = true;
+        if (pr && pr.catch) pr.catch(() => { htmlUnlocked = false; });
+      } catch (e) {}
+    }
+    // Wywoływane SYNCHRONICZNIE na początku każdego gestu (przed jakimkolwiek await).
     function unlock() {
+      // iOS 17+: sesja „playback” = dźwięk także przy przełączniku wyciszenia
+      try { if (navigator.audioSession && navigator.audioSession.type !== 'playback') navigator.audioSession.type = 'playback'; } catch (e) {}
       if (!ac) {
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return;
-        ac = new AC();
-        master = ac.createGain(); master.gain.value = muted ? 0 : 0.7; master.connect(ac.destination);
+        try { ac = new AC({ latencyHint: 'interactive' }); } catch (e) { ac = new AC(); }
+        comp = ac.createDynamicsCompressor();
+        comp.threshold.value = -10; comp.knee.value = 8; comp.ratio.value = 4; comp.attack.value = 0.002; comp.release.value = 0.15;
+        comp.connect(ac.destination);
+        master = ac.createGain(); master.gain.value = muted ? 0 : MASTER_VOL; master.connect(comp);
         noiseBuf = ac.createBuffer(1, ac.sampleRate * 1, ac.sampleRate);
         const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-        // krótki cichy dźwięk odblokowujący iOS
-        const o = ac.createOscillator(), g = ac.createGain(); g.gain.value = 0.0001; o.connect(g); g.connect(master); o.start(); o.stop(ac.currentTime + 0.02);
+        ac.addEventListener && ac.addEventListener('statechange', () => {
+          if (ac.state === 'running' && pendingChime) { pendingChime = false; chime(); }
+        });
       }
-      if (ac.state === 'suspended') ac.resume();
+      // 'suspended' lub 'interrupted' (np. po oknie zgody na kamerę) -> wznów w ramach gestu
+      if (ac.state !== 'running' && ac.state !== 'closed') { try { const r = ac.resume(); if (r && r.catch) r.catch(() => {}); } catch (e) {} }
+      // klasyczne odblokowanie iOS: 1-próbkowy cichy bufor odtworzony w geście
+      try { const sb = ac.createBufferSource(); sb.buffer = ac.createBuffer(1, 1, 22050); sb.connect(ac.destination); sb.start(0); } catch (e) {}
+      unlockHtmlAudio();
     }
-    const ok = () => ac && master && ac.state !== 'closed';
+    function chime() {
+      if (!ac || muted) return;
+      if (ac.state !== 'running') { pendingChime = true; return; }
+      osc('sine', 660, 650, 0.25, 0.35, master); osc('sine', 990, 980, 0.35, 0.28, master, 0.09); osc('triangle', 1320, 1310, 0.3, 0.12, master, 0.16);
+    }
+    // Globalne odblokowanie przy każdym dotknięciu/kliknięciu (faza capture, przed logiką gry)
+    ['touchstart', 'touchend', 'pointerdown', 'pointerup', 'mousedown', 'click', 'keydown'].forEach((t) =>
+      window.addEventListener(t, () => { if (!ac || ac.state !== 'running' || !htmlUnlocked) unlock(); }, { capture: true, passive: true }));
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && ac && ac.state !== 'running') { try { ac.resume().catch(() => {}); } catch (e) {} } });
+    const ok = () => { if (!ac || !master || ac.state === 'closed') return false; if (ac.state !== 'running') { try { ac.resume().catch(() => {}); } catch (e) {} } return true; };
     function out(pan) {
       if (ac.createStereoPanner && pan) { const p = ac.createStereoPanner(); p.pan.value = clamp(pan, -1, 1); p.connect(master); return p; }
       return master;
@@ -165,16 +206,17 @@
       env(g, t, Math.min(0.02, dur / 3), vol, dur); s.connect(fl); fl.connect(g); g.connect(dest); s.start(t); s.stop(t + dur + 0.05);
     }
     return {
-      unlock,
+      unlock, chime,
+      get state() { return ac ? ac.state : 'none'; },
       get muted() { return muted; },
-      toggle() { muted = !muted; if (master) master.gain.setTargetAtTime(muted ? 0 : 0.7, ac.currentTime, 0.02); return muted; },
-      shot() { if (!ok()) return; osc('sawtooth', 1400, 180, 0.16, 0.18, master); osc('sine', 600, 90, 0.12, 0.25, master); noise(0.08, 0.12, 'highpass', 3000, 1200, master); },
-      hit(pan) { if (!ok()) return; const d = out(pan); osc('square', 320, 160, 0.07, 0.12, d); noise(0.06, 0.15, 'bandpass', 1800, 800, d, 3); },
-      banish(pan) { if (!ok()) return; const d = out(pan); osc('sine', 220, 1400, 0.18, 0.28, d); osc('triangle', 880, 2400, 0.12, 0.12, d, 0.05); noise(0.35, 0.22, 'lowpass', 4000, 200, d); },
-      spawn(pan) { if (!ok()) return; const d = out(pan); noise(0.9, 0.07, 'bandpass', 200, 900, d, 6); osc('sine', 70, 55, 0.8, 0.06, d); },
-      damage() { if (!ok()) return; osc('sine', 140, 38, 0.35, 0.6, master); noise(0.25, 0.3, 'lowpass', 900, 80, master); },
-      wave() { if (!ok()) return; [220, 277, 330].forEach((f, i) => osc('triangle', f, f * 0.98, 0.9, 0.08, master, i * 0.08)); },
-      over() { if (!ok()) return; osc('sawtooth', 300, 40, 1.4, 0.18, master); noise(1.2, 0.15, 'lowpass', 1200, 60, master); }
+      toggle() { muted = !muted; if (master) master.gain.setTargetAtTime(muted ? 0 : MASTER_VOL, ac.currentTime, 0.02); if (!muted) chime(); return muted; },
+      shot() { if (!ok()) return; osc('sawtooth', 1400, 180, 0.16, 0.32, master); osc('sine', 600, 90, 0.14, 0.5, master); noise(0.08, 0.25, 'highpass', 3000, 1200, master); },
+      hit(pan) { if (!ok()) return; const d = out(pan); osc('square', 320, 160, 0.08, 0.25, d); noise(0.07, 0.35, 'bandpass', 1800, 800, d, 3); },
+      banish(pan) { if (!ok()) return; const d = out(pan); osc('sine', 220, 1400, 0.2, 0.5, d); osc('triangle', 880, 2400, 0.14, 0.25, d, 0.05); noise(0.35, 0.4, 'lowpass', 4000, 200, d); },
+      spawn(pan) { if (!ok()) return; const d = out(pan); noise(0.9, 0.35, 'bandpass', 220, 900, d, 4); osc('sine', 110, 70, 0.8, 0.18, d); },
+      damage() { if (!ok()) return; osc('sine', 160, 40, 0.4, 0.9, master); osc('square', 90, 40, 0.2, 0.2, master); noise(0.25, 0.5, 'lowpass', 1200, 80, master); },
+      wave() { if (!ok()) return; [220, 277, 330, 440].forEach((f, i) => osc('triangle', f, f * 0.98, 0.9, 0.2, master, i * 0.08)); },
+      over() { if (!ok()) return; osc('sawtooth', 300, 40, 1.4, 0.35, master); noise(1.2, 0.35, 'lowpass', 1200, 60, master); }
     };
   })();
   ui.mute.addEventListener('click', (e) => { e.stopPropagation(); audio.unlock(); ui.mute.textContent = audio.toggle() ? '🔇' : '🔊'; });
@@ -790,6 +832,7 @@
         .catch((e) => { console.warn('Kamera niedostępna:', e && e.name); return null; });
     }
     const [ori, cam] = await Promise.all([oriP, camP]);
+    audio.unlock(); // okno zgody iOS mogło przerwać AudioContext – spróbuj wznowić (kolejne stuknięcie i tak to naprawi)
     // kamera
     input.camera = false;
     if (cam) {
@@ -829,6 +872,7 @@
     ui.start.classList.add('hidden'); ui.over.classList.add('hidden'); ui.pause.classList.add('hidden'); ui.hud.classList.remove('hidden');
     ui.msg.textContent = '';
     if (note) toast(note, 5000);
+    audio.chime(); // potwierdzenie, że dźwięk działa (lub zaraz po pierwszym stuknięciu)
   }
 
   function gameOver() {
@@ -869,6 +913,6 @@
   if (!window.isSecureContext) ui.msg.textContent = 'Uwaga: kamera i żyroskop wymagają HTTPS. Użyj trybu symulacji lub otwórz grę przez https://';
 
   // uchwyt do testów automatycznych
-  window.__lowca = { game, view, input, fireCenter, startSim };
+  window.__lowca = { game, view, input, fireCenter, startSim, audio };
   requestAnimationFrame(frame);
 })();
