@@ -98,15 +98,19 @@ h1{margin:0;font-size:clamp(34px,11vw,52px);font-weight:900;letter-spacing:.02em
 h1 em{font-style:normal;color:var(--red);text-shadow:0 0 18px var(--red);}
 h2{margin:0 0 16px;font-size:28px;}
 h2.dead{color:#ff5066;text-shadow:0 0 16px rgba(255,30,60,.8);}
-.tagline{color:var(--dim);font-size:15px;line-height:1.45;margin:10px 4px 22px;}
-.btn{display:block;width:100%;padding:16px 18px;margin:10px 0;border-radius:14px;font-size:17px;font-weight:800;letter-spacing:.03em;border:0;}
+.tagline{color:var(--dim);font-size:14px;line-height:1.4;margin:8px 4px 14px;}
+.btn{display:block;width:100%;padding:15px 18px;margin:8px 0;border-radius:14px;font-size:17px;font-weight:800;letter-spacing:.03em;border:0;}
 .btn.primary{background:linear-gradient(180deg,#ff4a62,#c40c2a);color:#fff;box-shadow:0 0 24px rgba(255,30,60,.55),inset 0 1px 0 rgba(255,255,255,.3);}
 .btn.ghost{background:rgba(155,92,255,.12);border:1px solid rgba(155,92,255,.55);color:#e6dbff;}
 .btn:active{transform:scale(.98);}
-.msg{min-height:18px;font-size:13px;color:#ffb3bd;margin:6px 0;}
-.howto{list-style:none;padding:0;margin:14px 0;text-align:left;font-size:13px;color:var(--dim);line-height:1.45;}
-.howto li{padding:6px 0 6px 22px;position:relative;border-top:1px solid rgba(155,92,255,.15);}
-.howto li::before{content:"";position:absolute;left:4px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);}
+.msg{min-height:0;font-size:13px;color:#ffb3bd;margin:4px 0;}
+.msg:empty{display:none;}
+.safety{margin:10px 0 4px;padding:9px 12px;border-radius:12px;text-align:left;font-size:11.5px;line-height:1.4;color:#ffd9b0;
+  background:rgba(255,170,40,.08);border:1px solid rgba(255,170,40,.4);}
+.safety b{color:#ffc14d;}
+.howto{list-style:none;padding:0;margin:10px 0;text-align:left;font-size:12.5px;color:var(--dim);line-height:1.4;}
+.howto li{padding:5px 0 5px 22px;position:relative;border-top:1px solid rgba(155,92,255,.15);}
+.howto li::before{content:"";position:absolute;left:4px;top:11px;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);}
 .howto b{color:#fff;}
 .best{color:#ffd34d;font-weight:700;margin-top:8px;}
 .results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 14px;}
