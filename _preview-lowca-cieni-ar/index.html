@@ -11,7 +11,7 @@
 <meta name="description" content="Łowca Cieni AR – rozejrzyj się przez kamerę telefonu i odeprzyj stwory, które czyhają na Twoje życie.">
 <title>Łowca Cieni AR</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%2307040c%22/%3E%3Cellipse cx=%2222%22 cy=%2232%22 rx=%228%22 ry=%224%22 fill=%22%23ff2d4a%22/%3E%3Cellipse cx=%2242%22 cy=%2232%22 rx=%228%22 ry=%224%22 fill=%22%23ff2d4a%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 <video id="cam" autoplay playsinline muted></video>
@@ -63,14 +63,21 @@
       <li><b>Uważaj na przeszkody:</b> meble, ściany, szyby, schody, krawężniki, a także inne osoby i zwierzęta.</li>
       <li><b>Nigdy nie graj na ulicy</b>, w pobliżu ruchu drogowego, torów, wody ani na wysokości.</li>
       <li><b>Nie graj podczas prowadzenia pojazdu</b>, jazdy na rowerze lub hulajnodze ani idąc w tłumie.</li>
-      <li><b>Rób przerwy.</b> Gra zawiera błyski i drgania obrazu. Przy zawrotach głowy, nudnościach lub zmęczeniu oczu – przerwij grę.</li>
+      <li><b>Ostrzeżenie o padaczce fotogennej.</b> Gra zawiera błyski, migotanie i drgania obrazu. Osoby z padaczką fotogenną lub wrażliwością na błyski światła nie powinny grać. Przy zawrotach głowy, nudnościach lub zmęczeniu oczu natychmiast przerwij grę.</li>
       <li><b>Trzymaj telefon pewnie.</b> Dzieci powinny grać pod opieką dorosłych.</li>
+      <li><b>Szanuj prawo i cudzą własność.</b> Nie wchodź na teren prywatny, tereny zakazane ani niebezpieczne miejsca.</li>
+      <li><b>Prywatność kamery:</b> obraz z kamery jest przetwarzany wyłącznie lokalnie na Twoim urządzeniu – nic nie jest nagrywane, zapisywane ani wysyłane w sieć.</li>
     </ul>
     <div class="safety" role="note">
-      <b>⚠️ Uwaga – bezpieczeństwo:</b> Zawsze zwracaj uwagę na swoje otoczenie. Nie graj na ulicy, w pobliżu ruchu drogowego ani podczas prowadzenia pojazdu. Korzystasz z gry na własną odpowiedzialność – twórca nie ponosi odpowiedzialności za szkody lub wypadki wynikające z nieodpowiedniego lub nieostrożnego użytkowania.
+      <b>⚠️ Uwaga – bezpieczeństwo:</b> Zawsze zwracaj uwagę na swoje otoczenie. Nie graj na ulicy, w pobliżu ruchu drogowego ani podczas prowadzenia pojazdu. Korzystasz z gry na własną odpowiedzialność. W najszerszym zakresie dozwolonym przez prawo twórca nie ponosi odpowiedzialności za jakiekolwiek szkody, urazy ani wypadki wynikające z nieodpowiedniego, nieostrożnego lub niezgodnego z przepisami użytkowania gry.
     </div>
     <div class="safety-cta">
-      <button id="safetyOk" class="btn primary safety-btn">Rozumiem, przejdź do gry</button>
+      <label class="safety-check" for="safetyAccept">
+        <input type="checkbox" id="safetyAccept" required>
+        <span class="safety-check-box" aria-hidden="true"></span>
+        <span class="safety-check-text">Przeczytałem(-am) i akceptuję powyższe zasady bezpieczeństwa oraz gram na własną odpowiedzialność.</span>
+      </label>
+      <button id="safetyOk" class="btn primary safety-btn" disabled aria-disabled="true">Rozumiem, przejdź do gry</button>
     </div>
   </div>
 </section>
@@ -123,6 +130,6 @@
   </div>
 </section>
 
-<script src="game.js?v=2"></script>
+<script src="game.js?v=3"></script>
 </body>
 </html>
