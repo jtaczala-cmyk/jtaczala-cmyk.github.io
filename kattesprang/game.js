@@ -1,4 +1,4 @@
-/* Kattesprang / Koci Skok / Cat Leap – Stop60 preview. Endless rooftop leaping with Magic the cat. */
+/* Kattesprang / Koci Skok / Cat Leap – Stop60. Endless rooftop leaping with Magic the cat. */
 (function(){
 "use strict";
 var LANG = (document.documentElement.getAttribute("data-lang") || "no");
@@ -85,9 +85,8 @@ var SFX = {
 };
 
 /* ---------- Magic's bow tie: black on even / red on odd Europe/Oslo days ---------- */
-function tzDay(){ try { return +new Intl.DateTimeFormat("en-GB", {timeZone: "Europe/Oslo", day: "numeric"}).format(new Date()); } catch(e){ return new Date().getDate(); } }
-var BOWQ = (function(){ try { return new URLSearchParams(location.search).get("bow"); } catch(e){ return null; } })();
-var BOWK = BOWQ === "black" || BOWQ === "red" ? BOWQ : (tzDay() % 2 === 0 ? "black" : "red");
+function osloDay(){ try { return +new Intl.DateTimeFormat("en-GB", {timeZone: "Europe/Oslo", day: "numeric"}).format(new Date()); } catch(e){ return new Date().getDate(); } }
+var BOWK = osloDay() % 2 === 0 ? "black" : "red";
 var BOWC = BOWK === "black" ? ["#1C1A22", "#3A3542", "#0A090D"] : ["#D3263A", "#F04A5C", "#7E1020"];
 
 /* ---------- drawing helpers ---------- */
@@ -127,7 +126,7 @@ function drawHead(c, expr){
   line(c, [-12, -1, -8, 0], dark, 1.4); line(c, [12, -1, 8, 0], dark, 1.4);
   ell(c, 0, 4, 6.5, 4.5, light);
   drawFace(c, expr, fur);
-  drawBow(c, 0, 11.4, 1.05);
+  drawBow(c, 0, expr === 'laugh' ? 13.6 : 11.4, 1.05);
 }
 function drawFace(c, expr, fur){
   if (expr === 'kiss' || expr === 'laugh'){
@@ -201,7 +200,7 @@ function drawMagic(c, x, y, s, st){
   }
   c.restore();
 }
-window.S60DrawMagic = drawMagic;
+window.S60DrawMagic = drawMagic; window.S60DrawMagicHead = drawHead;
 
 /* ---------- world ---------- */
 var G = 2300, JV = 800, DJV = 700;
@@ -877,7 +876,7 @@ function show(id, on){ $(id).hidden = !on; }
 function start(){
   audio(); reset(); mode = "play"; SFX.start();
   show("menu", false); show("over", false); show("pauseOv", false); show("hud", true); $("pauseBtn").hidden = false;
-  try { window.goatcounter && goatcounter.count && goatcounter.count({path: "kattesprang-preview-start-" + LANG, title: "kattesprang preview start", event: true}); } catch(e){}
+  try { window.goatcounter && goatcounter.count && goatcounter.count({path: "kattesprang-start-" + LANG, title: "kattesprang start", event: true}); } catch(e){}
 }
 function pause(){ if (mode !== "play") return; mode = "pause"; show("pauseOv", true); }
 function resume(){ if (mode !== "pause") return; mode = "play"; show("pauseOv", false); last = performance.now(); }
@@ -889,12 +888,12 @@ function gameOver(why){
   $("copied").textContent = ""; $("bestM").textContent = best;
   show("hud", false); $("pauseBtn").hidden = true;
   setTimeout(function(){ show("over", true); }, 650);
-  try { window.goatcounter && goatcounter.count && goatcounter.count({path: "kattesprang-preview-over-" + LANG, title: "kattesprang preview over " + why, event: true}); } catch(e){}
+  try { window.goatcounter && goatcounter.count && goatcounter.count({path: "kattesprang-over-" + LANG, title: "kattesprang over " + why, event: true}); } catch(e){}
 }
 function shareText(){ return T.name + "\n🐱\n" + Math.floor(score) + "\nstop60.no"; }
 $("shareBtn").onclick = function(){
   var txt = shareText(), done = function(){ $("copied").textContent = T.copied; };
-  try { window.goatcounter && goatcounter.count && goatcounter.count({path: "kattesprang-preview-share", title: "kattesprang preview share", event: true}); } catch(e){}
+  try { window.goatcounter && goatcounter.count && goatcounter.count({path: "kattesprang-copy", title: "kattesprang copy result", event: true}); } catch(e){}
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function(){ fallback(txt); done(); });
   else { fallback(txt); done(); }
 };
@@ -914,7 +913,10 @@ document.addEventListener("visibilitychange", function(){ if (document.hidden) p
     if (!$("menu").hidden || !$("over").hidden) requestAnimationFrame(h); else setTimeout(function(){ requestAnimationFrame(h); }, 400); }
   h(); })();
 reset();
-if (/[?&]debug=1/.test(location.search)){ var db = document.createElement('button'); db.type = 'button'; db.id = 'dbgZoom'; db.textContent = '😺'; db.setAttribute('aria-label', 'debug zoom'); db.onclick = function(e){ e.stopPropagation(); joyCool = 0; joy(); }; document.querySelector('.tb').insertBefore(db, document.querySelector('.tb').firstChild); }
-if (/[?&]debug=1/.test(location.search)) window.__ks = {zoomK: function(){ return zoomK; }, ts: function(){ return timeScale; }, hearts: function(){ return hearts; }, grace: function(){ return grace; }, joy: function(){ joyCool = 0; joy(); }, kiss: function(){ blowKiss(5); }, ufo: function(){ ufoT = 0; dist = Math.max(dist, 1000); }, gull: function(){ gullT = 0; dist = Math.max(dist, 1000); }, god: function(){ hearts = 99; }};
+/* hooks for the shared Stop60 scripts (cameos, score sharing) */
+window.__ksPlay = function(){ return mode === "play" && zoomT < 0; };
+window.__ksMute = function(){ return mute; };
+window.__ksScore = function(){ return Math.floor(score); };
+window.__ksShareText = shareText;
 requestAnimationFrame(loop);
 })();

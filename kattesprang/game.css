@@ -35,3 +35,7 @@ canvas#c{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:b
 .tb{position:fixed;top:calc(8px + env(safe-area-inset-top));right:10px;z-index:12;display:flex;gap:6px}
 .tb button{width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);background:rgba(42,16,48,.6);color:#fff;font-size:1.1rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .tb button[hidden]{display:none}
+.seo-lead{margin:10px 0 0;font-size:.85rem;line-height:1.5;color:#F3DDF0;opacity:.9}
+.small{margin:8px 0 0;font-size:.8rem;color:#E9CFE6}
+.small a{color:#FFE9A8}
+#scoreLinks{margin-top:8px}
