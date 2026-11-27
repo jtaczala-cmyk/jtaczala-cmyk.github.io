@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Grandma's Café: serve coffee, waffles, cinnamon buns and jam to smiling guests before their patience runs out. Free, no ads.">
+<meta name="theme-color" content="#3A1C14">
+<title>Grandma's Café – cozy café game</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/_preview-kafe/assets/kafe.css?v=1">
+</head>
+<body>
+<canvas id="c" aria-label="Grandma's Café"></canvas>
+<nav class="langs" id="langs"><a href="/_preview-kafe/" hreflang="nb" aria-label="Norsk">🇳🇴</a><a href="/_preview-kafe/pl/" hreflang="pl" aria-label="Polski">🇵🇱</a><a href="/_preview-kafe/en/" hreflang="en" aria-label="English" class="cur" aria-current="page">🇬🇧</a></nav>
+<div id="hud" hidden>
+  <div class="pill"><small data-t="score"></small><span id="scoreV">0</span></div>
+  <div class="pill"><small id="tLbl"></small><span id="tV">60s</span></div>
+  <div class="pill off" id="combo"><small data-t="combo"></small><span id="comboV">×1.0</span></div>
+  <button id="pauseBtn" class="ghost" aria-label="Pause">⏸</button>
+</div>
+<div id="rushWrap" hidden><div id="rushBar"></div><div id="rushLbl"></div></div>
+<div id="ctrl" hidden>
+  <div class="trayrow"><div id="tray"></div><button id="clearBtn" type="button">✖ <span data-t="clear"></span></button></div>
+  <div id="stations"></div>
+</div>
+<div id="menu" class="ov">
+  <div class="card">
+    <h1>Grandma's Café</h1>
+    <div class="sub">A cozy café rush with Magic</div>
+    <div class="motto">♥ Games made with passion</div>
+    <ul class="how"><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li><li data-t="how4"></li></ul>
+    <div class="btns"><button id="playBtn" class="big" data-t="play">START</button><button id="endlessBtn" class="alt" data-t="endless"></button></div>
+    <div class="bestl" id="bestL"></div>
+    <div class="sndrow"><button class="ghost sndBtn" type="button"></button></div>
+  </div>
+</div>
+<div id="pause" class="ov" hidden>
+  <div class="card"><h2 data-t="paused"></h2><div class="btns" style="margin-top:14px"><button id="resumeBtn" class="big" data-t="resume"></button><button id="pauseMenuBtn" class="soft" data-t="menu"></button><button class="soft sndBtn" type="button"></button></div></div>
+</div>
+<div id="over" class="ov" hidden>
+  <div class="card">
+    <h2 id="overT"></h2>
+    <div class="big-score" id="overS">0</div>
+    <div class="nb" id="newBest" hidden data-t="newbest"></div>
+    <div class="stats" id="overStats"></div>
+    <div class="motto">♥ Games made with passion</div>
+    <div class="btns"><button id="shareBtn" class="alt"></button><button id="retryBtn" class="big" data-t="retry"></button><button id="menuBtn" class="soft" data-t="menu"></button></div>
+  </div>
+</div>
+<div id="toast"></div>
+<script src="/_preview-kafe/assets/kafe.js?v=1"></script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+<script src="/assets/s60-back.js?v=2" data-game="kafe" data-pos="tl" data-dy="52" data-compact="1" data-end="after:#retryBtn|in:#pause .btns" defer></script>
+</body>
+</html>
