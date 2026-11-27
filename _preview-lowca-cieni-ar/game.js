@@ -1303,7 +1303,17 @@
   }
 
   // Osobny ekran ostrzeżenia – pokazywany bezpośrednio przed ekranem startowym
-  $('safetyOk').addEventListener('click', () => {
+  const safetyAccept = $('safetyAccept'), safetyOk = $('safetyOk');
+  const syncSafety = () => {
+    const ok = !!safetyAccept.checked;
+    safetyOk.disabled = !ok;
+    safetyOk.setAttribute('aria-disabled', ok ? 'false' : 'true');
+    safetyAccept.closest('.safety-check').classList.toggle('on', ok);
+  };
+  safetyAccept.checked = false; syncSafety();
+  safetyAccept.addEventListener('change', syncSafety);
+  safetyOk.addEventListener('click', () => {
+    if (!safetyAccept.checked) return;
     audio.unlock();
     $('safetyScreen').classList.add('hidden');
     ui.start.classList.remove('hidden');
