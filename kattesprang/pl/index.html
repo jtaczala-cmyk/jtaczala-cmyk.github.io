@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="Darmowa gra zręcznościowa bez reklam w przeglądarce: pomóż kotu Magic skakać po słonecznych dachach, balkonach i sznurach z praniem. Łap kłębki, rybki i złote dzwonki, przeskakuj kominy i kałuże – i uważaj na mewy!">
+<link rel="canonical" href="https://stop60.no/kattesprang/pl/">
+<link rel="alternate" hreflang="nb" href="https://stop60.no/kattesprang/">
+<link rel="alternate" hreflang="pl" href="https://stop60.no/kattesprang/pl/">
+<link rel="alternate" hreflang="en" href="https://stop60.no/kattesprang/en/">
+<link rel="alternate" hreflang="x-default" href="https://stop60.no/kattesprang/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stop60">
+<meta property="og:title" content="Koci Skok (Kattesprang) – darmowa gra z kotem Magic | Stop60">
+<meta property="og:description" content="Darmowa gra zręcznościowa bez reklam w przeglądarce: pomóż kotu Magic skakać po słonecznych dachach, balkonach i sznurach z praniem. Łap kłębki, rybki i złote dzwonki, przeskakuj kominy i kałuże – i uważaj na mewy!">
+<meta property="og:url" content="https://stop60.no/kattesprang/pl/">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:image" content="https://stop60.no/kattesprang/og-pl.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Koci Skok: kot Magic z muszką w kropki skacze po kolorowych dachach, dziadek na balkonie i babcia podlewająca kwiatki">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Koci Skok (Kattesprang) – darmowa gra z kotem Magic | Stop60">
+<meta name="twitter:description" content="Darmowa gra zręcznościowa bez reklam w przeglądarce: pomóż kotu Magic skakać po słonecznych dachach, balkonach i sznurach z praniem. Łap kłębki, rybki i złote dzwonki, przeskakuj kominy i kałuże – i uważaj na mewy!">
+<meta name="twitter:image" content="https://stop60.no/kattesprang/og-pl.jpg?v=1">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Koci Skok", "alternateName": ["Kattesprang", "Cat Leap"], "url": "https://stop60.no/kattesprang/pl/", "description": "Darmowa gra zręcznościowa bez reklam w przeglądarce: pomóż kotu Magic skakać po słonecznych dachach, balkonach i sznurach z praniem. Łap kłębki, rybki i złote dzwonki, przeskakuj kominy i kałuże – i uważaj na mewy!", "inLanguage": "pl", "genre": ["Action", "Casual"], "gamePlatform": "Web browser", "applicationCategory": "Game", "operatingSystem": "Any", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "NOK"}, "author": {"@type": "Person", "name": "Jacek Taczala"}, "publisher": {"@type": "Organization", "name": "Stop60", "url": "https://stop60.no/"}, "image": "https://stop60.no/kattesprang/og-pl.jpg"}</script>
+<meta name="theme-color" content="#FF9E6B">
+<title>Koci Skok (Kattesprang) – darmowa gra zręcznościowa z kotem Magic, bez reklam | Stop60</title>
+<link rel="icon" href="/kattesprang/favicon.ico?v=1" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/kattesprang/icon-32.png?v=1"><link rel="apple-touch-icon" href="/kattesprang/apple-touch-icon.png?v=1"><link rel="manifest" href="/kattesprang/manifest.webmanifest">
+<link rel="stylesheet" href="/kattesprang/game.css?v=4">
+</head>
+<body>
+<canvas id="c" aria-label="Koci Skok"></canvas>
+<div id="hud" hidden><div class="score"><small>Punkty</small><span id="scoreV">0</span></div></div>
+<div class="tb"><button id="pauseBtn" type="button" aria-label="Pauza" hidden>⏸</button><button id="muteBtn" type="button" aria-label="Dźwięk wł./wył.">🔊</button></div>
+<div class="ov" id="menu"><div class="card">
+  <canvas class="hero" id="hero" width="150" height="110" aria-hidden="true"></canvas>
+  <h1 class="logo">Koci Skok</h1>
+  <p class="sub">Magic skacze po słonecznych dachach</p>
+  <div class="how"><b>Stuknij</b>, kliknij lub <b>spacja</b> = skok. <b>Stuknij jeszcze raz w powietrzu</b> = podwójny skok. Przeskakuj kominy i kałuże – albo wyląduj na śpiących gołębiach! Uważaj na małe „prezenty” od mew z góry 🙈</div>
+  <div class="pts"><span>🧶 +10</span><span>🐟 +25</span><span>🔔 +50 magnes</span></div>
+  <button class="btn" id="playBtn" type="button">▶ START</button>
+  <p class="best">🏆 Rekord: <span id="bestM">0</span></p>
+  <nav class="langs" aria-label="Language"><a href="/kattesprang/" hreflang="nb">Norsk</a><a href="/kattesprang/pl/" hreflang="pl" class="cur" aria-current="page">Polski</a><a href="/kattesprang/en/" hreflang="en">English</a></nav>
+  <p class="love">Gry stworzone z pasji</p>
+  <p class="seo-lead">Koci Skok to darmowa gra zręcznościowa bez reklam na telefon i komputer. Jedno stuknięcie to skok, drugie w powietrzu to podwójny skok. Im dalej Magic biegnie po dachach, tym szybciej – a dziadek i babcia kibicują mu z balkonów.</p>
+  <p class="small"><a href="/kattesprang/prywatnosc/">Prywatność</a> · <a href="/pl/">stop60.no</a></p>
+</div></div>
+<div class="ov" id="pauseOv" hidden><div class="card"><h2 class="logo">Pauza</h2><button class="btn" id="resumeBtn" type="button">▶ Wznów</button><p class="love">Gry stworzone z pasji</p></div></div>
+<div class="ov" id="over" hidden><div class="card">
+  <h2 class="logo" style="font-size:2rem">Magic robi sobie przerwę</h2>
+  <div class="big" id="finalV">0</div>
+  <div class="rec" id="recB" hidden>🎉 Nowy rekord!</div>
+  <div class="stats"><span>🏆 Rekord: <b id="bestO">0</b></span><span>📏 Dystans: <b id="distV">0</b></span><span>🧶 Złapane: <b id="itemsV">0</b></span><span>✨ Najlepsze kombo: <b id="comboV">0</b></span></div>
+  <div class="row"><button class="btn" id="againBtn" type="button">↻ Zagraj znowu</button></div>
+  <div class="row"><button class="btn alt" id="scoreShare" type="button">📣 Udostępnij wynik</button><button class="btn alt" id="shareBtn" type="button">📋 Kopiuj wynik</button></div>
+  <div id="scoreLinks" hidden></div>
+  <div class="copied" id="copied" aria-live="polite"></div>
+  <nav class="langs" aria-label="Language"><a href="/kattesprang/" hreflang="nb">Norsk</a><a href="/kattesprang/pl/" hreflang="pl" class="cur" aria-current="page">Polski</a><a href="/kattesprang/en/" hreflang="en">English</a></nav>
+  <p class="love">Gry stworzone z pasji</p>
+  <p class="small"><a href="/kattesprang/prywatnosc/">Prywatność</a> · <a href="/pl/">stop60.no</a></p>
+</div></div>
+<script src="/kattesprang/game.js?v=4"></script>
+<script src="/assets/score-share.js"></script>
+<script>if (window.S60ScoreShare) S60ScoreShare.bind(document.getElementById("scoreShare"), {game: "kattesprang", links: document.getElementById("scoreLinks"), lang: "pl", gameName: "Koci Skok", score: function(){ return window.__ksScore ? __ksScore() : 0; }});</script>
+<script src="https://stop60.no/assets/wisdom.js?v=3" defer></script>
+<script>addEventListener("load",function(){window.StopWisdom&&StopWisdom.show({lang:"pl",after:document.getElementById("playBtn")})});</script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+<script src="/assets/s60-back.js?v=2" data-game="kattesprang" data-pos="tl" data-compact="1" data-end="after:#againBtn|in:#pauseOv .card" defer></script>
+<script src="/assets/s60-cameo.js?v=2" data-game="kattesprang" data-play="window.__ksPlay&&__ksPlay()" data-sound="!(window.__ksMute&&__ksMute())" data-top="60" defer></script>
+</body>
+</html>
