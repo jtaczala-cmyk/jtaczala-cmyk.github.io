@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Słowo Dnia – Stop60</title>
+<meta name="description" content="Odgadnij 5-literowe słowo dnia w 6 próbach. Za darmo, bez reklam – i trening bez limitu.">
+<meta name="theme-color" content="#7C3AED">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=3">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=3">
+<link rel="stylesheet" href="/_preview-ord/assets/ord.css?v=1">
+</head>
+<body>
+<div class="bubbles" id="bubbles" aria-hidden="true"></div>
+<div class="app">
+<header>
+  <div class="tools"><button class="ib" id="helpBtn" type="button" aria-label="Pomoc">❔</button><button class="ib" id="muteBtn" type="button" aria-label="Dźwięk">🔊</button></div>
+  <nav class="langs" aria-label="Language"><a href="/_preview-ord/" hreflang="nb">NO</a><a href="/_preview-ord/pl/" class="cur" aria-current="page" hreflang="pl">PL</a><a href="/_preview-ord/en/" hreflang="en">EN</a></nav>
+  <div class="magic" id="magic"></div>
+  <div class="titles"><h1><span>S</span><span>ł</span><span>o</span><span>w</span><span>o</span> <span>D</span><span>n</span><span>i</span><span>a</span></h1><p class="motto">Gry stworzone z pasji</p></div>
+</header>
+<div class="modes" role="tablist"><button type="button" data-m="daily" class="cur">📅 Słowo dnia</button><button type="button" data-m="practice">🔁 Trening</button></div>
+<div class="info" id="info"></div>
+<div class="boardWrap"><div class="board" id="board" aria-live="polite"></div></div>
+<div class="kb" id="kb"></div>
+<p class="foot">Statystyki zapisują się tylko na tym urządzeniu · stop60.no</p>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="ov" id="helpOv" hidden><div class="card help">
+  <div class="big" id="helpMagic"></div>
+  <h2>Jak grać</h2>
+  <p>Odgadnij słowo w 6 próbach. Każda próba to słowo z 5 liter – naciśnij ENTER, aby sprawdzić.</p><p>Kolory pokazują, jak blisko jesteś:</p>
+  <div id="helpEx"></div>
+  <p>📅 Słowo dnia jest takie samo dla wszystkich i zmienia się o północy. 🔁 W treningu grasz ile chcesz.</p>
+  <button class="btn" id="helpOk" type="button">Gramy!</button>
+</div></div>
+<div class="ov" id="endOv" hidden><div class="card" id="endCard">
+  <div class="big" id="endMagic"></div>
+  <h2 id="endTitle"></h2>
+  <div class="reveal" id="reveal"></div>
+  <div id="statsBox"><div class="stats" id="stats"></div><div class="dist" id="dist"></div></div>
+  <p class="next" id="nextBox">Nowe słowo dnia za <b id="cd">--:--:--</b></p>
+  <button class="btn" id="shareBtn" type="button">📋 Udostępnij wynik</button>
+  <button class="btn alt" id="pracBtn" type="button">🔁 Trening</button>
+  <button class="btn alt" id="dailyBtn" type="button" hidden>📅 Do słowa dnia</button>
+  <button class="btn ghost" id="closeEnd" type="button">Zamknij</button>
+</div></div>
+<script>window.ORD_LANG = "pl";</script>
+<script src="/_preview-ord/assets/words.js?v=1"></script>
+<script src="/_preview-ord/assets/ord.js?v=1"></script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+<script src="/assets/s60-back.js?v=2" data-game="ord" data-pos="tl" data-compact="1" data-end="after:#closeEnd" defer></script>
+</body>
+</html>
