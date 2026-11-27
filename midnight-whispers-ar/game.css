@@ -153,3 +153,16 @@ h2.dead{color:#ff5066;text-shadow:0 0 16px rgba(255,30,60,.8);}
   .fire{width:80px;height:80px;}
   .howto{display:none;}
 }
+
+/* Midnight Whispers AR – Stop60 standard elements */
+h1{font-size:clamp(30px,9.4vw,46px);}
+h2.safety-title{margin:0;font-weight:900;letter-spacing:.02em;line-height:1;color:#fff;font-size:clamp(30px,9vw,42px);}
+.tagline b{color:#f3ecff;font-weight:800;}
+.langs{display:flex;justify-content:center;gap:6px;margin:14px 0 4px;flex-wrap:wrap;}
+.langs a{color:#d9ccf0;text-decoration:none;font-size:13px;font-weight:700;padding:6px 11px;border-radius:999px;border:1px solid rgba(155,92,255,.4);background:rgba(155,92,255,.08);}
+.langs a.cur{background:rgba(255,45,74,.22);border-color:rgba(255,45,74,.7);color:#fff;}
+.love{margin:10px 0 2px;font-size:13px;font-weight:800;letter-spacing:.08em;color:#ffb3c0;text-shadow:0 0 10px rgba(255,45,74,.45);}
+.seo-lead{margin:8px 4px 4px;font-size:12px;line-height:1.45;color:#a99bbf;text-align:left;}
+p.small{margin:8px 0 0;font-size:12px;color:#a99bbf;}
+p.small a{color:#d9ccf0;}
+#scoreLinks{margin:0 0 6px;}

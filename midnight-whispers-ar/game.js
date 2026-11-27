@@ -1,4 +1,4 @@
-/* Łowca Cieni AR – prototyp gry AR w przeglądarce (kamera + żyroskop + Canvas + Web Audio).
+/* Midnight Whispers AR – Stop60 AR game in the browser (camera + gyroscope + Canvas + Web Audio).
    Zero zewnętrznych zasobów: cała grafika i dźwięk generowane proceduralnie. */
 (() => {
   'use strict';
@@ -10,8 +10,22 @@
   const rand = (a, b) => a + Math.random() * (b - a);
   const wrap180 = (a) => { a = ((a + 180) % 360 + 360) % 360 - 180; return a; };
   const wrap360 = (a) => ((a % 360) + 360) % 360;
-  const BEST_KEY = 'lowcaCieniAR_best';
+  const BEST_KEY = 's60_midnight-whispers-ar_best';
   const loadBest = () => { try { return parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) { return 0; } };
+
+  // ---------- Language (NO / PL / EN) ----------
+  const LANG = (() => { const l = (document.documentElement.getAttribute('data-lang') || document.documentElement.lang || 'nb').toLowerCase(); return /^pl/.test(l) ? 'pl' : /^en/.test(l) ? 'en' : 'no'; })();
+  const T = ({
+    no: { wave: 'Bølge', wave1: 'Se deg rundt', waveN: 'Flere er på vei', cleared: 'Bølgen er slått tilbake!', bonus: 'Bonus', asking: 'Ber om tilgang til kamera og bevegelsessensorer…',
+          noCam: 'ingen kameratilgang – nattskog i bakgrunnen', noGyro: 'ingen gyroskop – se deg rundt ved å dra med fingeren', mixed: 'Blandet modus: ',
+          mArGyro: 'AR • gyroskop', mGyro: 'gyroskop', mArDrag: 'AR • dra', mSim: 'simulering', https: 'Merk: kamera og gyroskop krever HTTPS. Bruk simulering eller åpne spillet via https://' },
+    pl: { wave: 'Fala', wave1: 'Rozejrzyj się wokół siebie', waveN: 'Nadchodzą kolejne', cleared: 'Fala odparta!', bonus: 'Premia', asking: 'Proszę o dostęp do kamery i czujników ruchu…',
+          noCam: 'brak dostępu do kamery – tło nocnego lasu', noGyro: 'brak żyroskopu – rozglądaj się przeciągając palcem', mixed: 'Tryb mieszany: ',
+          mArGyro: 'AR • żyroskop', mGyro: 'żyroskop', mArDrag: 'AR • przeciąganie', mSim: 'symulacja', https: 'Uwaga: kamera i żyroskop wymagają HTTPS. Użyj trybu symulacji lub otwórz grę przez https://' },
+    en: { wave: 'Wave', wave1: 'Look around you', waveN: 'More are coming', cleared: 'Wave repelled!', bonus: 'Bonus', asking: 'Requesting access to the camera and motion sensors…',
+          noCam: 'no camera access – night forest background', noGyro: 'no gyroscope – look around by dragging your finger', mixed: 'Mixed mode: ',
+          mArGyro: 'AR • gyroscope', mGyro: 'gyroscope', mArDrag: 'AR • drag', mSim: 'simulation', https: 'Note: the camera and gyroscope need HTTPS. Use simulation mode or open the game via https://' }
+  })[LANG];
   const saveBest = (v) => { try { localStorage.setItem(BEST_KEY, String(v)); } catch (e) {} };
 
   // ---------- Elementy DOM ----------
@@ -283,7 +297,7 @@
     game.toSpawn = 4 + game.wave * 2;
     game.spawnTimer = 0.8;
     ui.wave.textContent = game.wave;
-    showBanner(`Fala ${game.wave}`, game.wave === 1 ? 'Rozejrzyj się wokół siebie' : 'Nadchodzą kolejne');
+    showBanner(`${T.wave} ${game.wave}`, game.wave === 1 ? T.wave1 : T.waveN);
     audio.wave();
   }
 
@@ -437,7 +451,7 @@
     } else if (game.monsters.length === 0) {
       game.waveBreak = 2.2;
       game.score += game.wave * 250; ui.score.textContent = game.score;
-      showBanner('Fala odparta!', `Premia +${game.wave * 250}`);
+      showBanner(T.cleared, `${T.bonus} +${game.wave * 250}`);
     }
 
     // combo
@@ -1218,7 +1232,7 @@
   let stream = null;
   async function startAR() {
     audio.unlock();
-    ui.msg.textContent = 'Proszę o dostęp do kamery i czujników ruchu…';
+    ui.msg.textContent = T.asking;
     // iOS: requestPermission musi być wywołane synchronicznie w obsłudze kliknięcia
     let oriP = Promise.resolve('granted');
     try {
@@ -1230,7 +1244,7 @@
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.isSecureContext !== false) {
       camP = (stream && stream.active ? Promise.resolve(stream) :
         navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }))
-        .catch((e) => { console.warn('Kamera niedostępna:', e && e.name); return null; });
+        .catch((e) => { console.warn('Camera unavailable:', e && e.name); return null; });
     }
     const [ori, cam] = await Promise.all([oriP, camP]);
     audio.unlock(); // okno zgody iOS mogło przerwać AudioContext – spróbuj wznowić (kolejne stuknięcie i tak to naprawi)
@@ -1248,9 +1262,9 @@
       input.gyro = input.gyroSeen;
     }
     const notes = [];
-    if (!input.camera) notes.push('brak dostępu do kamery – tło nocnego lasu');
-    if (!input.gyro) notes.push('brak żyroskopu – rozglądaj się przeciągając palcem');
-    beginGame(notes.length ? 'Tryb mieszany: ' + notes.join(', ') + '.' : null);
+    if (!input.camera) notes.push(T.noCam);
+    if (!input.gyro) notes.push(T.noGyro);
+    beginGame(notes.length ? T.mixed + notes.join(', ') + '.' : null);
   }
 
   function startSim() {
@@ -1260,9 +1274,11 @@
     beginGame(null);
   }
 
+  const gcEvent = (name) => { try { window.goatcounter && goatcounter.count && goatcounter.count({ path: 'midnight-whispers-ar-' + name + '-' + LANG, title: 'midnight-whispers-ar ' + name, event: true }); } catch (e) {} };
   function beginGame(note) {
+    gcEvent('start');
     simBg = !input.camera;
-    ui.mode.textContent = input.camera && input.gyro ? 'AR • żyroskop' : input.gyro ? 'żyroskop' : input.camera ? 'AR • przeciąganie' : 'symulacja';
+    ui.mode.textContent = input.camera && input.gyro ? T.mArGyro : input.gyro ? T.mGyro : input.camera ? T.mArDrag : T.mSim;
     if (input.gyro && input.lastRawYaw != null) { view.targetYaw = view.yaw = input.lastRawYaw + (input.compassOff || 0); }
     else { view.targetYaw = view.yaw; }
     view.targetPitch = view.pitch = 0;
@@ -1277,6 +1293,7 @@
   }
 
   function gameOver() {
+    gcEvent('over');
     game.running = false; game.over = true;
     audio.over();
     try { if (navigator.vibrate) navigator.vibrate([200, 80, 300]); } catch (_) {}
@@ -1328,9 +1345,12 @@
   $('quitBtn').addEventListener('click', toMenu);
   document.addEventListener('visibilitychange', () => { if (document.hidden && game.running) togglePause(true); });
 
-  if (!window.isSecureContext) ui.msg.textContent = 'Uwaga: kamera i żyroskop wymagają HTTPS. Użyj trybu symulacji lub otwórz grę przez https://';
+  if (!window.isSecureContext) ui.msg.textContent = T.https;
 
   // uchwyt do testów automatycznych
-  window.__lowca = { game, view, input, fireCenter, startSim, audio, spawnMonster, damageMonster, hurtPlayer };
+  window.__mwa = { game, view, input, fireCenter, startSim, audio, spawnMonster, damageMonster, hurtPlayer };
+  window.__mwaScore = () => game.score;
+  window.__mwaPlay = () => game.running && !game.paused;
+  window.__mwaSound = () => !audio.muted;
   requestAnimationFrame(frame);
 })();
