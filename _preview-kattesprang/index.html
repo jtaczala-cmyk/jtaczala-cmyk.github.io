@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="nb" data-lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Gratis hoppespill uten reklame: hjelp katten Magic å hoppe over hustak, balkonger og klessnorer.">
+<meta name="theme-color" content="#FF9E6B">
+<title>Kattesprang – Stop60</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/_preview-kattesprang/assets/game.css?v=1">
+</head>
+<body>
+<canvas id="c" aria-label="Kattesprang"></canvas>
+<div id="hud" hidden><div class="score"><small>Poeng</small><span id="scoreV">0</span></div></div>
+<div class="tb"><button id="pauseBtn" type="button" aria-label="Pause" hidden>⏸</button><button id="muteBtn" type="button" aria-label="Lyd av/på">🔊</button></div>
+<div class="ov" id="menu"><div class="card">
+  <canvas class="hero" id="hero" width="150" height="110" aria-hidden="true"></canvas>
+  <h1 class="logo">Kattesprang</h1>
+  <p class="sub">Magic hopper over solfylte hustak</p>
+  <div class="how"><b>Trykk</b>, klikk eller <b>mellomrom</b> = hopp. <b>Trykk igjen i lufta</b> = dobbelthopp. Hopp over pipene og vannpyttene – eller land oppå de søvnige duene!</div>
+  <div class="pts"><span>🧶 +10</span><span>🐟 +25</span><span>🔔 +50 magnet</span></div>
+  <button class="btn" id="playBtn" type="button">▶ Spill</button>
+  <p class="best">🏆 Rekord: <span id="bestM">0</span></p>
+  <nav class="langs" aria-label="Language"><a href="/_preview-kattesprang/" hreflang="nb" class="cur" aria-current="page">Norsk</a><a href="/_preview-kattesprang/pl/" hreflang="pl">Polski</a><a href="/_preview-kattesprang/en/" hreflang="en">English</a></nav>
+  <p class="love">Spill laget med lidenskap</p>
+</div></div>
+<div class="ov" id="pauseOv" hidden><div class="card"><h2 class="logo">Pause</h2><button class="btn" id="resumeBtn" type="button">▶ Fortsett</button><p class="love">Spill laget med lidenskap</p></div></div>
+<div class="ov" id="over" hidden><div class="card">
+  <h2 class="logo" style="font-size:2rem">Magic tar en pause</h2>
+  <div class="big" id="finalV">0</div>
+  <div class="rec" id="recB" hidden>🎉 Ny rekord!</div>
+  <div class="stats"><span>🏆 Rekord: <b id="bestO">0</b></span><span>📏 Avstand: <b id="distV">0</b></span><span>🧶 Fanget: <b id="itemsV">0</b></span><span>✨ Beste kombo: <b id="comboV">0</b></span></div>
+  <div class="row"><button class="btn" id="againBtn" type="button">↻ Spill igjen</button></div>
+  <div class="row"><button class="btn alt" id="shareBtn" type="button">📋 Kopier resultat</button></div>
+  <div class="copied" id="copied" aria-live="polite"></div>
+  <nav class="langs" aria-label="Language"><a href="/_preview-kattesprang/" hreflang="nb" class="cur" aria-current="page">Norsk</a><a href="/_preview-kattesprang/pl/" hreflang="pl">Polski</a><a href="/_preview-kattesprang/en/" hreflang="en">English</a></nav>
+  <p class="love">Spill laget med lidenskap</p>
+</div></div>
+<script src="/_preview-kattesprang/assets/game.js?v=1"></script>
+<script data-goatcounter="https://jtaczala-games.goatcounter.com/count" async src="/count.js"></script>
+<script src="/assets/s60-back.js?v=2" data-game="kattesprang" data-pos="tl" data-compact="1" data-end="after:#againBtn|in:#pauseOv .card" defer></script>
+</body>
+</html>
