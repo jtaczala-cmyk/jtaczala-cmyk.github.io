@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta name="robots" content="noindex, nofollow">
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#07040c">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,7 @@
 <meta name="description" content="Łowca Cieni AR – rozejrzyj się przez kamerę telefonu i odeprzyj stwory, które czyhają na Twoje życie.">
 <title>Łowca Cieni AR</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%2307040c%22/%3E%3Cellipse cx=%2222%22 cy=%2232%22 rx=%228%22 ry=%224%22 fill=%22%23ff2d4a%22/%3E%3Cellipse cx=%2242%22 cy=%2232%22 rx=%228%22 ry=%224%22 fill=%22%23ff2d4a%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 <video id="cam" autoplay playsinline muted></video>
@@ -51,8 +51,32 @@
   <button id="pauseBtn" class="icon-btn pause" aria-label="Pauza">❚❚</button>
 </div>
 
+<!-- Ostrzeżenie o bezpieczeństwie – osobny ekran bezpośrednio przed grą -->
+<section id="safetyScreen" class="screen safety-screen" role="dialog" aria-modal="true" aria-labelledby="safetyTitle">
+  <div class="panel safety-panel">
+    <div class="warn-icon" aria-hidden="true"><span>!</span></div>
+    <h1 id="safetyTitle" class="safety-title">Zanim zaczniesz</h1>
+    <p class="safety-sub">Ważne informacje o bezpieczeństwie</p>
+    <p class="safety-lead">Łowca Cieni AR to gra w rozszerzonej rzeczywistości. Patrzysz na świat przez kamerę telefonu i obracasz się wokół siebie, więc łatwo stracić z oczu to, co dzieje się naprawdę.</p>
+    <ul class="safety-list">
+      <li><b>Rozejrzyj się przed startem.</b> Graj tylko w bezpiecznym, otwartym miejscu, z wolną przestrzenią wokół siebie.</li>
+      <li><b>Uważaj na przeszkody:</b> meble, ściany, szyby, schody, krawężniki, a także inne osoby i zwierzęta.</li>
+      <li><b>Nigdy nie graj na ulicy</b>, w pobliżu ruchu drogowego, torów, wody ani na wysokości.</li>
+      <li><b>Nie graj podczas prowadzenia pojazdu</b>, jazdy na rowerze lub hulajnodze ani idąc w tłumie.</li>
+      <li><b>Rób przerwy.</b> Gra zawiera błyski i drgania obrazu. Przy zawrotach głowy, nudnościach lub zmęczeniu oczu – przerwij grę.</li>
+      <li><b>Trzymaj telefon pewnie.</b> Dzieci powinny grać pod opieką dorosłych.</li>
+    </ul>
+    <div class="safety" role="note">
+      <b>⚠️ Uwaga – bezpieczeństwo:</b> Zawsze zwracaj uwagę na swoje otoczenie. Nie graj na ulicy, w pobliżu ruchu drogowego ani podczas prowadzenia pojazdu. Korzystasz z gry na własną odpowiedzialność – twórca nie ponosi odpowiedzialności za szkody lub wypadki wynikające z nieodpowiedniego lub nieostrożnego użytkowania.
+    </div>
+    <div class="safety-cta">
+      <button id="safetyOk" class="btn primary safety-btn">Rozumiem, przejdź do gry</button>
+    </div>
+  </div>
+</section>
+
 <!-- Ekran startowy -->
-<section id="startScreen" class="screen">
+<section id="startScreen" class="screen hidden">
   <div class="panel">
     <div class="logo">
       <div class="eyes"><span></span><span></span></div>
@@ -62,9 +86,6 @@
     <button id="startAR" class="btn primary">START (AR)</button>
     <button id="startSim" class="btn ghost">Tryb bez kamery (Symulacja)</button>
     <p id="startMsg" class="msg"></p>
-    <div class="safety" role="note">
-      <b>⚠️ Uwaga – bezpieczeństwo:</b> Zawsze zwracaj uwagę na swoje otoczenie. Nie graj na ulicy, w pobliżu ruchu drogowego ani podczas prowadzenia pojazdu. Korzystasz z gry na własną odpowiedzialność – twórca nie ponosi odpowiedzialności za szkody lub wypadki wynikające z nieodpowiedniego lub nieostrożnego użytkowania.
-    </div>
     <ul class="howto">
       <li><b>Obracaj się</b> z telefonem – radar w rogu pokazuje, skąd nadchodzą.</li>
       <li><b>Stuknij</b> w stwora albo naciśnij <b>OGNIA</b>, by trafić w cel na środku celownika.</li>
@@ -102,6 +123,6 @@
   </div>
 </section>
 
-<script src="game.js"></script>
+<script src="game.js?v=2"></script>
 </body>
 </html>
