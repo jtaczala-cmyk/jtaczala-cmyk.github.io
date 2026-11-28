@@ -2,7 +2,7 @@
    Include: <script src="/assets/s60-back.js" data-game="redning" data-pos="bl" data-end="after:#oAgain" defer></script>
    data-pos: tl | tr | bl | br (corner), data-dx / data-dy: extra offset in px, data-compact="1": icon only,
    data-end: end-screen anchors separated by "|": "after:SEL", "before:SEL" or "in:SEL" (append).
-   End screens ("after:"/"before:" anchors) also get a small "Follow Stop60" row (Facebook / X, new tab); data-follow="0" turns it off. */
+   End screens ("after:"/"before:" anchors) also get a small "Follow Stop60" row (Facebook / X, new tab) plus a "Today's challenge" link to /daily/; data-follow="0" turns it off. */
 (function () {
   'use strict';
   if (window.__s60back) return; window.__s60back = 1;
@@ -15,6 +15,8 @@
   var HOME = { no: '/', en: '/en/', pl: '/pl/' };
   var follow = ds.follow !== '0';
   var FB = 'https://www.facebook.com/profile.php?id=61595192884017', XURL = 'https://x.com/stop60_games';
+  var DURL = { no: '/daily/', en: '/en/daily/', pl: '/pl/daily/' };
+  var DTXT = { no: '🎯 Dagens utfordring', en: '🎯 Today’s challenge', pl: '🎯 Dzisiejsze wyzwanie' };
   var FTXT = { no: 'Følg Stop60 – nytt spill hver dag', en: 'Follow Stop60 – a new challenge every day', pl: 'Obserwuj Stop60 – nowe wyzwanie codziennie' };
   function lang() {
     var l = (document.documentElement.getAttribute('data-lang') || document.documentElement.lang || '').toLowerCase();
@@ -43,6 +45,7 @@
     'font:600 13px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:inherit;position:relative;z-index:2;text-align:center}' +
     '.s60F span{flex:1 0 100%;opacity:.9}.s60F a{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:6px 14px;border-radius:18px;' +
     'background:#1877f2;color:#fff;text-decoration:none;font-weight:700;-webkit-tap-highlight-color:transparent;touch-action:manipulation}.s60F a.x{background:#111;border:1px solid rgba(255,255,255,.6)}' +
+    '.s60F a.d{background:linear-gradient(180deg,#ffd23f,#ff9f1c);color:#1a1200;border:1px solid rgba(0,0,0,.35);box-shadow:0 0 10px rgba(255,190,40,.55)}' +
     '@media print{.s60b{display:none}}';
   function off(v, side) { return 'calc(env(safe-area-inset-' + side + ', 0px) + ' + (8 + v) + 'px)'; }
   function go(ev) {
@@ -83,7 +86,8 @@
   }
   function fillF(r) {
     var l = lang();
-    r.innerHTML = '<span>' + FTXT[l] + '</span><a href="' + FB + '" target="_blank" rel="noopener" data-n="fb">Facebook</a><a class="x" href="' + XURL + '" target="_blank" rel="noopener" data-n="x">X</a>';
+    var dl = /\/daily\//.test(location.pathname) ? '' : '<a class="d" href="' + DURL[l] + '" data-n="daily">' + DTXT[l] + '</a>';
+    r.innerHTML = '<span>' + FTXT[l] + '</span>' + dl + '<a href="' + FB + '" target="_blank" rel="noopener" data-n="fb">Facebook</a><a class="x" href="' + XURL + '" target="_blank" rel="noopener" data-n="x">X</a>';
     var as = r.getElementsByTagName('a');
     for (var i = 0; i < as.length; i++) (function (a) {
       var stop = function (e) { e.stopPropagation(); };
@@ -91,7 +95,8 @@
       a.addEventListener('touchstart', stop, { passive: true });
       a.addEventListener('click', function (e) {
         e.stopPropagation();
-        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: 'follow-' + a.getAttribute('data-n') + '-end-' + game, title: 'Follow Stop60', event: true }); } catch (x) {}
+        var n = a.getAttribute('data-n');
+        try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: n === 'daily' ? 'daily-from-end-' + game : 'follow-' + n + '-end-' + game, title: n === 'daily' ? 'Daily challenge from end screen' : 'Follow Stop60', event: true }); } catch (x) {}
       });
     })(as[i]);
   }
