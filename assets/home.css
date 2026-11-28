@@ -173,13 +173,3 @@ border-bottom:1px solid rgba(45,212,191,.35)}
 @media (max-width:800px), (pointer:coarse){
   .cards .qr, a.im .qr{display:none !important}
 }
-
-/* Channel banner v5 as homepage hero (2026-11-28) */
-.hero-banner{width:100%;background:#0a0a0e;line-height:0}
-.hero-banner picture{display:block;width:100%}
-.hero-banner img{width:100%;height:auto;aspect-ratio:1920/1080;object-fit:cover;object-position:center center}
-@media(min-width:900px){
-  .hero-banner{max-width:72rem;margin:12px auto 0;padding:0 max(16px,env(safe-area-inset-left,0px));background:transparent;box-sizing:border-box}
-  .hero-banner picture{border-radius:20px;overflow:hidden;border:1px solid var(--line)}
-  .hero-banner img{aspect-ratio:1920/800}
-}
